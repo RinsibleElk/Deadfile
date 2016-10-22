@@ -82,13 +82,17 @@
   <ItemGroup>
     <Compile Include="ContentModule.cs" />
     <Compile Include="DesignTime\NavigationBarDesignTimeViewModel.cs" />
-    <Compile Include="DesignTime\SecondPageDesignTimeViewModel.cs" />
+    <Compile Include="DesignTime\FourthPageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\HomePageDesignTimeViewModel.cs" />
+    <Compile Include="DesignTime\ThirdPageDesignTimeViewModel.cs" />
+    <Compile Include="DesignTime\SecondPageDesignTimeViewModel.cs" />
     <Compile Include="Events\NavigationEvent.cs" />
     <Compile Include="Interfaces\IDeadfileViewModel.cs" />
+    <Compile Include="Interfaces\IThirdPageViewModel.cs" />
+    <Compile Include="Interfaces\ISecondPageViewModel.cs" />
     <Compile Include="Interfaces\IHomePageViewModel.cs" />
     <Compile Include="Interfaces\INavigationBarViewModel.cs" />
-    <Compile Include="Interfaces\ISecondPageViewModel.cs" />
+    <Compile Include="Interfaces\IFourthPageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -103,15 +107,23 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="RegionNames.cs" />
+    <Compile Include="ViewModels\ThirdPageViewModel.cs" />
+    <Compile Include="ViewModels\SecondPageViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\NavigationBarViewModel.cs" />
-    <Compile Include="ViewModels\SecondPageViewModel.cs" />
+    <Compile Include="ViewModels\FourthPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Views\NavigationBar.xaml.cs">
-      <DependentUpon>NavigationBar.xaml</DependentUpon>
+    <Compile Include="Views\ThirdPage.xaml.cs">
+      <DependentUpon>ThirdPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SecondPage.xaml.cs">
       <DependentUpon>SecondPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NavigationBar.xaml.cs">
+      <DependentUpon>NavigationBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FourthPage.xaml.cs">
+      <DependentUpon>FourthPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
@@ -129,11 +141,19 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="Views\ThirdPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SecondPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\NavigationBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SecondPage.xaml">
+    <Page Include="Views\FourthPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

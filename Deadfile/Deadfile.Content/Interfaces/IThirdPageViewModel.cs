@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace Deadfile.Content.Interfaces
 {
-    public interface ISecondPageViewModel : IDeadfileViewModel
+    public interface IThirdPageViewModel : IDeadfileViewModel
     {
         ICommand NavigateCommand { get; }
     }

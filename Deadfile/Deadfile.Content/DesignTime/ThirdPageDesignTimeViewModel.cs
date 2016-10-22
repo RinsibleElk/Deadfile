@@ -8,9 +8,9 @@ using Deadfile.Content.Interfaces;
 
 namespace Deadfile.Content.DesignTime
 {
-    public class SecondPageDesignTimeViewModel : ISecondPageViewModel
+    public class ThirdPageDesignTimeViewModel : IThirdPageViewModel
     {
-        public string Title { get; set; } = "Design time Second Page";
+        public string Title { get; set; } = "Design time Third Page";
         public ICommand NavigateCommand => null;
     }
 }

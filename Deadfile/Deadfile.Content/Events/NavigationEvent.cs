@@ -8,6 +8,10 @@ using Prism.Regions;
 
 namespace Deadfile.Content.Events
 {
+    /// <summary>
+    /// Raised to communicate from ContentRegion to NavigationRegion to indicate that the page has changed. This influences the Navigation bar's
+    /// buttons.
+    /// </summary>
     public class NavigationEvent : PubSubEvent<IRegionNavigationJournal>
     {
     }

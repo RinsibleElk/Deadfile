@@ -1,4 +1,4 @@
-﻿<UserControl  x:Class="Deadfile.Content.Views.SecondPage"
+﻿<UserControl  x:Class="Deadfile.Content.Views.FourthPage"
               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,9 +9,8 @@
               prism:ViewModelLocator.AutoWireViewModel="True"
               mc:Ignorable="d"
               d:DataContext="{d:DesignInstance Type=designtime:FourthPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
-              d:DesignHeight="300" d:DesignWidth="300">
+              d:DesignHeight="300" d:DesignWidth="400">
     <StackPanel>
         <TextBlock Text="{Binding Title}" Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Calibri" FontSize="24" FontWeight="Bold"></TextBlock>
-        <Button Command="{Binding NavigateCommand}">Navigate</Button>
     </StackPanel>
 </UserControl>

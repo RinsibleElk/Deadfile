@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Deadfile.Content.Interfaces
 {
-    public interface ISecondPageViewModel : IDeadfileViewModel
+    public interface IFourthPageViewModel : IDeadfileViewModel
     {
-        ICommand NavigateCommand { get; }
     }
 }

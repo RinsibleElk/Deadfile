@@ -24,6 +24,10 @@ namespace Deadfile.Content
             _unityContainer.RegisterTypeForNavigation<HomePage>();
             _unityContainer.RegisterType<SecondPage>();
             _unityContainer.RegisterTypeForNavigation<SecondPage>();
+            _unityContainer.RegisterType<ThirdPage>();
+            _unityContainer.RegisterTypeForNavigation<ThirdPage>();
+            _unityContainer.RegisterType<FourthPage>();
+            _unityContainer.RegisterTypeForNavigation<FourthPage>();
 
             _regionManager.RegisterViewWithRegion(RegionNames.NavigationRegion, typeof(NavigationBar));
         }
