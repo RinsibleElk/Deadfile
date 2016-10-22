@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="Deadfile.cs" />
+    <Compile Include="Employee.cs" />
     <Compile Include="Expense.cs" />
     <Compile Include="Invoice.cs" />
     <Compile Include="Job.cs" />
