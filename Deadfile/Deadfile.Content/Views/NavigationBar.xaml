@@ -9,7 +9,7 @@
               prism:ViewModelLocator.AutoWireViewModel="True"
               mc:Ignorable="d"
               d:DataContext="{d:DesignInstance Type=designtime:NavigationBarDesignTimeViewModel, IsDesignTimeCreatable=True}"
-              d:DesignHeight="100" d:DesignWidth="400">
+              d:DesignHeight="20" d:DesignWidth="400">
     <StackPanel Orientation="Horizontal">
         <Button Command="{Binding HomeCommand}" Width="100">Home</Button>
         <Button Command="{Binding BackCommand}" Width="100">Back</Button>
