@@ -1,9 +1,12 @@
+using System;
+using System.Data.Entity;
+using System.Linq;
+
 namespace Deadfile.Entity
 {
-    using System;
-    using System.Data.Entity;
-    using System.Linq;
-
+    /// <summary>
+    /// Access to the Entity framework's storage of the Deadfile.
+    /// </summary>
     public class Deadfile : DbContext
     {
         public Deadfile()

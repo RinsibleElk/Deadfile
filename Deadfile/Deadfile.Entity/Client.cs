@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace Deadfile.Entity
@@ -13,27 +14,80 @@ namespace Deadfile.Entity
     /// </summary>
     public class Client
     {
+        /// <summary>
+        /// Unique identifier for this <see cref="Client"/> in the database.
+        /// </summary>
         public int ClientId { get; set; }
 
+        /// <summary>
+        /// Title, e.g. Mr, Mrs, Dr.
+        /// </summary>
+        [MaxLength(20, ErrorMessage = "A Client's title must be less than 20 characters long.")]
         public string Title { get; set; }
 
+        /// <summary>
+        /// First name.
+        /// </summary>
+        [MaxLength(50, ErrorMessage = "A Client's first name must be less than 50 characters long.")]
         public string FirstName { get; set; }
 
+        /// <summary>
+        /// Middle names.
+        /// </summary>
+        [MaxLength(50, ErrorMessage = "A Client's middle names must be less than 50 characters long.")]
         public string MiddleNames { get; set; }
 
+        /// <summary>
+        /// Last name. This is a required field. When the full name is not yet known, the last name should be used.
+        /// </summary>
+        [Required(ErrorMessage = "You must require at least a last name for this Client."),
+         MaxLength(50, ErrorMessage = "A Client's last name must be less than 50 characters long.")]
         public string LastName { get; set; }
 
+        /// <summary>
+        /// First line of the Client's contact address. This is required.
+        /// </summary>
         public string AddressFirstLine { get; set; }
 
+        /// <summary>
+        /// Second line of the Client's contact address.
+        /// </summary>
         public string AddressSecondLine { get; set; }
 
+        /// <summary>
+        /// Third line of the Client's contact address.
+        /// </summary>
         public string AddressThirdLine { get; set; }
 
+        /// <summary>
+        /// Post code for the Client's contact address.
+        /// </summary>
         public string AddressPostCode { get; set; }
 
+        [MinLength(8, ErrorMessage = "The minimum length for a Client's phone number is 8 characters."),
+         MaxLength(20, ErrorMessage = "The maximum length for a Client's phone number is 8 characters."),
+         Phone(ErrorMessage = "Not a valid phone number for Client."),
+         Required(ErrorMessage = "Client requires a phone number.")]
         public string PhoneNumber1 { get; set; }
 
+        [MinLength(8, ErrorMessage = "The minimum length for a Client's phone number is 8 characters."),
+         MaxLength(20, ErrorMessage = "The maximum length for a Client's phone number is 8 characters."),
+         Phone(ErrorMessage = "Not a valid phone number for Client.")]
+        public string PhoneNumber2 { get; set; }
+
+        [MinLength(8, ErrorMessage = "The minimum length for a Client's phone number is 8 characters."),
+         MaxLength(20, ErrorMessage = "The maximum length for a Client's phone number is 8 characters."),
+         Phone(ErrorMessage = "Not a valid phone number for Client.")]
+        public string PhoneNumber3 { get; set; }
+
+        [EmailAddress(ErrorMessage = "Invalid e-mail address given for this Client.")]
         public string EmailAddress { get; set; }
+
+        [Required(ErrorMessage = "Every Client must have a status.")]
+        public ClientStatus Status { get; set; }
+
+        [MaxLength(500, ErrorMessage = "The free notes for a Client must be less than 500 characters long.")]
+        public string Notes { get; set; }
 
         public virtual ICollection<Job> Jobs { get; set; }
 
@@ -162,7 +216,7 @@ namespace Deadfile.Entity
             li.Add(new Client() { Title = "Dr", FirstName = "Jason", MiddleNames = "", LastName = "Seaver", AddressFirstLine = "15 Robin Hood Lane", AddressSecondLine = "Huntington", AddressThirdLine = "Long Island", AddressPostCode = "EN7 5MN", PhoneNumber1 = "07215690918", EmailAddress = "Jason.Seaver@gmail.com" });
             li.Add(new Client() { Title = "Mr", FirstName = "Jerry", MiddleNames = "", LastName = "Seinfeld", AddressFirstLine = "129 West 81st Street Apartment 5A", AddressSecondLine = "New York", AddressThirdLine = "New York", AddressPostCode = "EN4 6JW", PhoneNumber1 = "07705769042", EmailAddress = "Jerry.Seinfeld@hotmail.com" });
             li.Add(new Client() { Title = "Mrs", FirstName = "Angelica", MiddleNames = "", LastName = "Serralde", AddressFirstLine = "Heriberto Frias 15", AddressSecondLine = "Mexico City.", AddressThirdLine = "", AddressPostCode = "EN4 7ZB", PhoneNumber1 = "07671813724", EmailAddress = "Angelica.Serralde@gmail.com" });
-            li.Add(new Client() { Title = "Ms", FirstName = "Sethe", MiddleNames = "", LastName = "", AddressFirstLine = "124 Bluestone Road", AddressSecondLine = "Cincinnati", AddressThirdLine = "OH", AddressPostCode = "EN7 5XE", PhoneNumber1 = "07787572268", EmailAddress = "Sethe@hotmail.com" });
+            li.Add(new Client() { Title = "Ms", FirstName = "", MiddleNames = "", LastName = "Sethe", AddressFirstLine = "124 Bluestone Road", AddressSecondLine = "Cincinnati", AddressThirdLine = "OH", AddressPostCode = "EN7 5XE", PhoneNumber1 = "07787572268", EmailAddress = "Sethe@hotmail.com" });
             li.Add(new Client() { Title = "Mrs", FirstName = "Ena", MiddleNames = "", LastName = "Sharples", AddressFirstLine = "16 Coronation Street", AddressSecondLine = "Weatherfield", AddressThirdLine = "Greater Manchester", AddressPostCode = "EN9 7BC", PhoneNumber1 = "07622536535", EmailAddress = "Ena.Sharples@hotmail.com" });
             li.Add(new Client() { Title = "Mr", FirstName = "Homer", MiddleNames = "", LastName = "Simpson", AddressFirstLine = "742 Evergreen Terrace", AddressSecondLine = "Springfield", AddressThirdLine = "USA", AddressPostCode = "EN2 8XO", PhoneNumber1 = "07968957421", EmailAddress = "Homer.Simpson@hotmail.com" });
             li.Add(new Client() { Title = "Mrs", FirstName = "Marge", MiddleNames = "", LastName = "Simpson", AddressFirstLine = "15201 Maple Systems Road", AddressSecondLine = "Cypress Creek", AddressThirdLine = "USA", AddressPostCode = "EN6 8YY", PhoneNumber1 = "07549286613", EmailAddress = "Marge.Simpson@hotmail.com" });
@@ -191,9 +245,9 @@ namespace Deadfile.Entity
             li.Add(new Client() { Title = "Mrs", FirstName = "Joy", MiddleNames = "", LastName = "Turner", AddressFirstLine = "Pimmit Hills Trailer Park Space C-13", AddressSecondLine = "Camden", AddressThirdLine = "USA", AddressPostCode = "EN6 8IZ", PhoneNumber1 = "07013964602", EmailAddress = "Joy.Turner@yahoo.com" });
             li.Add(new Client() { Title = "Miss", FirstName = "Rose", MiddleNames = "", LastName = "Tyler", AddressFirstLine = "Flat 48 Bucknall House", AddressSecondLine = "Powell Estate", AddressThirdLine = "London", AddressPostCode = "EN2 7LF", PhoneNumber1 = "07328689410", EmailAddress = "Rose.Tyler@hotmail.com" });
             li.Add(new Client() { Title = "Mr", FirstName = "Samuel", MiddleNames = "", LastName = "Vimes", AddressFirstLine = "Ramkin Manor", AddressSecondLine = "Scoone Avenue", AddressThirdLine = "Ankh-Morpork", AddressPostCode = "EN5 7QG", PhoneNumber1 = "07518500027", EmailAddress = "Samuel.Vimes@hotmail.com" });
-            li.Add(new Client() { Title = "Mr", FirstName = "Wallace", MiddleNames = "", LastName = "", AddressFirstLine = "62 West Wallaby Street", AddressSecondLine = "Wigan", AddressThirdLine = "Lancs", AddressPostCode = "EN11 6WN", PhoneNumber1 = "07158799612", EmailAddress = "Wallace@hotmail.com" });
+            li.Add(new Client() { Title = "Mr", FirstName = "", MiddleNames = "", LastName = "Wallace", AddressFirstLine = "62 West Wallaby Street", AddressSecondLine = "Wigan", AddressThirdLine = "Lancs", AddressPostCode = "EN11 6WN", PhoneNumber1 = "07158799612", EmailAddress = "Wallace@hotmail.com" });
             li.Add(new Client() { Title = "Miss", FirstName = "Brenda", MiddleNames = "", LastName = "Walsh", AddressFirstLine = "933 Hillcrest Drive", AddressSecondLine = "Beverly Hills", AddressThirdLine = "California", AddressPostCode = "EN2 3NK", PhoneNumber1 = "07985560778", EmailAddress = "Brenda.Walsh@gmail.com" });
-            li.Add(new Client() { Title = "Mr", FirstName = "Waluigi", MiddleNames = "", LastName = "", AddressFirstLine = "12 Grimace Lane", AddressSecondLine = "Mushroom Kingdom", AddressThirdLine = "", AddressPostCode = "EN9 6ZH", PhoneNumber1 = "07399519151", EmailAddress = "Waluigi@gmail.com" });
+            li.Add(new Client() { Title = "Mr", FirstName = "", MiddleNames = "", LastName = "Waluigi", AddressFirstLine = "12 Grimace Lane", AddressSecondLine = "Mushroom Kingdom", AddressThirdLine = "", AddressPostCode = "EN9 6ZH", PhoneNumber1 = "07399519151", EmailAddress = "Waluigi@gmail.com" });
             li.Add(new Client() { Title = "Mr", FirstName = "Bruce", MiddleNames = "", LastName = "Wayne", AddressFirstLine = "Wayne Manor", AddressSecondLine = "Gotham City", AddressThirdLine = "", AddressPostCode = "EN4 9NR", PhoneNumber1 = "07040393745", EmailAddress = "Bruce.Wayne@gmail.com" });
             li.Add(new Client() { Title = "Mr", FirstName = "George", MiddleNames = "", LastName = "Weasley", AddressFirstLine = "93 Diagon Alley", AddressSecondLine = "London", AddressThirdLine = "", AddressPostCode = "EN11 6JU", PhoneNumber1 = "07363806752", EmailAddress = "George.Weasley@yahoo.com" });
             li.Add(new Client() { Title = "Mr", FirstName = "Hal", MiddleNames = "", LastName = "Wilkerson", AddressFirstLine = "12334 Maple Blvd", AddressSecondLine = "", AddressThirdLine = "", AddressPostCode = "EN6 4NT", PhoneNumber1 = "07594782262", EmailAddress = "Hal.Wilkerson@yahoo.com" });

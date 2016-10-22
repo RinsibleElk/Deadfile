@@ -52,11 +52,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="ClientStatus.cs" />
     <Compile Include="Deadfile.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="EmployeeStatus.cs" />
     <Compile Include="Expense.cs" />
     <Compile Include="Invoice.cs" />
+    <Compile Include="InvoiceStatus.cs" />
     <Compile Include="Job.cs" />
+    <Compile Include="JobStatus.cs" />
     <Compile Include="PlanningApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,0 +1,25 @@
+﻿<Window x:Class="Deadfile.Shell"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:prism="http://prismlibrary.com/"
+        Title="Deadfile Shell"
+        d:DesignHeight="300" d:DesignWidth="400">
+    <Grid x:Name="LayoutRoot"
+          Background="{StaticResource MainBackground}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Left" Width="Auto" Text="Deadfile" FontWeight="Normal" Foreground="#FFFFFFFF" FontSize="24" FontFamily="Comic Sans MS" VerticalAlignment="Center"/>
+            </StackPanel>
+            <ContentControl Grid.Row="1" prism:RegionManager.RegionName="NavigationRegion"></ContentControl>
+            <ContentControl Grid.Row="2" prism:RegionManager.RegionName="ContentRegion" />
+        </Grid>
+    </Grid>
+</Window>

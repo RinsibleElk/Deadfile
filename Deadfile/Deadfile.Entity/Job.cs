@@ -18,6 +18,10 @@ namespace Deadfile.Entity
 
         public string AddressPostCode { get; set; }
 
+        public JobStatus Status { get; set; }
+
+        public string Notes { get; set; }
+
         public int ClientId { get; set; }
 
         public virtual Client Client { get; set; }
