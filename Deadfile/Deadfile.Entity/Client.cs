@@ -35,7 +35,7 @@ namespace Deadfile.Entity
 
         public string EmailAddress { get; set; }
 
-        public virtual List<Job> Jobs { get; set; }
+        public virtual ICollection<Job> Jobs { get; set; }
 
         /// <summary>
         /// Generates some fake data for design time experience, using EN postcodes, simple email addresses and UK mobile numbers.

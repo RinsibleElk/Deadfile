@@ -10,6 +10,6 @@ namespace Deadfile.Entity
     {
         public int InvoiceId { get; set; }
 
-        public virtual List<Job> Jobs { get; set; }
+        public virtual ICollection<Job> Jobs { get; set; }
     }
 }
