@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Deadfile.Content.Views;
 using Deadfile.Content.Interfaces;
+using Deadfile.Content.Navigation;
 using Prism.Events;
 using Prism.Regions;
 
@@ -14,22 +15,19 @@ namespace Deadfile.Content.ViewModels
 {
     public class SecondPageViewModel : ViewModelBase, ISecondPageViewModel
     {
-        private readonly IRegionManager _regionManager;
+        private readonly IDeadfileNavigationService _navigationService;
         private readonly DelegateCommand<object> _navigateCommand;
 
-        private const string ThirdPageViewKey = nameof(ThirdPage);
-        private static Uri ThirdPageViewUri = new Uri(ThirdPageViewKey, UriKind.Relative);
-
-        public SecondPageViewModel(IRegionManager regionManager, IEventAggregator eventAggregator) : base(eventAggregator)
+        public SecondPageViewModel(IDeadfileNavigationService navigationService, IEventAggregator eventAggregator) : base(eventAggregator)
         {
-            _regionManager = regionManager;
+            _navigationService = navigationService;
             _navigateCommand = new DelegateCommand<object>(this.NavigateToThirdPage);
             Title = "Second Page";
         }
 
         private void NavigateToThirdPage(object ignored)
         {
-            _regionManager.RequestNavigate(RegionNames.ContentRegion, ThirdPageViewUri);
+            _navigationService.NavigateTo(Experience.ThirdPage);
         }
 
         public ICommand NavigateCommand { get { return _navigateCommand; } }

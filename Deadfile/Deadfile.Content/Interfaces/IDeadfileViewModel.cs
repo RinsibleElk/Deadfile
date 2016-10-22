@@ -7,6 +7,9 @@ using System.Windows.Input;
 
 namespace Deadfile.Content.Interfaces
 {
+    /// <summary>
+    /// Every ContentRegion ViewModel must have these things.
+    /// </summary>
     public interface IDeadfileViewModel
     {
         string Title { get; set; }

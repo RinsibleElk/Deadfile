@@ -10,7 +10,7 @@ namespace Deadfile.Content.Events
 {
     /// <summary>
     /// Raised to communicate from ContentRegion to NavigationRegion to indicate that the page has changed. This influences the Navigation bar's
-    /// buttons.
+    /// buttons. Passes the journal so that the NavigationBar can update its view on whether or not to support navigation in this way.
     /// </summary>
     public class NavigationEvent : PubSubEvent<IRegionNavigationJournal>
     {

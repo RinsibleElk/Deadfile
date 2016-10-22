@@ -2,6 +2,8 @@
 using Prism.Unity;
 using System.Windows;
 using Deadfile.Content;
+using Deadfile.Content.Interfaces;
+using Deadfile.Content.Navigation;
 using Prism.Modularity;
 
 namespace Deadfile
@@ -24,6 +26,13 @@ namespace Deadfile
         {
             ModuleCatalog catalog = (ModuleCatalog)ModuleCatalog;
             catalog.AddModule(typeof(ContentModule));
+        }
+
+        protected override IUnityContainer CreateContainer()
+        {
+            var container = base.CreateContainer();
+            container.RegisterType<IDeadfileNavigationService, DeadfileNavigationService>();
+            return container;
         }
     }
 }

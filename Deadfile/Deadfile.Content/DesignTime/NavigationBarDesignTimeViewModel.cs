@@ -8,7 +8,7 @@ using Deadfile.Content.Interfaces;
 
 namespace Deadfile.Content.DesignTime
 {
-    public class NavigationBarDesignTimeViewModel : INavigationBarViewModel
+    class NavigationBarDesignTimeViewModel : INavigationBarViewModel
     {
         public ICommand BackCommand { get; } = null;
         public ICommand HomeCommand { get; } = null;

@@ -8,7 +8,7 @@ using Deadfile.Content.Interfaces;
 
 namespace Deadfile.Content.DesignTime
 {
-    public class ThirdPageDesignTimeViewModel : IThirdPageViewModel
+    class ThirdPageDesignTimeViewModel : IThirdPageViewModel
     {
         public string Title { get; set; } = "Design time Third Page";
         public ICommand NavigateCommand => null;

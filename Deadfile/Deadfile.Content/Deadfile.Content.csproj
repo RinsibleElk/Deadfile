@@ -87,6 +87,9 @@
     <Compile Include="DesignTime\ThirdPageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\SecondPageDesignTimeViewModel.cs" />
     <Compile Include="Events\NavigationEvent.cs" />
+    <Compile Include="Navigation\DeadfileNavigationService.cs" />
+    <Compile Include="Navigation\Experience.cs" />
+    <Compile Include="Interfaces\IDeadfileNavigationService.cs" />
     <Compile Include="Interfaces\IDeadfileViewModel.cs" />
     <Compile Include="Interfaces\IThirdPageViewModel.cs" />
     <Compile Include="Interfaces\ISecondPageViewModel.cs" />

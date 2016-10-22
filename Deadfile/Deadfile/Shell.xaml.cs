@@ -14,7 +14,9 @@ using System.Windows.Shapes;
 using Prism.Modularity;
 using Prism.Regions;
 using Deadfile.Content;
+using Deadfile.Content.Interfaces;
 using Deadfile.Content.Views;
+using Deadfile.Content.Navigation;
 
 namespace Deadfile
 {
@@ -23,13 +25,11 @@ namespace Deadfile
     /// </summary>
     public partial class Shell : Window
     {
-        private readonly IRegionManager _regionManager;
-        private static readonly string HomePageViewKey = "/" + nameof(HomePage);
-        private static readonly Uri HomePageViewUri = new Uri(HomePageViewKey, UriKind.Relative);
+        private readonly IDeadfileNavigationService _navigationService;
 
-        public Shell(IRegionManager regionManager, IModuleManager moduleManager)
+        public Shell(IDeadfileNavigationService navigationService, IModuleManager moduleManager)
         {
-            _regionManager = regionManager;
+            _navigationService = navigationService;
 
             InitializeComponent();
 
@@ -38,9 +38,7 @@ namespace Deadfile
                 {
                     if (e.ModuleInfo.ModuleName == nameof(ContentModule))
                     {
-                        _regionManager.RequestNavigate(
-                            RegionNames.ContentRegion,
-                            HomePageViewUri);
+                        _navigationService.NavigateTo(Experience.HomePage);
                     }
                 };
         }
