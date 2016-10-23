@@ -15,7 +15,6 @@ using Prism.Modularity;
 using Prism.Regions;
 using Deadfile.Content;
 using Deadfile.Content.Interfaces;
-using Deadfile.Content.Views;
 using Deadfile.Content.Navigation;
 
 namespace Deadfile
@@ -38,7 +37,7 @@ namespace Deadfile
                 {
                     if (e.ModuleInfo.ModuleName == nameof(ContentModule))
                     {
-                        _navigationService.NavigateTo(Experience.HomePage);
+                        _navigationService.NavigateTo(Experience.Home);
                     }
                 };
         }

@@ -1,6 +1,9 @@
 ﻿using System;
+using Deadfile.Content.Clients;
+using Deadfile.Content.Home;
 using Deadfile.Content.Interfaces;
-using Deadfile.Content.Views;
+using Deadfile.Content.Navigation;
+using Deadfile.Content.Quotes;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;

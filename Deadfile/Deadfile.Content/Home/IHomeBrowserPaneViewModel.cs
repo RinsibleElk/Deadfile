@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deadfile.Content.Navigation
+namespace Deadfile.Content.Home
 {
-    public enum Experience
+    interface IHomeBrowserPaneViewModel
     {
-        Home,
-        Clients
     }
 }

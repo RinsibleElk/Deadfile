@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Model;
 
-namespace Deadfile.Content.Navigation
+namespace Deadfile.Content.Clients
 {
-    public enum Experience
+    public interface IClientsActionsPadViewModel
     {
-        Home,
-        Clients
     }
 }

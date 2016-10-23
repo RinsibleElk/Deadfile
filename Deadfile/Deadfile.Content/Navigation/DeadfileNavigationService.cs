@@ -25,11 +25,11 @@ namespace Deadfile.Content.Navigation
             Uri uri;
             switch (experience)
             {
-                case Experience.HomePage:
-                    uri = new Uri("/" + experience, UriKind.Relative);
+                case Experience.Home:
+                    uri = new Uri("/" + experience + "Page", UriKind.Relative);
                     break;
                 default:
-                    uri = new Uri(experience.ToString(), UriKind.Relative);
+                    uri = new Uri(experience + "Page", UriKind.Relative);
                     break;
             }
             _regionManager.RequestNavigate(RegionNames.ContentRegion, uri);
@@ -40,11 +40,11 @@ namespace Deadfile.Content.Navigation
             Uri uri;
             switch (experience)
             {
-                case Experience.HomePage:
-                    uri = new Uri("/" + experience.ToString().Replace("Page", "") + "BrowserPane", UriKind.Relative);
+                case Experience.Home:
+                    uri = new Uri("/" + experience + "BrowserPane", UriKind.Relative);
                     break;
                 default:
-                    uri = new Uri(experience.ToString().Replace("Page", "") + "BrowserPane", UriKind.Relative);
+                    uri = new Uri(experience + "BrowserPane", UriKind.Relative);
                     break;
             }
             _regionManager.RequestNavigate(RegionNames.BrowserRegion, uri);
@@ -55,11 +55,11 @@ namespace Deadfile.Content.Navigation
             Uri uri;
             switch (experience)
             {
-                case Experience.HomePage:
-                    uri = new Uri("/" + experience.ToString().Replace("Page", "") + "ActionsPad", UriKind.Relative);
+                case Experience.Home:
+                    uri = new Uri("/" + experience + "ActionsPad", UriKind.Relative);
                     break;
                 default:
-                    uri = new Uri(experience.ToString().Replace("Page", "") + "ActionsPad", UriKind.Relative);
+                    uri = new Uri(experience + "ActionsPad", UriKind.Relative);
                     break;
             }
             _regionManager.RequestNavigate(RegionNames.ActionsRegion, uri);

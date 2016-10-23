@@ -9,7 +9,7 @@ using Prism.Events;
 namespace Deadfile.Content.Events
 {
     /// <summary>
-    /// Used to communicate between ContentRegion and BrowserRegion in the ClientsPage experience.
+    /// Used to communicate between ContentRegion and BrowserRegion in the Clients experience.
     /// </summary>
     public class SelectedClientEvent : PubSubEvent<ClientModel>
     {

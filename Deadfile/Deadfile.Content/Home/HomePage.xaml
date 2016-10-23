@@ -1,0 +1,16 @@
+﻿<UserControl  x:Class="Deadfile.Content.Home.HomePage"
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+              xmlns:home="clr-namespace:Deadfile.Content.Home"
+              xmlns:prism="http://prismlibrary.com/"
+              prism:ViewModelLocator.AutoWireViewModel="True"
+              mc:Ignorable="d"
+              d:DataContext="{d:DesignInstance Type=home:HomePageDesignTimeViewModel, IsDesignTimeCreatable=True}"
+              d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel>
+        <TextBlock Text="{Binding Title}" Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Calibri" FontSize="24" FontWeight="Bold"></TextBlock>
+        <Button Command="{Binding ClientsCommand}">Clients</Button>
+    </StackPanel>
+</UserControl>
