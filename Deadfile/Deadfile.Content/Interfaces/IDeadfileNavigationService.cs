@@ -13,5 +13,8 @@ namespace Deadfile.Content.Interfaces
     public interface IDeadfileNavigationService
     {
         void NavigateTo(Experience experience);
+        void NavigateBrowserTo(Experience experience);
+        void NavigateActionsTo(Experience experience);
+
     }
 }

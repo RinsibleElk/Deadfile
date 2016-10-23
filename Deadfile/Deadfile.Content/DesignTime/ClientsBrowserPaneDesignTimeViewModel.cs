@@ -11,15 +11,16 @@ using Deadfile.Model.DesignTime;
 
 namespace Deadfile.Content.DesignTime
 {
-    class ClientsPageDesignTimeViewModel : IClientsPageViewModel
+    class ClientsBrowserPaneDesignTimeViewModel : IClientsBrowserPaneViewModel
     {
-        public ClientsPageDesignTimeViewModel()
+        public ClientsBrowserPaneDesignTimeViewModel()
         {
             var repository = new DeadfileDesignTimeRepository();
             var clientsList = new List<ClientModel>(repository.GetClients());
+            Clients = CollectionViewSource.GetDefaultView(clientsList);
             SelectedClient = clientsList[5];
         }
-
         public ClientModel SelectedClient { get; set; }
+        public ICollectionView Clients { get; }
     }
 }

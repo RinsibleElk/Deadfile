@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Deadfile.Content.Navigation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Deadfile.Content.Interfaces
     /// </summary>
     public interface IDeadfileViewModel
     {
+        Experience Experience { get; }
         string Title { get; set; }
     }
 }

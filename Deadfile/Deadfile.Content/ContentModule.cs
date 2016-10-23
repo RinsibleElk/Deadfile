@@ -38,10 +38,18 @@ namespace Deadfile.Content
             _unityContainer.RegisterType<ClientsPage>();
             _unityContainer.RegisterTypeForNavigation<ClientsPage>();
 
-            // This excludes the navigation region and NavigationBar from registering with the Journal.
+            // This excludes the browser region from Journaling.
+            _regionManager.RegisterViewWithRegion(RegionNames.BrowserRegion, typeof(HomeBrowserPane));
+            _regionManager.RegisterViewWithRegion(RegionNames.BrowserRegion, typeof(ClientsBrowserPane));
+
+            // This excludes the actions region from Journaling.
+            _regionManager.RegisterViewWithRegion(RegionNames.ActionsRegion, typeof(HomeActionsPad));
+            _regionManager.RegisterViewWithRegion(RegionNames.ActionsRegion, typeof(ClientsActionsPad));
+
+            // This excludes the navigation region from Journaling.
             _regionManager.RegisterViewWithRegion(RegionNames.NavigationRegion, typeof(NavigationBar));
 
-            // This excludes the quotes region and QuotesBar from registering with the Journal.
+            // This excludes the quotes region from Journaling.
             _regionManager.RegisterViewWithRegion(RegionNames.QuotesRegion, typeof(QuotesBar));
         }
     }

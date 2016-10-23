@@ -12,41 +12,17 @@
               d:DataContext="{d:DesignInstance Type=designtime:ClientsPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
               d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
-            <TextBox>
-            </TextBox>
-            <ListView
-                Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}},Path=ActualHeight}"
-                ItemsSource="{Binding Clients}"
-                SelectedItem="{Binding Path=SelectedClient, Mode=TwoWay}">
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="model:ClientModel">
-                        <StackPanel>
-                            <TextBlock Text="{Binding FullName}"></TextBlock>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackPanel>
-        <Grid Grid.Column="1">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{Binding SelectedClient.FullNameWithTitle}"></TextBlock>
-                <TextBlock Grid.Row="1" Text="{Binding SelectedClient.AddressFirstLine}"></TextBlock>
-                <TextBlock Grid.Row="2" Text="{Binding SelectedClient.AddressSecondLine}"></TextBlock>
-                <TextBlock Grid.Row="3" Text="{Binding SelectedClient.AddressThirdLine}"></TextBlock>
-                <TextBlock Grid.Row="4" Text="{Binding SelectedClient.AddressPostCode}"></TextBlock>
-            </Grid>
-        </Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{Binding SelectedClient.FullNameWithTitle}"></TextBlock>
+        <TextBlock Grid.Row="1" Text="{Binding SelectedClient.AddressFirstLine}"></TextBlock>
+        <TextBlock Grid.Row="2" Text="{Binding SelectedClient.AddressSecondLine}"></TextBlock>
+        <TextBlock Grid.Row="3" Text="{Binding SelectedClient.AddressThirdLine}"></TextBlock>
+        <TextBlock Grid.Row="4" Text="{Binding SelectedClient.AddressPostCode}"></TextBlock>
     </Grid>
 </UserControl>

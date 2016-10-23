@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using Deadfile.Content.Events;
 using Deadfile.Content.Interfaces;
+using Deadfile.Content.Navigation;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Prism.Events;
@@ -13,19 +15,22 @@ using Prism.Regions;
 
 namespace Deadfile.Content.ViewModels
 {
-    public class ClientsPageViewModel : ViewModelBase, IClientsPageViewModel
+    public class ClientsPageViewModel : ContentViewModelBase, IClientsPageViewModel
     {
-        private readonly IDeadfileRepository _repository;
-        public ClientsPageViewModel(IEventAggregator eventAggregator, IDeadfileRepository repository) : base(eventAggregator)
+        public ClientsPageViewModel(IEventAggregator eventAggregator, IDeadfileNavigationService navigationService) : base(eventAggregator, navigationService)
         {
-            _repository = repository;
         }
 
-        private ClientModel selectedClient;
+        public override Experience Experience
+        {
+            get { return Experience.ClientsPage; }
+        }
+
+        private ClientModel _selectedClient;
         public ClientModel SelectedClient
         {
-            get { return selectedClient; }
-            set { SetProperty(ref selectedClient, value); }
+            get { return _selectedClient; }
+            set { SetProperty(ref _selectedClient, value); }
         }
 
         private ICollectionView _clients;
@@ -37,9 +42,22 @@ namespace Deadfile.Content.ViewModels
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
+            // subscribe to messages from the browser pane
+            EventAggregator.GetEvent<SelectedClientEvent>().Subscribe(SelectedClientChanged);
             base.OnNavigatedTo(navigationContext);
-            var clients = _repository.GetClients();
-            Clients = CollectionViewSource.GetDefaultView(clients);
+        }
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            // unsubscribe to messages from the browser pane
+            EventAggregator.GetEvent<SelectedClientEvent>().Unsubscribe(SelectedClientChanged);
+
+            base.OnNavigatedFrom(navigationContext);
+        }
+
+        private void SelectedClientChanged(ClientModel selectedClient)
+        {
+            SelectedClient = selectedClient;
         }
     }
 }

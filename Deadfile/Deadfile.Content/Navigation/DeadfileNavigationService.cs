@@ -34,5 +34,35 @@ namespace Deadfile.Content.Navigation
             }
             _regionManager.RequestNavigate(RegionNames.ContentRegion, uri);
         }
+
+        public void NavigateBrowserTo(Experience experience)
+        {
+            Uri uri;
+            switch (experience)
+            {
+                case Experience.HomePage:
+                    uri = new Uri("/" + experience.ToString().Replace("Page", "") + "BrowserPane", UriKind.Relative);
+                    break;
+                default:
+                    uri = new Uri(experience.ToString().Replace("Page", "") + "BrowserPane", UriKind.Relative);
+                    break;
+            }
+            _regionManager.RequestNavigate(RegionNames.BrowserRegion, uri);
+        }
+
+        public void NavigateActionsTo(Experience experience)
+        {
+            Uri uri;
+            switch (experience)
+            {
+                case Experience.HomePage:
+                    uri = new Uri("/" + experience.ToString().Replace("Page", "") + "ActionsPad", UriKind.Relative);
+                    break;
+                default:
+                    uri = new Uri(experience.ToString().Replace("Page", "") + "ActionsPad", UriKind.Relative);
+                    break;
+            }
+            _regionManager.RequestNavigate(RegionNames.ActionsRegion, uri);
+        }
     }
 }

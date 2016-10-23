@@ -13,21 +13,24 @@ using Prism.Regions;
 
 namespace Deadfile.Content.ViewModels
 {
-    public class HomePageViewModel : ViewModelBase, IHomePageViewModel
+    public class HomePageViewModel : ContentViewModelBase, IHomePageViewModel
     {
-        private readonly IDeadfileNavigationService _navigationService;
         private readonly DelegateCommand<object> _clientsCommand;
 
-        public HomePageViewModel(IDeadfileNavigationService navigationService, IEventAggregator eventAggregator) : base(eventAggregator)
+        public HomePageViewModel(IDeadfileNavigationService navigationService, IEventAggregator eventAggregator) : base(eventAggregator, navigationService)
         {
-            _navigationService = navigationService;
             _clientsCommand = new DelegateCommand<object>(this.NavigateToClientsPage);
             Title = "Home Page";
         }
 
+        public override Experience Experience
+        {
+            get { return Experience.HomePage; }
+        }
+
         private void NavigateToClientsPage(object ignored)
         {
-            _navigationService.NavigateTo(Experience.ClientsPage);
+            NavigationService.NavigateTo(Experience.ClientsPage);
         }
 
         public ICommand ClientsCommand { get { return _clientsCommand; } }
