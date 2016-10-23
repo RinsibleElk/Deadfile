@@ -12,5 +12,6 @@ namespace Deadfile.Content.Clients
     {
         ClientModel SelectedClient { get; set; }
         ICollectionView Clients { get; }
+        string ClientsFilter { get; set; }
     }
 }

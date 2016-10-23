@@ -33,6 +33,21 @@ namespace Deadfile.Model
             }
         }
 
+        public IEnumerable<ClientModel> GetFilteredClients(string filter)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var li = new List<ClientModel>();
+                foreach (var client in (from client in dbContext.Clients
+                                        where (client.FirstName + " " + client.LastName).Contains(filter)
+                                        select client))
+                {
+                    li.Add(_modelEntityMapper.Mapper.Map<ClientModel>(client));
+                }
+                return li;
+            }
+        }
+
         public void SetUpFakeData()
         {
             using (var dbContext = new DeadfileContext())

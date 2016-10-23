@@ -42,6 +42,21 @@ namespace Deadfile.Content.Clients
             set { SetProperty(ref _clients, value); }
         }
 
+        private string _clientsFilter;
+
+        public string ClientsFilter
+        {
+            get { return _clientsFilter; }
+            set
+            {
+                SetProperty(ref _clientsFilter, value);
+
+                // Do it lame way for now and have SQL Server do the filter for me. It's on a delay anyway...
+                var filteredClients = _repository.GetFilteredClients(_clientsFilter);
+                Clients = CollectionViewSource.GetDefaultView(filteredClients);
+            }
+        }
+
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             base.OnNavigatedTo(navigationContext);

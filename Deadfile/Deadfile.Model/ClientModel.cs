@@ -109,6 +109,16 @@ namespace Deadfile.Model
             }
         }
 
+        public string FullAddress
+        {
+            get
+            {
+                return string.Join(Environment.NewLine,
+                    new string[] {AddressFirstLine, AddressSecondLine, AddressThirdLine, AddressPostCode}.Where(
+                        (s) => !String.IsNullOrWhiteSpace(s)));
+            }
+        }
+
         private string addressFirstLine;
         /// <summary>
         /// First line of the Client's contact address. This is required.
@@ -116,7 +126,11 @@ namespace Deadfile.Model
         public string AddressFirstLine
         {
             get { return addressFirstLine; }
-            set { SetProperty(ref addressFirstLine, value); }
+            set
+            {
+                SetProperty(ref addressFirstLine, value);
+                OnPropertyChanged(nameof(FullAddress));
+            }
         }
 
         private string addressSecondLine;
@@ -126,7 +140,11 @@ namespace Deadfile.Model
         public string AddressSecondLine
         {
             get { return addressSecondLine; }
-            set { SetProperty(ref addressSecondLine, value); }
+            set
+            {
+                SetProperty(ref addressSecondLine, value);
+                OnPropertyChanged(nameof(FullAddress));
+            }
         }
 
         private string addressThirdLine;
@@ -136,7 +154,11 @@ namespace Deadfile.Model
         public string AddressThirdLine
         {
             get { return addressThirdLine; }
-            set { SetProperty(ref addressThirdLine, value); }
+            set
+            {
+                SetProperty(ref addressThirdLine, value);
+                OnPropertyChanged(nameof(FullAddress));
+            }
         }
 
         private string addressPostCode;
@@ -146,7 +168,21 @@ namespace Deadfile.Model
         public string AddressPostCode
         {
             get { return addressPostCode; }
-            set { SetProperty(ref addressPostCode, value); }
+            set
+            {
+                SetProperty(ref addressPostCode, value);
+                OnPropertyChanged(nameof(FullAddress));
+            }
+        }
+
+        public string PhoneNumbers
+        {
+            get
+            {
+                return string.Join(Environment.NewLine,
+                    new string[] {PhoneNumber1, PhoneNumber2, PhoneNumber3}.Where(
+                        (s) => !String.IsNullOrWhiteSpace(s)));
+            }
         }
 
         private string phoneNumber1;
@@ -157,7 +193,11 @@ namespace Deadfile.Model
         public string PhoneNumber1
         {
             get { return phoneNumber1; }
-            set { SetProperty(ref phoneNumber1, value); }
+            set
+            {
+                SetProperty(ref phoneNumber1, value);
+                OnPropertyChanged(nameof(PhoneNumbers));
+            }
         }
 
         private string phoneNumber2;
@@ -167,7 +207,11 @@ namespace Deadfile.Model
         public string PhoneNumber2
         {
             get { return phoneNumber2; }
-            set { SetProperty(ref phoneNumber2, value); }
+            set
+            {
+                SetProperty(ref phoneNumber2, value);
+                OnPropertyChanged(nameof(PhoneNumbers));
+            }
         }
 
         private string phoneNumber3;
@@ -177,7 +221,11 @@ namespace Deadfile.Model
         public string PhoneNumber3
         {
             get { return phoneNumber3; }
-            set { SetProperty(ref phoneNumber3, value); }
+            set
+            {
+                SetProperty(ref phoneNumber3, value);
+                OnPropertyChanged(nameof(PhoneNumbers));
+            }
         }
 
         private string emailAddress;

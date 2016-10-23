@@ -18,8 +18,15 @@ namespace Deadfile.Model.DesignTime
 
         public IEnumerable<ClientModel> GetClients()
         {
+            // Also used as a lame way to seed the database with some junk.
             var entityClients = Client.GenerateFakeData();
             return entityClients.Select(_modelEntityMapper.Mapper.Map<ClientModel>);
+        }
+
+        public IEnumerable<ClientModel> GetFilteredClients(string filter)
+        {
+            // Should never get called in design time.
+            throw new NotImplementedException();
         }
 
         public void SetUpFakeData()

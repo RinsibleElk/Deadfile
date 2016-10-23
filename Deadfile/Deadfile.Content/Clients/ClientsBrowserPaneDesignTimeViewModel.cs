@@ -16,11 +16,13 @@ namespace Deadfile.Content.Clients
         public ClientsBrowserPaneDesignTimeViewModel()
         {
             var repository = new DeadfileDesignTimeRepository();
-            var clientsList = new List<ClientModel>(repository.GetClients());
+            var clientsList =
+                new List<ClientModel>(repository.GetClients().Where((c) => c.FullName.StartsWith("Bru", StringComparison.InvariantCultureIgnoreCase)));
             Clients = CollectionViewSource.GetDefaultView(clientsList);
-            SelectedClient = clientsList[5];
+            SelectedClient = clientsList[0];
         }
         public ClientModel SelectedClient { get; set; }
         public ICollectionView Clients { get; }
+        public string ClientsFilter { get; set; } = "Bru";
     }
 }

@@ -11,6 +11,10 @@
               d:DataContext="{d:DesignInstance Type=clients:ClientsPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
               d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -18,10 +22,15 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{Binding SelectedClient.FullNameWithTitle}"></TextBlock>
-        <TextBlock Grid.Row="1" Text="{Binding SelectedClient.AddressFirstLine}"></TextBlock>
-        <TextBlock Grid.Row="2" Text="{Binding SelectedClient.AddressSecondLine}"></TextBlock>
-        <TextBlock Grid.Row="3" Text="{Binding SelectedClient.AddressThirdLine}"></TextBlock>
-        <TextBlock Grid.Row="4" Text="{Binding SelectedClient.AddressPostCode}"></TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="0">Name:</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0">Address:</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0">Phone Numbers:</TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="0">E-mail Address:</TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="0">Notes:</TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedClient.FullNameWithTitle}"></TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedClient.FullAddress}"></TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedClient.PhoneNumbers}"></TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedClient.EmailAddress}"></TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedClient.Notes}"></TextBlock>
     </Grid>
 </UserControl>
