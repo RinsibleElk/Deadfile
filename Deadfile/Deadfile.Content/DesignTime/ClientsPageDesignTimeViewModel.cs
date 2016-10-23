@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Deadfile.Content.Interfaces;
+using Deadfile.Model;
 using Deadfile.Model.DesignTime;
 
 namespace Deadfile.Content.DesignTime
@@ -14,9 +15,17 @@ namespace Deadfile.Content.DesignTime
     {
         public ClientsPageDesignTimeViewModel()
         {
-            Clients = CollectionViewSource.GetDefaultView(DesignTimeClients.Clients);
+            var repository = new DeadfileDesignTimeRepository();
+            var clientsList = new List<ClientModel>(repository.GetClients());
+            Clients = CollectionViewSource.GetDefaultView(clientsList);
+            SelectedClient = clientsList[5];
+            SelectedClientIndex = 5;
         }
-        public int SelectedClientId { get; set; } = 5;
+
+        public int SelectedClientIndex { get; set; }
+
+        public ClientModel SelectedClient { get; set; }
+
         public ICollectionView Clients { get; private set; }
     }
 }

@@ -18,7 +18,7 @@
         <StackPanel Grid.Column="0">
             <TextBox>
             </TextBox>
-            <ListView ItemsSource="{Binding Clients}" SelectedIndex="{Binding Path=SelectedClientId, Mode=TwoWay}">
+            <ListView ItemsSource="{Binding Clients}" SelectedIndex="{Binding Path=SelectedClientIndex, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedClient, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
@@ -29,7 +29,29 @@
             </ListView>
         </StackPanel>
         <Grid Grid.Column="1">
-            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding SelectedClient.Title}"></TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedClient.FirstName}"></TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding SelectedClient.MiddleNames}"></TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding SelectedClient.LastName}"></TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding SelectedClient.AddressFirstLine}"></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding SelectedClient.AddressSecondLine}"></TextBlock>
+                <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding SelectedClient.AddressThirdLine}"></TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding SelectedClient.AddressPostCode}"></TextBlock>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

@@ -17,11 +17,13 @@ namespace Deadfile.Content.ViewModels
     {
         private readonly IDeadfileNavigationService _navigationService;
         private readonly DelegateCommand<object> _navigateCommand;
+        private readonly DelegateCommand<object> _clientsCommand;
 
         public HomePageViewModel(IDeadfileNavigationService navigationService, IEventAggregator eventAggregator) : base(eventAggregator)
         {
             _navigationService = navigationService;
             _navigateCommand = new DelegateCommand<object>(this.NavigateToSecondPage);
+            _clientsCommand = new DelegateCommand<object>(this.NavigateToClientsPage);
             Title = "Home Page";
         }
 
@@ -30,7 +32,14 @@ namespace Deadfile.Content.ViewModels
             _navigationService.NavigateTo(Experience.SecondPage);
         }
 
+        private void NavigateToClientsPage(object ignored)
+        {
+            _navigationService.NavigateTo(Experience.ClientsPage);
+        }
+
         public ICommand NavigateCommand { get { return _navigateCommand; } }
+
+        public ICommand ClientsCommand { get { return _clientsCommand; } }
     }
 }
 

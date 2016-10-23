@@ -5,11 +5,11 @@ using System.Linq;
 namespace Deadfile.Entity
 {
     /// <summary>
-    /// Access to the Entity framework's storage of the Deadfile.
+    /// Access to the Entity framework's storage of the DeadfileContext.
     /// </summary>
-    public class Deadfile : DbContext
+    public class DeadfileContext : DbContext
     {
-        public Deadfile()
+        public DeadfileContext()
             : base("name=Deadfile")
         {
         }

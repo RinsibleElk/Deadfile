@@ -17,7 +17,6 @@ namespace Deadfile.Model
     public class ClientModel : BindableBase
     {
         private int clientId;
-
         /// <summary>
         /// This is Entity's model for this Client, or if it is not in the database yet then default.
         /// </summary>
@@ -35,7 +34,11 @@ namespace Deadfile.Model
         public string Title
         {
             get { return title; }
-            set { SetProperty(ref title, value); }
+            set
+            {
+                SetProperty(ref title, value);
+                OnPropertyChanged(nameof(FullName));
+            }
         }
 
         private string firstName;
@@ -46,7 +49,11 @@ namespace Deadfile.Model
         public string FirstName
         {
             get { return firstName; }
-            set { SetProperty(ref firstName, value); }
+            set
+            {
+                SetProperty(ref firstName, value);
+                OnPropertyChanged(nameof(FullName));
+            }
         }
 
         private string middleNames;
@@ -69,7 +76,11 @@ namespace Deadfile.Model
         public string LastName
         {
             get { return lastName; }
-            set { SetProperty(ref lastName, value); }
+            set
+            {
+                SetProperty(ref lastName, value);
+                OnPropertyChanged(nameof(FullName));
+            }
         }
 
         public string FullName
@@ -77,7 +88,7 @@ namespace Deadfile.Model
             get
             {
                 if (String.IsNullOrWhiteSpace(FirstName))
-                    return LastName;
+                    return $"{Title} {LastName}";
                 return $"{FirstName} {LastName}";
             }
         }

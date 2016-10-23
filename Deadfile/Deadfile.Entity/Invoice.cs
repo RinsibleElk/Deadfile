@@ -21,8 +21,6 @@ namespace Deadfile.Entity
         [Required(ErrorMessage = "The Invoice requires a Status.")]
         public InvoiceStatus Status { get; set; }
 
-        [Required(ErrorMessage = "An Invoice must go out to a Client.")]
-        public int ClientId { get; set; }
         public virtual Client Client { get; set; }
 
         public virtual ICollection<Job> Jobs { get; set; }

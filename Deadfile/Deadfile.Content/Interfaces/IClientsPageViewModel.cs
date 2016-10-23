@@ -5,12 +5,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Model;
 
 namespace Deadfile.Content.Interfaces
 {
     public interface IClientsPageViewModel
     {
-        int SelectedClientId { get; set; }
+        int SelectedClientIndex { get; set; }
+
+        ClientModel SelectedClient { get; set; }
 
         ICollectionView Clients { get; }
     }

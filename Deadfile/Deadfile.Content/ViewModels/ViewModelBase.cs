@@ -32,7 +32,7 @@ namespace Deadfile.Content.ViewModels
         }
 
 
-        public void OnNavigatedTo(NavigationContext navigationContext)
+        public virtual void OnNavigatedTo(NavigationContext navigationContext)
         {
             _eventAggregator.GetEvent<NavigationEvent>().Publish(navigationContext.NavigationService.Journal);
         }

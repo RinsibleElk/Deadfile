@@ -11,6 +11,7 @@ namespace Deadfile.Content.Navigation
         HomePage,
         SecondPage,
         ThirdPage,
-        FourthPage
+        FourthPage,
+        ClientsPage
     }
 }
