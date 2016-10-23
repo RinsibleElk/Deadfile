@@ -15,9 +15,11 @@ namespace Deadfile.Content.Navigation
     public sealed class DeadfileNavigationService : IDeadfileNavigationService
     {
         private readonly IRegionManager _regionManager;
-        public DeadfileNavigationService(IRegionManager regionManager)
+        private readonly INavigationParameterMapper _navigationParameterMapper;
+        public DeadfileNavigationService(IRegionManager regionManager, INavigationParameterMapper navigationParameterMapper)
         {
             _regionManager = regionManager;
+            _navigationParameterMapper = navigationParameterMapper;
         }
 
         public void NavigateTo(Experience experience)
@@ -33,6 +35,19 @@ namespace Deadfile.Content.Navigation
                     break;
             }
             _regionManager.RequestNavigate(RegionNames.ContentRegion, uri);
+        }
+
+        /// <summary>
+        /// Navigate with an argument.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="experience"></param>
+        /// <param name="parameter"></param>
+        public void NavigateTo<T>(Experience experience, T parameter)
+        {
+            var uri = new Uri(experience + "Page", UriKind.Relative);
+            var navigationParameters = _navigationParameterMapper.ConvertToNavigationParameters(parameter);
+            _regionManager.RequestNavigate(RegionNames.ContentRegion, uri, navigationParameters);
         }
 
         public void NavigateBrowserTo(Experience experience)

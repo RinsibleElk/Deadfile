@@ -8,10 +8,13 @@ using Deadfile.Model;
 using Deadfile.Model.DesignTime;
 using System.Windows.Data;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace Deadfile.Content.Clients
 {
     sealed class ClientsActionsPadDesignTimeViewModel : IClientsActionsPadViewModel
     {
+        public ICommand NewClientCommand { get; } = null;
+        public ICommand EditClientCommand { get; } = null;
     }
 }

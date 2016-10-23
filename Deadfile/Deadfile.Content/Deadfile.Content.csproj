@@ -93,14 +93,34 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditClient\EditClientActionsPadDesignTimeViewModel.cs" />
+    <Compile Include="EditClient\EditClientActionsPadViewModel.cs" />
+    <Compile Include="EditClient\EditClientBrowserPane.xaml.cs">
+      <DependentUpon>EditClientBrowserPane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditClient\EditClientBrowserPaneDesignTimeViewModel.cs" />
+    <Compile Include="EditClient\EditClientBrowserPaneViewModel.cs" />
+    <Compile Include="EditClient\EditClientPage.xaml.cs">
+      <DependentUpon>EditClientPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditClient\EditClientPageDesignTimeViewModel.cs" />
+    <Compile Include="EditClient\EditClientPageViewModel.cs" />
+    <Compile Include="EditClient\IEditClientBrowserPaneViewModel.cs" />
     <Compile Include="ContentModule.cs" />
     <Compile Include="Clients\ClientsActionsPadDesignTimeViewModel.cs" />
     <Compile Include="Clients\ClientsBrowserPaneDesignTimeViewModel.cs" />
     <Compile Include="Clients\ClientsPageDesignTimeViewModel.cs" />
+    <Compile Include="EditClient\EditClientActionsPad.xaml.cs">
+      <DependentUpon>EditClientActionsPad.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditClient\IEditClientActionsPadViewModel.cs" />
+    <Compile Include="EditClient\IEditClientPageViewModel.cs" />
     <Compile Include="Home\HomeActionsPadDesignTimeViewModel.cs" />
     <Compile Include="Home\HomeBrowserPaneDesignTimeViewModel.cs" />
+    <Compile Include="Interfaces\INavigationParameterMapper.cs" />
     <Compile Include="Navigation\NavigationBarDesignTimeViewModel.cs" />
     <Compile Include="Home\HomePageDesignTimeViewModel.cs" />
+    <Compile Include="Navigation\NavigationParameterMapper.cs" />
     <Compile Include="Quotes\QuotesBarDesignTimeViewModel.cs" />
     <Compile Include="Events\SelectedClientEvent.cs" />
     <Compile Include="Events\NavigationEvent.cs" />
@@ -138,6 +158,7 @@
     <Compile Include="Quotes\QuotesBarViewModel.cs" />
     <Compile Include="Home\HomePageViewModel.cs" />
     <Compile Include="Navigation\NavigationBarViewModel.cs" />
+    <Compile Include="ViewModels\ParameterisedContentViewModelBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Clients\ClientsActionsPad.xaml.cs">
       <DependentUpon>ClientsActionsPad.xaml</DependentUpon>
@@ -191,6 +212,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Clients\ClientsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditClient\EditClientActionsPad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditClient\EditClientBrowserPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditClient\EditClientPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

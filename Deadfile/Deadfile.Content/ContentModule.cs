@@ -1,5 +1,6 @@
 ﻿using System;
 using Deadfile.Content.Clients;
+using Deadfile.Content.EditClient;
 using Deadfile.Content.Home;
 using Deadfile.Content.Interfaces;
 using Deadfile.Content.Navigation;
@@ -40,14 +41,18 @@ namespace Deadfile.Content
             _unityContainer.RegisterTypeForNavigation<HomePage>();
             _unityContainer.RegisterType<ClientsPage>();
             _unityContainer.RegisterTypeForNavigation<ClientsPage>();
+            _unityContainer.RegisterType<EditClientPage>();
+            _unityContainer.RegisterTypeForNavigation<EditClientPage>();
 
             // This excludes the browser region from Journaling.
             _regionManager.RegisterViewWithRegion(RegionNames.BrowserRegion, typeof(HomeBrowserPane));
             _regionManager.RegisterViewWithRegion(RegionNames.BrowserRegion, typeof(ClientsBrowserPane));
+            _regionManager.RegisterViewWithRegion(RegionNames.BrowserRegion, typeof(EditClientBrowserPane));
 
             // This excludes the actions region from Journaling.
             _regionManager.RegisterViewWithRegion(RegionNames.ActionsRegion, typeof(HomeActionsPad));
             _regionManager.RegisterViewWithRegion(RegionNames.ActionsRegion, typeof(ClientsActionsPad));
+            _regionManager.RegisterViewWithRegion(RegionNames.ActionsRegion, typeof(EditClientActionsPad));
 
             // This excludes the navigation region from Journaling.
             _regionManager.RegisterViewWithRegion(RegionNames.NavigationRegion, typeof(NavigationBar));

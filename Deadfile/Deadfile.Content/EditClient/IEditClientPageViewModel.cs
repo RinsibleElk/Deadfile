@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Content.Interfaces;
 
-namespace Deadfile.Content.Navigation
+namespace Deadfile.Content.EditClient
 {
-    public enum Experience
+    interface IEditClientPageViewModel : IDeadfileViewModel
     {
-        Home,
-        Clients,
-        EditClient
     }
 }

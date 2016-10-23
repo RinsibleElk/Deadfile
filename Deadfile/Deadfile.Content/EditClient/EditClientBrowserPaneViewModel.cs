@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deadfile.Content.Navigation
+namespace Deadfile.Content.EditClient
 {
-    public enum Experience
+    public sealed class EditClientBrowserPaneViewModel : IEditClientBrowserPaneViewModel
     {
-        Home,
-        Clients,
-        EditClient
     }
 }

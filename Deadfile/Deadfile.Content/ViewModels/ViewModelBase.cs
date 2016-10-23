@@ -25,19 +25,11 @@ namespace Deadfile.Content.ViewModels
             EventAggregator = eventAggregator;
         }
 
-        private string _title = "Hello World";
-        public string Title
-        {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
-        }
-
         public virtual void OnNavigatedTo(NavigationContext navigationContext)
         {
-            EventAggregator.GetEvent<NavigationEvent>().Publish(navigationContext.NavigationService.Journal);
         }
 
-        public bool IsNavigationTarget(NavigationContext navigationContext)
+        public virtual bool IsNavigationTarget(NavigationContext navigationContext)
         {
             return true;
         }

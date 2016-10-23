@@ -39,6 +39,7 @@ namespace Deadfile
             container.RegisterType<IDeadfileRepository, DeadfileRepository>();
             container.RegisterType<IModelEntityMapper, ModelEntityMapper>();
             container.RegisterType<IRandomNumberGenerator, RandomNumberGenerator>();
+            container.RegisterType<INavigationParameterMapper, NavigationParameterMapper>();
 
             // Naughty. If the database is empty, populate it with fake data.
             var repo = container.Resolve<IDeadfileRepository>();

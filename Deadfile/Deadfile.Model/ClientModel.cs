@@ -16,64 +16,69 @@ namespace Deadfile.Model
     /// </summary>
     public class ClientModel : BindableBase
     {
-        private int clientId;
+        /// <summary>
+        /// Deliberately invalid id to represent to the EditClient experience that a new client is required.
+        /// </summary>
+        public const int NewClientId = Int32.MinValue;
+
+        private int _clientId;
         /// <summary>
         /// This is Entity's model for this Client, or if it is not in the database yet then default.
         /// </summary>
         public int ClientId
         {
-            get { return clientId; }
-            set { SetProperty(ref clientId, value); }
+            get { return _clientId; }
+            set { SetProperty(ref _clientId, value); }
         }
 
-        private string title;
+        private string _title;
         /// <summary>
         /// Title, e.g. Mr, Mrs, Dr.
         /// </summary>
         [MaxLength(20, ErrorMessage = "A Client's title must be less than 20 characters long.")]
         public string Title
         {
-            get { return title; }
+            get { return _title; }
             set
             {
-                SetProperty(ref title, value);
+                SetProperty(ref _title, value);
                 OnPropertyChanged(nameof(FullName));
                 OnPropertyChanged(nameof(FullNameWithTitle));
             }
         }
 
-        private string firstName;
+        private string _firstName;
         /// <summary>
         /// First name.
         /// </summary>
         [MaxLength(50, ErrorMessage = "A Client's first name must be less than 50 characters long.")]
         public string FirstName
         {
-            get { return firstName; }
+            get { return _firstName; }
             set
             {
-                SetProperty(ref firstName, value);
+                SetProperty(ref _firstName, value);
                 OnPropertyChanged(nameof(FullName));
                 OnPropertyChanged(nameof(FullNameWithTitle));
             }
         }
 
-        private string middleNames;
+        private string _middleNames;
         /// <summary>
         /// Middle names.
         /// </summary>
         [MaxLength(50, ErrorMessage = "A Client's middle names must be less than 50 characters long.")]
         public string MiddleNames
         {
-            get { return middleNames; }
+            get { return _middleNames; }
             set
             {
-                SetProperty(ref middleNames, value);
+                SetProperty(ref _middleNames, value);
                 OnPropertyChanged(nameof(FullNameWithTitle));
             }
         }
 
-        private string lastName;
+        private string _lastName;
         /// <summary>
         /// Last name. This is a required field. When the full name is not yet known, the last name should be used.
         /// </summary>
@@ -81,10 +86,10 @@ namespace Deadfile.Model
          MaxLength(50, ErrorMessage = "A Client's last name must be less than 50 characters long.")]
         public string LastName
         {
-            get { return lastName; }
+            get { return _lastName; }
             set
             {
-                SetProperty(ref lastName, value);
+                SetProperty(ref _lastName, value);
                 OnPropertyChanged(nameof(FullName));
                 OnPropertyChanged(nameof(FullNameWithTitle));
             }
@@ -119,58 +124,58 @@ namespace Deadfile.Model
             }
         }
 
-        private string addressFirstLine;
+        private string _addressFirstLine;
         /// <summary>
         /// First line of the Client's contact address. This is required.
         /// </summary>
         public string AddressFirstLine
         {
-            get { return addressFirstLine; }
+            get { return _addressFirstLine; }
             set
             {
-                SetProperty(ref addressFirstLine, value);
+                SetProperty(ref _addressFirstLine, value);
                 OnPropertyChanged(nameof(FullAddress));
             }
         }
 
-        private string addressSecondLine;
+        private string _addressSecondLine;
         /// <summary>
         /// Second line of the Client's contact address.
         /// </summary>
         public string AddressSecondLine
         {
-            get { return addressSecondLine; }
+            get { return _addressSecondLine; }
             set
             {
-                SetProperty(ref addressSecondLine, value);
+                SetProperty(ref _addressSecondLine, value);
                 OnPropertyChanged(nameof(FullAddress));
             }
         }
 
-        private string addressThirdLine;
+        private string _addressThirdLine;
         /// <summary>
         /// Third line of the Client's contact address.
         /// </summary>
         public string AddressThirdLine
         {
-            get { return addressThirdLine; }
+            get { return _addressThirdLine; }
             set
             {
-                SetProperty(ref addressThirdLine, value);
+                SetProperty(ref _addressThirdLine, value);
                 OnPropertyChanged(nameof(FullAddress));
             }
         }
 
-        private string addressPostCode;
+        private string _addressPostCode;
         /// <summary>
         /// Post code for the Client's contact address.
         /// </summary>
         public string AddressPostCode
         {
-            get { return addressPostCode; }
+            get { return _addressPostCode; }
             set
             {
-                SetProperty(ref addressPostCode, value);
+                SetProperty(ref _addressPostCode, value);
                 OnPropertyChanged(nameof(FullAddress));
             }
         }
@@ -185,72 +190,71 @@ namespace Deadfile.Model
             }
         }
 
-        private string phoneNumber1;
+        private string _phoneNumber1;
         [MinLength(8, ErrorMessage = "The minimum length for a Client's phone number is 8 characters."),
          MaxLength(20, ErrorMessage = "The maximum length for a Client's phone number is 8 characters."),
          Phone(ErrorMessage = "Not a valid phone number for Client."),
          Required(ErrorMessage = "Client requires a phone number.")]
         public string PhoneNumber1
         {
-            get { return phoneNumber1; }
+            get { return _phoneNumber1; }
             set
             {
-                SetProperty(ref phoneNumber1, value);
+                SetProperty(ref _phoneNumber1, value);
                 OnPropertyChanged(nameof(PhoneNumbers));
             }
         }
 
-        private string phoneNumber2;
+        private string _phoneNumber2;
         [MinLength(8, ErrorMessage = "The minimum length for a Client's phone number is 8 characters."),
          MaxLength(20, ErrorMessage = "The maximum length for a Client's phone number is 8 characters."),
          Phone(ErrorMessage = "Not a valid phone number for Client.")]
         public string PhoneNumber2
         {
-            get { return phoneNumber2; }
+            get { return _phoneNumber2; }
             set
             {
-                SetProperty(ref phoneNumber2, value);
+                SetProperty(ref _phoneNumber2, value);
                 OnPropertyChanged(nameof(PhoneNumbers));
             }
         }
 
-        private string phoneNumber3;
+        private string _phoneNumber3;
         [MinLength(8, ErrorMessage = "The minimum length for a Client's phone number is 8 characters."),
          MaxLength(20, ErrorMessage = "The maximum length for a Client's phone number is 8 characters."),
          Phone(ErrorMessage = "Not a valid phone number for Client.")]
         public string PhoneNumber3
         {
-            get { return phoneNumber3; }
+            get { return _phoneNumber3; }
             set
             {
-                SetProperty(ref phoneNumber3, value);
+                SetProperty(ref _phoneNumber3, value);
                 OnPropertyChanged(nameof(PhoneNumbers));
             }
         }
 
-        private string emailAddress;
+        private string _emailAddress;
         [EmailAddress(ErrorMessage = "Invalid e-mail address given for this Client.")]
         public string EmailAddress
         {
-            get { return emailAddress; }
-            set { SetProperty(ref emailAddress, value); }
+            get { return _emailAddress; }
+            set { SetProperty(ref _emailAddress, value); }
         }
 
-        private ClientStatus status;
+        private ClientStatus _status;
         [Required(ErrorMessage = "Every Client must have a status.")]
         public ClientStatus Status
         {
-            get { return status; }
-            set { SetProperty(ref status, value); }
+            get { return _status; }
+            set { SetProperty(ref _status, value); }
         }
 
-        private string notes;
-
+        private string _notes;
         [MaxLength(500, ErrorMessage = "The free notes for a Client must be less than 500 characters long.")]
         public string Notes
         {
-            get { return notes; }
-            set { SetProperty(ref notes, value); }
+            get { return _notes; }
+            set { SetProperty(ref _notes, value); }
         }
     }
 }

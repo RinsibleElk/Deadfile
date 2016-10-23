@@ -1,4 +1,4 @@
-﻿<UserControl  x:Class="Deadfile.Content.Clients.ClientsActionsPad"
+﻿<UserControl x:Class="Deadfile.Content.EditClient.EditClientActionsPad"
               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,8 +10,7 @@
               mc:Ignorable="d"
               d:DataContext="{d:DesignInstance Type=clients:ClientsActionsPadDesignTimeViewModel, IsDesignTimeCreatable=True}"
               d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
-        <Button Command="{Binding NewClientCommand}">New Client</Button>
-        <Button Command="{Binding EditClientCommand}">Edit Client</Button>
-    </StackPanel>
+    <Grid>
+            
+    </Grid>
 </UserControl>

@@ -41,18 +41,19 @@ namespace Deadfile.Content.Clients
             set { SetProperty(ref _clients, value); }
         }
 
+        private SubscriptionToken _selectedClientChangedSubscriptionToken = null;
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             // subscribe to messages from the browser pane
-            EventAggregator.GetEvent<SelectedClientEvent>().Subscribe(SelectedClientChanged);
+            _selectedClientChangedSubscriptionToken = EventAggregator.GetEvent<SelectedClientEvent>().Subscribe(SelectedClientChanged);
             base.OnNavigatedTo(navigationContext);
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
         {
             // unsubscribe to messages from the browser pane
-            EventAggregator.GetEvent<SelectedClientEvent>().Unsubscribe(SelectedClientChanged);
-
+            EventAggregator.GetEvent<SelectedClientEvent>().Unsubscribe(_selectedClientChangedSubscriptionToken);
+            _selectedClientChangedSubscriptionToken = null;
             base.OnNavigatedFrom(navigationContext);
         }
 
