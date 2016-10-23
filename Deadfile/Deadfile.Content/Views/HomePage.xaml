@@ -12,7 +12,6 @@
               d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
         <TextBlock Text="{Binding Title}" Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Calibri" FontSize="24" FontWeight="Bold"></TextBlock>
-        <Button Command="{Binding NavigateCommand}">Navigate</Button>
         <Button Command="{Binding ClientsCommand}">Clients</Button>
     </StackPanel>
 </UserControl>

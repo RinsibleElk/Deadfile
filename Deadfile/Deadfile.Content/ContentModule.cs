@@ -35,12 +35,6 @@ namespace Deadfile.Content
             // Journaled. These support navigation back and forward via the NavigationBar.
             _unityContainer.RegisterType<HomePage>();
             _unityContainer.RegisterTypeForNavigation<HomePage>();
-            _unityContainer.RegisterType<SecondPage>();
-            _unityContainer.RegisterTypeForNavigation<SecondPage>();
-            _unityContainer.RegisterType<ThirdPage>();
-            _unityContainer.RegisterTypeForNavigation<ThirdPage>();
-            _unityContainer.RegisterType<FourthPage>();
-            _unityContainer.RegisterTypeForNavigation<FourthPage>();
             _unityContainer.RegisterType<ClientsPage>();
             _unityContainer.RegisterTypeForNavigation<ClientsPage>();
 

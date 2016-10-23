@@ -12,7 +12,6 @@ namespace Deadfile.Content.Interfaces
     /// </summary>
     public interface IHomePageViewModel : IDeadfileViewModel
     {
-        ICommand NavigateCommand { get; }
         ICommand ClientsCommand { get; }
     }
 }

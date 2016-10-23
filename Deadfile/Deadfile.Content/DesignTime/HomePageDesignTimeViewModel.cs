@@ -12,7 +12,6 @@ namespace Deadfile.Content.DesignTime
     class HomePageDesignTimeViewModel : IHomePageViewModel
     {
         public string Title { get; set; } = "Design time Home Page";
-        public ICommand NavigateCommand => null;
         public ICommand ClientsCommand => null;
     }
 }

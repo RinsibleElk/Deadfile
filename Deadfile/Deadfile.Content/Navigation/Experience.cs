@@ -9,9 +9,6 @@ namespace Deadfile.Content.Navigation
     public enum Experience
     {
         HomePage,
-        SecondPage,
-        ThirdPage,
-        FourthPage,
         ClientsPage
     }
 }
