@@ -41,6 +41,8 @@ namespace Deadfile.Content
             _unityContainer.RegisterTypeForNavigation<ThirdPage>();
             _unityContainer.RegisterType<FourthPage>();
             _unityContainer.RegisterTypeForNavigation<FourthPage>();
+            _unityContainer.RegisterType<ClientsPage>();
+            _unityContainer.RegisterTypeForNavigation<ClientsPage>();
 
             // This excludes the navigation region and NavigationBar from registering with the Journal.
             _regionManager.RegisterViewWithRegion(RegionNames.NavigationRegion, typeof(NavigationBar));

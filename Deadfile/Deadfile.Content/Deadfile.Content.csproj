@@ -81,12 +81,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContentModule.cs" />
+    <Compile Include="DesignTime\ClientsPageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\NavigationBarDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\FourthPageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\HomePageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\ThirdPageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\SecondPageDesignTimeViewModel.cs" />
     <Compile Include="Events\NavigationEvent.cs" />
+    <Compile Include="Interfaces\IClientsPageViewModel.cs" />
     <Compile Include="Navigation\DeadfileNavigationService.cs" />
     <Compile Include="Navigation\Experience.cs" />
     <Compile Include="Interfaces\IDeadfileNavigationService.cs" />
@@ -110,12 +112,16 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="RegionNames.cs" />
+    <Compile Include="ViewModels\ClientsPageViewModel.cs" />
     <Compile Include="ViewModels\ThirdPageViewModel.cs" />
     <Compile Include="ViewModels\SecondPageViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\NavigationBarViewModel.cs" />
     <Compile Include="ViewModels\FourthPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\ClientsPage.xaml.cs">
+      <DependentUpon>ClientsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ThirdPage.xaml.cs">
       <DependentUpon>ThirdPage.xaml</DependentUpon>
     </Compile>
@@ -142,8 +148,17 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\Deadfile.Model\Deadfile.Model.csproj">
+      <Project>{DCF712CD-F90C-49E7-BA66-072EDAB67D19}</Project>
+      <Name>Deadfile.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\ClientsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ThirdPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
