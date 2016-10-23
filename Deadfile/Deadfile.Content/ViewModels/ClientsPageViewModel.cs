@@ -28,7 +28,13 @@ namespace Deadfile.Content.ViewModels
             get { return selectedClient; }
             set { SetProperty(ref selectedClient, value); }
         }
-        public ICollectionView Clients { get; private set; }
+
+        private ICollectionView _clients;
+        public ICollectionView Clients
+        {
+            get { return _clients; }
+            set { SetProperty(ref _clients, value); }
+        }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {

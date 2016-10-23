@@ -19,13 +19,23 @@ namespace Deadfile.Model
         }
         public IEnumerable<ClientModel> GetClients()
         {
-            // One time only
+            // One time only.
+            // IMPORTANT:
+            // - Ben, this is for testing, uncomment this _once_, run the application, navigate to Clients, _once_, then exit, then comment it, rebuild, rerun.
             //var designTimeRepository = new DeadfileDesignTimeRepository();
             //using (var dbContext = new DeadfileContext())
             //{
             //    foreach (var clientModel in designTimeRepository.GetClients())
             //    {
             //        dbContext.Clients.Add(_modelEntityMapper.Mapper.Map<Client>(clientModel));
+            //    }
+            //    try
+            //    {
+            //        dbContext.SaveChanges();
+            //    }
+            //    catch (Exception e)
+            //    {
+
             //    }
             //}
 
