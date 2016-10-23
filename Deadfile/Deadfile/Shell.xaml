@@ -10,16 +10,26 @@
     <Grid x:Name="LayoutRoot"
           Background="{StaticResource MainBackground}">
         <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="5"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal">
                 <TextBlock HorizontalAlignment="Left" Width="Auto" Text="Deadfile" FontWeight="Normal" Foreground="#FFFFFFFF" FontSize="24" FontFamily="Comic Sans MS" VerticalAlignment="Center"/>
             </StackPanel>
-            <ContentControl Grid.Row="1" prism:RegionManager.RegionName="NavigationRegion"></ContentControl>
-            <ContentControl Grid.Row="2" prism:RegionManager.RegionName="ContentRegion" />
+            <GridSplitter Grid.RowSpan="4" Grid.Row="0" Grid.Column="1"></GridSplitter>
+            <ContentControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" prism:RegionManager.RegionName="NavigationRegion" />
+            <ContentControl Grid.Row="2" Grid.Column="0" prism:RegionManager.RegionName="ContentRegion" />
+            <ContentControl Grid.Row="2" Grid.Column="2" prism:RegionManager.RegionName="BrowserRegion" />
+            <ContentControl Grid.Row="3" Grid.Column="0" prism:RegionManager.RegionName="QuotesRegion" />
+            <ContentControl Grid.Row="3" Grid.Column="2" prism:RegionManager.RegionName="ActionsRegion" />
         </Grid>
     </Grid>
 </Window>

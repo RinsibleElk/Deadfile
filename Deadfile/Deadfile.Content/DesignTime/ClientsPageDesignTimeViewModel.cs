@@ -19,10 +19,7 @@ namespace Deadfile.Content.DesignTime
             var clientsList = new List<ClientModel>(repository.GetClients());
             Clients = CollectionViewSource.GetDefaultView(clientsList);
             SelectedClient = clientsList[5];
-            SelectedClientIndex = 5;
         }
-
-        public int SelectedClientIndex { get; set; }
 
         public ClientModel SelectedClient { get; set; }
 

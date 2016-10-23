@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System;
+using Microsoft.Practices.Unity;
 using Prism.Unity;
 using System.Windows;
 using Deadfile.Content;
@@ -6,6 +7,7 @@ using Deadfile.Content.Interfaces;
 using Deadfile.Content.Navigation;
 using Prism.Modularity;
 using Deadfile.Model;
+using Deadfile.Model.DesignTime;
 using Deadfile.Model.Interfaces;
 
 namespace Deadfile
@@ -36,6 +38,12 @@ namespace Deadfile
             container.RegisterType<IDeadfileNavigationService, DeadfileNavigationService>();
             container.RegisterType<IDeadfileRepository, DeadfileRepository>();
             container.RegisterType<IModelEntityMapper, ModelEntityMapper>();
+            container.RegisterType<IRandomNumberGenerator, RandomNumberGenerator>();
+
+            // Naughty. If the database is empty, populate it with fake data.
+            var repo = container.Resolve<IDeadfileRepository>();
+            repo.SetUpFakeData();
+
             return container;
         }
     }

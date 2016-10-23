@@ -46,6 +46,9 @@ namespace Deadfile.Content
 
             // This excludes the navigation region and NavigationBar from registering with the Journal.
             _regionManager.RegisterViewWithRegion(RegionNames.NavigationRegion, typeof(NavigationBar));
+
+            // This excludes the quotes region and QuotesBar from registering with the Journal.
+            _regionManager.RegisterViewWithRegion(RegionNames.QuotesRegion, typeof(QuotesBar));
         }
     }
 }

@@ -98,10 +98,13 @@
     <Compile Include="DesignTime\NavigationBarDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\FourthPageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\HomePageDesignTimeViewModel.cs" />
+    <Compile Include="DesignTime\QuotesBarDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\ThirdPageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\SecondPageDesignTimeViewModel.cs" />
+    <Compile Include="Events\SelectedClientEvent.cs" />
     <Compile Include="Events\NavigationEvent.cs" />
     <Compile Include="Interfaces\IClientsPageViewModel.cs" />
+    <Compile Include="Interfaces\IQuotesBarViewModel.cs" />
     <Compile Include="Navigation\DeadfileNavigationService.cs" />
     <Compile Include="Navigation\Experience.cs" />
     <Compile Include="Interfaces\IDeadfileNavigationService.cs" />
@@ -126,6 +129,7 @@
     </Compile>
     <Compile Include="RegionNames.cs" />
     <Compile Include="ViewModels\ClientsPageViewModel.cs" />
+    <Compile Include="ViewModels\QuotesBarViewModel.cs" />
     <Compile Include="ViewModels\ThirdPageViewModel.cs" />
     <Compile Include="ViewModels\SecondPageViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
@@ -134,6 +138,9 @@
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\ClientsPage.xaml.cs">
       <DependentUpon>ClientsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QuotesBar.xaml.cs">
+      <DependentUpon>QuotesBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ThirdPage.xaml.cs">
       <DependentUpon>ThirdPage.xaml</DependentUpon>
@@ -170,6 +177,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\ClientsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\QuotesBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

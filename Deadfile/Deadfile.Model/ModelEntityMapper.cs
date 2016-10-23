@@ -17,6 +17,8 @@ namespace Deadfile.Model
             {
                 cfg.CreateMap<Client, ClientModel>();
                 cfg.CreateMap<ClientModel, Client>();
+                cfg.CreateMap<Quotation, QuotationModel>();
+                cfg.CreateMap<QuotationModel, Quotation>();
             });
             Mapper = config.CreateMapper();
         }

@@ -11,8 +11,6 @@ namespace Deadfile.Content.Interfaces
 {
     public interface IClientsPageViewModel
     {
-        int SelectedClientIndex { get; set; }
-
         ClientModel SelectedClient { get; set; }
 
         ICollectionView Clients { get; }

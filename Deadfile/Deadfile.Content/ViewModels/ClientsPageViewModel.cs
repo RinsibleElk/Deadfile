@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using Deadfile.Content.Interfaces;
 using Deadfile.Model;
+using Deadfile.Model.Interfaces;
 using Prism.Events;
 using Prism.Regions;
 
@@ -19,8 +20,6 @@ namespace Deadfile.Content.ViewModels
         {
             _repository = repository;
         }
-
-        public int SelectedClientIndex { get; set; }
 
         private ClientModel selectedClient;
         public ClientModel SelectedClient

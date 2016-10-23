@@ -21,5 +21,17 @@ namespace Deadfile.Model.DesignTime
             var entityClients = Client.GenerateFakeData();
             return entityClients.Select(_modelEntityMapper.Mapper.Map<ClientModel>);
         }
+
+        public void SetUpFakeData()
+        {
+            // Should never get called as this implementation is only used in design time and for seeding the real repo with data.
+            throw new NotImplementedException();
+        }
+
+        public QuotationModel GetRandomQuotation()
+        {
+            // Should never get called as this implementation is only used in design time.
+            throw new NotImplementedException();
+        }
     }
 }

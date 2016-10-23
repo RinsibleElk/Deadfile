@@ -38,6 +38,7 @@ namespace Deadfile.Model
             {
                 SetProperty(ref title, value);
                 OnPropertyChanged(nameof(FullName));
+                OnPropertyChanged(nameof(FullNameWithTitle));
             }
         }
 
@@ -53,6 +54,7 @@ namespace Deadfile.Model
             {
                 SetProperty(ref firstName, value);
                 OnPropertyChanged(nameof(FullName));
+                OnPropertyChanged(nameof(FullNameWithTitle));
             }
         }
 
@@ -64,7 +66,11 @@ namespace Deadfile.Model
         public string MiddleNames
         {
             get { return middleNames; }
-            set { SetProperty(ref middleNames, value); }
+            set
+            {
+                SetProperty(ref middleNames, value);
+                OnPropertyChanged(nameof(FullNameWithTitle));
+            }
         }
 
         private string lastName;
@@ -80,6 +86,7 @@ namespace Deadfile.Model
             {
                 SetProperty(ref lastName, value);
                 OnPropertyChanged(nameof(FullName));
+                OnPropertyChanged(nameof(FullNameWithTitle));
             }
         }
 
@@ -90,6 +97,15 @@ namespace Deadfile.Model
                 if (String.IsNullOrWhiteSpace(FirstName))
                     return $"{Title} {LastName}";
                 return $"{FirstName} {LastName}";
+            }
+        }
+
+        public string FullNameWithTitle
+        {
+            get
+            {
+                return string.Join(" ",
+                    new string[] {Title, FirstName, MiddleNames, LastName}.Where((s) => !String.IsNullOrWhiteSpace(s)));
             }
         }
 
