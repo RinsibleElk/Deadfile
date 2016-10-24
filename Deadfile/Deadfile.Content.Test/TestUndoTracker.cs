@@ -28,12 +28,45 @@ namespace Deadfile.Content.Test
             var undoTracker = new UndoTracker<ClientModel>();
             var clientModel = MakeClientModel();
             undoTracker.Activate(clientModel);
-            typeof(ClientModel).GetProperty(propertyName).SetMethod.Invoke(clientModel, new object[1] {newValue});
+            typeof(ClientModel).GetProperty(propertyName).SetMethod.Invoke(clientModel, new object[1] { newValue });
             Assert.True(undoTracker.CanUndo);
             Assert.False(undoTracker.CanRedo);
             undoTracker.Undo();
             undoTracker.Deactivate();
             var expectedClientModel = MakeClientModel();
+            AssertClientModelsAreEqual(expectedClientModel, clientModel);
+        }
+
+        [Theory]
+        [InlineData("ClientId", 12347)]
+        [InlineData("Title", "Ms")]
+        [InlineData("FirstName", "John")]
+        [InlineData("MiddleNames", "Eugine")]
+        [InlineData("LastName", "Roberts")]
+        [InlineData("AddressFirstLine", "15 Yemen Road")]
+        [InlineData("AddressSecondLine", "Yementown")]
+        [InlineData("AddressThirdLine", "Saudi Arabia")]
+        [InlineData("AddressPostCode", "EN1 2BB")]
+        [InlineData("EmailAddress", "jack.bauer@yahoo.com")]
+        [InlineData("PhoneNumber1", "07719535865")]
+        [InlineData("PhoneNumber2", "02084568015")]
+        [InlineData("PhoneNumber3", "02084568016")]
+        [InlineData("Notes", "Here are some notes.")]
+        public void TestRedoClient(string propertyName, object newValue)
+        {
+            var undoTracker = new UndoTracker<ClientModel>();
+            var clientModel = MakeClientModel();
+            undoTracker.Activate(clientModel);
+            typeof(ClientModel).GetProperty(propertyName).SetMethod.Invoke(clientModel, new object[1] { newValue });
+            Assert.True(undoTracker.CanUndo);
+            Assert.False(undoTracker.CanRedo);
+            undoTracker.Undo();
+            Assert.True(undoTracker.CanRedo);
+            Assert.False(undoTracker.CanUndo);
+            undoTracker.Redo();
+            undoTracker.Deactivate();
+            var expectedClientModel = MakeClientModel();
+            typeof(ClientModel).GetProperty(propertyName).SetMethod.Invoke(expectedClientModel, new object[1] { newValue });
             AssertClientModelsAreEqual(expectedClientModel, clientModel);
         }
 
