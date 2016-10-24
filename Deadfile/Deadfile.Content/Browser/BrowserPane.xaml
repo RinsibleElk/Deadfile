@@ -12,8 +12,13 @@
               mc:Ignorable="d"
               d:DataContext="{d:DesignInstance Type=browser:BrowserPaneDesignTimeViewModel, IsDesignTimeCreatable=True}"
               d:DesignHeight="600" d:DesignWidth="300">
-    <StackPanel>
-        <Grid>
+    <Grid
+        Background="{StaticResource BrowserBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -31,7 +36,7 @@
             <Label Grid.Row="1" Grid.Column="0">Filter:</Label>
             <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         </Grid>
-        <TreeView ItemsSource="{Binding Clients}">
+        <TreeView Grid.Row="1" ItemsSource="{Binding Clients}" Style="{StaticResource TreeViewTransparentBackground}">
             <i:Interaction.Behaviors>
                 <behaviors:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
@@ -58,5 +63,5 @@
                 </DataTemplate>
             </TreeView.Resources>
         </TreeView>
-    </StackPanel>
+    </Grid>
 </UserControl>
