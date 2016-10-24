@@ -2,6 +2,7 @@
 using System.Linq;
 using Deadfile.Content.Undo;
 using Deadfile.Model;
+using Prism.Mvvm;
 using Xunit;
 
 namespace Deadfile.Content.Test
@@ -67,6 +68,84 @@ namespace Deadfile.Content.Test
             undoTracker.Deactivate();
             var expectedClientModel = MakeClientModel();
             typeof(ClientModel).GetProperty(propertyName).SetMethod.Invoke(expectedClientModel, new object[1] { newValue });
+            AssertClientModelsAreEqual(expectedClientModel, clientModel);
+        }
+
+        [Theory]
+        [InlineData("ClientId", 12347, 12349)]
+        [InlineData("Title", "Ms", "Dr")]
+        [InlineData("FirstName", "John", "Jane")]
+        [InlineData("MiddleNames", "Eugine", "Yugi")]
+        [InlineData("LastName", "Roberts", "Thompson")]
+        [InlineData("AddressFirstLine", "15 Yemen Road", "86 Old Park Ridings")]
+        [InlineData("AddressSecondLine", "Yementown", "Gotham City")]
+        [InlineData("AddressThirdLine", "Saudi Arabia", "")]
+        [InlineData("AddressPostCode", "EN1 2BB", "N19 6ES")]
+        [InlineData("EmailAddress", "jack.bauer@yahoo.com", "something@something.co.uk")]
+        [InlineData("PhoneNumber1", "07719535865", "02084568015")]
+        [InlineData("PhoneNumber2", "02084568015", "07719535865")]
+        [InlineData("PhoneNumber3", "02084568016", "07719535865")]
+        [InlineData("Notes", "Here are some notes.", "And some other ones")]
+        public void TestUndoClientTwice(string propertyName, object newValue1, object newValue2)
+        {
+            var undoTracker = new UndoTracker<ClientModel>();
+            var clientModel = MakeClientModel();
+            undoTracker.Activate(clientModel);
+            typeof(ClientModel).GetProperty(propertyName).SetMethod.Invoke(clientModel, new object[1] { newValue1 });
+            typeof(ClientModel).GetProperty(propertyName).SetMethod.Invoke(clientModel, new object[1] { newValue2 });
+            Assert.True(undoTracker.CanUndo);
+            Assert.False(undoTracker.CanRedo);
+            undoTracker.Undo();
+            Assert.True(undoTracker.CanUndo);
+            Assert.True(undoTracker.CanRedo);
+            undoTracker.Undo();
+            Assert.False(undoTracker.CanUndo);
+            Assert.True(undoTracker.CanRedo);
+            undoTracker.Deactivate();
+            var expectedClientModel = MakeClientModel();
+            AssertClientModelsAreEqual(expectedClientModel, clientModel);
+        }
+
+        [Theory]
+        [InlineData("ClientId", 12347, 12349)]
+        [InlineData("Title", "Ms", "Dr")]
+        [InlineData("FirstName", "John", "Jane")]
+        [InlineData("MiddleNames", "Eugine", "Yugi")]
+        [InlineData("LastName", "Roberts", "Thompson")]
+        [InlineData("AddressFirstLine", "15 Yemen Road", "86 Old Park Ridings")]
+        [InlineData("AddressSecondLine", "Yementown", "Gotham City")]
+        [InlineData("AddressThirdLine", "Saudi Arabia", "")]
+        [InlineData("AddressPostCode", "EN1 2BB", "N19 6ES")]
+        [InlineData("EmailAddress", "jack.bauer@yahoo.com", "something@something.co.uk")]
+        [InlineData("PhoneNumber1", "07719535865", "02084568015")]
+        [InlineData("PhoneNumber2", "02084568015", "07719535865")]
+        [InlineData("PhoneNumber3", "02084568016", "07719535865")]
+        [InlineData("Notes", "Here are some notes.", "And some other ones")]
+        public void TestRedoClientTwice(string propertyName, object newValue1, object newValue2)
+        {
+            var undoTracker = new UndoTracker<ClientModel>();
+            var clientModel = MakeClientModel();
+            undoTracker.Activate(clientModel);
+            typeof(ClientModel).GetProperty(propertyName).SetMethod.Invoke(clientModel, new object[1] { newValue1 });
+            typeof(ClientModel).GetProperty(propertyName).SetMethod.Invoke(clientModel, new object[1] { newValue2 });
+            Assert.True(undoTracker.CanUndo);
+            Assert.False(undoTracker.CanRedo);
+            undoTracker.Undo();
+            Assert.True(undoTracker.CanUndo);
+            Assert.True(undoTracker.CanRedo);
+            undoTracker.Undo();
+            Assert.False(undoTracker.CanUndo);
+            Assert.True(undoTracker.CanRedo);
+            undoTracker.Redo();
+            Assert.True(undoTracker.CanUndo);
+            Assert.True(undoTracker.CanRedo);
+            undoTracker.Redo();
+            Assert.True(undoTracker.CanUndo);
+            Assert.False(undoTracker.CanRedo);
+            undoTracker.Deactivate();
+            var expectedClientModel = MakeClientModel();
+            typeof(ClientModel).GetProperty(propertyName).SetMethod.Invoke(expectedClientModel, new object[1] { newValue1 });
+            typeof(ClientModel).GetProperty(propertyName).SetMethod.Invoke(expectedClientModel, new object[1] { newValue2 });
             AssertClientModelsAreEqual(expectedClientModel, clientModel);
         }
 
