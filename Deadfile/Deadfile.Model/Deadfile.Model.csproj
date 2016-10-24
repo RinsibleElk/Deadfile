@@ -68,6 +68,7 @@
     <Compile Include="QuotationModel.cs" />
     <Compile Include="RandomNumberGenerator.cs" />
     <Compile Include="Titles.cs" />
+    <Compile Include="ValidatableBindableBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -153,6 +153,7 @@
     <Compile Include="Clients\ClientsActionsPadViewModel.cs" />
     <Compile Include="Clients\ClientsBrowserPaneViewModel.cs" />
     <Compile Include="Clients\ClientsPageViewModel.cs" />
+    <Compile Include="Undo\UndoTracker.cs" />
     <Compile Include="ViewModels\ContentViewModelBase.cs" />
     <Compile Include="Home\HomeActionsPadViewModel.cs" />
     <Compile Include="Quotes\QuotesBarViewModel.cs" />

@@ -43,6 +43,9 @@
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Prism, Version=6.2.0.0, Culture=neutral, PublicKeyToken=91a96d2a154366d8, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.6.2.0\lib\net45\Prism.dll</HintPath>
       <Private>True</Private>
@@ -84,6 +87,7 @@
   <ItemGroup>
     <Compile Include="TestNavigationParameterMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestUndoTracker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -92,6 +96,10 @@
     <ProjectReference Include="..\Deadfile.Content\Deadfile.Content.csproj">
       <Project>{ab8b448c-dd74-4d60-a041-3e5d03a32180}</Project>
       <Name>Deadfile.Content</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Deadfile.Model\Deadfile.Model.csproj">
+      <Project>{DCF712CD-F90C-49E7-BA66-072EDAB67D19}</Project>
+      <Name>Deadfile.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

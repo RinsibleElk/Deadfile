@@ -14,7 +14,7 @@ namespace Deadfile.Model
     /// <summary>
     /// UI model for a Client.
     /// </summary>
-    public class ClientModel : BindableBase
+    public class ClientModel : ValidatableBindableBase
     {
         /// <summary>
         /// Deliberately invalid id to represent to the EditClient experience that a new client is required.
@@ -41,6 +41,8 @@ namespace Deadfile.Model
             get { return _title; }
             set
             {
+                OnPropertyChanging(nameof(FullName));
+                OnPropertyChanging(nameof(FullNameWithTitle));
                 SetProperty(ref _title, value);
                 OnPropertyChanged(nameof(FullName));
                 OnPropertyChanged(nameof(FullNameWithTitle));
@@ -57,6 +59,8 @@ namespace Deadfile.Model
             get { return _firstName; }
             set
             {
+                OnPropertyChanging(nameof(FullName));
+                OnPropertyChanging(nameof(FullNameWithTitle));
                 SetProperty(ref _firstName, value);
                 OnPropertyChanged(nameof(FullName));
                 OnPropertyChanged(nameof(FullNameWithTitle));
@@ -73,6 +77,7 @@ namespace Deadfile.Model
             get { return _middleNames; }
             set
             {
+                OnPropertyChanging(nameof(FullNameWithTitle));
                 SetProperty(ref _middleNames, value);
                 OnPropertyChanged(nameof(FullNameWithTitle));
             }
@@ -89,6 +94,8 @@ namespace Deadfile.Model
             get { return _lastName; }
             set
             {
+                OnPropertyChanging(nameof(FullName));
+                OnPropertyChanging(nameof(FullNameWithTitle));
                 SetProperty(ref _lastName, value);
                 OnPropertyChanged(nameof(FullName));
                 OnPropertyChanged(nameof(FullNameWithTitle));
@@ -133,6 +140,7 @@ namespace Deadfile.Model
             get { return _addressFirstLine; }
             set
             {
+                OnPropertyChanging(nameof(FullAddress));
                 SetProperty(ref _addressFirstLine, value);
                 OnPropertyChanged(nameof(FullAddress));
             }
@@ -147,6 +155,7 @@ namespace Deadfile.Model
             get { return _addressSecondLine; }
             set
             {
+                OnPropertyChanging(nameof(FullAddress));
                 SetProperty(ref _addressSecondLine, value);
                 OnPropertyChanged(nameof(FullAddress));
             }
@@ -161,6 +170,7 @@ namespace Deadfile.Model
             get { return _addressThirdLine; }
             set
             {
+                OnPropertyChanging(nameof(FullAddress));
                 SetProperty(ref _addressThirdLine, value);
                 OnPropertyChanged(nameof(FullAddress));
             }
@@ -175,6 +185,7 @@ namespace Deadfile.Model
             get { return _addressPostCode; }
             set
             {
+                OnPropertyChanging(nameof(FullAddress));
                 SetProperty(ref _addressPostCode, value);
                 OnPropertyChanged(nameof(FullAddress));
             }
@@ -200,6 +211,7 @@ namespace Deadfile.Model
             get { return _phoneNumber1; }
             set
             {
+                OnPropertyChanging(nameof(PhoneNumbers));
                 SetProperty(ref _phoneNumber1, value);
                 OnPropertyChanged(nameof(PhoneNumbers));
             }
@@ -214,6 +226,7 @@ namespace Deadfile.Model
             get { return _phoneNumber2; }
             set
             {
+                OnPropertyChanging(nameof(PhoneNumbers));
                 SetProperty(ref _phoneNumber2, value);
                 OnPropertyChanged(nameof(PhoneNumbers));
             }
@@ -228,6 +241,7 @@ namespace Deadfile.Model
             get { return _phoneNumber3; }
             set
             {
+                OnPropertyChanging(nameof(PhoneNumbers));
                 SetProperty(ref _phoneNumber3, value);
                 OnPropertyChanged(nameof(PhoneNumbers));
             }
