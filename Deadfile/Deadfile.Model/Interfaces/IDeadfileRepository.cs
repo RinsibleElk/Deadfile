@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Model.Browser;
 
 namespace Deadfile.Model.Interfaces
 {
@@ -39,10 +40,45 @@ namespace Deadfile.Model.Interfaces
         QuotationModel GetRandomQuotation();
 
         /// <summary>
-        /// Synchronously fetch a ClientModel, given the unique id in the database.
+        /// Synchronously fetch a <see cref="ClientModel"/>, given the unique id in the database.
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
         ClientModel GetClientById(int clientId);
+
+        /// <summary>
+        /// Get Clients for use in Browser.
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        IEnumerable<BrowserClient> GetBrowserClients(string filter);
+
+        /// <summary>
+        /// Get Jobs for a given client for use in Browser.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <returns></returns>
+        IEnumerable<BrowserJob> GetBrowserJobsForClient(int clientId);
+
+        /// <summary>
+        /// Get Invoices for a given job for use in Browser.
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        IEnumerable<BrowserInvoice> GetBrowserInvoicesForJob(int jobId);
+
+        /// <summary>
+        /// Synchronously fetch a <see cref="JobModel"/>, given the unique id in the database.
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        JobModel GetJobById(int jobId);
+
+        /// <summary>
+        /// Synchronously fetch a <see cref="InvoiceModel"/>, given the unique id in the database.
+        /// </summary>
+        /// <param name="invoiceId"></param>
+        /// <returns></returns>
+        InvoiceModel GetInvoiceById(int invoiceId);
     }
 }

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Deadfile.Content.EditClient
+namespace Deadfile.Content.Browser
 {
     /// <summary>
-    /// Interaction logic for EditClientPage.xaml
+    /// Interaction logic for BrowserPane.xaml
     /// </summary>
-    public partial class EditClientPage : UserControl
+    public partial class BrowserPane : UserControl
     {
-        public EditClientPage()
+        public BrowserPane()
         {
             InitializeComponent();
         }

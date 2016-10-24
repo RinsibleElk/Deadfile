@@ -9,7 +9,6 @@ namespace Deadfile.Content.Navigation
     public enum Experience
     {
         Home,
-        Clients,
-        EditClient
+        Clients
     }
 }

@@ -93,30 +93,19 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EditClient\EditClientActionsPadDesignTimeViewModel.cs" />
-    <Compile Include="EditClient\EditClientActionsPadViewModel.cs" />
-    <Compile Include="EditClient\EditClientBrowserPane.xaml.cs">
-      <DependentUpon>EditClientBrowserPane.xaml</DependentUpon>
+    <Compile Include="Behaviors\TreeViewSelectedItemBehavior.cs" />
+    <Compile Include="Browser\BrowserPane.xaml.cs">
+      <DependentUpon>BrowserPane.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EditClient\EditClientBrowserPaneDesignTimeViewModel.cs" />
-    <Compile Include="EditClient\EditClientBrowserPaneViewModel.cs" />
-    <Compile Include="EditClient\EditClientPage.xaml.cs">
-      <DependentUpon>EditClientPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EditClient\EditClientPageDesignTimeViewModel.cs" />
-    <Compile Include="EditClient\EditClientPageViewModel.cs" />
-    <Compile Include="EditClient\IEditClientBrowserPaneViewModel.cs" />
+    <Compile Include="Browser\BrowserPaneDesignTimeViewModel.cs" />
+    <Compile Include="Browser\BrowserPaneViewModel.cs" />
+    <Compile Include="Browser\IBrowserPaneViewModel.cs" />
     <Compile Include="ContentModule.cs" />
     <Compile Include="Clients\ClientsActionsPadDesignTimeViewModel.cs" />
-    <Compile Include="Clients\ClientsBrowserPaneDesignTimeViewModel.cs" />
     <Compile Include="Clients\ClientsPageDesignTimeViewModel.cs" />
-    <Compile Include="EditClient\EditClientActionsPad.xaml.cs">
-      <DependentUpon>EditClientActionsPad.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EditClient\IEditClientActionsPadViewModel.cs" />
-    <Compile Include="EditClient\IEditClientPageViewModel.cs" />
+    <Compile Include="Events\SelectedInvoiceEvent.cs" />
+    <Compile Include="Events\SelectedJobEvent.cs" />
     <Compile Include="Home\HomeActionsPadDesignTimeViewModel.cs" />
-    <Compile Include="Home\HomeBrowserPaneDesignTimeViewModel.cs" />
     <Compile Include="Interfaces\INavigationParameterMapper.cs" />
     <Compile Include="Navigation\NavigationBarDesignTimeViewModel.cs" />
     <Compile Include="Home\HomePageDesignTimeViewModel.cs" />
@@ -125,10 +114,8 @@
     <Compile Include="Events\SelectedClientEvent.cs" />
     <Compile Include="Events\NavigationEvent.cs" />
     <Compile Include="Clients\IClientsActionsPadViewModel.cs" />
-    <Compile Include="Clients\IClientsBrowserPaneViewModel.cs" />
     <Compile Include="Clients\IClientsPageViewModel.cs" />
     <Compile Include="Home\IHomeActionsPadViewModel.cs" />
-    <Compile Include="Home\IHomeBrowserPaneViewModel.cs" />
     <Compile Include="Quotes\IQuotesBarViewModel.cs" />
     <Compile Include="Navigation\DeadfileNavigationService.cs" />
     <Compile Include="Navigation\Experience.cs" />
@@ -151,7 +138,6 @@
     </Compile>
     <Compile Include="RegionNames.cs" />
     <Compile Include="Clients\ClientsActionsPadViewModel.cs" />
-    <Compile Include="Clients\ClientsBrowserPaneViewModel.cs" />
     <Compile Include="Clients\ClientsPageViewModel.cs" />
     <Compile Include="Undo\UndoTracker.cs" />
     <Compile Include="ViewModels\ContentViewModelBase.cs" />
@@ -164,17 +150,11 @@
     <Compile Include="Clients\ClientsActionsPad.xaml.cs">
       <DependentUpon>ClientsActionsPad.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Clients\ClientsBrowserPane.xaml.cs">
-      <DependentUpon>ClientsBrowserPane.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Clients\ClientsPage.xaml.cs">
       <DependentUpon>ClientsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Home\HomeActionsPad.xaml.cs">
       <DependentUpon>HomeActionsPad.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Home\HomeBrowserPane.xaml.cs">
-      <DependentUpon>HomeBrowserPane.xaml</DependentUpon>
     </Compile>
     <Compile Include="Quotes\QuotesBar.xaml.cs">
       <DependentUpon>QuotesBar.xaml</DependentUpon>
@@ -204,11 +184,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Clients\ClientsActionsPad.xaml">
+    <Page Include="Browser\BrowserPane.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Clients\ClientsBrowserPane.xaml">
+    <Page Include="Clients\ClientsActionsPad.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -216,23 +196,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditClient\EditClientActionsPad.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="EditClient\EditClientBrowserPane.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="EditClient\EditClientPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Home\HomeActionsPad.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Home\HomeBrowserPane.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

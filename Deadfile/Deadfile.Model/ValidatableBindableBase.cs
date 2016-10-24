@@ -10,6 +10,10 @@ using Prism.Mvvm;
 
 namespace Deadfile.Model
 {
+    //TODO Allow for custom (non-Data Annotation) validation rules?
+    /// <summary>
+    /// Base class for models. It supports Undo/Redo, and Validation using DataAnnotations.
+    /// </summary>
     public class ValidatableBindableBase : BindableBase, INotifyDataErrorInfo, INotifyPropertyChanging
     {
         private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();

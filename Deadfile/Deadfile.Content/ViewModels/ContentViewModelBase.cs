@@ -11,6 +11,9 @@ using Prism.Regions;
 
 namespace Deadfile.Content.ViewModels
 {
+    /// <summary>
+    /// Base class for all content.
+    /// </summary>
     public abstract class ContentViewModelBase : ViewModelBase, IDeadfileViewModel
     {
         protected readonly IDeadfileNavigationService NavigationService;
@@ -30,8 +33,11 @@ namespace Deadfile.Content.ViewModels
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             base.OnNavigatedTo(navigationContext);
+
+            // Notify the Navigation pane about the journal so that it can enable Back/Forward/Home etc.
             EventAggregator.GetEvent<NavigationEvent>().Publish(navigationContext.NavigationService.Journal);
-            NavigationService.NavigateBrowserTo(this.Experience);
+
+            // Switch out the ActionsPad for the relevant actions for the new experience.
             NavigationService.NavigateActionsTo(this.Experience);
         }
     }

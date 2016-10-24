@@ -17,6 +17,10 @@ namespace Deadfile.Model
             {
                 cfg.CreateMap<Client, ClientModel>();
                 cfg.CreateMap<ClientModel, Client>();
+                cfg.CreateMap<Job, JobModel>();
+                cfg.CreateMap<JobModel, Job>();
+                cfg.CreateMap<Invoice, InvoiceModel>();
+                cfg.CreateMap<InvoiceModel, Invoice>();
                 cfg.CreateMap<Quotation, QuotationModel>();
                 cfg.CreateMap<QuotationModel, Quotation>();
             });

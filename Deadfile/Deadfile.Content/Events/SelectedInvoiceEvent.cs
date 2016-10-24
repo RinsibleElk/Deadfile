@@ -11,7 +11,7 @@ namespace Deadfile.Content.Events
     /// <summary>
     /// Used to communicate between ContentRegion and BrowserRegion.
     /// </summary>
-    public class SelectedClientEvent : PubSubEvent<ClientModel>
+    public class SelectedInvoiceEvent : PubSubEvent<InvoiceModel>
     {
     }
 }

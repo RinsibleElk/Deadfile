@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Entity;
+using Deadfile.Model.Browser;
 using Deadfile.Model.DesignTime;
 using Deadfile.Model.Interfaces;
 
@@ -19,6 +20,7 @@ namespace Deadfile.Model
             _modelEntityMapper = modelEntityMapper;
             _rng = rng;
         }
+
         public IEnumerable<ClientModel> GetClients()
         {
             using (var dbContext = new DeadfileContext())
@@ -48,63 +50,125 @@ namespace Deadfile.Model
             }
         }
 
+        public IEnumerable<BrowserClient> GetBrowserClients(string filter)
+        {
+            var li = new List<BrowserClient>();
+            if (String.IsNullOrEmpty(filter))
+            {
+                using (var dbContext = new DeadfileContext())
+                {
+                    foreach (var client in 
+                    (from client in dbContext.Clients
+                        select
+                        new BrowserClient()
+                        {
+                            Id = client.ClientId,
+                            FullName =
+                            ((client.FirstName == null || client.FirstName == "")
+                                ? client.Title + " " + client.LastName
+                                : client.FirstName + " " + client.LastName)
+                        }))
+                    {
+                        client.SetRepository(this);
+                        li.Add(client);
+                    }
+                }
+            }
+            else
+            {
+                using (var dbContext = new DeadfileContext())
+                {
+                    foreach (var client in (from client in dbContext.Clients
+                        where ((client.FirstName == null || client.FirstName == "")
+                            ? client.Title + " " + client.LastName
+                            : client.FirstName + " " + client.LastName).Contains(filter)
+                        select
+                        new BrowserClient()
+                        {
+                            Id = client.ClientId,
+                            FullName =
+                            ((client.FirstName == null || client.FirstName == "")
+                                ? client.Title + " " + client.LastName
+                                : client.FirstName + " " + client.LastName)
+                        }))
+                    {
+                        client.SetRepository(this);
+                        li.Add(client);
+                    }
+                }
+            }
+            return li;
+        }
+
+        public IEnumerable<BrowserJob> GetBrowserJobsForClient(int clientId)
+        {
+            var li = new List<BrowserJob>();
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var job in (from job in dbContext.Jobs
+                    where job.ClientId == clientId
+                    select
+                    new BrowserJob()
+                    {
+                        Id = job.JobId,
+                        FullAddress =
+                            job.AddressFirstLine +
+                            ((job.AddressSecondLine == null || job.AddressSecondLine == "")
+                                ? ""
+                                : ", " + job.AddressSecondLine) +
+                            ((job.AddressThirdLine == null || job.AddressThirdLine == "")
+                                ? ""
+                                : ", " + job.AddressThirdLine) +
+                            ((job.AddressPostCode == null || job.AddressPostCode == "")
+                                ? ""
+                                : ", " + job.AddressPostCode)
+                    }))
+                {
+                    job.SetRepository(this);
+                    li.Add(job);
+                }
+            }
+            return li;
+        }
+
+        public IEnumerable<BrowserInvoice> GetBrowserInvoicesForJob(int jobId)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                return new List<BrowserInvoice>(from invoice in dbContext.Invoices
+                    where invoice.Jobs.FirstOrDefault((job) => job.JobId == jobId) != null
+                    select
+                    new BrowserInvoice()
+                    {
+                        Id = invoice.InvoiceId,
+                        InvoiceReference = invoice.InvoiceReference.ToString()
+                    });
+            }
+        }
+
         public void SetUpFakeData()
         {
             using (var dbContext = new DeadfileContext())
             {
                 if ((from client in dbContext.Clients select client).FirstOrDefault() == null)
                 {
-                    var designTimeRepository = new DeadfileDesignTimeRepository();
-                    foreach (var clientModel in designTimeRepository.GetClients())
-                    {
-                        dbContext.Clients.Add(_modelEntityMapper.Mapper.Map<Client>(clientModel));
-                    }
                     try
                     {
-                        AddFakeQuotations(dbContext);
+                        foreach (var clientModel in FakeData.GetFakeClients())
+                        {
+                            dbContext.Clients.Add(_modelEntityMapper.Mapper.Map<Client>(clientModel));
+                        }
+                        FakeData.AddFakeQuotations(dbContext);
+                        dbContext.SaveChanges();
+                        FakeData.AddFakeJobs(dbContext);
                         dbContext.SaveChanges();
                     }
                     catch (Exception e)
                     {
-
+                        //TODO Actually do something here?
+                        throw;
                     }
                 }
-            }
-        }
-
-        private static void AddFakeQuotations(DeadfileContext dbContext)
-        {
-            var homerSimpsonQuotations = new string[]
-            {
-                "Weaseling out of things is important to learn. It's what separates us from the animals... Except the weasel.",
-                "Books are useless! I only ever read one book, To Kill A Mockingbird, and it gave me absolutely no insight on how to kill mockingbirds!",
-                "Fame was like a drug. But what was even more like a drug were the drugs.",
-                "Son, when you participate in sporting events, it’s not whether you win or lose: it’s how drunk you get.",
-                "You don’t like your job, you don’t strike. You go in every day and do it really half-assed. That’s the American way.",
-                "Facts are meaningless. You could use facts to prove anything that’s even remotely true!"
-            };
-            foreach (var homerSimpsonQuotation in homerSimpsonQuotations)
-            {
-                dbContext.Quotations.Add(new Quotation()
-                {
-                    Author = "Homer Simpson",
-                    Phrase = homerSimpsonQuotation
-                });
-            }
-            var ericCartmanQuotations = new string[]
-            {
-                "It's a man's obligation to stick his boneration in a woman's separation, this sort of penetration will increase the population of the younger generation.",
-                "I'm not just sure. I'm HIV positive.",
-                "Don't you know the first rule of physics? Anything that's fun costs at least eight dollars.",
-                "Stan, your dog is a gay homosexual!"
-            };
-            foreach (var ericCartmanQuotation in ericCartmanQuotations)
-            {
-                dbContext.Quotations.Add(new Quotation()
-                {
-                    Author = "Eric Cartman",
-                    Phrase = ericCartmanQuotation
-                });
             }
         }
 
@@ -122,8 +186,26 @@ namespace Deadfile.Model
         {
             using (var dbContext = new DeadfileContext())
             {
-                var client = dbContext.Clients.Find(new object[1] {clientId});
+                var client = dbContext.Clients.Find(new object[1] { clientId });
                 return _modelEntityMapper.Mapper.Map<ClientModel>(client);
+            }
+        }
+
+        public JobModel GetJobById(int jobId)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var job = dbContext.Jobs.Find(new object[1] { jobId });
+                return _modelEntityMapper.Mapper.Map<JobModel>(job);
+            }
+        }
+
+        public InvoiceModel GetInvoiceById(int invoiceId)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var invoice = dbContext.Invoices.Find(new object[1] { invoiceId });
+                return _modelEntityMapper.Mapper.Map<InvoiceModel>(invoice);
             }
         }
     }

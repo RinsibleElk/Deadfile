@@ -50,21 +50,6 @@ namespace Deadfile.Content.Navigation
             _regionManager.RequestNavigate(RegionNames.ContentRegion, uri, navigationParameters);
         }
 
-        public void NavigateBrowserTo(Experience experience)
-        {
-            Uri uri;
-            switch (experience)
-            {
-                case Experience.Home:
-                    uri = new Uri("/" + experience + "BrowserPane", UriKind.Relative);
-                    break;
-                default:
-                    uri = new Uri(experience + "BrowserPane", UriKind.Relative);
-                    break;
-            }
-            _regionManager.RequestNavigate(RegionNames.BrowserRegion, uri);
-        }
-
         public void NavigateActionsTo(Experience experience)
         {
             Uri uri;

@@ -26,8 +26,6 @@ namespace Deadfile.Entity
 
         public virtual Client Client { get; set; }
 
-        public int InvoiceId { get; set; }
-
         public virtual Invoice Invoice { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Entity;
+using Deadfile.Model.Browser;
 using Deadfile.Model.Interfaces;
 
 namespace Deadfile.Model.DesignTime
@@ -19,7 +20,7 @@ namespace Deadfile.Model.DesignTime
         public IEnumerable<ClientModel> GetClients()
         {
             // Is called as is also used as a lame way to seed the database with some junk.
-            var entityClients = Client.GenerateFakeData();
+            var entityClients = FakeData.GetFakeClients();
             return entityClients.Select(_modelEntityMapper.Mapper.Map<ClientModel>);
         }
 
@@ -44,6 +45,33 @@ namespace Deadfile.Model.DesignTime
         public ClientModel GetClientById(int clientId)
         {
             // Should never get called as this implementation is only used in design time.
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<BrowserClient> GetBrowserClients(string filter)
+        {
+            return
+                from client in GetClients()
+                select new BrowserClient() { Id = client.ClientId, FullName = client.FullName };
+        }
+
+        public IEnumerable<BrowserJob> GetBrowserJobsForClient(int clientId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<BrowserInvoice> GetBrowserInvoicesForJob(int jobId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public JobModel GetJobById(int jobId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public InvoiceModel GetInvoiceById(int invoiceId)
+        {
             throw new NotImplementedException();
         }
     }
