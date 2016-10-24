@@ -61,7 +61,7 @@ namespace Deadfile.Model
                     }
                     try
                     {
-                        AddQuotations(dbContext);
+                        AddFakeQuotations(dbContext);
                         dbContext.SaveChanges();
                     }
                     catch (Exception e)
@@ -72,7 +72,7 @@ namespace Deadfile.Model
             }
         }
 
-        private static void AddQuotations(DeadfileContext dbContext)
+        private static void AddFakeQuotations(DeadfileContext dbContext)
         {
             var homerSimpsonQuotations = new string[]
             {
@@ -115,6 +115,15 @@ namespace Deadfile.Model
                 var quotations = (from quotation in dbContext.Quotations select quotation).ToArray();
                 var index = _rng.Next(quotations.Length);
                 return _modelEntityMapper.Mapper.Map<QuotationModel>(quotations[index]);
+            }
+        }
+
+        public ClientModel GetClientById(int clientId)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var client = dbContext.Clients.Find(new object[1] {clientId});
+                return _modelEntityMapper.Mapper.Map<ClientModel>(client);
             }
         }
     }

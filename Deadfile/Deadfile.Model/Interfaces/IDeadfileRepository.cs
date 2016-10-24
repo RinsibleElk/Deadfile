@@ -37,5 +37,12 @@ namespace Deadfile.Model.Interfaces
         /// </summary>
         /// <returns></returns>
         QuotationModel GetRandomQuotation();
+
+        /// <summary>
+        /// Synchronously fetch a ClientModel, given the unique id in the database.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <returns></returns>
+        ClientModel GetClientById(int clientId);
     }
 }

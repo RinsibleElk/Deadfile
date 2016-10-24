@@ -18,24 +18,30 @@ namespace Deadfile.Model.DesignTime
 
         public IEnumerable<ClientModel> GetClients()
         {
-            // Also used as a lame way to seed the database with some junk.
+            // Is called as is also used as a lame way to seed the database with some junk.
             var entityClients = Client.GenerateFakeData();
             return entityClients.Select(_modelEntityMapper.Mapper.Map<ClientModel>);
         }
 
         public IEnumerable<ClientModel> GetFilteredClients(string filter)
         {
-            // Should never get called in design time.
+            // Should never get called as this implementation is only used in design time.
             throw new NotImplementedException();
         }
 
         public void SetUpFakeData()
         {
-            // Should never get called as this implementation is only used in design time and for seeding the real repo with data.
+            // Should never get called as this implementation is only used in design time.
             throw new NotImplementedException();
         }
 
         public QuotationModel GetRandomQuotation()
+        {
+            // Should never get called as this implementation is only used in design time.
+            throw new NotImplementedException();
+        }
+
+        public ClientModel GetClientById(int clientId)
         {
             // Should never get called as this implementation is only used in design time.
             throw new NotImplementedException();
