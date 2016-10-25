@@ -80,6 +80,8 @@
     </Style>
 
     <ImageBrush x:Key="BackButtonImageBrush" ImageSource="../Resources/back.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="BackGreyButtonImageBrush" ImageSource="../Resources/back-grey.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="BackPurpleButtonImageBrush" ImageSource="../Resources/back-purple.png" Stretch="Uniform"/>
 
     <Style x:Key="BackButton" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource BackButtonImageBrush}"/>
@@ -96,12 +98,17 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource BackButtonImageBrush}"/>
+                <Setter Property="Background" Value="{StaticResource BackPurpleButtonImageBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource BackGreyButtonImageBrush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <ImageBrush x:Key="ForwardButtonImageBrush" ImageSource="../Resources/forward.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="ForwardGreyButtonImageBrush" ImageSource="../Resources/forward-grey.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="ForwardPurpleButtonImageBrush" ImageSource="../Resources/forward-purple.png" Stretch="Uniform"/>
 
     <Style x:Key="ForwardButton" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource ForwardButtonImageBrush}"/>
@@ -118,7 +125,64 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource ForwardButtonImageBrush}"/>
+                <Setter Property="Background" Value="{StaticResource ForwardPurpleButtonImageBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource ForwardGreyButtonImageBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <ImageBrush x:Key="UndoButtonImageBrush" ImageSource="../Resources/undo.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="UndoGreyButtonImageBrush" ImageSource="../Resources/undo-grey.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="UndoPurpleButtonImageBrush" ImageSource="../Resources/undo-purple.png" Stretch="Uniform"/>
+
+    <Style x:Key="UndoButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource UndoButtonImageBrush}"/>
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource UndoPurpleButtonImageBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource UndoGreyButtonImageBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <ImageBrush x:Key="RedoButtonImageBrush" ImageSource="../Resources/redo.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="RedoGreyButtonImageBrush" ImageSource="../Resources/redo-grey.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="RedoPurpleButtonImageBrush" ImageSource="../Resources/redo-purple.png" Stretch="Uniform"/>
+
+    <Style x:Key="RedoButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource RedoButtonImageBrush}"/>
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource RedoPurpleButtonImageBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource RedoGreyButtonImageBrush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>

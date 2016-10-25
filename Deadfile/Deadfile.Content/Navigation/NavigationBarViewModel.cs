@@ -18,12 +18,16 @@ namespace Deadfile.Content.Navigation
         private readonly DelegateCommand backCommand;
         private readonly DelegateCommand homeCommand;
         private readonly DelegateCommand forwardCommand;
+        private readonly DelegateCommand undoCommand;
+        private readonly DelegateCommand redoCommand;
         public NavigationBarViewModel(IEventAggregator eventAggregator)
         {
             eventAggregator.GetEvent<NavigationEvent>().Subscribe(Navigated);
             backCommand = new DelegateCommand(NavigateBack, CanNavigateBack);
             homeCommand = new DelegateCommand(NavigateHome, CanNavigateBack);
             forwardCommand=new DelegateCommand(NavigateForward, CanNavigateForward);
+            undoCommand = new DelegateCommand(PerformUndo, CanUndo);
+            redoCommand = new DelegateCommand(PerformRedo, CanRedo);
         }
         private void Navigated(IRegionNavigationJournal navigationJournal)
         {
@@ -37,6 +41,10 @@ namespace Deadfile.Content.Navigation
         public ICommand HomeCommand { get { return homeCommand; } }
 
         public ICommand ForwardCommand { get { return forwardCommand; } }
+
+        public ICommand UndoCommand { get { return undoCommand; } }
+
+        public ICommand RedoCommand { get { return redoCommand; } }
 
         private void NavigateBack()
         {
@@ -75,6 +83,26 @@ namespace Deadfile.Content.Navigation
         private bool CanNavigateForward()
         {
             return (navigationJournal != null) && (navigationJournal.CanGoForward);
+        }
+
+        private void PerformUndo()
+        {
+            
+        }
+
+        private bool CanUndo()
+        {
+            return false;
+        }
+
+        private void PerformRedo()
+        {
+
+        }
+
+        private bool CanRedo()
+        {
+            return false;
         }
     }
 }

@@ -34,17 +34,15 @@ namespace Deadfile.Content.Browser
                 {
                     switch (_selectedItem.ModelType)
                     {
+                        //TODO Deal with failures of all these...? By just not allowing the selection change?
                         case BrowserModelType.Client:
-                            var clientModel = _repository.GetClientById(_selectedItem.Id);
-                            EventAggregator.GetEvent<SelectedClientEvent>().Publish(clientModel);
+                            EventAggregator.GetEvent<SelectedClientEvent>().Publish(_selectedItem.Id);
                             break;
                         case BrowserModelType.Job:
-                            var jobModel = _repository.GetJobById(_selectedItem.Id);
-                            EventAggregator.GetEvent<SelectedJobEvent>().Publish(jobModel);
+                            EventAggregator.GetEvent<SelectedJobEvent>().Publish(_selectedItem.Id);
                             break;
                         case BrowserModelType.Invoice:
-                            var invoiceModel = _repository.GetInvoiceById(_selectedItem.Id);
-                            EventAggregator.GetEvent<SelectedInvoiceEvent>().Publish(invoiceModel);
+                            EventAggregator.GetEvent<SelectedInvoiceEvent>().Publish(_selectedItem.Id);
                             break;
                     }
                 }

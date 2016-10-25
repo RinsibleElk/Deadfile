@@ -16,10 +16,17 @@ using Prism.Regions;
 
 namespace Deadfile.Content.Clients
 {
-    public class ClientsPageViewModel : ContentViewModelBase, IClientsPageViewModel
+    public class ClientsPageViewModel : ParameterisedContentViewModelBase<int>, IClientsPageViewModel
     {
-        public ClientsPageViewModel(IEventAggregator eventAggregator, IDeadfileNavigationService navigationService) : base(eventAggregator, navigationService)
+        private readonly IDeadfileRepository _repository;
+        public ClientsPageViewModel(
+            IEventAggregator eventAggregator,
+            IDeadfileNavigationService navigationService,
+            IDeadfileRepository repository,
+            INavigationParameterMapper mapper)
+            : base(eventAggregator, navigationService, mapper)
         {
+            _repository = repository;
         }
 
         public override Experience Experience
@@ -31,35 +38,40 @@ namespace Deadfile.Content.Clients
         public ClientModel SelectedClient
         {
             get { return _selectedClient; }
-            set { SetProperty(ref _selectedClient, value); }
+            set
+            {
+                // Careful - we don't want to use ReferenceEquals here!!!
+                if ((_selectedClient == null) || (value == null) || (_selectedClient.ClientId != value.ClientId))
+                    SetProperty(ref _selectedClient, value);
+            }
         }
 
-        private ICollectionView _clients;
-        public ICollectionView Clients
+        private SubscriptionToken _navigateToSelectedClientSubscriptionToken = null;
+        public override void OnNavigatedTo(NavigationContext navigationContext, int selectedClientId)
         {
-            get { return _clients; }
-            set { SetProperty(ref _clients, value); }
-        }
+            //TODO This could fail!!! We'd have to navigate back...
+            if (selectedClientId == ClientModel.NewClientId)
+                SelectedClient = null;
+            else
+                SelectedClient = _repository.GetClientById(selectedClientId);
 
-        private SubscriptionToken _selectedClientChangedSubscriptionToken = null;
-        public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
             // subscribe to messages from the browser pane
-            _selectedClientChangedSubscriptionToken = EventAggregator.GetEvent<SelectedClientEvent>().Subscribe(SelectedClientChanged);
-            base.OnNavigatedTo(navigationContext);
+            if (_navigateToSelectedClientSubscriptionToken == null)
+                _navigateToSelectedClientSubscriptionToken = EventAggregator.GetEvent<SelectedClientEvent>().Subscribe(NavigateToClientsPage);
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
         {
             // unsubscribe to messages from the browser pane
-            EventAggregator.GetEvent<SelectedClientEvent>().Unsubscribe(_selectedClientChangedSubscriptionToken);
-            _selectedClientChangedSubscriptionToken = null;
+            EventAggregator.GetEvent<SelectedClientEvent>().Unsubscribe(_navigateToSelectedClientSubscriptionToken);
+            _navigateToSelectedClientSubscriptionToken = null;
+
             base.OnNavigatedFrom(navigationContext);
         }
 
-        private void SelectedClientChanged(ClientModel selectedClient)
+        private void NavigateToClientsPage(int selectedClientId)
         {
-            SelectedClient = selectedClient;
+            NavigationService.NavigateTo(Experience.Clients, selectedClientId);
         }
 
         private bool _editable = false;
@@ -68,6 +80,5 @@ namespace Deadfile.Content.Clients
             get { return _editable; }
             set { SetProperty(ref _editable, value); }
         }
-
     }
 }

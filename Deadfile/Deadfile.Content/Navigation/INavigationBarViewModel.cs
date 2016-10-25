@@ -23,5 +23,16 @@ namespace Deadfile.Content.Navigation
         /// Navigate the ContentRegion forward.
         /// </summary>
         ICommand ForwardCommand { get; }
+
+        /// <summary>
+        /// Undo any undoable actions in the ContentRegion.
+        /// </summary>
+        ICommand UndoCommand { get; }
+
+        /// <summary>
+        /// Redo any redoable actions in the ContentRegion.
+        /// </summary>
+        ICommand RedoCommand { get; }
+
     }
 }

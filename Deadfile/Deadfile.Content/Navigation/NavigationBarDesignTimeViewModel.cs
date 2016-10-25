@@ -13,5 +13,7 @@ namespace Deadfile.Content.Navigation
         public ICommand BackCommand { get; } = null;
         public ICommand HomeCommand { get; } = null;
         public ICommand ForwardCommand { get; } = null;
+        public ICommand UndoCommand { get; } = null;
+        public ICommand RedoCommand { get; } = null;
     }
 }
