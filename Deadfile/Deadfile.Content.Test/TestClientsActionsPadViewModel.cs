@@ -31,8 +31,8 @@ namespace Deadfile.Content.Test
             viewModel.EditClientCommand.Execute(null);
 
             // Checks.
-            eventAggregatorMock.Verify();
-            editClientEventMock.Verify();
+            eventAggregatorMock.VerifyAll();
+            editClientEventMock.VerifyAll();
         }
     }
 }

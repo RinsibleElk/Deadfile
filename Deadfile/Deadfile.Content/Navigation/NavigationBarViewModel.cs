@@ -22,6 +22,7 @@ namespace Deadfile.Content.Navigation
         private readonly DelegateCommand _forwardCommand;
         private readonly DelegateCommand _undoCommand;
         private readonly DelegateCommand _redoCommand;
+        private bool _browsingEnabled = true;
         private bool _canUndo = false;
         private bool _canRedo = false;
         public NavigationBarViewModel(IEventAggregator eventAggregator)
@@ -35,6 +36,15 @@ namespace Deadfile.Content.Navigation
             _redoCommand = new DelegateCommand(PerformRedo, CanRedo);
             eventAggregator.GetEvent<CanUndoEvent>().Subscribe(UpdateCanUndo);
             eventAggregator.GetEvent<CanRedoEvent>().Subscribe(UpdateCanRedo);
+            eventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(UpdateBrowsingEnabled);
+        }
+
+        private void UpdateBrowsingEnabled(bool enabled)
+        {
+            _browsingEnabled = enabled;
+            _homeCommand.RaiseCanExecuteChanged();
+            _backCommand.RaiseCanExecuteChanged();
+            _forwardCommand.RaiseCanExecuteChanged();
         }
 
         private void UpdateCanUndo(bool canUndo)
@@ -97,12 +107,12 @@ namespace Deadfile.Content.Navigation
         }
         private bool CanNavigateBack()
         {
-            return (_navigationJournal != null) && (_navigationJournal.CanGoBack);
+            return _browsingEnabled && (_navigationJournal != null) && (_navigationJournal.CanGoBack);
         }
 
         private bool CanNavigateForward()
         {
-            return (_navigationJournal != null) && (_navigationJournal.CanGoForward);
+            return _browsingEnabled && (_navigationJournal != null) && (_navigationJournal.CanGoForward);
         }
 
         private void PerformUndo()
