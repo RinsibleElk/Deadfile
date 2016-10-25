@@ -62,6 +62,7 @@
     <Compile Include="Browser\BrowserJob.cs" />
     <Compile Include="Browser\BrowserModel.cs" />
     <Compile Include="Browser\BrowserModelType.cs" />
+    <Compile Include="Browser\FilterSettings.cs" />
     <Compile Include="ClientModel.cs" />
     <Compile Include="DeadfileRepository.cs" />
     <Compile Include="DesignTime\DeadfileDesignTimeRepository.cs" />

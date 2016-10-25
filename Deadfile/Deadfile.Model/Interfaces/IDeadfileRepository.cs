@@ -34,7 +34,7 @@ namespace Deadfile.Model.Interfaces
         void SetUpFakeData();
 
         /// <summary>
-        /// Run on a one minute timer, used to retrieve a random quotation and display it to the user for a bit of fun.
+        /// Run on a 30 second timer, used to retrieve a random quotation and display it to the user for a bit of fun.
         /// </summary>
         /// <returns></returns>
         QuotationModel GetRandomQuotation();

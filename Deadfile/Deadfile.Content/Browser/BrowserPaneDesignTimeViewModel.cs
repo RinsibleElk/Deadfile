@@ -20,5 +20,6 @@ namespace Deadfile.Content.Browser
         public ObservableCollection<BrowserClient> Clients { get; set; }
         public string FilterText { get; set; }
         public BrowserModel SelectedItem { get; set; }
+        public FilterSettings FilterSettings { get; set; } = new FilterSettings();
     }
 }

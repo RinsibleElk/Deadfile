@@ -14,5 +14,6 @@ namespace Deadfile.Content.Home
     public interface IHomePageViewModel : IDeadfileViewModel
     {
         ICommand ClientsCommand { get; }
+
     }
 }

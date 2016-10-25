@@ -61,5 +61,13 @@ namespace Deadfile.Content.Clients
         {
             SelectedClient = selectedClient;
         }
+
+        private bool _editable = false;
+        public bool Editable
+        {
+            get { return _editable; }
+            set { SetProperty(ref _editable, value); }
+        }
+
     }
 }

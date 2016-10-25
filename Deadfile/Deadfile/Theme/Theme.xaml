@@ -7,9 +7,9 @@
         <GradientStop Color="#FF5A7CA0" Offset="0.992"/>
         <GradientStop Color="#FF5882A7" Offset="0.085"/>
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="BrowserBackground"  EndPoint="0.5,1" StartPoint="0.5,0">
-        <GradientStop Color="#CEFFDEFF" Offset="0"/>
-        <GradientStop Color="#CEFF7CA0" Offset="0.992"/>
-        <GradientStop Color="#CEFF82A7" Offset="0.085"/>
+    <LinearGradientBrush x:Key="BrowserBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#33FFFFFF" Offset="0"/>
+        <GradientStop Color="#33000000" Offset="0.992"/>
+        <GradientStop Color="#33000000" Offset="0.085"/>
     </LinearGradientBrush>
 </ResourceDictionary>

@@ -3,34 +3,42 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <Style x:Key="TreeViewTransparentBackground" TargetType="TreeView">
-        <Setter Property="OverridesDefaultStyle"
-          Value="True" />
-        <Setter Property="SnapsToDevicePixels"
-          Value="True" />
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
-          Value="Auto" />
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
-          Value="Auto" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TreeView">
-                    <Border Name="Border"
-                            CornerRadius="1"
-                            BorderThickness="1">
+                    <Border Name="Border" CornerRadius="1" BorderThickness="1">
                         <Border.BorderBrush>
                             <SolidColorBrush Color="Transparent" />
                         </Border.BorderBrush>
                         <Border.Background>
                             <SolidColorBrush Color="Transparent" />
                         </Border.Background>
-                        <ScrollViewer Focusable="False"
-                                    CanContentScroll="False"
-                                    Padding="4">
+                        <ScrollViewer Focusable="False" CanContentScroll="False" Padding="4">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    <Style x:Key="QuotationPhrase" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontFamily" Value="Calibri"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+    </Style>
+    <Style x:Key="QuotationAuthor" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="DarkBlue"/>
+        <Setter Property="FontFamily" Value="Calibri"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <Style x:Key="BrowserBorder" TargetType="Border">
+        <Setter Property="BorderBrush" Value="DarkGray"/>
+        <Setter Property="BorderThickness" Value="1"/>
     </Style>
 </ResourceDictionary>

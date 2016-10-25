@@ -71,5 +71,12 @@ namespace Deadfile.Content.Browser
                 }
             }
         }
+
+        private FilterSettings _filterSettings = new FilterSettings();
+        public FilterSettings FilterSettings
+        {
+            get { return _filterSettings; }
+            set { SetProperty(ref _filterSettings, value); }
+        }
     }
 }

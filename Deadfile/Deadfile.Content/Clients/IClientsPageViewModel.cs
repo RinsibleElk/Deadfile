@@ -13,5 +13,6 @@ namespace Deadfile.Content.Clients
     public interface IClientsPageViewModel : IDeadfileViewModel
     {
         ClientModel SelectedClient { get; set; }
+        bool Editable { get; }
     }
 }

@@ -27,5 +27,7 @@ namespace Deadfile.Content.Clients
         public Experience Experience { get { return Experience.Clients; } }
 
         public string Title { get; set; }
+
+        public bool Editable { get; } = false;
     }
 }

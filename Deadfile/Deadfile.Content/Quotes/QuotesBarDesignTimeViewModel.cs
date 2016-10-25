@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Deadfile.Content.Interfaces;
 using Deadfile.Model;
 
@@ -15,5 +16,7 @@ namespace Deadfile.Content.Quotes
             Author = "Homer Simpson",
             Phrase = "You tried your best and you failed miserably. The lesson is: Never try."
         };
+
+        public ICommand NextQuotationCommand { get; } = null;
     }
 }

@@ -20,17 +20,41 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0">Name:</TextBlock>
-        <TextBlock Grid.Row="1" Grid.Column="0">Address:</TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="0">Phone Numbers:</TextBlock>
-        <TextBlock Grid.Row="3" Grid.Column="0">E-mail Address:</TextBlock>
-        <TextBlock Grid.Row="4" Grid.Column="0">Notes:</TextBlock>
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedClient.FullNameWithTitle}"></TextBlock>
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedClient.FullAddress}"></TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedClient.PhoneNumbers}"></TextBlock>
-        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedClient.EmailAddress}"></TextBlock>
-        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedClient.Notes}"></TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="0">Title:</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0">First Name:</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0">Middle Names:</TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="0">Last Name:</TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="0">Address Line 1:</TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="0">Address Line 2:</TextBlock>
+        <TextBlock Grid.Row="6" Grid.Column="0">Address Line 3:</TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="0">Post Code:</TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="0">Phone Number 1:</TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="0">Phone Number 2:</TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="0">Phone Number 3:</TextBlock>
+        <TextBlock Grid.Row="11" Grid.Column="0">Email Address:</TextBlock>
+        <TextBlock Grid.Row="12" Grid.Column="0">Notes:</TextBlock>
+        <TextBox Grid.Row="0" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding SelectedClient.Title, Mode=TwoWay}"></TextBox>
+        <TextBox Grid.Row="1" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding SelectedClient.FirstName, Mode=TwoWay}"></TextBox>
+        <TextBox Grid.Row="2" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding SelectedClient.MiddleNames, Mode=TwoWay}"></TextBox>
+        <TextBox Grid.Row="3" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding SelectedClient.LastName, Mode=TwoWay}"></TextBox>
+        <TextBox Grid.Row="4" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding SelectedClient.AddressFirstLine, Mode=TwoWay}"></TextBox>
+        <TextBox Grid.Row="5" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding SelectedClient.AddressSecondLine, Mode=TwoWay}"></TextBox>
+        <TextBox Grid.Row="6" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding SelectedClient.AddressThirdLine, Mode=TwoWay}"></TextBox>
+        <TextBox Grid.Row="7" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding SelectedClient.AddressPostCode, Mode=TwoWay}"></TextBox>
+        <TextBox Grid.Row="8" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding SelectedClient.PhoneNumber1, Mode=TwoWay}"></TextBox>
+        <TextBox Grid.Row="9" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding SelectedClient.PhoneNumber2, Mode=TwoWay}"></TextBox>
+        <TextBox Grid.Row="10" Grid.Column="1" IsEnabled="{Binding Editable}" Text="{Binding SelectedClient.PhoneNumber3, Mode=TwoWay}"></TextBox>
+        <TextBox Grid.Row="11" Grid.Column="1" IsEnabled="{Binding Editable}" Text="{Binding SelectedClient.EmailAddress, Mode=TwoWay}"></TextBox>
+        <TextBox Grid.Row="12" Grid.Column="1" IsEnabled="{Binding Editable}" Text="{Binding SelectedClient.Notes, Mode=TwoWay}"></TextBox>
     </Grid>
 </UserControl>

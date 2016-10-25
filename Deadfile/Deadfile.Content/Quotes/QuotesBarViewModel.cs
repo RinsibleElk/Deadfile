@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Threading;
 using Deadfile.Content.Interfaces;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
+using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Deadfile.Content.Quotes
@@ -14,17 +16,12 @@ namespace Deadfile.Content.Quotes
     public sealed class QuotesBarViewModel : BindableBase, IQuotesBarViewModel
     {
         private readonly IDeadfileRepository _repository;
-        public QuotesBarViewModel(IDeadfileRepository repository)
+        public QuotesBarViewModel(IDeadfileRepository repository, IQuotationsTimerService quotationsTimerService)
         {
             _repository = repository;
             SetNewRandomQuotation();
-            var timer =
-                new DispatcherTimer(
-                    TimeSpan.FromSeconds(10),
-                    DispatcherPriority.ApplicationIdle,
-                    SetNewRandomQuotationHandler,
-                    Dispatcher.CurrentDispatcher);
-            timer.Start();
+            quotationsTimerService.StartTimer(SetNewRandomQuotationHandler);
+            _nextQuotationCommand = new DelegateCommand(SetNewRandomQuotation);
         }
 
         private void SetNewRandomQuotation()
@@ -43,5 +40,9 @@ namespace Deadfile.Content.Quotes
             get { return _quotation; }
             set { SetProperty(ref _quotation, value); }
         }
+
+        private readonly DelegateCommand _nextQuotationCommand;
+
+        public ICommand NextQuotationCommand { get { return _nextQuotationCommand; } }
     }
 }

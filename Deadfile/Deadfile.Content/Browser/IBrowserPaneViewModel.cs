@@ -25,5 +25,10 @@ namespace Deadfile.Content.Browser
         /// Binding for the selected item. Used to pass information between the Browser and the Content.
         /// </summary>
         BrowserModel SelectedItem { get; set; }
+
+        /// <summary>
+        /// User settings for filtering.
+        /// </summary>
+        FilterSettings FilterSettings { get; set; }
     }
 }

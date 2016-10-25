@@ -107,9 +107,11 @@
     <Compile Include="Events\SelectedJobEvent.cs" />
     <Compile Include="Home\HomeActionsPadDesignTimeViewModel.cs" />
     <Compile Include="Interfaces\INavigationParameterMapper.cs" />
+    <Compile Include="Interfaces\IQuotationsTimerService.cs" />
     <Compile Include="Navigation\NavigationBarDesignTimeViewModel.cs" />
     <Compile Include="Home\HomePageDesignTimeViewModel.cs" />
     <Compile Include="Navigation\NavigationParameterMapper.cs" />
+    <Compile Include="Quotes\QuotationsTimerService.cs" />
     <Compile Include="Quotes\QuotesBarDesignTimeViewModel.cs" />
     <Compile Include="Events\SelectedClientEvent.cs" />
     <Compile Include="Events\NavigationEvent.cs" />

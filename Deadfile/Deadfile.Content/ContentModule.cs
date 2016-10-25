@@ -53,6 +53,7 @@ namespace Deadfile.Content
             _regionManager.RegisterViewWithRegion(RegionNames.NavigationRegion, typeof(NavigationBar));
 
             // This excludes the quotes region from Journaling.
+            _unityContainer.RegisterType<IQuotationsTimerService, QuotationsTimerService>();
             _regionManager.RegisterViewWithRegion(RegionNames.QuotesRegion, typeof(QuotesBar));
         }
     }
