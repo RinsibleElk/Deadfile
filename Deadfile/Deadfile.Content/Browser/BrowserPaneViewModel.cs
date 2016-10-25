@@ -11,41 +11,27 @@ using Deadfile.Content.ViewModels;
 using Deadfile.Model.Browser;
 using Deadfile.Model.Interfaces;
 using Prism.Events;
+using Prism.Mvvm;
 using Prism.Regions;
 
 namespace Deadfile.Content.Browser
 {
-    public sealed class BrowserPaneViewModel : ViewModelBase, IBrowserPaneViewModel
+    public sealed class BrowserPaneViewModel : BindableBase, IBrowserPaneViewModel
     {
+        private readonly IEventAggregator _eventAggregator;
         private readonly IDeadfileRepository _repository;
-        public BrowserPaneViewModel(IEventAggregator eventAggregator, IDeadfileRepository repository) : base(eventAggregator)
+        public BrowserPaneViewModel(IEventAggregator eventAggregator, IDeadfileRepository repository)
         {
             _repository = repository;
+            _eventAggregator = eventAggregator;
             Clients = new ObservableCollection<BrowserClient>(_repository.GetBrowserClients(null));
+            eventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(LockedForEditingAction);
         }
 
-        private SubscriptionToken _navigationEnabledSubscriptionToken = null;
-        public override void OnNavigatedTo(NavigationContext navigationContext)
+
+        private void LockedForEditingAction(bool isLocked)
         {
-            base.OnNavigatedTo(navigationContext);
-
-            // Subscribe to event from the content page.
-            _navigationEnabledSubscriptionToken =
-                EventAggregator.GetEvent<NavigationEnabledEvent>().Subscribe(NavigationEnabledAction);
-        }
-
-        private void NavigationEnabledAction(bool enabled)
-        {
-            BrowsingEnabled = enabled;
-        }
-
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            base.OnNavigatedFrom(navigationContext);
-
-            // Unsubscribe to event from the content page.
-            EventAggregator.GetEvent<NavigationEnabledEvent>().Unsubscribe(_navigationEnabledSubscriptionToken);
-            _navigationEnabledSubscriptionToken = null;
+            BrowsingEnabled = !isLocked;
         }
 
         private BrowserModel _selectedItem;
@@ -60,13 +46,13 @@ namespace Deadfile.Content.Browser
                     {
                         //TODO Deal with failures of all these...? By just not allowing the selection change?
                         case BrowserModelType.Client:
-                            EventAggregator.GetEvent<SelectedClientEvent>().Publish(_selectedItem.Id);
+                            _eventAggregator.GetEvent<SelectedClientEvent>().Publish(_selectedItem.Id);
                             break;
                         case BrowserModelType.Job:
-                            EventAggregator.GetEvent<SelectedJobEvent>().Publish(_selectedItem.Id);
+                            _eventAggregator.GetEvent<SelectedJobEvent>().Publish(_selectedItem.Id);
                             break;
                         case BrowserModelType.Invoice:
-                            EventAggregator.GetEvent<SelectedInvoiceEvent>().Publish(_selectedItem.Id);
+                            _eventAggregator.GetEvent<SelectedInvoiceEvent>().Publish(_selectedItem.Id);
                             break;
                     }
                 }
@@ -105,7 +91,10 @@ namespace Deadfile.Content.Browser
         public bool BrowsingEnabled
         {
             get { return _browsingEnabled; }
-            set { SetProperty(ref _browsingEnabled, value); }
+            set
+            {
+                SetProperty(ref _browsingEnabled, value);
+            }
         }
     }
 }

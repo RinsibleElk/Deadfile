@@ -10,7 +10,7 @@ namespace Deadfile.Content.Events
     /// <summary>
     /// Used to communicate between ContentRegion and BrowserRegion.
     /// </summary>
-    public class CanRedoEvent : PubSubEvent<bool>
+    internal class CanRedoEvent : PubSubEvent<bool>
     {
     }
 }

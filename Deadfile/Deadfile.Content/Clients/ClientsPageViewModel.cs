@@ -128,6 +128,9 @@ namespace Deadfile.Content.Clients
                         // browser of CanUndo/CanRedo changes.
                         _undoTracker.PropertyChanged -= UndoTrackerPropertyChanged;
                     }
+
+                    // Only fire when it changes.
+                    EventAggregator.GetEvent<LockedForEditingEvent>().Publish(_editable);
                 }
             }
         }

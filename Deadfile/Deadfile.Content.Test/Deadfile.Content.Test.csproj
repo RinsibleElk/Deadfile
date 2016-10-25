@@ -93,6 +93,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="TestBrowserPaneViewModel.cs" />
+    <Compile Include="TestClientsActionsPadViewModel.cs" />
     <Compile Include="TestNavigationParameterMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestUndoTracker.cs" />

@@ -105,7 +105,7 @@
     <Compile Include="Clients\ClientsPageDesignTimeViewModel.cs" />
     <Compile Include="Events\CanRedoEvent.cs" />
     <Compile Include="Events\CanUndoEvent.cs" />
-    <Compile Include="Events\NavigationEnabledEvent.cs" />
+    <Compile Include="Events\LockedForEditingEvent.cs" />
     <Compile Include="Events\EditClientEvent.cs" />
     <Compile Include="Events\RedoEvent.cs" />
     <Compile Include="Events\SelectedInvoiceEvent.cs" />

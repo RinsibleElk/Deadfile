@@ -34,14 +34,14 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <CheckBox Grid.Column="0" IsChecked="{Binding FilterSettings.IncludeInactiveEnabled, Mode=TwoWay}">Inactive</CheckBox>
-                    <CheckBox Grid.Column="1" IsChecked="{Binding FilterSettings.FilterByJobEnabled, Mode=TwoWay}">Job</CheckBox>
-                    <CheckBox Grid.Column="2" IsChecked="{Binding FilterSettings.FilterByInvoiceEnabled, Mode=TwoWay}">Invoice</CheckBox>
+                    <CheckBox Grid.Column="0" IsEnabled="{Binding BrowsingEnabled}" IsChecked="{Binding FilterSettings.IncludeInactiveEnabled, Mode=TwoWay}">Inactive</CheckBox>
+                    <CheckBox Grid.Column="1" IsEnabled="{Binding BrowsingEnabled}" IsChecked="{Binding FilterSettings.FilterByJobEnabled, Mode=TwoWay}">Job</CheckBox>
+                    <CheckBox Grid.Column="2" IsEnabled="{Binding BrowsingEnabled}" IsChecked="{Binding FilterSettings.FilterByInvoiceEnabled, Mode=TwoWay}">Invoice</CheckBox>
                 </Grid>
                 <Label Grid.Row="1" Grid.Column="0">Filter:</Label>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <TextBox Grid.Row="1" Grid.Column="1" IsEnabled="{Binding BrowsingEnabled}" Text="{Binding FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </Grid>
-            <TreeView Grid.Row="1" IsEnabled="{Binding BrowsingEnabled}" ItemsSource="{Binding Clients}" Style="{StaticResource TreeViewTransparentBackground}">
+            <TreeView Grid.Row="1" IsEnabled="{Binding BrowsingEnabled}"  ItemsSource="{Binding Clients}" Style="{StaticResource TreeViewTransparentBackground}">
                 <i:Interaction.Behaviors>
                     <behaviors:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
                 </i:Interaction.Behaviors>

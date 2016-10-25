@@ -28,10 +28,34 @@ namespace Deadfile.Content.Clients
         public ClientsActionsPadViewModel(IEventAggregator eventAggregator, IDeadfileNavigationService navigationService) : base(eventAggregator)
         {
             _navigationService = navigationService;
-            _addClientCommand = new DelegateCommand(AddClientAction);
-            _editClientCommand = new DelegateCommand(EditClientAction);
-            _saveClientCommand = new DelegateCommand(SaveClientAction);
-            _deleteClientCommand = new DelegateCommand(DeleteClientAction);
+            _addClientCommand = new DelegateCommand(AddClientAction, CanAddClient);
+            _editClientCommand = new DelegateCommand(EditClientAction, CanEditClient);
+            _saveClientCommand = new DelegateCommand(SaveClientAction, CanSaveClient);
+            _deleteClientCommand = new DelegateCommand(DeleteClientAction, CanDeleteClient);
+        }
+
+        private bool CanDeleteClient()
+        {
+            //TODO
+            return true;
+        }
+
+        private bool CanSaveClient()
+        {
+            //TODO
+            return false;
+        }
+
+        private bool CanEditClient()
+        {
+            //TODO
+            return true;
+        }
+
+        private bool CanAddClient()
+        {
+            //TODO
+            return true;
         }
 
         public ICommand AddClientCommand { get { return _addClientCommand; } }
@@ -41,7 +65,8 @@ namespace Deadfile.Content.Clients
 
         private void EditClientAction()
         {
-            EventAggregator.GetEvent<EditClientEvent>().Publish();
+            var lfee= EventAggregator.GetEvent<EditClientEvent>();
+            lfee.Publish();
         }
 
         private void AddClientAction()

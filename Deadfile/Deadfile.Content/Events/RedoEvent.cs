@@ -7,7 +7,7 @@ using Prism.Events;
 
 namespace Deadfile.Content.Events
 {
-    public class RedoEvent : PubSubEvent
+    internal class RedoEvent : PubSubEvent
     {
     }
 }
