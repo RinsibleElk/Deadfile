@@ -8,10 +8,11 @@
               prism:ViewModelLocator.AutoWireViewModel="True"
               mc:Ignorable="d"
               d:DataContext="{d:DesignInstance Type=navigation:NavigationBarDesignTimeViewModel, IsDesignTimeCreatable=True}"
-              d:DesignHeight="20" d:DesignWidth="400">
-    <StackPanel Orientation="Horizontal">
-        <Button Command="{Binding HomeCommand}" Width="100">Home</Button>
-        <Button Command="{Binding BackCommand}" Width="100">Back</Button>
-        <Button Command="{Binding ForwardCommand}" Width="100">Forward</Button>
+              d:DesignHeight="50" d:DesignWidth="400"
+              Background="Transparent">
+    <StackPanel Orientation="Horizontal" Background="Transparent">
+        <Button Command="{Binding HomeCommand}" Style="{StaticResource HomeButton}" />
+        <Button Command="{Binding BackCommand}" Style="{StaticResource BackButton}" />
+        <Button Command="{Binding ForwardCommand}" Style="{StaticResource ForwardButton}" />
     </StackPanel>
 </UserControl>
