@@ -22,7 +22,7 @@ namespace Deadfile.Content.Navigation
         private readonly DelegateCommand _forwardCommand;
         private readonly DelegateCommand _undoCommand;
         private readonly DelegateCommand _redoCommand;
-        private bool _browsingEnabled = true;
+        private bool _lockedForEditing = false;
         private bool _canUndo = false;
         private bool _canRedo = false;
         public NavigationBarViewModel(IEventAggregator eventAggregator)
@@ -36,12 +36,12 @@ namespace Deadfile.Content.Navigation
             _redoCommand = new DelegateCommand(PerformRedo, CanRedo);
             eventAggregator.GetEvent<CanUndoEvent>().Subscribe(UpdateCanUndo);
             eventAggregator.GetEvent<CanRedoEvent>().Subscribe(UpdateCanRedo);
-            eventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(UpdateBrowsingEnabled);
+            eventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(UpdateLockedForEditing);
         }
 
-        private void UpdateBrowsingEnabled(bool enabled)
+        private void UpdateLockedForEditing(bool lockedForEditing)
         {
-            _browsingEnabled = enabled;
+            _lockedForEditing = lockedForEditing;
             _homeCommand.RaiseCanExecuteChanged();
             _backCommand.RaiseCanExecuteChanged();
             _forwardCommand.RaiseCanExecuteChanged();
@@ -107,12 +107,12 @@ namespace Deadfile.Content.Navigation
         }
         private bool CanNavigateBack()
         {
-            return _browsingEnabled && (_navigationJournal != null) && (_navigationJournal.CanGoBack);
+            return (!_lockedForEditing) && (_navigationJournal != null) && (_navigationJournal.CanGoBack);
         }
 
         private bool CanNavigateForward()
         {
-            return _browsingEnabled && (_navigationJournal != null) && (_navigationJournal.CanGoForward);
+            return (!_lockedForEditing) && (_navigationJournal != null) && (_navigationJournal.CanGoForward);
         }
 
         private void PerformUndo()
