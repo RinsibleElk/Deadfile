@@ -14,7 +14,9 @@ namespace Deadfile.Content.Clients
 {
     sealed class ClientsActionsPadDesignTimeViewModel : IClientsActionsPadViewModel
     {
-        public ICommand NewClientCommand { get; } = null;
+        public ICommand AddClientCommand { get; } = null;
         public ICommand EditClientCommand { get; } = null;
+        public ICommand SaveClientCommand { get; } = null;
+        public ICommand DeleteClientCommand { get; } = null;
     }
 }

@@ -21,5 +21,6 @@ namespace Deadfile.Content.Browser
         public string FilterText { get; set; }
         public BrowserModel SelectedItem { get; set; }
         public FilterSettings FilterSettings { get; set; } = new FilterSettings();
+        public bool BrowsingEnabled { get; set; } = true;
     }
 }

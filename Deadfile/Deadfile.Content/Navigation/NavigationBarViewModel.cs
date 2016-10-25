@@ -8,101 +8,121 @@ using Deadfile.Content.Events;
 using Deadfile.Content.Interfaces;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Mvvm;
 using Prism.Regions;
 
 namespace Deadfile.Content.Navigation
 {
-    public class NavigationBarViewModel : INavigationBarViewModel
+    public class NavigationBarViewModel : BindableBase, INavigationBarViewModel
     {
-        private IRegionNavigationJournal navigationJournal = null;
-        private readonly DelegateCommand backCommand;
-        private readonly DelegateCommand homeCommand;
-        private readonly DelegateCommand forwardCommand;
-        private readonly DelegateCommand undoCommand;
-        private readonly DelegateCommand redoCommand;
+        private IRegionNavigationJournal _navigationJournal = null;
+        private readonly IEventAggregator _eventAggregator;
+        private readonly DelegateCommand _backCommand;
+        private readonly DelegateCommand _homeCommand;
+        private readonly DelegateCommand _forwardCommand;
+        private readonly DelegateCommand _undoCommand;
+        private readonly DelegateCommand _redoCommand;
+        private bool _canUndo = false;
+        private bool _canRedo = false;
         public NavigationBarViewModel(IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             eventAggregator.GetEvent<NavigationEvent>().Subscribe(Navigated);
-            backCommand = new DelegateCommand(NavigateBack, CanNavigateBack);
-            homeCommand = new DelegateCommand(NavigateHome, CanNavigateBack);
-            forwardCommand=new DelegateCommand(NavigateForward, CanNavigateForward);
-            undoCommand = new DelegateCommand(PerformUndo, CanUndo);
-            redoCommand = new DelegateCommand(PerformRedo, CanRedo);
+            _backCommand = new DelegateCommand(NavigateBack, CanNavigateBack);
+            _homeCommand = new DelegateCommand(NavigateHome, CanNavigateBack);
+            _forwardCommand=new DelegateCommand(NavigateForward, CanNavigateForward);
+            _undoCommand = new DelegateCommand(PerformUndo, CanUndo);
+            _redoCommand = new DelegateCommand(PerformRedo, CanRedo);
+            eventAggregator.GetEvent<CanUndoEvent>().Subscribe(UpdateCanUndo);
+            eventAggregator.GetEvent<CanRedoEvent>().Subscribe(UpdateCanRedo);
         }
+
+        private void UpdateCanUndo(bool canUndo)
+        {
+            _canUndo = canUndo;
+            _undoCommand.RaiseCanExecuteChanged();
+        }
+
+        private void UpdateCanRedo(bool canRedo)
+        {
+            _canRedo = canRedo;
+            _redoCommand.RaiseCanExecuteChanged();
+        }
+
         private void Navigated(IRegionNavigationJournal navigationJournal)
         {
-            this.navigationJournal = navigationJournal;
-            backCommand.RaiseCanExecuteChanged();
-            homeCommand.RaiseCanExecuteChanged();
-            forwardCommand.RaiseCanExecuteChanged();
+            this._navigationJournal = navigationJournal;
+            _backCommand.RaiseCanExecuteChanged();
+            _homeCommand.RaiseCanExecuteChanged();
+            _forwardCommand.RaiseCanExecuteChanged();
         }
-        public ICommand BackCommand { get { return backCommand; } }
+        public ICommand BackCommand { get { return _backCommand; } }
 
-        public ICommand HomeCommand { get { return homeCommand; } }
+        public ICommand HomeCommand { get { return _homeCommand; } }
 
-        public ICommand ForwardCommand { get { return forwardCommand; } }
+        public ICommand ForwardCommand { get { return _forwardCommand; } }
 
-        public ICommand UndoCommand { get { return undoCommand; } }
+        public ICommand UndoCommand { get { return _undoCommand; } }
 
-        public ICommand RedoCommand { get { return redoCommand; } }
+        public ICommand RedoCommand { get { return _redoCommand; } }
 
         private void NavigateBack()
         {
-            if (navigationJournal != null)
+            if (_navigationJournal != null)
             {
-                navigationJournal.GoBack();
-                forwardCommand.RaiseCanExecuteChanged();
+                _navigationJournal.GoBack();
+                _forwardCommand.RaiseCanExecuteChanged();
             }
         }
 
         private void NavigateForward()
         {
-            if (navigationJournal != null)
+            if (_navigationJournal != null)
             {
-                navigationJournal.GoForward();
-                backCommand.RaiseCanExecuteChanged();
-                forwardCommand.RaiseCanExecuteChanged();
-                homeCommand.RaiseCanExecuteChanged();
+                _navigationJournal.GoForward();
+                _backCommand.RaiseCanExecuteChanged();
+                _forwardCommand.RaiseCanExecuteChanged();
+                _homeCommand.RaiseCanExecuteChanged();
             }
         }
 
         private void NavigateHome()
         {
-            if (navigationJournal != null)
+            if (_navigationJournal != null)
             {
-                while (navigationJournal.CanGoBack)
-                    navigationJournal.GoBack();
-                forwardCommand.RaiseCanExecuteChanged();
+                while (_navigationJournal.CanGoBack)
+                    _navigationJournal.GoBack();
+                _forwardCommand.RaiseCanExecuteChanged();
             }
         }
         private bool CanNavigateBack()
         {
-            return (navigationJournal != null) && (navigationJournal.CanGoBack);
+            return (_navigationJournal != null) && (_navigationJournal.CanGoBack);
         }
 
         private bool CanNavigateForward()
         {
-            return (navigationJournal != null) && (navigationJournal.CanGoForward);
+            return (_navigationJournal != null) && (_navigationJournal.CanGoForward);
         }
 
         private void PerformUndo()
         {
-            
+            _eventAggregator.GetEvent<UndoEvent>().Publish();
         }
 
         private bool CanUndo()
         {
-            return false;
+            return _canUndo;
         }
 
         private void PerformRedo()
         {
-
+            _eventAggregator.GetEvent<RedoEvent>().Publish();
         }
 
         private bool CanRedo()
         {
-            return false;
+            return _canRedo;
         }
     }
 }

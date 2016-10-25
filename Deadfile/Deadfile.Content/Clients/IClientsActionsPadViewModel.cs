@@ -11,7 +11,9 @@ namespace Deadfile.Content.Clients
 {
     public interface IClientsActionsPadViewModel
     {
-        ICommand NewClientCommand { get; }
+        ICommand AddClientCommand { get; }
         ICommand EditClientCommand { get; }
+        ICommand SaveClientCommand { get; }
+        ICommand DeleteClientCommand { get; }
     }
 }

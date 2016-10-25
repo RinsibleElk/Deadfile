@@ -41,7 +41,7 @@
                 <Label Grid.Row="1" Grid.Column="0">Filter:</Label>
                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </Grid>
-            <TreeView Grid.Row="1" ItemsSource="{Binding Clients}" Style="{StaticResource TreeViewTransparentBackground}">
+            <TreeView Grid.Row="1" IsEnabled="{Binding BrowsingEnabled}" ItemsSource="{Binding Clients}" Style="{StaticResource TreeViewTransparentBackground}">
                 <i:Interaction.Behaviors>
                     <behaviors:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
                 </i:Interaction.Behaviors>

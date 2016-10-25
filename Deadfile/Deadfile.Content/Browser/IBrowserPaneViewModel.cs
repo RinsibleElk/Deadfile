@@ -30,5 +30,10 @@ namespace Deadfile.Content.Browser
         /// User settings for filtering.
         /// </summary>
         FilterSettings FilterSettings { get; set; }
+
+        /// <summary>
+        /// If an entity is open for editing then browsing will be disabled.
+        /// </summary>
+        bool BrowsingEnabled { get; set; }
     }
 }

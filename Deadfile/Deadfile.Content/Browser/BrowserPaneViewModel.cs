@@ -24,6 +24,30 @@ namespace Deadfile.Content.Browser
             Clients = new ObservableCollection<BrowserClient>(_repository.GetBrowserClients(null));
         }
 
+        private SubscriptionToken _navigationEnabledSubscriptionToken = null;
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+
+            // Subscribe to event from the content page.
+            _navigationEnabledSubscriptionToken =
+                EventAggregator.GetEvent<NavigationEnabledEvent>().Subscribe(NavigationEnabledAction);
+        }
+
+        private void NavigationEnabledAction(bool enabled)
+        {
+            BrowsingEnabled = enabled;
+        }
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            base.OnNavigatedFrom(navigationContext);
+
+            // Unsubscribe to event from the content page.
+            EventAggregator.GetEvent<NavigationEnabledEvent>().Unsubscribe(_navigationEnabledSubscriptionToken);
+            _navigationEnabledSubscriptionToken = null;
+        }
+
         private BrowserModel _selectedItem;
         public BrowserModel SelectedItem
         {
@@ -75,6 +99,13 @@ namespace Deadfile.Content.Browser
         {
             get { return _filterSettings; }
             set { SetProperty(ref _filterSettings, value); }
+        }
+
+        private bool _browsingEnabled = true;
+        public bool BrowsingEnabled
+        {
+            get { return _browsingEnabled; }
+            set { SetProperty(ref _browsingEnabled, value); }
         }
     }
 }

@@ -9,9 +9,11 @@
               prism:ViewModelLocator.AutoWireViewModel="True"
               mc:Ignorable="d"
               d:DataContext="{d:DesignInstance Type=clients:ClientsActionsPadDesignTimeViewModel, IsDesignTimeCreatable=True}"
-              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
-        <Button Command="{Binding NewClientCommand}">New Client</Button>
-        <Button Command="{Binding EditClientCommand}">Edit Client</Button>
+              d:DesignHeight="100" d:DesignWidth="300">
+    <StackPanel Orientation="Horizontal">
+        <Button Command="{Binding AddClientCommand}" Style="{StaticResource AddButton}"/>
+        <Button Command="{Binding EditClientCommand}" Style="{StaticResource EditButton}"/>
+        <Button Command="{Binding SaveClientCommand}" Style="{StaticResource SaveButton}"/>
+        <Button Command="{Binding DeleteClientCommand}" Style="{StaticResource DeleteButton}"/>
     </StackPanel>
 </UserControl>

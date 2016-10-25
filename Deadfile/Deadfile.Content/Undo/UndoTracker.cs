@@ -10,7 +10,7 @@ using Prism.Mvvm;
 namespace Deadfile.Content.Undo
 {
     /// <summary>
-    /// Uses reflection madness to provide Client-side Undo-Redo support for a model under user edits.
+    /// Uses reflection madness to provide client-side Undo-Redo support for a model under user edits.
     /// </summary>
     /// <remarks>
     /// This ensures that PropertyChanging and PropertyChanged are always called in pairs, however, obviously it only pushes an

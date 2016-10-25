@@ -21,24 +21,41 @@ namespace Deadfile.Content.Clients
     public sealed class ClientsActionsPadViewModel : ViewModelBase, IClientsActionsPadViewModel
     {
         private readonly IDeadfileNavigationService _navigationService;
+        private readonly DelegateCommand _addClientCommand;
         private readonly DelegateCommand _editClientCommand;
-        private readonly DelegateCommand _newClientCommand;
+        private readonly DelegateCommand _saveClientCommand;
+        private readonly DelegateCommand _deleteClientCommand;
         public ClientsActionsPadViewModel(IEventAggregator eventAggregator, IDeadfileNavigationService navigationService) : base(eventAggregator)
         {
             _navigationService = navigationService;
+            _addClientCommand = new DelegateCommand(AddClientAction);
             _editClientCommand = new DelegateCommand(EditClientAction);
-            _newClientCommand = new DelegateCommand(NewClientAction);
+            _saveClientCommand = new DelegateCommand(SaveClientAction);
+            _deleteClientCommand = new DelegateCommand(DeleteClientAction);
         }
 
-        public ICommand NewClientCommand { get { return _newClientCommand; } }
+        public ICommand AddClientCommand { get { return _addClientCommand; } }
         public ICommand EditClientCommand { get { return _editClientCommand; } }
+        public ICommand SaveClientCommand { get { return _saveClientCommand; } }
+        public ICommand DeleteClientCommand { get { return _deleteClientCommand; } }
 
         private void EditClientAction()
         {
+            EventAggregator.GetEvent<EditClientEvent>().Publish();
         }
 
-        private void NewClientAction()
+        private void AddClientAction()
         {
+        }
+
+        private void SaveClientAction()
+        {
+            
+        }
+
+        private void DeleteClientAction()
+        {
+            
         }
     }
 }

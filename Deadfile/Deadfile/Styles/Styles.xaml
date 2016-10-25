@@ -186,4 +186,112 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <ImageBrush x:Key="AddButtonImageBrush" ImageSource="../Resources/add.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="AddGreyButtonImageBrush" ImageSource="../Resources/add-grey.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="AddPurpleButtonImageBrush" ImageSource="../Resources/add-purple.png" Stretch="Uniform"/>
+
+    <Style x:Key="AddButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource AddButtonImageBrush}"/>
+        <Setter Property="Width" Value="64" />
+        <Setter Property="Height" Value="64" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource AddPurpleButtonImageBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource AddGreyButtonImageBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <ImageBrush x:Key="SaveButtonImageBrush" ImageSource="../Resources/save.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="SaveGreyButtonImageBrush" ImageSource="../Resources/save-grey.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="SavePurpleButtonImageBrush" ImageSource="../Resources/save-purple.png" Stretch="Uniform"/>
+
+    <Style x:Key="SaveButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource SaveButtonImageBrush}"/>
+        <Setter Property="Width" Value="64" />
+        <Setter Property="Height" Value="64" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource SavePurpleButtonImageBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource SaveGreyButtonImageBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <ImageBrush x:Key="EditButtonImageBrush" ImageSource="../Resources/edit.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="EditGreyButtonImageBrush" ImageSource="../Resources/edit-grey.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="EditPurpleButtonImageBrush" ImageSource="../Resources/edit-purple.png" Stretch="Uniform"/>
+
+    <Style x:Key="EditButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource EditButtonImageBrush}"/>
+        <Setter Property="Width" Value="64" />
+        <Setter Property="Height" Value="64" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource EditPurpleButtonImageBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource EditGreyButtonImageBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <ImageBrush x:Key="DeleteButtonImageBrush" ImageSource="../Resources/delete.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="DeleteGreyButtonImageBrush" ImageSource="../Resources/delete-grey.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="DeletePurpleButtonImageBrush" ImageSource="../Resources/delete-purple.png" Stretch="Uniform"/>
+
+    <Style x:Key="DeleteButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource DeleteButtonImageBrush}"/>
+        <Setter Property="Width" Value="64" />
+        <Setter Property="Height" Value="64" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource DeletePurpleButtonImageBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource DeleteGreyButtonImageBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

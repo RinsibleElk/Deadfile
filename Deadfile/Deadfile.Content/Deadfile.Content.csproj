@@ -103,8 +103,14 @@
     <Compile Include="ContentModule.cs" />
     <Compile Include="Clients\ClientsActionsPadDesignTimeViewModel.cs" />
     <Compile Include="Clients\ClientsPageDesignTimeViewModel.cs" />
+    <Compile Include="Events\CanRedoEvent.cs" />
+    <Compile Include="Events\CanUndoEvent.cs" />
+    <Compile Include="Events\NavigationEnabledEvent.cs" />
+    <Compile Include="Events\EditClientEvent.cs" />
+    <Compile Include="Events\RedoEvent.cs" />
     <Compile Include="Events\SelectedInvoiceEvent.cs" />
     <Compile Include="Events\SelectedJobEvent.cs" />
+    <Compile Include="Events\UndoEvent.cs" />
     <Compile Include="Home\HomeActionsPadDesignTimeViewModel.cs" />
     <Compile Include="Interfaces\INavigationParameterMapper.cs" />
     <Compile Include="Interfaces\IQuotationsTimerService.cs" />
