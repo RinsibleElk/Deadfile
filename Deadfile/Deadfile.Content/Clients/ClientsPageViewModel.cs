@@ -48,6 +48,7 @@ namespace Deadfile.Content.Clients
             }
         }
 
+        private SubscriptionToken _editClientSubscriptionToken = null;
         private SubscriptionToken _navigateToSelectedClientSubscriptionToken = null;
         private SubscriptionToken _undoSubscriptionToken = null;
         private SubscriptionToken _redoSubscriptionToken = null;
@@ -71,6 +72,7 @@ namespace Deadfile.Content.Clients
 
         private void EditClientAction()
         {
+            // This fires an event to lock down navigation.
             Editable = true;
         }
 
@@ -86,7 +88,7 @@ namespace Deadfile.Content.Clients
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            // unsubscribe to messages from the browser pane
+            // Unsubscribe to messages from the browser pane.
             EventAggregator.GetEvent<SelectedClientEvent>().Unsubscribe(_navigateToSelectedClientSubscriptionToken);
             _navigateToSelectedClientSubscriptionToken = null;
             EventAggregator.GetEvent<UndoEvent>().Unsubscribe(_undoSubscriptionToken);
@@ -94,7 +96,7 @@ namespace Deadfile.Content.Clients
             EventAggregator.GetEvent<RedoEvent>().Unsubscribe(_redoSubscriptionToken);
             _redoSubscriptionToken = null;
 
-            // unsubscribe to messages from the actions pad
+            // Unsubscribe to messages from the actions pad.
             EventAggregator.GetEvent<EditClientEvent>().Unsubscribe(_editClientSubscriptionToken);
             _editClientSubscriptionToken = null;
 
@@ -107,7 +109,6 @@ namespace Deadfile.Content.Clients
         }
 
         private bool _editable = false;
-        private SubscriptionToken _editClientSubscriptionToken = null;
 
         public bool Editable
         {
@@ -120,6 +121,7 @@ namespace Deadfile.Content.Clients
                     {
                         _undoTracker.Activate(_selectedClient);
                         _undoTracker.PropertyChanged += UndoTrackerPropertyChanged;
+                        _selectedClient.ErrorsChanged += SelectedClientErrorsChanged;
                     }
                     else
                     {
@@ -127,12 +129,18 @@ namespace Deadfile.Content.Clients
                         // Deliberately do this after deactivation so that the deactivation takes care of notifying the
                         // browser of CanUndo/CanRedo changes.
                         _undoTracker.PropertyChanged -= UndoTrackerPropertyChanged;
+                        _selectedClient.ErrorsChanged -= SelectedClientErrorsChanged;
                     }
 
                     // Only fire when it changes.
                     EventAggregator.GetEvent<LockedForEditingEvent>().Publish(_editable);
                 }
             }
+        }
+
+        private void SelectedClientErrorsChanged(object sender, DataErrorsChangedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void UndoTrackerPropertyChanged(object sender, PropertyChangedEventArgs e)

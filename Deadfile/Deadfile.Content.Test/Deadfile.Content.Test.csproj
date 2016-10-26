@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="TestBrowserPaneViewModel.cs" />
     <Compile Include="TestClientsActionsPadViewModel.cs" />
+    <Compile Include="TestClientsPageViewModel.cs" />
     <Compile Include="TestNavigationBarViewModel.cs" />
     <Compile Include="TestNavigationParameterMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

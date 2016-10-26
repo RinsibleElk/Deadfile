@@ -35,7 +35,7 @@ namespace Deadfile.Content.Clients
             _addClientCommand = new DelegateCommand(AddClientAction, CanAddClient);
             _editClientCommand = new DelegateCommand(EditClientAction, CanEditClient);
             _saveClientCommand = new DelegateCommand(SaveClientAction, CanSaveClient);
-            _discardClientCommand=new DelegateCommand(DiscardClientAction, CanDiscardClient);
+            _discardClientCommand = new DelegateCommand(DiscardClientAction, CanDiscardClient);
             _deleteClientCommand = new DelegateCommand(DeleteClientAction, CanDeleteClient);
         }
 
