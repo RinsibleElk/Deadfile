@@ -203,7 +203,7 @@ namespace Deadfile.Model
 
         private string _phoneNumber1;
         [MinLength(8, ErrorMessage = "The minimum length for a Client's phone number is 8 characters."),
-         MaxLength(20, ErrorMessage = "The maximum length for a Client's phone number is 8 characters."),
+         MaxLength(20, ErrorMessage = "The maximum length for a Client's phone number is 20 characters."),
          Phone(ErrorMessage = "Not a valid phone number for Client."),
          Required(ErrorMessage = "Client requires a phone number.")]
         public string PhoneNumber1
@@ -218,31 +218,37 @@ namespace Deadfile.Model
         }
 
         private string _phoneNumber2;
-        [MinLength(8, ErrorMessage = "The minimum length for a Client's phone number is 8 characters."),
-         MaxLength(20, ErrorMessage = "The maximum length for a Client's phone number is 8 characters."),
-         Phone(ErrorMessage = "Not a valid phone number for Client.")]
+        [Phone(ErrorMessage = "Not a valid phone number for Client.")]
         public string PhoneNumber2
         {
             get { return _phoneNumber2; }
             set
             {
                 OnPropertyChanging(nameof(PhoneNumbers));
-                SetProperty(ref _phoneNumber2, value);
+                if (SetProperty(ref _phoneNumber2, value))
+                {
+                    // Hack to get cleared phone numbers to be free of validation.
+                    if (String.IsNullOrEmpty(_phoneNumber2)) 
+                        ClearErrors();
+                }
                 OnPropertyChanged(nameof(PhoneNumbers));
             }
         }
 
         private string _phoneNumber3;
-        [MinLength(8, ErrorMessage = "The minimum length for a Client's phone number is 8 characters."),
-         MaxLength(20, ErrorMessage = "The maximum length for a Client's phone number is 8 characters."),
-         Phone(ErrorMessage = "Not a valid phone number for Client.")]
+        [Phone(ErrorMessage = "Not a valid phone number for Client.")]
         public string PhoneNumber3
         {
             get { return _phoneNumber3; }
             set
             {
                 OnPropertyChanging(nameof(PhoneNumbers));
-                SetProperty(ref _phoneNumber3, value);
+                if (SetProperty(ref _phoneNumber3, value))
+                {
+                    // Hack to get cleared phone numbers to be free of validation.
+                    if (String.IsNullOrEmpty(_phoneNumber3))
+                        ClearErrors();
+                }
                 OnPropertyChanged(nameof(PhoneNumbers));
             }
         }

@@ -16,27 +16,27 @@ namespace Deadfile.Model
     /// </summary>
     public class ValidatableBindableBase : BindableBase, INotifyDataErrorInfo, INotifyPropertyChanging
     {
-        private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
+        protected Dictionary<string, List<string>> Errors = new Dictionary<string, List<string>>();
 
         public event EventHandler<DataErrorsChangedEventArgs>
            ErrorsChanged = delegate { };
 
         public System.Collections.IEnumerable GetErrors(string propertyName)
         {
-            if (_errors.ContainsKey(propertyName))
-                return _errors[propertyName];
+            if (Errors.ContainsKey(propertyName))
+                return Errors[propertyName];
             else
                 return null;
         }
 
         public bool HasErrors
         {
-            get { return _errors.Count > 0; }
+            get { return Errors.Count > 0; }
         }
 
         public Dictionary<string, List<string>> GetAllErrors()
         {
-            return _errors;
+            return Errors;
         }
 
         protected override bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
@@ -75,16 +75,22 @@ namespace Deadfile.Model
 
             if (results.Any())
             {
-                _errors[propertyName] = results.Select(c => c.ErrorMessage).ToList(); 
+                Errors[propertyName] = results.Select(c => c.ErrorMessage).ToList(); 
             }
             else
             {
-                _errors.Remove(propertyName);
+                Errors.Remove(propertyName);
             }
 
             ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
         }
 
         public event PropertyChangingEventHandler PropertyChanging;
+
+        protected void ClearErrors([CallerMemberName] string propertyName = null)
+        {
+            if (Errors.Remove(propertyName))
+                ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
+        }
     }
 }

@@ -30,7 +30,8 @@ namespace Deadfile.Content.Clients
         private SubscriptionToken _lockedForEditingEventSubscriptionToken = null;
         private SubscriptionToken _canSaveEventSubscriptionToken = null;
 
-        public ClientsActionsPadViewModel(IEventAggregator eventAggregator, IDeadfileNavigationService navigationService) : base(eventAggregator)
+        public ClientsActionsPadViewModel(IEventAggregator eventAggregator, IDeadfileNavigationService navigationService)
+            : base(eventAggregator)
         {
             _navigationService = navigationService;
             _addClientCommand = new DelegateCommand(AddClientAction, CanAddClient);
@@ -52,6 +53,7 @@ namespace Deadfile.Content.Clients
         }
 
         private bool _canSave = true;
+
         private void CanSaveAction(bool canSave)
         {
             _canSave = canSave;
@@ -115,13 +117,33 @@ namespace Deadfile.Content.Clients
             return _addClientVisibility == Visibility.Visible;
         }
 
-        public ICommand AddClientCommand { get { return _addClientCommand; } }
-        public ICommand EditClientCommand { get { return _editClientCommand; } }
-        public ICommand SaveClientCommand { get { return _saveClientCommand; } }
-        public ICommand DeleteClientCommand { get { return _deleteClientCommand; } }
-        public ICommand DiscardClientCommand { get { return _discardClientCommand; } }
+        public ICommand AddClientCommand
+        {
+            get { return _addClientCommand; }
+        }
+
+        public ICommand EditClientCommand
+        {
+            get { return _editClientCommand; }
+        }
+
+        public ICommand SaveClientCommand
+        {
+            get { return _saveClientCommand; }
+        }
+
+        public ICommand DeleteClientCommand
+        {
+            get { return _deleteClientCommand; }
+        }
+
+        public ICommand DiscardClientCommand
+        {
+            get { return _discardClientCommand; }
+        }
 
         private Visibility _addClientVisibility = Visibility.Visible;
+
         public Visibility AddClientVisibility
         {
             get { return _addClientVisibility; }
@@ -135,6 +157,7 @@ namespace Deadfile.Content.Clients
         }
 
         private Visibility _editClientVisibility = Visibility.Visible;
+
         public Visibility EditClientVisibility
         {
             get { return _editClientVisibility; }
@@ -148,6 +171,7 @@ namespace Deadfile.Content.Clients
         }
 
         private Visibility _saveClientVisibility = Visibility.Collapsed;
+
         public Visibility SaveClientVisibility
         {
             get { return _saveClientVisibility; }
@@ -161,6 +185,7 @@ namespace Deadfile.Content.Clients
         }
 
         private Visibility _discardClientVisibility = Visibility.Collapsed;
+
         public Visibility DiscardClientVisibility
         {
             get { return _discardClientVisibility; }
@@ -174,6 +199,7 @@ namespace Deadfile.Content.Clients
         }
 
         private Visibility _deleteClientVisibility = Visibility.Visible;
+
         public Visibility DeleteClientVisibility
         {
             get { return _deleteClientVisibility; }
@@ -197,7 +223,12 @@ namespace Deadfile.Content.Clients
 
         private void SaveClientAction()
         {
-            
+            // Perform the save, and lock the client again.
+            //TODO If this fails at the moment I'm pretty boned.
+            EventAggregator.GetEvent<SaveEvent>().Publish();
+
+            // Notify the other pages for the end of editing.
+            EventAggregator.GetEvent<EditClientEvent>().Publish(false);
         }
 
         private void DeleteClientAction()

@@ -196,8 +196,27 @@ namespace Deadfile.Model
         {
             using (var dbContext = new DeadfileContext())
             {
-                var invoice = dbContext.Invoices.Find(new object[1] { invoiceId });
+                var invoice = dbContext.Invoices.Find(invoiceId);
                 return _modelEntityMapper.Mapper.Map<InvoiceModel>(invoice);
+            }
+        }
+
+        public void SaveClient(ClientModel clientModel)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                if (clientModel.ClientId == ClientModel.NewClientId)
+                {
+                    // Add
+                    dbContext.Clients.Add(_modelEntityMapper.Mapper.Map<ClientModel, Client>(clientModel));
+                }
+                else
+                {
+                    // Edit
+                    var client = dbContext.Clients.Find(clientModel.ClientId);
+                    _modelEntityMapper.Mapper.Map<ClientModel, Client>(clientModel, client);
+                }
+                dbContext.SaveChanges();
             }
         }
     }

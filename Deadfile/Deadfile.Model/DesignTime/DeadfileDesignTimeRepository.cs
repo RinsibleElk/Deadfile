@@ -74,5 +74,10 @@ namespace Deadfile.Model.DesignTime
         {
             throw new NotImplementedException();
         }
+
+        public void SaveClient(ClientModel selectedClient)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

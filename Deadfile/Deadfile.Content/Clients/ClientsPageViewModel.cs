@@ -21,6 +21,7 @@ namespace Deadfile.Content.Clients
     {
         private readonly IDeadfileRepository _repository;
         private readonly UndoTracker<ClientModel> _undoTracker = new UndoTracker<ClientModel>();
+
         public ClientsPageViewModel(
             IEventAggregator eventAggregator,
             IDeadfileNavigationService navigationService,
@@ -37,6 +38,7 @@ namespace Deadfile.Content.Clients
         }
 
         private ClientModel _selectedClient;
+
         public ClientModel SelectedClient
         {
             get { return _selectedClient; }
@@ -57,6 +59,7 @@ namespace Deadfile.Content.Clients
         }
 
         private List<string> _errors;
+
         public List<string> Errors
         {
             get { return _errors; }
@@ -70,6 +73,7 @@ namespace Deadfile.Content.Clients
         }
 
         private bool _canSave = true;
+
         public bool CanSave
         {
             get { return _canSave; }
@@ -84,6 +88,7 @@ namespace Deadfile.Content.Clients
         private SubscriptionToken _navigateToSelectedClientSubscriptionToken = null;
         private SubscriptionToken _undoSubscriptionToken = null;
         private SubscriptionToken _redoSubscriptionToken = null;
+        private SubscriptionToken _saveSubscriptionToken = null;
 
         public override void OnNavigatedTo(NavigationContext navigationContext, int selectedClientId)
         {
@@ -100,12 +105,26 @@ namespace Deadfile.Content.Clients
             }
 
             // subscribe to messages from the browser pane
-            _navigateToSelectedClientSubscriptionToken = EventAggregator.GetEvent<SelectedClientEvent>().Subscribe(NavigateToClientsPage);
+            _navigateToSelectedClientSubscriptionToken =
+                EventAggregator.GetEvent<SelectedClientEvent>().Subscribe(NavigateToClientsPage);
             _undoSubscriptionToken = EventAggregator.GetEvent<UndoEvent>().Subscribe(PerformUndo);
             _redoSubscriptionToken = EventAggregator.GetEvent<RedoEvent>().Subscribe(PerformRedo);
 
             // subscribe to messages from the actions pane
             _editClientSubscriptionToken = EventAggregator.GetEvent<EditClientEvent>().Subscribe(EditClientAction);
+        }
+
+        private void PerformSave()
+        {
+            try
+            {
+                _repository.SaveClient(SelectedClient);
+            }
+            catch (Exception)
+            {
+                //TODO Do something. Like raise a dialog box or something. Then clean up.
+                throw;
+            }
         }
 
         private void EditClientAction(bool editable)
@@ -163,9 +182,12 @@ namespace Deadfile.Content.Clients
                         _undoTracker.Activate(_selectedClient);
                         _undoTracker.PropertyChanged += UndoTrackerPropertyChanged;
                         _selectedClient.ErrorsChanged += SelectedClientErrorsChanged;
+                        _saveSubscriptionToken = EventAggregator.GetEvent<SaveEvent>().Subscribe(PerformSave);
                     }
                     else
                     {
+                        EventAggregator.GetEvent<SaveEvent>().Unsubscribe(_saveSubscriptionToken);
+                        _saveSubscriptionToken = null;
                         _undoTracker.Deactivate();
                         // Deliberately do this after deactivation so that the deactivation takes care of notifying the
                         // browser of CanUndo/CanRedo changes.

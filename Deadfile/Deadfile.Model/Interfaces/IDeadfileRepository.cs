@@ -73,5 +73,11 @@ namespace Deadfile.Model.Interfaces
         /// <param name="invoiceId"></param>
         /// <returns></returns>
         InvoiceModel GetInvoiceById(int invoiceId);
+
+        /// <summary>
+        /// Save changes to a client.
+        /// </summary>
+        /// <param name="selectedClient"></param>
+        void SaveClient(ClientModel selectedClient);
     }
 }

@@ -110,6 +110,7 @@
     <Compile Include="Events\LockedForEditingEvent.cs" />
     <Compile Include="Events\EditClientEvent.cs" />
     <Compile Include="Events\RedoEvent.cs" />
+    <Compile Include="Events\SaveEvent.cs" />
     <Compile Include="Events\SelectedInvoiceEvent.cs" />
     <Compile Include="Events\SelectedJobEvent.cs" />
     <Compile Include="Events\UndoEvent.cs" />
