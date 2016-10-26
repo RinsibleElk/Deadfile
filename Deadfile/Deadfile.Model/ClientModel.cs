@@ -202,9 +202,7 @@ namespace Deadfile.Model
         }
 
         private string _phoneNumber1;
-        [MinLength(8, ErrorMessage = "The minimum length for a Client's phone number is 8 characters."),
-         MaxLength(20, ErrorMessage = "The maximum length for a Client's phone number is 20 characters."),
-         Phone(ErrorMessage = "Not a valid phone number for Client."),
+        [Phone(ErrorMessage = "Not a valid phone number for Client."),
          Required(ErrorMessage = "Client requires a phone number.")]
         public string PhoneNumber1
         {
@@ -225,12 +223,9 @@ namespace Deadfile.Model
             set
             {
                 OnPropertyChanging(nameof(PhoneNumbers));
-                if (SetProperty(ref _phoneNumber2, value))
-                {
-                    // Hack to get cleared phone numbers to be free of validation.
-                    if (String.IsNullOrEmpty(_phoneNumber2)) 
-                        ClearErrors();
-                }
+                // Hack to get cleared phone numbers to be free of validation.
+                var valueToSet = (value == "") ? null : value;
+                SetProperty(ref _phoneNumber2, valueToSet);
                 OnPropertyChanged(nameof(PhoneNumbers));
             }
         }
@@ -243,12 +238,9 @@ namespace Deadfile.Model
             set
             {
                 OnPropertyChanging(nameof(PhoneNumbers));
-                if (SetProperty(ref _phoneNumber3, value))
-                {
-                    // Hack to get cleared phone numbers to be free of validation.
-                    if (String.IsNullOrEmpty(_phoneNumber3))
-                        ClearErrors();
-                }
+                // Hack to get cleared phone numbers to be free of validation.
+                var valueToSet = (value == "") ? null : value;
+                SetProperty(ref _phoneNumber3, valueToSet);
                 OnPropertyChanged(nameof(PhoneNumbers));
             }
         }
@@ -258,7 +250,12 @@ namespace Deadfile.Model
         public string EmailAddress
         {
             get { return _emailAddress; }
-            set { SetProperty(ref _emailAddress, value); }
+            set
+            {
+                // Hack to get cleared e-mails to be free of validation.
+                var valueToSet = (value == "") ? null : value;
+                SetProperty(ref _emailAddress, valueToSet);
+            }
         }
 
         private ClientStatus _status;

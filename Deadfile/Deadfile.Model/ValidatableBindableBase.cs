@@ -86,11 +86,5 @@ namespace Deadfile.Model
         }
 
         public event PropertyChangingEventHandler PropertyChanging;
-
-        protected void ClearErrors([CallerMemberName] string propertyName = null)
-        {
-            if (Errors.Remove(propertyName))
-                ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
-        }
     }
 }
