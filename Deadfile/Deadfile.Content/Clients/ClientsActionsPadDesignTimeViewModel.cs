@@ -8,6 +8,7 @@ using Deadfile.Model;
 using Deadfile.Model.DesignTime;
 using System.Windows.Data;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Deadfile.Content.Clients
@@ -18,5 +19,11 @@ namespace Deadfile.Content.Clients
         public ICommand EditClientCommand { get; } = null;
         public ICommand SaveClientCommand { get; } = null;
         public ICommand DeleteClientCommand { get; } = null;
+        public ICommand DiscardClientCommand { get; } = null;
+        public Visibility AddClientVisibility { get; } = Visibility.Visible;
+        public Visibility EditClientVisibility { get; } = Visibility.Visible;
+        public Visibility SaveClientVisibility { get; } = Visibility.Hidden;
+        public Visibility DiscardClientVisibility { get; } = Visibility.Hidden;
+        public Visibility DeleteClientVisibility { get; } = Visibility.Visible;
     }
 }

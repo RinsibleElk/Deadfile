@@ -11,10 +11,10 @@
               d:DesignHeight="50" d:DesignWidth="400"
               Background="Transparent">
     <StackPanel Orientation="Horizontal" Background="Transparent">
-        <Button Command="{Binding HomeCommand}" Style="{StaticResource HomeButton}" />
-        <Button Command="{Binding BackCommand}" Style="{StaticResource BackButton}" />
-        <Button Command="{Binding ForwardCommand}" Style="{StaticResource ForwardButton}" />
-        <Button Command="{Binding UndoCommand}" Style="{StaticResource UndoButton}" />
-        <Button Command="{Binding RedoCommand}" Style="{StaticResource RedoButton}" />
+        <Button Height="40" Width="40" Command="{Binding HomeCommand}" Style="{StaticResource HomeButton}" />
+        <Button Height="40" Width="40" Command="{Binding BackCommand}" Style="{StaticResource BackButton}" />
+        <Button Height="40" Width="40" Command="{Binding ForwardCommand}" Style="{StaticResource ForwardButton}" />
+        <Button Height="40" Width="40" Command="{Binding UndoCommand}" Style="{StaticResource UndoButton}" />
+        <Button Height="40" Width="40" Command="{Binding RedoCommand}" Style="{StaticResource RedoButton}" />
     </StackPanel>
 </UserControl>
