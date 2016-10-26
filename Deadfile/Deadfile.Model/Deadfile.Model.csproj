@@ -60,9 +60,11 @@
     <Compile Include="Browser\BrowserClient.cs" />
     <Compile Include="Browser\BrowserInvoice.cs" />
     <Compile Include="Browser\BrowserJob.cs" />
+    <Compile Include="Browser\BrowserMode.cs" />
     <Compile Include="Browser\BrowserModel.cs" />
     <Compile Include="Browser\BrowserModelType.cs" />
-    <Compile Include="Browser\FilterSettings.cs" />
+    <Compile Include="Browser\BrowserSort.cs" />
+    <Compile Include="Browser\BrowserSettings.cs" />
     <Compile Include="ClientModel.cs" />
     <Compile Include="DeadfileRepository.cs" />
     <Compile Include="DesignTime\DeadfileDesignTimeRepository.cs" />

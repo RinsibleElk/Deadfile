@@ -50,10 +50,10 @@ namespace Deadfile.Model
             }
         }
 
-        public IEnumerable<BrowserClient> GetBrowserClients(string filter)
+        public IEnumerable<BrowserModel> GetBrowserItems(BrowserSettings settings)
         {
             var li = new List<BrowserClient>();
-            if (String.IsNullOrEmpty(filter))
+            if (String.IsNullOrEmpty(settings.FilterText))
             {
                 using (var dbContext = new DeadfileContext())
                 {
@@ -81,7 +81,7 @@ namespace Deadfile.Model
                     foreach (var client in (from client in dbContext.Clients
                         where ((client.FirstName == null || client.FirstName == "")
                             ? client.Title + " " + client.LastName
-                            : client.FirstName + " " + client.LastName).Contains(filter)
+                            : client.FirstName + " " + client.LastName).Contains(settings.FilterText)
                         select
                         new BrowserClient()
                         {

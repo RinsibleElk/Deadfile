@@ -10,12 +10,22 @@
               mc:Ignorable="d"
               d:DataContext="{d:DesignInstance Type=clients:ClientsPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
               d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style x:Key="ErrorStyle" TargetType="FrameworkElement">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -56,5 +66,6 @@
         <TextBox Grid.Row="10" Grid.Column="1" IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.PhoneNumber3}"/>
         <TextBox Grid.Row="11" Grid.Column="1" IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.EmailAddress}"/>
         <TextBox Grid.Row="12" Grid.Column="1" IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.Notes}"/>
+        <ItemsControl Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" TextBlock.Foreground="Red" />
     </Grid>
 </UserControl>

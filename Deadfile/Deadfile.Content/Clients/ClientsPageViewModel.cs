@@ -44,8 +44,22 @@ namespace Deadfile.Content.Clients
             {
                 // Careful - we don't want to use ReferenceEquals here!!!
                 if ((_selectedClient == null) || (value == null) || (_selectedClient.ClientId != value.ClientId))
-                    SetProperty(ref _selectedClient, value);
+                {
+                    if (SetProperty(ref _selectedClient, value))
+                    {
+                        // On Navigation we are always read-only. This is really error handling though, as there should be other
+                        // mechanisms in place.
+                        Editable = false;
+                    }
+                }
             }
+        }
+
+        private List<string> _errors;
+        public List<string> Errors
+        {
+            get { return _errors; }
+            set { SetProperty(ref _errors, value); }
         }
 
         private SubscriptionToken _editClientSubscriptionToken = null;
@@ -55,11 +69,17 @@ namespace Deadfile.Content.Clients
 
         public override void OnNavigatedTo(NavigationContext navigationContext, int selectedClientId)
         {
-            //TODO This could fail!!! We'd have to navigate back...
-            if (selectedClientId == ClientModel.NewClientId)
+            try
+            {
+                if (selectedClientId == ClientModel.NewClientId)
+                    SelectedClient = null;
+                else
+                    SelectedClient = _repository.GetClientById(selectedClientId);
+            }
+            catch (Exception)
+            {
                 SelectedClient = null;
-            else
-                SelectedClient = _repository.GetClientById(selectedClientId);
+            }
 
             // subscribe to messages from the browser pane
             _navigateToSelectedClientSubscriptionToken = EventAggregator.GetEvent<SelectedClientEvent>().Subscribe(NavigateToClientsPage);
@@ -140,7 +160,21 @@ namespace Deadfile.Content.Clients
 
         private void SelectedClientErrorsChanged(object sender, DataErrorsChangedEventArgs e)
         {
-            throw new NotImplementedException();
+            Errors = FlattenErrors();
+        }
+
+        private List<string> FlattenErrors()
+        {
+            List<string> errors = new List<string>();
+            Dictionary<string, List<string>> allErrors = SelectedClient.GetAllErrors();
+            foreach (string propertyName in allErrors.Keys)
+            {
+                foreach (var errorString in allErrors[propertyName])
+                {
+                    errors.Add(propertyName + ": " + errorString);
+                }
+            }
+            return errors;
         }
 
         private void UndoTrackerPropertyChanged(object sender, PropertyChangedEventArgs e)

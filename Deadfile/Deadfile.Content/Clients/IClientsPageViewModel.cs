@@ -14,5 +14,6 @@ namespace Deadfile.Content.Clients
     {
         ClientModel SelectedClient { get; set; }
         bool Editable { get; }
+        List<string> Errors { get; }
     }
 }

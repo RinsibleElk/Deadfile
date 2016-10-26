@@ -23,25 +23,20 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <CheckBox Grid.Column="0" IsEnabled="{Binding BrowsingEnabled}" IsChecked="{Binding FilterSettings.IncludeInactiveEnabled, Mode=TwoWay}">Inactive</CheckBox>
-                    <CheckBox Grid.Column="1" IsEnabled="{Binding BrowsingEnabled}" IsChecked="{Binding FilterSettings.FilterByJobEnabled, Mode=TwoWay}">Job</CheckBox>
-                    <CheckBox Grid.Column="2" IsEnabled="{Binding BrowsingEnabled}" IsChecked="{Binding FilterSettings.FilterByInvoiceEnabled, Mode=TwoWay}">Invoice</CheckBox>
-                </Grid>
-                <Label Grid.Row="1" Grid.Column="0">Filter:</Label>
-                <TextBox Grid.Row="1" Grid.Column="1" IsEnabled="{Binding BrowsingEnabled}" Text="{Binding FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <CheckBox Grid.Row="0" Grid.Column="0" IsEnabled="{Binding BrowsingEnabled}" IsChecked="{Binding BrowserSettings.IncludeInactiveEnabled, Mode=TwoWay}">Inactive</CheckBox>
+                <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding BrowserSettings.Modes}" IsEnabled="{Binding BrowsingEnabled}" IsEditable="False" SelectedItem="{Binding BrowserSettings.Mode}" />
+                <Label Grid.Row="1" Grid.Column="0">Sort:</Label>
+                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding BrowserSettings.Sorts}" IsEnabled="{Binding BrowsingEnabled}" IsEditable="False" SelectedItem="{Binding BrowserSettings.Sort}" />
+                <Label Grid.Row="2" Grid.Column="0">Filter:</Label>
+                <TextBox Grid.Row="2" Grid.Column="1" IsEnabled="{Binding BrowsingEnabled}" Text="{Binding BrowserSettings.FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </Grid>
-            <TreeView Grid.Row="1" IsEnabled="{Binding BrowsingEnabled}"  ItemsSource="{Binding Clients}" Style="{StaticResource TreeViewTransparentBackground}">
+            <TreeView Grid.Row="1" IsEnabled="{Binding BrowsingEnabled}" ItemsSource="{Binding Items}" Style="{StaticResource TreeViewTransparentBackground}">
                 <i:Interaction.Behaviors>
                     <behaviors:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
                 </i:Interaction.Behaviors>

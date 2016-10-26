@@ -34,6 +34,11 @@ namespace Deadfile.Model
             get { return _errors.Count > 0; }
         }
 
+        public Dictionary<string, List<string>> GetAllErrors()
+        {
+            return _errors;
+        }
+
         protected override bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
             if (object.Equals((object)storage, (object)value)) return false;

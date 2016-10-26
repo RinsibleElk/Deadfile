@@ -29,5 +29,6 @@ namespace Deadfile.Content.Clients
         public string Title { get; set; }
 
         public bool Editable { get; } = false;
+        public List<string> Errors { get; } = new List<string>();
     }
 }

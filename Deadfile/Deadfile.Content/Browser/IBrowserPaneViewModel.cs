@@ -14,12 +14,7 @@ namespace Deadfile.Content.Browser
         /// <summary>
         /// The first level of the browser tree.
         /// </summary>
-        ObservableCollection<BrowserClient> Clients { get; set; }
-
-        /// <summary>
-        /// The filter text from the user.
-        /// </summary>
-        string FilterText { get; set; }
+        ObservableCollection<BrowserModel> Items { get; set; }
 
         /// <summary>
         /// Binding for the selected item. Used to pass information between the Browser and the Content.
@@ -29,7 +24,7 @@ namespace Deadfile.Content.Browser
         /// <summary>
         /// User settings for filtering.
         /// </summary>
-        FilterSettings FilterSettings { get; set; }
+        BrowserSettings BrowserSettings { get; set; }
 
         /// <summary>
         /// If an entity is open for editing then browsing will be disabled.

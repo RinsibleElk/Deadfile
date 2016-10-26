@@ -48,7 +48,7 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
-        public IEnumerable<BrowserClient> GetBrowserClients(string filter)
+        public IEnumerable<BrowserModel> GetBrowserItems(BrowserSettings settings)
         {
             return
                 from client in GetClients()

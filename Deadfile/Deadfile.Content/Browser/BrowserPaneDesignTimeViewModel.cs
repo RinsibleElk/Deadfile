@@ -15,12 +15,11 @@ namespace Deadfile.Content.Browser
         public BrowserPaneDesignTimeViewModel()
         {
             var repository = new DeadfileDesignTimeRepository();
-            Clients=new ObservableCollection<BrowserClient>(repository.GetBrowserClients(null));
+            Items = new ObservableCollection<BrowserModel>(repository.GetBrowserItems(BrowserSettings));
         }
-        public ObservableCollection<BrowserClient> Clients { get; set; }
-        public string FilterText { get; set; }
+        public ObservableCollection<BrowserModel> Items { get; set; }
         public BrowserModel SelectedItem { get; set; }
-        public FilterSettings FilterSettings { get; set; } = new FilterSettings();
+        public BrowserSettings BrowserSettings { get; set; } = new BrowserSettings();
         public bool BrowsingEnabled { get; set; } = true;
     }
 }

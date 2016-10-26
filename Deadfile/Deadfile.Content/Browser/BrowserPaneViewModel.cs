@@ -24,10 +24,15 @@ namespace Deadfile.Content.Browser
         {
             _repository = repository;
             _eventAggregator = eventAggregator;
-            Clients = new ObservableCollection<BrowserClient>(_repository.GetBrowserClients(null));
+            Items = new ObservableCollection<BrowserModel>(_repository.GetBrowserItems(BrowserSettings));
             eventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(LockedForEditingAction);
+            BrowserSettings.Refresh += BrowserSettingsRefresh;
         }
 
+        private void BrowserSettingsRefresh(object sender, EventArgs e)
+        {
+            Items = new ObservableCollection<BrowserModel>(_repository.GetBrowserItems(BrowserSettings));
+        }
 
         private void LockedForEditingAction(bool isLocked)
         {
@@ -58,32 +63,18 @@ namespace Deadfile.Content.Browser
             }
         }
 
-        private ObservableCollection<BrowserClient> _clients;
-        public ObservableCollection<BrowserClient> Clients
+        private ObservableCollection<BrowserModel> _items;
+        public ObservableCollection<BrowserModel> Items
         {
-            get { return _clients; }
-            set { SetProperty(ref _clients, value); }
+            get { return _items; }
+            set { SetProperty(ref _items, value); }
         }
 
-        private string _filterText = "";
-
-        public string FilterText
+        private BrowserSettings _browserSettings = new BrowserSettings();
+        public BrowserSettings BrowserSettings
         {
-            get { return _filterText; }
-            set
-            {
-                if (SetProperty(ref _filterText, value))
-                {
-                    Clients = new ObservableCollection<BrowserClient>(_repository.GetBrowserClients(_filterText));
-                }
-            }
-        }
-
-        private FilterSettings _filterSettings = new FilterSettings();
-        public FilterSettings FilterSettings
-        {
-            get { return _filterSettings; }
-            set { SetProperty(ref _filterSettings, value); }
+            get { return _browserSettings; }
+            set { SetProperty(ref _browserSettings, value); }
         }
 
         private bool _browsingEnabled = true;

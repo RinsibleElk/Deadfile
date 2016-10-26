@@ -19,13 +19,6 @@ namespace Deadfile.Model.Interfaces
         IEnumerable<ClientModel> GetClients();
 
         /// <summary>
-        /// Synchronous server side filter.
-        /// </summary>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        IEnumerable<ClientModel> GetFilteredClients(string filter);
-
-        /// <summary>
         /// Naughty method to seed the repository with fake data. Run at initialization time and only changes the database if it's totally empty.
         /// </summary>
         /// <remarks>
@@ -47,11 +40,11 @@ namespace Deadfile.Model.Interfaces
         ClientModel GetClientById(int clientId);
 
         /// <summary>
-        /// Get Clients for use in Browser.
+        /// Get items for use in Browser.
         /// </summary>
-        /// <param name="filter"></param>
+        /// <param name="settings"></param>
         /// <returns></returns>
-        IEnumerable<BrowserClient> GetBrowserClients(string filter);
+        IEnumerable<BrowserModel> GetBrowserItems(BrowserSettings settings);
 
         /// <summary>
         /// Get Jobs for a given client for use in Browser.
