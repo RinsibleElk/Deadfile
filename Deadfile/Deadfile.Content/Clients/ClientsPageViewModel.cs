@@ -50,6 +50,7 @@ namespace Deadfile.Content.Clients
                         // On Navigation we are always read-only. This is really error handling though, as there should be other
                         // mechanisms in place.
                         Editable = false;
+                        Errors = new List<string>();
                     }
                 }
             }
@@ -59,7 +60,24 @@ namespace Deadfile.Content.Clients
         public List<string> Errors
         {
             get { return _errors; }
-            set { SetProperty(ref _errors, value); }
+            set
+            {
+                if (SetProperty(ref _errors, value))
+                {
+                    CanSave = _errors.Count == 0;
+                }
+            }
+        }
+
+        private bool _canSave = true;
+        public bool CanSave
+        {
+            get { return _canSave; }
+            set
+            {
+                if (SetProperty(ref _canSave, value))
+                    EventAggregator.GetEvent<CanSaveEvent>().Publish(_canSave);
+            }
         }
 
         private SubscriptionToken _editClientSubscriptionToken = null;
@@ -90,10 +108,13 @@ namespace Deadfile.Content.Clients
             _editClientSubscriptionToken = EventAggregator.GetEvent<EditClientEvent>().Subscribe(EditClientAction);
         }
 
-        private void EditClientAction()
+        private void EditClientAction(bool editable)
         {
             // This fires an event to lock down navigation.
-            Editable = true;
+            Editable = editable;
+
+            // Probably unnecessary, but let's do it.
+            Errors = new List<string>();
         }
 
         private void PerformUndo()

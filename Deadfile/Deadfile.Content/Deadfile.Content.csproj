@@ -104,7 +104,9 @@
     <Compile Include="Clients\ClientsActionsPadDesignTimeViewModel.cs" />
     <Compile Include="Clients\ClientsPageDesignTimeViewModel.cs" />
     <Compile Include="Events\CanRedoEvent.cs" />
+    <Compile Include="Events\CanSaveEvent.cs" />
     <Compile Include="Events\CanUndoEvent.cs" />
+    <Compile Include="Events\DiscardChangesEvent.cs" />
     <Compile Include="Events\LockedForEditingEvent.cs" />
     <Compile Include="Events\EditClientEvent.cs" />
     <Compile Include="Events\RedoEvent.cs" />

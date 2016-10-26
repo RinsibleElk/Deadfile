@@ -28,6 +28,7 @@ namespace Deadfile.Content.Clients
         private readonly DelegateCommand _discardClientCommand;
         private readonly DelegateCommand _deleteClientCommand;
         private SubscriptionToken _lockedForEditingEventSubscriptionToken = null;
+        private SubscriptionToken _canSaveEventSubscriptionToken = null;
 
         public ClientsActionsPadViewModel(IEventAggregator eventAggregator, IDeadfileNavigationService navigationService) : base(eventAggregator)
         {
@@ -46,6 +47,15 @@ namespace Deadfile.Content.Clients
             // Subscribe for event from content.
             _lockedForEditingEventSubscriptionToken =
                 EventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(LockedForEditingAction);
+            _canSaveEventSubscriptionToken =
+                EventAggregator.GetEvent<CanSaveEvent>().Subscribe(CanSaveAction);
+        }
+
+        private bool _canSave = true;
+        private void CanSaveAction(bool canSave)
+        {
+            _canSave = canSave;
+            _saveClientCommand.RaiseCanExecuteChanged();
         }
 
         private void LockedForEditingAction(bool lockedForEditing)
@@ -64,15 +74,21 @@ namespace Deadfile.Content.Clients
             // Unsubscribe for event from content.
             EventAggregator.GetEvent<LockedForEditingEvent>().Unsubscribe(_lockedForEditingEventSubscriptionToken);
             _lockedForEditingEventSubscriptionToken = null;
+            EventAggregator.GetEvent<CanSaveEvent>().Unsubscribe(_canSaveEventSubscriptionToken);
+            _canSaveEventSubscriptionToken = null;
         }
 
         private void DiscardClientAction()
         {
+            // Notify of the Discard. This leads to en mass Undo-ing.
+            EventAggregator.GetEvent<DiscardChangesEvent>().Publish();
+
+            // Notify the other pages for the end of editing.
+            EventAggregator.GetEvent<EditClientEvent>().Publish(false);
         }
 
         private bool CanDiscardClient()
         {
-            //TODO
             return _discardClientVisibility == Visibility.Visible;
         }
 
@@ -84,8 +100,7 @@ namespace Deadfile.Content.Clients
 
         private bool CanSaveClient()
         {
-            //TODO
-            return _saveClientVisibility == Visibility.Visible;
+            return _saveClientVisibility == Visibility.Visible && _canSave;
         }
 
         private bool CanEditClient()
@@ -173,8 +188,7 @@ namespace Deadfile.Content.Clients
 
         private void EditClientAction()
         {
-            var lfee= EventAggregator.GetEvent<EditClientEvent>();
-            lfee.Publish();
+            EventAggregator.GetEvent<EditClientEvent>().Publish(true);
         }
 
         private void AddClientAction()

@@ -37,6 +37,12 @@ namespace Deadfile.Content.Navigation
             eventAggregator.GetEvent<CanUndoEvent>().Subscribe(UpdateCanUndo);
             eventAggregator.GetEvent<CanRedoEvent>().Subscribe(UpdateCanRedo);
             eventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(UpdateLockedForEditing);
+            eventAggregator.GetEvent<DiscardChangesEvent>().Subscribe(DiscardChangesAction);
+        }
+
+        private void DiscardChangesAction()
+        {
+            while (CanUndo()) PerformUndo();
         }
 
         private void UpdateLockedForEditing(bool lockedForEditing)
@@ -45,6 +51,8 @@ namespace Deadfile.Content.Navigation
             _homeCommand.RaiseCanExecuteChanged();
             _backCommand.RaiseCanExecuteChanged();
             _forwardCommand.RaiseCanExecuteChanged();
+            _undoCommand.RaiseCanExecuteChanged();
+            _redoCommand.RaiseCanExecuteChanged();
         }
 
         private void UpdateCanUndo(bool canUndo)

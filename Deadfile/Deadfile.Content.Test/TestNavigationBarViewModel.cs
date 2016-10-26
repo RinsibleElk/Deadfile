@@ -20,6 +20,7 @@ namespace Deadfile.Content.Test
             public readonly CanUndoEvent CanUndoEvent = new CanUndoEvent();
             public readonly CanRedoEvent CanRedoEvent = new CanRedoEvent();
             public readonly LockedForEditingEvent LockedForEditingEvent = new LockedForEditingEvent();
+            public readonly DiscardChangesEvent DiscardChangesEvent = new DiscardChangesEvent();
             public readonly NavigationBarViewModel ViewModel;
             public int NumberOfTimesBackCanExecuteChangedFired = 0;
             public int NumberOfTimesHomeCanExecuteChangedFired = 0;
@@ -42,6 +43,10 @@ namespace Deadfile.Content.Test
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
                     .Returns(LockedForEditingEvent)
+                    .Verifiable();
+                EventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DiscardChangesEvent>())
+                    .Returns(DiscardChangesEvent)
                     .Verifiable();
                 ViewModel = new NavigationBarViewModel(EventAggregatorMock.Object);
                 ViewModel.BackCommand.CanExecuteChanged += (s, e) => ++NumberOfTimesBackCanExecuteChangedFired;

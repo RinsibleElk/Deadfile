@@ -35,6 +35,7 @@ namespace Deadfile.Content.Test
             public readonly Mock<EditClientEvent> EditClientEventMock;
             public readonly ClientsActionsPadViewModel ViewModel;
             public readonly LockedForEditingEvent LockedForEditingEvent;
+            public readonly CanSaveEvent CanSaveEvent;
             public Host()
             {
                 EventAggregatorMock = new Mock<IEventAggregator>();
@@ -46,9 +47,14 @@ namespace Deadfile.Content.Test
                     .Verifiable();
                 ViewModel = new ClientsActionsPadViewModel(EventAggregatorMock.Object, NavigationServiceMock.Object);
                 LockedForEditingEvent = new LockedForEditingEvent();
+                CanSaveEvent = new CanSaveEvent();
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
                     .Returns(LockedForEditingEvent)
+                    .Verifiable();
+                EventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<CanSaveEvent>())
+                    .Returns(CanSaveEvent)
                     .Verifiable();
                 ViewModel.OnNavigatedTo(NavigateToNavigationContext);
             }
@@ -68,7 +74,7 @@ namespace Deadfile.Content.Test
             {
                 // Hit the Edit button.
                 host.EditClientEventMock
-                    .Setup((ev) => ev.Publish())
+                    .Setup((ev) => ev.Publish(true))
                     .Verifiable();
                 host.ViewModel.EditClientCommand.Execute(null);
 
