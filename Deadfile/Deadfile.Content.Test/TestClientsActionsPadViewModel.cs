@@ -31,23 +31,23 @@ namespace Deadfile.Content.Test
                 return new NavigationContext(navigationServiceMock.Object, uri);
             }
             public readonly Mock<IEventAggregator> EventAggregatorMock;
-            public readonly Mock<IDeadfileNavigationService> NavigationServiceMock;
             public readonly Mock<EditClientEvent> EditClientEventMock;
             public readonly ClientsActionsPadViewModel ViewModel;
             public readonly LockedForEditingEvent LockedForEditingEvent;
             public readonly CanSaveEvent CanSaveEvent;
+            public readonly CanEditEvent CanEditEvent;
             public Host()
             {
                 EventAggregatorMock = new Mock<IEventAggregator>();
-                NavigationServiceMock = new Mock<IDeadfileNavigationService>();
                 EditClientEventMock = new Mock<EditClientEvent>();
                 EventAggregatorMock
                     .Setup((eventAggregator) => eventAggregator.GetEvent<EditClientEvent>())
                     .Returns(EditClientEventMock.Object)
                     .Verifiable();
-                ViewModel = new ClientsActionsPadViewModel(EventAggregatorMock.Object, NavigationServiceMock.Object);
+                ViewModel = new ClientsActionsPadViewModel(EventAggregatorMock.Object);
                 LockedForEditingEvent = new LockedForEditingEvent();
                 CanSaveEvent = new CanSaveEvent();
+                CanEditEvent = new CanEditEvent();
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
                     .Returns(LockedForEditingEvent)
@@ -55,6 +55,10 @@ namespace Deadfile.Content.Test
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<CanSaveEvent>())
                     .Returns(CanSaveEvent)
+                    .Verifiable();
+                EventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<CanEditEvent>())
+                    .Returns(CanEditEvent)
                     .Verifiable();
                 ViewModel.OnNavigatedTo(NavigateToNavigationContext);
             }
@@ -74,7 +78,7 @@ namespace Deadfile.Content.Test
             {
                 // Hit the Edit button.
                 host.EditClientEventMock
-                    .Setup((ev) => ev.Publish(true))
+                    .Setup((ev) => ev.Publish(ClientEdit.StartEditing))
                     .Verifiable();
                 host.ViewModel.EditClientCommand.Execute(null);
 
@@ -87,8 +91,7 @@ namespace Deadfile.Content.Test
         {
             // Setup.
             var eventAggregatorMock = new Mock<IEventAggregator>();
-            var navigationServiceMock = new Mock<IDeadfileNavigationService>();
-            var viewModel = new ClientsActionsPadViewModel(eventAggregatorMock.Object, navigationServiceMock.Object);
+            var viewModel = new ClientsActionsPadViewModel(eventAggregatorMock.Object);
 
             // Checks.
             Assert.Equal(Visibility.Visible, viewModel.AddClientVisibility);

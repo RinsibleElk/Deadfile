@@ -21,7 +21,6 @@ namespace Deadfile.Content.Clients
 {
     public sealed class ClientsActionsPadViewModel : ViewModelBase, IClientsActionsPadViewModel
     {
-        private readonly IDeadfileNavigationService _navigationService;
         private readonly DelegateCommand _addClientCommand;
         private readonly DelegateCommand _editClientCommand;
         private readonly DelegateCommand _saveClientCommand;
@@ -29,11 +28,11 @@ namespace Deadfile.Content.Clients
         private readonly DelegateCommand _deleteClientCommand;
         private SubscriptionToken _lockedForEditingEventSubscriptionToken = null;
         private SubscriptionToken _canSaveEventSubscriptionToken = null;
+        private SubscriptionToken _canEditEventSubscriptionToken = null;
 
-        public ClientsActionsPadViewModel(IEventAggregator eventAggregator, IDeadfileNavigationService navigationService)
+        public ClientsActionsPadViewModel(IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
-            _navigationService = navigationService;
             _addClientCommand = new DelegateCommand(AddClientAction, CanAddClient);
             _editClientCommand = new DelegateCommand(EditClientAction, CanEditClient);
             _saveClientCommand = new DelegateCommand(SaveClientAction, CanSaveClient);
@@ -50,14 +49,22 @@ namespace Deadfile.Content.Clients
                 EventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(LockedForEditingAction);
             _canSaveEventSubscriptionToken =
                 EventAggregator.GetEvent<CanSaveEvent>().Subscribe(CanSaveAction);
+            _canEditEventSubscriptionToken =
+                EventAggregator.GetEvent<CanEditEvent>().Subscribe(CanEditAction);
         }
 
         private bool _canSave = true;
-
         private void CanSaveAction(bool canSave)
         {
             _canSave = canSave;
             _saveClientCommand.RaiseCanExecuteChanged();
+        }
+
+        private bool _canEdit = false;
+        private void CanEditAction(bool canEdit)
+        {
+            _canEdit = canEdit;
+            _editClientCommand.RaiseCanExecuteChanged();
         }
 
         private void LockedForEditingAction(bool lockedForEditing)
@@ -78,6 +85,8 @@ namespace Deadfile.Content.Clients
             _lockedForEditingEventSubscriptionToken = null;
             EventAggregator.GetEvent<CanSaveEvent>().Unsubscribe(_canSaveEventSubscriptionToken);
             _canSaveEventSubscriptionToken = null;
+            EventAggregator.GetEvent<CanEditEvent>().Unsubscribe(_canEditEventSubscriptionToken);
+            _canEditEventSubscriptionToken = null;
         }
 
         private void DiscardClientAction()
@@ -86,7 +95,7 @@ namespace Deadfile.Content.Clients
             EventAggregator.GetEvent<DiscardChangesEvent>().Publish();
 
             // Notify the other pages for the end of editing.
-            EventAggregator.GetEvent<EditClientEvent>().Publish(false);
+            EventAggregator.GetEvent<EditClientEvent>().Publish(ClientEdit.EndEditing);
         }
 
         private bool CanDiscardClient()
@@ -107,13 +116,11 @@ namespace Deadfile.Content.Clients
 
         private bool CanEditClient()
         {
-            //TODO
-            return _editClientVisibility == Visibility.Visible;
+            return _editClientVisibility == Visibility.Visible && _canEdit;
         }
 
         private bool CanAddClient()
         {
-            //TODO
             return _addClientVisibility == Visibility.Visible;
         }
 
@@ -214,11 +221,12 @@ namespace Deadfile.Content.Clients
 
         private void EditClientAction()
         {
-            EventAggregator.GetEvent<EditClientEvent>().Publish(true);
+            EventAggregator.GetEvent<EditClientEvent>().Publish(ClientEdit.StartEditing);
         }
 
         private void AddClientAction()
         {
+            EventAggregator.GetEvent<EditClientEvent>().Publish(ClientEdit.NewClient);
         }
 
         private void SaveClientAction()
@@ -228,7 +236,7 @@ namespace Deadfile.Content.Clients
             EventAggregator.GetEvent<SaveEvent>().Publish();
 
             // Notify the other pages for the end of editing.
-            EventAggregator.GetEvent<EditClientEvent>().Publish(false);
+            EventAggregator.GetEvent<EditClientEvent>().Publish(ClientEdit.EndEditing);
         }
 
         private void DeleteClientAction()

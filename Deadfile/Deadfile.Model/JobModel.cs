@@ -12,6 +12,11 @@ namespace Deadfile.Model
     /// </summary>
     public class JobModel : ValidatableBindableBase
     {
+        public JobModel()
+        {
+            _jobId = NewJobId;
+        }
+
         /// <summary>
         /// Deliberately invalid id to represent to the EditJob experience that a new job is required.
         /// </summary>

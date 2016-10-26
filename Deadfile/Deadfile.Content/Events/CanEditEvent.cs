@@ -7,13 +7,7 @@ using Prism.Events;
 
 namespace Deadfile.Content.Events
 {
-    internal enum ClientEdit
-    {
-        NewClient,
-        StartEditing,
-        EndEditing
-    }
-    internal class EditClientEvent : PubSubEvent<ClientEdit>
+    internal class CanEditEvent : PubSubEvent<bool>
     {
     }
 }

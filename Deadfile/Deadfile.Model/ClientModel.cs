@@ -16,6 +16,11 @@ namespace Deadfile.Model
     /// </summary>
     public class ClientModel : ValidatableBindableBase
     {
+        public ClientModel()
+        {
+            _clientId = NewClientId;
+        }
+
         /// <summary>
         /// Deliberately invalid id to represent to the EditClient experience that a new client is required.
         /// </summary>
@@ -87,7 +92,7 @@ namespace Deadfile.Model
         /// <summary>
         /// Last name. This is a required field. When the full name is not yet known, the last name should be used.
         /// </summary>
-        [Required(ErrorMessage = "You must require at least a last name for this Client."),
+        [Required(ErrorMessage = "You must provide at least a last name for this Client."),
          MaxLength(50, ErrorMessage = "A Client's last name must be less than 50 characters long.")]
         public string LastName
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Deadfile.Model
     /// </summary>
     public class ValidatableBindableBase : BindableBase, INotifyDataErrorInfo, INotifyPropertyChanging
     {
-        protected Dictionary<string, List<string>> Errors = new Dictionary<string, List<string>>();
+        protected readonly Dictionary<string, List<string>> Errors = new Dictionary<string, List<string>>();
 
         public event EventHandler<DataErrorsChangedEventArgs>
            ErrorsChanged = delegate { };
@@ -48,6 +49,20 @@ namespace Deadfile.Model
             return true;
         }
 
+        public void RefreshAllErrors()
+        {
+            var method = this.GetType().GetMethod(nameof(ValidateProperty), BindingFlags.Instance | BindingFlags.NonPublic);
+            foreach (var property in this.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where((p) => p.CanRead && p.CanWrite))
+            {
+                method.MakeGenericMethod(property.PropertyType).Invoke(this, new object[] { property.Name, property.GetMethod.Invoke(this, new object[0]) });
+            }
+        }
+
+        public void ClearAllErrors()
+        {
+            Errors.Clear();
+        }
+
         /// <summary>
         /// Notifies listeners that a property value may change.
         /// </summary>
@@ -65,7 +80,7 @@ namespace Deadfile.Model
             propertyChanging((object)this, e);
         }
 
-        private void ValidateProperty<T>(string propertyName, T value)
+        protected void ValidateProperty<T>(string propertyName, T value)
         {
             var results = new List<ValidationResult>();
 

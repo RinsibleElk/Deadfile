@@ -37,7 +37,8 @@ namespace Deadfile.Content.Clients
             get { return Experience.Clients; }
         }
 
-        private ClientModel _selectedClient;
+        // selected client is not nullable
+        private ClientModel _selectedClient = new ClientModel();
 
         public ClientModel SelectedClient
         {
@@ -45,7 +46,7 @@ namespace Deadfile.Content.Clients
             set
             {
                 // Careful - we don't want to use ReferenceEquals here!!!
-                if ((_selectedClient == null) || (value == null) || (_selectedClient.ClientId != value.ClientId))
+                if (_selectedClient.ClientId != value.ClientId)
                 {
                     if (SetProperty(ref _selectedClient, value))
                     {
@@ -53,8 +54,21 @@ namespace Deadfile.Content.Clients
                         // mechanisms in place.
                         Editable = false;
                         Errors = new List<string>();
+                        CanEdit = _selectedClient.ClientId != ClientModel.NewClientId;
                     }
                 }
+            }
+        }
+
+        private bool _canEdit = false;
+
+        public bool CanEdit
+        {
+            get { return _canEdit; }
+            set
+            {
+                if (SetProperty(ref _canEdit, value))
+                    EventAggregator.GetEvent<CanEditEvent>().Publish(_canEdit);
             }
         }
 
@@ -95,13 +109,13 @@ namespace Deadfile.Content.Clients
             try
             {
                 if (selectedClientId == ClientModel.NewClientId)
-                    SelectedClient = null;
+                    SelectedClient = new ClientModel();
                 else
                     SelectedClient = _repository.GetClientById(selectedClientId);
             }
             catch (Exception)
             {
-                SelectedClient = null;
+                SelectedClient = new ClientModel();
             }
 
             // subscribe to messages from the browser pane
@@ -127,13 +141,13 @@ namespace Deadfile.Content.Clients
             }
         }
 
-        private void EditClientAction(bool editable)
+        private void EditClientAction(ClientEdit clientEdit)
         {
-            // This fires an event to lock down navigation.
-            Editable = editable;
+            if (clientEdit == ClientEdit.NewClient)
+                SelectedClient = new ClientModel();
 
-            // Probably unnecessary, but let's do it.
-            Errors = new List<string>();
+            // This fires an event to lock down navigation.
+            Editable = clientEdit != ClientEdit.EndEditing;
         }
 
         private void PerformUndo()
@@ -183,6 +197,7 @@ namespace Deadfile.Content.Clients
                         _undoTracker.PropertyChanged += UndoTrackerPropertyChanged;
                         _selectedClient.ErrorsChanged += SelectedClientErrorsChanged;
                         _saveSubscriptionToken = EventAggregator.GetEvent<SaveEvent>().Subscribe(PerformSave);
+                        _selectedClient.RefreshAllErrors();
                     }
                     else
                     {
@@ -193,6 +208,7 @@ namespace Deadfile.Content.Clients
                         // browser of CanUndo/CanRedo changes.
                         _undoTracker.PropertyChanged -= UndoTrackerPropertyChanged;
                         _selectedClient.ErrorsChanged -= SelectedClientErrorsChanged;
+                        _selectedClient.ClearAllErrors();
                     }
 
                     // Only fire when it changes.

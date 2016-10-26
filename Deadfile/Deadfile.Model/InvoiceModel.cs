@@ -11,6 +11,11 @@ namespace Deadfile.Model
     /// </summary>
     public class InvoiceModel : ValidatableBindableBase
     {
+        public InvoiceModel()
+        {
+            InvoiceId = NewInvoiceId;
+        }
+
         /// <summary>
         /// Deliberately invalid id to represent to the EditInvoice experience that a invoice job is required.
         /// </summary>

@@ -40,7 +40,7 @@ namespace Deadfile.Entity
         /// <summary>
         /// Last name. This is a required field. When the full name is not yet known, the last name should be used.
         /// </summary>
-        [Required(ErrorMessage = "You must require at least a last name for this Client."),
+        [Required(ErrorMessage = "You must provide at least a last name for this Client."),
          MaxLength(50, ErrorMessage = "A Client's last name must be less than 50 characters long.")]
         public string LastName { get; set; }
 
