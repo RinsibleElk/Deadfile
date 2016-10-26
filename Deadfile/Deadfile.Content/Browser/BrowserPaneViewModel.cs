@@ -44,7 +44,6 @@ namespace Deadfile.Content.Browser
                 {
                     switch (_selectedItem.ModelType)
                     {
-                        //TODO Deal with failures of all these...? By just not allowing the selection change?
                         case BrowserModelType.Client:
                             _eventAggregator.GetEvent<SelectedClientEvent>().Publish(_selectedItem.Id);
                             break;

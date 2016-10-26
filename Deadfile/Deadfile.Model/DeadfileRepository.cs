@@ -152,22 +152,14 @@ namespace Deadfile.Model
             {
                 if ((from client in dbContext.Clients select client).FirstOrDefault() == null)
                 {
-                    try
+                    foreach (var clientModel in FakeData.GetFakeClients())
                     {
-                        foreach (var clientModel in FakeData.GetFakeClients())
-                        {
-                            dbContext.Clients.Add(_modelEntityMapper.Mapper.Map<Client>(clientModel));
-                        }
-                        FakeData.AddFakeQuotations(dbContext);
-                        dbContext.SaveChanges();
-                        FakeData.AddFakeJobs(dbContext);
-                        dbContext.SaveChanges();
+                        dbContext.Clients.Add(_modelEntityMapper.Mapper.Map<Client>(clientModel));
                     }
-                    catch (Exception e)
-                    {
-                        //TODO Actually do something here?
-                        throw;
-                    }
+                    FakeData.AddFakeQuotations(dbContext);
+                    dbContext.SaveChanges();
+                    FakeData.AddFakeJobs(dbContext);
+                    dbContext.SaveChanges();
                 }
             }
         }
