@@ -103,7 +103,7 @@ namespace Deadfile.Model.Browser
             get { return _sort; }
             set
             {
-                if (!SetProperty(ref _sort, value) && !_disableEvent)
+                if (SetProperty(ref _sort, value) && !_disableEvent)
                     Refresh?.Invoke(this, EventArgs);
             }
         }

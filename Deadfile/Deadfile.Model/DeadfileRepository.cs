@@ -50,51 +50,38 @@ namespace Deadfile.Model
             }
         }
 
+        /// <summary>
+        /// Based on the settings, do a very specific filter and sort.
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
         public IEnumerable<BrowserModel> GetBrowserItems(BrowserSettings settings)
         {
             var li = new List<BrowserClient>();
-            if (String.IsNullOrEmpty(settings.FilterText))
+            using (var dbContext = new DeadfileContext())
             {
-                using (var dbContext = new DeadfileContext())
-                {
-                    foreach (var client in 
-                    (from client in dbContext.Clients
-                        select
-                        new BrowserClient()
-                        {
-                            Id = client.ClientId,
-                            FullName =
-                            ((client.FirstName == null || client.FirstName == "")
-                                ? client.Title + " " + client.LastName
-                                : client.FirstName + " " + client.LastName)
-                        }))
+                foreach (var client in (from client in dbContext.Clients
+                    where
+                    ((settings.FilterText == null || settings.FilterText == "" || client.FirstName == null ||
+                      client.FirstName == "")
+                        ? client.Title + " " + client.LastName
+                        : client.FirstName + " " + client.LastName).Contains(settings.FilterText)
+                    orderby
+                    ((settings.Sort == BrowserSort.ClientFirstName)
+                        ? ((client.FirstName == null || client.FirstName == "") ? client.Title : client.FirstName)
+                        : client.LastName)
+                    select
+                    new BrowserClient()
                     {
-                        client.SetRepository(this);
-                        li.Add(client);
-                    }
-                }
-            }
-            else
-            {
-                using (var dbContext = new DeadfileContext())
-                {
-                    foreach (var client in (from client in dbContext.Clients
-                        where ((client.FirstName == null || client.FirstName == "")
+                        Id = client.ClientId,
+                        FullName =
+                        ((client.FirstName == null || client.FirstName == "")
                             ? client.Title + " " + client.LastName
-                            : client.FirstName + " " + client.LastName).Contains(settings.FilterText)
-                        select
-                        new BrowserClient()
-                        {
-                            Id = client.ClientId,
-                            FullName =
-                            ((client.FirstName == null || client.FirstName == "")
-                                ? client.Title + " " + client.LastName
-                                : client.FirstName + " " + client.LastName)
-                        }))
-                    {
-                        client.SetRepository(this);
-                        li.Add(client);
-                    }
+                            : client.FirstName + " " + client.LastName)
+                    }))
+                {
+                    client.SetRepository(this);
+                    li.Add(client);
                 }
             }
             return li;
