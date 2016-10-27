@@ -30,7 +30,7 @@
             </StackPanel>
             <GridSplitter Grid.RowSpan="2" Grid.Row="2" Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
             <ContentControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" prism:RegionManager.RegionName="NavigationRegion" />
-            <metro:TransitioningContentControl Grid.Row="2" Grid.Column="0" prism:RegionManager.RegionName="ContentRegion" Transition="Left" />
+            <metro:TransitioningContentControl Grid.Row="2" Grid.Column="0" prism:RegionManager.RegionName="ContentRegion" Transition="LeftReplace" />
             <ContentControl Grid.Row="2" Grid.Column="2" prism:RegionManager.RegionName="BrowserRegion" />
             <ContentControl Grid.Row="3" Grid.Column="0" prism:RegionManager.RegionName="QuotesRegion" />
             <ContentControl Grid.Row="3" Grid.Column="2" prism:RegionManager.RegionName="ActionsRegion" />
