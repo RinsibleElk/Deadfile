@@ -21,7 +21,7 @@ namespace Deadfile.Content.Home
 
         public HomePageViewModel(IDeadfileNavigationService navigationService, IEventAggregator eventAggregator) : base(eventAggregator, navigationService)
         {
-            _clientsCommand = new DelegateCommand(() => this.NavigateToClientsPage(ClientModel.NewClientId));
+            _clientsCommand = new DelegateCommand(() => this.NavigateToClientsPage(ModelBase.NewModelId));
             Title = "Home Page";
         }
 
@@ -36,7 +36,7 @@ namespace Deadfile.Content.Home
             base.OnNavigatedTo(navigationContext);
 
             // Subscribe to selection changes.
-            _navigateToSelectedClientSubscriptionToken = EventAggregator.GetEvent<SelectedClientEvent>().Subscribe(NavigateToClientsPage);
+            _navigateToSelectedClientSubscriptionToken = EventAggregator.GetEvent<SelectedItemEvent>().Subscribe(NavigateToClientsPage);
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -44,7 +44,7 @@ namespace Deadfile.Content.Home
             base.OnNavigatedFrom(navigationContext);
 
             // Unsubscribe from selection changes.
-            EventAggregator.GetEvent<SelectedClientEvent>().Unsubscribe(_navigateToSelectedClientSubscriptionToken);
+            EventAggregator.GetEvent<SelectedItemEvent>().Unsubscribe(_navigateToSelectedClientSubscriptionToken);
             _navigateToSelectedClientSubscriptionToken = null;
         }
 

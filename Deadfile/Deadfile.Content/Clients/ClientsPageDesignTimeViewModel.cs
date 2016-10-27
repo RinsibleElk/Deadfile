@@ -18,11 +18,11 @@ namespace Deadfile.Content.Clients
         {
             var repository = new DeadfileDesignTimeRepository();
             var clientsList = new List<ClientModel>(repository.GetClients());
-            SelectedClient = clientsList[5];
+            SelectedItem = clientsList[5];
             Title = "Clients";
         }
 
-        public ClientModel SelectedClient { get; set; }
+        public ClientModel SelectedItem { get; set; }
 
         public Experience Experience { get { return Experience.Clients; } }
 

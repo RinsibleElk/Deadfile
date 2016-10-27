@@ -205,7 +205,7 @@ namespace Deadfile.Model
         {
             using (var dbContext = new DeadfileContext())
             {
-                if (clientModel.ClientId == ClientModel.NewClientId)
+                if (clientModel.ClientId == ModelBase.NewModelId)
                 {
                     // Add
                     dbContext.Clients.Add(_modelEntityMapper.Mapper.Map<ClientModel, Client>(clientModel));

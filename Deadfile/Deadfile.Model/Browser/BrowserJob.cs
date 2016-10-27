@@ -25,7 +25,7 @@ namespace Deadfile.Model.Browser
 
         public BrowserJob() : base(false)
         {
-            Id = JobModel.NewJobId;
+            Id = ModelBase.NewModelId;
         }
 
         protected override void LoadChildren()

@@ -50,7 +50,7 @@ namespace Deadfile.Content.Browser
                     switch (_selectedItem.ModelType)
                     {
                         case BrowserModelType.Client:
-                            _eventAggregator.GetEvent<SelectedClientEvent>().Publish(_selectedItem.Id);
+                            _eventAggregator.GetEvent<SelectedItemEvent>().Publish(_selectedItem.Id);
                             break;
                         case BrowserModelType.Job:
                             _eventAggregator.GetEvent<SelectedJobEvent>().Publish(_selectedItem.Id);

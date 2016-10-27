@@ -31,7 +31,7 @@ namespace Deadfile.Content.Test
                 return new NavigationContext(navigationServiceMock.Object, uri);
             }
             public readonly Mock<IEventAggregator> EventAggregatorMock;
-            public readonly Mock<EditClientEvent> EditClientEventMock;
+            public readonly Mock<EditItemEvent> EditClientEventMock;
             public readonly ClientsActionsPadViewModel ViewModel;
             public readonly LockedForEditingEvent LockedForEditingEvent;
             public readonly CanSaveEvent CanSaveEvent;
@@ -39,9 +39,9 @@ namespace Deadfile.Content.Test
             public Host()
             {
                 EventAggregatorMock = new Mock<IEventAggregator>();
-                EditClientEventMock = new Mock<EditClientEvent>();
+                EditClientEventMock = new Mock<EditItemEvent>();
                 EventAggregatorMock
-                    .Setup((eventAggregator) => eventAggregator.GetEvent<EditClientEvent>())
+                    .Setup((eventAggregator) => eventAggregator.GetEvent<EditItemEvent>())
                     .Returns(EditClientEventMock.Object)
                     .Verifiable();
                 ViewModel = new ClientsActionsPadViewModel(EventAggregatorMock.Object);
@@ -78,9 +78,9 @@ namespace Deadfile.Content.Test
             {
                 // Hit the Edit button.
                 host.EditClientEventMock
-                    .Setup((ev) => ev.Publish(ClientEdit.StartEditing))
+                    .Setup((ev) => ev.Publish(EditAction.StartEditing))
                     .Verifiable();
-                host.ViewModel.EditClientCommand.Execute(null);
+                host.ViewModel.EditItemCommand.Execute(null);
 
                 // Checks.
             }
@@ -94,11 +94,11 @@ namespace Deadfile.Content.Test
             var viewModel = new ClientsActionsPadViewModel(eventAggregatorMock.Object);
 
             // Checks.
-            Assert.Equal(Visibility.Visible, viewModel.AddClientVisibility);
-            Assert.Equal(Visibility.Visible, viewModel.EditClientVisibility);
-            Assert.Equal(Visibility.Collapsed, viewModel.SaveClientVisibility);
-            Assert.Equal(Visibility.Visible, viewModel.DeleteClientVisibility);
-            Assert.Equal(Visibility.Collapsed, viewModel.DiscardClientVisibility);
+            Assert.Equal(Visibility.Visible, viewModel.AddItemVisibility);
+            Assert.Equal(Visibility.Visible, viewModel.EditItemVisibility);
+            Assert.Equal(Visibility.Collapsed, viewModel.SaveItemVisibility);
+            Assert.Equal(Visibility.Visible, viewModel.DeleteItemVisibility);
+            Assert.Equal(Visibility.Collapsed, viewModel.DiscardItemVisibility);
             eventAggregatorMock.VerifyAll();
         }
     }

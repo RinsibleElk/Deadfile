@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Model;
 using Prism.Events;
 
 namespace Deadfile.Content.Events
 {
-    internal enum ClientEdit
-    {
-        NewClient,
-        StartEditing,
-        EndEditing
-    }
-    internal class EditClientEvent : PubSubEvent<ClientEdit>
+    /// <summary>
+    /// Used to communicate between ContentRegion and BrowserRegion.
+    /// </summary>
+    internal class SelectedItemEvent : PubSubEvent<int>
     {
     }
 }

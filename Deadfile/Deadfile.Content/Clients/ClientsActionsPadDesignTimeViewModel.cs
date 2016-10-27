@@ -10,20 +10,16 @@ using System.Windows.Data;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using Deadfile.Content.ActionsPad;
 
 namespace Deadfile.Content.Clients
 {
-    sealed class ClientsActionsPadDesignTimeViewModel : IClientsActionsPadViewModel
+    /// <summary>
+    /// Clients page is simple so just straightforward override of the regular actions pad.
+    /// </summary>
+    sealed class ClientsActionsPadDesignTimeViewModel : ActionsPadDesignTimeViewModel, IClientsActionsPadViewModel
     {
-        public ICommand AddClientCommand { get; } = null;
-        public ICommand EditClientCommand { get; } = null;
-        public ICommand SaveClientCommand { get; } = null;
-        public ICommand DeleteClientCommand { get; } = null;
-        public ICommand DiscardClientCommand { get; } = null;
-        public Visibility AddClientVisibility { get; } = Visibility.Visible;
-        public Visibility EditClientVisibility { get; } = Visibility.Visible;
-        public Visibility SaveClientVisibility { get; } = Visibility.Hidden;
-        public Visibility DiscardClientVisibility { get; } = Visibility.Hidden;
-        public Visibility DeleteClientVisibility { get; } = Visibility.Visible;
+        public ICommand AddItemCommand { get; } = null;
+        public Visibility AddItemVisibility { get; } = Visibility.Visible;
     }
 }

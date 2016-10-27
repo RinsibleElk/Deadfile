@@ -17,7 +17,7 @@ namespace Deadfile.Model.Browser
 
         public BrowserInvoice() : base(true)
         {
-            Id = InvoiceModel.NewInvoiceId;
+            Id = ModelBase.NewModelId;
         }
 
         protected override void LoadChildren()

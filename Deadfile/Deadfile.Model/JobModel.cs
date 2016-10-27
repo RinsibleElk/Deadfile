@@ -10,17 +10,13 @@ namespace Deadfile.Model
     /// <summary>
     /// UI model for a Job.
     /// </summary>
-    public class JobModel : ValidatableBindableBase
+    public class JobModel : ModelBase
     {
-        public JobModel()
+        public override int Id
         {
-            _jobId = NewJobId;
+            get { return JobId; }
+            set { JobId = value; }
         }
-
-        /// <summary>
-        /// Deliberately invalid id to represent to the EditJob experience that a new job is required.
-        /// </summary>
-        public const int NewJobId = Int32.MinValue;
 
         private int _jobId;
         /// <summary>

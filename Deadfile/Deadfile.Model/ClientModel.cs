@@ -14,17 +14,13 @@ namespace Deadfile.Model
     /// <summary>
     /// UI model for a Client.
     /// </summary>
-    public class ClientModel : ValidatableBindableBase
+    public class ClientModel : ModelBase
     {
-        public ClientModel()
+        public override int Id
         {
-            _clientId = NewClientId;
+            get { return ClientId; }
+            set { ClientId = value; }
         }
-
-        /// <summary>
-        /// Deliberately invalid id to represent to the EditClient experience that a new client is required.
-        /// </summary>
-        public const int NewClientId = Int32.MinValue;
 
         private int _clientId;
         /// <summary>

@@ -17,10 +17,9 @@ using Prism.Regions;
 
 namespace Deadfile.Content.Clients
 {
-    public class ClientsPageViewModel : ParameterisedContentViewModelBase<int>, IClientsPageViewModel
+    public class ClientsPageViewModel : EditableItemContentViewModelBase<ClientModel>, IClientsPageViewModel
     {
         private readonly IDeadfileRepository _repository;
-        private readonly UndoTracker<ClientModel> _undoTracker = new UndoTracker<ClientModel>();
 
         public ClientsPageViewModel(
             IEventAggregator eventAggregator,
@@ -37,102 +36,11 @@ namespace Deadfile.Content.Clients
             get { return Experience.Clients; }
         }
 
-        // selected client is not nullable
-        private ClientModel _selectedClient = new ClientModel();
-
-        public ClientModel SelectedClient
-        {
-            get { return _selectedClient; }
-            set
-            {
-                // Careful - we don't want to use ReferenceEquals here!!!
-                if (_selectedClient.ClientId != value.ClientId)
-                {
-                    if (SetProperty(ref _selectedClient, value))
-                    {
-                        // On Navigation we are always read-only. This is really error handling though, as there should be other
-                        // mechanisms in place.
-                        Editable = false;
-                        Errors = new List<string>();
-                        CanEdit = _selectedClient.ClientId != ClientModel.NewClientId;
-                    }
-                }
-            }
-        }
-
-        private bool _canEdit = false;
-
-        public bool CanEdit
-        {
-            get { return _canEdit; }
-            set
-            {
-                if (SetProperty(ref _canEdit, value))
-                    EventAggregator.GetEvent<CanEditEvent>().Publish(_canEdit);
-            }
-        }
-
-        private List<string> _errors;
-
-        public List<string> Errors
-        {
-            get { return _errors; }
-            set
-            {
-                if (SetProperty(ref _errors, value))
-                {
-                    CanSave = _errors.Count == 0;
-                }
-            }
-        }
-
-        private bool _canSave = true;
-
-        public bool CanSave
-        {
-            get { return _canSave; }
-            set
-            {
-                if (SetProperty(ref _canSave, value))
-                    EventAggregator.GetEvent<CanSaveEvent>().Publish(_canSave);
-            }
-        }
-
-        private SubscriptionToken _editClientSubscriptionToken = null;
-        private SubscriptionToken _navigateToSelectedClientSubscriptionToken = null;
-        private SubscriptionToken _undoSubscriptionToken = null;
-        private SubscriptionToken _redoSubscriptionToken = null;
-        private SubscriptionToken _saveSubscriptionToken = null;
-
-        public override void OnNavigatedTo(NavigationContext navigationContext, int selectedClientId)
+        public override void PerformSave()
         {
             try
             {
-                if (selectedClientId == ClientModel.NewClientId)
-                    SelectedClient = new ClientModel();
-                else
-                    SelectedClient = _repository.GetClientById(selectedClientId);
-            }
-            catch (Exception)
-            {
-                SelectedClient = new ClientModel();
-            }
-
-            // subscribe to messages from the browser pane
-            _navigateToSelectedClientSubscriptionToken =
-                EventAggregator.GetEvent<SelectedClientEvent>().Subscribe(NavigateToClientsPage);
-            _undoSubscriptionToken = EventAggregator.GetEvent<UndoEvent>().Subscribe(PerformUndo);
-            _redoSubscriptionToken = EventAggregator.GetEvent<RedoEvent>().Subscribe(PerformRedo);
-
-            // subscribe to messages from the actions pane
-            _editClientSubscriptionToken = EventAggregator.GetEvent<EditClientEvent>().Subscribe(EditClientAction);
-        }
-
-        private void PerformSave()
-        {
-            try
-            {
-                _repository.SaveClient(SelectedClient);
+                _repository.SaveClient(SelectedItem);
             }
             catch (Exception)
             {
@@ -141,112 +49,9 @@ namespace Deadfile.Content.Clients
             }
         }
 
-        private void EditClientAction(ClientEdit clientEdit)
+        public override ClientModel GetModelById(int id)
         {
-            if (clientEdit == ClientEdit.NewClient)
-                SelectedClient = new ClientModel();
-
-            // This fires an event to lock down navigation.
-            Editable = clientEdit != ClientEdit.EndEditing;
-        }
-
-        private void PerformUndo()
-        {
-            _undoTracker.Undo();
-        }
-
-        private void PerformRedo()
-        {
-            _undoTracker.Redo();
-        }
-
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            // Unsubscribe to messages from the browser pane.
-            EventAggregator.GetEvent<SelectedClientEvent>().Unsubscribe(_navigateToSelectedClientSubscriptionToken);
-            _navigateToSelectedClientSubscriptionToken = null;
-            EventAggregator.GetEvent<UndoEvent>().Unsubscribe(_undoSubscriptionToken);
-            _undoSubscriptionToken = null;
-            EventAggregator.GetEvent<RedoEvent>().Unsubscribe(_redoSubscriptionToken);
-            _redoSubscriptionToken = null;
-
-            // Unsubscribe to messages from the actions pad.
-            EventAggregator.GetEvent<EditClientEvent>().Unsubscribe(_editClientSubscriptionToken);
-            _editClientSubscriptionToken = null;
-
-            base.OnNavigatedFrom(navigationContext);
-        }
-
-        private void NavigateToClientsPage(int selectedClientId)
-        {
-            NavigationService.NavigateTo(Experience.Clients, selectedClientId);
-        }
-
-        private bool _editable = false;
-
-        public bool Editable
-        {
-            get { return _editable; }
-            set
-            {
-                if (SetProperty(ref _editable, value))
-                {
-                    if (_editable)
-                    {
-                        _undoTracker.Activate(_selectedClient);
-                        _undoTracker.PropertyChanged += UndoTrackerPropertyChanged;
-                        _selectedClient.ErrorsChanged += SelectedClientErrorsChanged;
-                        _saveSubscriptionToken = EventAggregator.GetEvent<SaveEvent>().Subscribe(PerformSave);
-                        _selectedClient.RefreshAllErrors();
-                    }
-                    else
-                    {
-                        EventAggregator.GetEvent<SaveEvent>().Unsubscribe(_saveSubscriptionToken);
-                        _saveSubscriptionToken = null;
-                        _undoTracker.Deactivate();
-                        // Deliberately do this after deactivation so that the deactivation takes care of notifying the
-                        // browser of CanUndo/CanRedo changes.
-                        _undoTracker.PropertyChanged -= UndoTrackerPropertyChanged;
-                        _selectedClient.ErrorsChanged -= SelectedClientErrorsChanged;
-                        _selectedClient.ClearAllErrors();
-                    }
-
-                    // Only fire when it changes.
-                    EventAggregator.GetEvent<LockedForEditingEvent>().Publish(_editable);
-                }
-            }
-        }
-
-        private void SelectedClientErrorsChanged(object sender, DataErrorsChangedEventArgs e)
-        {
-            Errors = FlattenErrors();
-        }
-
-        private List<string> FlattenErrors()
-        {
-            List<string> errors = new List<string>();
-            Dictionary<string, List<string>> allErrors = SelectedClient.GetAllErrors();
-            foreach (string propertyName in allErrors.Keys)
-            {
-                foreach (var errorString in allErrors[propertyName])
-                {
-                    errors.Add(propertyName + ": " + errorString);
-                }
-            }
-            return errors;
-        }
-
-        private void UndoTrackerPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(_undoTracker.CanUndo):
-                    EventAggregator.GetEvent<CanUndoEvent>().Publish(_undoTracker.CanUndo);
-                    break;
-                case nameof(_undoTracker.CanRedo):
-                    EventAggregator.GetEvent<CanRedoEvent>().Publish(_undoTracker.CanRedo);
-                    break;
-            }
+            return _repository.GetClientById(id);
         }
     }
 }

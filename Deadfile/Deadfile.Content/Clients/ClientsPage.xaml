@@ -53,19 +53,19 @@
         <TextBlock Grid.Row="10" Grid.Column="0">Phone Number 3:</TextBlock>
         <TextBlock Grid.Row="11" Grid.Column="0">Email Address:</TextBlock>
         <TextBlock Grid.Row="12" Grid.Column="0">Notes:</TextBlock>
-        <TextBox Grid.Row="0" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.Title}"/>
-        <TextBox Grid.Row="1" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.FirstName}"/>
-        <TextBox Grid.Row="2" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.MiddleNames}"/>
-        <TextBox Grid.Row="3" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.LastName}"/>
-        <TextBox Grid.Row="4" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.AddressFirstLine}"/>
-        <TextBox Grid.Row="5" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.AddressSecondLine}"/>
-        <TextBox Grid.Row="6" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.AddressThirdLine}"/>
-        <TextBox Grid.Row="7" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.AddressPostCode}"></TextBox>
-        <TextBox Grid.Row="8" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.PhoneNumber1}"/>
-        <TextBox Grid.Row="9" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.PhoneNumber2}"/>
-        <TextBox Grid.Row="10" Grid.Column="1" IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.PhoneNumber3}"/>
-        <TextBox Grid.Row="11" Grid.Column="1" IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.EmailAddress}"/>
-        <TextBox Grid.Row="12" Grid.Column="1" IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedClient.Notes}"/>
+        <TextBox Grid.Row="0" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Title}"/>
+        <TextBox Grid.Row="1" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.FirstName}"/>
+        <TextBox Grid.Row="2" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.MiddleNames}"/>
+        <TextBox Grid.Row="3" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.LastName}"/>
+        <TextBox Grid.Row="4" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressFirstLine}"/>
+        <TextBox Grid.Row="5" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressSecondLine}"/>
+        <TextBox Grid.Row="6" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressThirdLine}"/>
+        <TextBox Grid.Row="7" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressPostCode}"></TextBox>
+        <TextBox Grid.Row="8" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.PhoneNumber1}"/>
+        <TextBox Grid.Row="9" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.PhoneNumber2}"/>
+        <TextBox Grid.Row="10" Grid.Column="1" IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.PhoneNumber3}"/>
+        <TextBox Grid.Row="11" Grid.Column="1" IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.EmailAddress}"/>
+        <TextBox Grid.Row="12" Grid.Column="1" IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Notes}"/>
         <ItemsControl Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" TextBlock.Foreground="Red" />
     </Grid>
 </UserControl>

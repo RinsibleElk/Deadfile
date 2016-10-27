@@ -11,10 +11,10 @@
               d:DataContext="{d:DesignInstance Type=clients:ClientsActionsPadDesignTimeViewModel, IsDesignTimeCreatable=True}"
               d:DesignHeight="100" d:DesignWidth="300">
     <StackPanel Orientation="Horizontal">
-        <Button Height="64" Width="64" Visibility="{Binding AddClientVisibility}" Command="{Binding AddClientCommand}" Style="{StaticResource AddButton}"/>
-        <Button Height="64" Width="64" Visibility="{Binding EditClientVisibility}" Command="{Binding EditClientCommand}" Style="{StaticResource EditButton}"/>
-        <Button Height="64" Width="64" Visibility="{Binding SaveClientVisibility}" IsDefault="True" Command="{Binding SaveClientCommand}" Style="{StaticResource SaveButton}"/>
-        <Button Height="64" Width="64" Visibility="{Binding DiscardClientVisibility}" IsCancel="True" Command="{Binding DiscardClientCommand}" Style="{StaticResource DiscardButton}"/>
-        <Button Height="64" Width="64" Visibility="{Binding DeleteClientVisibility}" Command="{Binding DeleteClientCommand}" Style="{StaticResource DeleteButton}"/>
+        <Button Height="64" Width="64" Visibility="{Binding AddItemVisibility}" Command="{Binding AddItemCommand}" Style="{StaticResource AddButton}"/>
+        <Button Height="64" Width="64" Visibility="{Binding EditItemVisibility}" Command="{Binding EditItemCommand}" Style="{StaticResource EditButton}"/>
+        <Button Height="64" Width="64" Visibility="{Binding SaveItemVisibility}" IsDefault="True" Command="{Binding SaveItemCommand}" Style="{StaticResource SaveButton}"/>
+        <Button Height="64" Width="64" Visibility="{Binding DiscardItemVisibility}" IsCancel="True" Command="{Binding DiscardItemCommand}" Style="{StaticResource DiscardButton}"/>
+        <Button Height="64" Width="64" Visibility="{Binding DeleteItemVisibility}" Command="{Binding DeleteItemCommand}" Style="{StaticResource DeleteButton}"/>
     </StackPanel>
 </UserControl>

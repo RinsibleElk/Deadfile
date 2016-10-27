@@ -93,6 +93,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionsPad\ActionsPadDesignTimeViewModel.cs" />
+    <Compile Include="ActionsPad\ActionsPadViewModel.cs" />
+    <Compile Include="ActionsPad\IActionsPadViewModel.cs" />
     <Compile Include="Behaviors\TreeViewSelectedItemBehavior.cs" />
     <Compile Include="Browser\BrowserPane.xaml.cs">
       <DependentUpon>BrowserPane.xaml</DependentUpon>
@@ -109,7 +112,7 @@
     <Compile Include="Events\CanUndoEvent.cs" />
     <Compile Include="Events\DiscardChangesEvent.cs" />
     <Compile Include="Events\LockedForEditingEvent.cs" />
-    <Compile Include="Events\EditClientEvent.cs" />
+    <Compile Include="Events\EditItemEvent.cs" />
     <Compile Include="Events\RedoEvent.cs" />
     <Compile Include="Events\SaveEvent.cs" />
     <Compile Include="Events\SelectedInvoiceEvent.cs" />
@@ -123,7 +126,7 @@
     <Compile Include="Navigation\NavigationParameterMapper.cs" />
     <Compile Include="Quotes\QuotationsTimerService.cs" />
     <Compile Include="Quotes\QuotesBarDesignTimeViewModel.cs" />
-    <Compile Include="Events\SelectedClientEvent.cs" />
+    <Compile Include="Events\SelectedItemEvent.cs" />
     <Compile Include="Events\NavigationEvent.cs" />
     <Compile Include="Clients\IClientsActionsPadViewModel.cs" />
     <Compile Include="Clients\IClientsPageViewModel.cs" />
@@ -157,6 +160,8 @@
     <Compile Include="Quotes\QuotesBarViewModel.cs" />
     <Compile Include="Home\HomePageViewModel.cs" />
     <Compile Include="Navigation\NavigationBarViewModel.cs" />
+    <Compile Include="ViewModels\EditableItemContentViewModelBase.cs" />
+    <Compile Include="ViewModels\IEditableItemViewModel.cs" />
     <Compile Include="ViewModels\ParameterisedContentViewModelBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Clients\ClientsActionsPad.xaml.cs">

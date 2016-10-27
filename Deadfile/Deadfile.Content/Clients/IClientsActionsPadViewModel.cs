@@ -6,21 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Deadfile.Content.ActionsPad;
 using Deadfile.Model;
 
 namespace Deadfile.Content.Clients
 {
-    public interface IClientsActionsPadViewModel
+    interface IClientsActionsPadViewModel : IActionsPadViewModel
     {
-        ICommand AddClientCommand { get; }
-        ICommand EditClientCommand { get; }
-        ICommand SaveClientCommand { get; }
-        ICommand DeleteClientCommand { get; }
-        ICommand DiscardClientCommand { get; }
-        Visibility AddClientVisibility { get; }
-        Visibility EditClientVisibility { get; }
-        Visibility SaveClientVisibility { get; }
-        Visibility DiscardClientVisibility { get; }
-        Visibility DeleteClientVisibility { get; }
+        ICommand AddItemCommand { get; }
+        Visibility AddItemVisibility { get; }
     }
 }

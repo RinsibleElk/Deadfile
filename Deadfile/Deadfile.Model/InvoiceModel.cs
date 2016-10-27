@@ -9,17 +9,13 @@ namespace Deadfile.Model
     /// <summary>
     /// UI model for an Invoice.
     /// </summary>
-    public class InvoiceModel : ValidatableBindableBase
+    public class InvoiceModel : ModelBase
     {
-        public InvoiceModel()
+        public override int Id
         {
-            InvoiceId = NewInvoiceId;
+            get { return InvoiceId; }
+            set { InvoiceId = value; }
         }
-
-        /// <summary>
-        /// Deliberately invalid id to represent to the EditInvoice experience that a invoice job is required.
-        /// </summary>
-        public const int NewInvoiceId = Int32.MinValue;
 
         private int _invoiceId;
         /// <summary>
