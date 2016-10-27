@@ -44,7 +44,7 @@ namespace Deadfile.Content.Navigation
         /// <typeparam name="T"></typeparam>
         /// <param name="experience"></param>
         /// <param name="parameter"></param>
-        public void NavigateTo<T>(Experience experience, T parameter)
+        public void NavigateTo<T>(Experience experience, T parameter) where T : new()
         {
             var uri = new Uri(experience + "Page", UriKind.Relative);
             var navigationParameters = _navigationParameterMapper.ConvertToNavigationParameters(parameter);

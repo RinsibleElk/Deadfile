@@ -15,7 +15,7 @@ namespace Deadfile.Content.Interfaces
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
         /// <returns></returns>
-        NavigationParameters ConvertToNavigationParameters<T>(T value);
+        NavigationParameters ConvertToNavigationParameters<T>(T value) where T : new();
 
         /// <summary>
         /// Convert NavigationParameters to the user's type.
@@ -23,6 +23,6 @@ namespace Deadfile.Content.Interfaces
         /// <typeparam name="T"></typeparam>
         /// <param name="navigationParameters"></param>
         /// <returns></returns>
-        T ConvertToUserType<T>(NavigationParameters navigationParameters);
+        T ConvertToUserType<T>(NavigationParameters navigationParameters) where T : new();
     }
 }

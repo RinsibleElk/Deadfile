@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Content.Interfaces;
@@ -13,29 +14,46 @@ namespace Deadfile.Content.Navigation
     /// </summary>
     public class NavigationParameterMapper : INavigationParameterMapper
     {
-        public NavigationParameters ConvertToNavigationParameters<T>(T value)
+        public NavigationParameters ConvertToNavigationParameters<T>(T value) where T : new()
         {
-            // for now just assume it's simple types
-            var t = typeof(T);
-            if (!t.IsPrimitive && t != typeof(string))
-            {
-                throw new NotImplementedException("I haven't implemented this for non-primitives yet");
-            }
+            // convention based
             var navigationParameters = new NavigationParameters();
-            navigationParameters.Add("Value", value);
+            var t = typeof(T);
+            if (t.IsPrimitive || t == typeof(string))
+            {
+                navigationParameters.Add("Value", value);
+            }
+            else
+            {
+                foreach (var propertyInfo in t.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+                {
+                    if (propertyInfo.CanRead && propertyInfo.CanWrite)
+                    {
+                        navigationParameters.Add(propertyInfo.Name, propertyInfo.GetMethod.Invoke(value, new object[0]));
+                    }
+                }
+            }
             return navigationParameters;
         }
 
-        public T ConvertToUserType<T>(NavigationParameters navigationParameters)
+        public T ConvertToUserType<T>(NavigationParameters navigationParameters) where T : new()
         {
-            // for now just assume it's simple types
+            // convention based
             var t = typeof(T);
             if (!t.IsPrimitive && t != typeof(string))
             {
-                throw new NotImplementedException("I haven't implemented this for non-primitives yet");
+                var value = new T();
+                foreach (var propertyInfo in t.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+                {
+                    if (propertyInfo.CanRead && propertyInfo.CanWrite)
+                    {
+                        propertyInfo.SetMethod.Invoke(value, new object[] { navigationParameters[propertyInfo.Name] });
+                    }
+                }
+                return value;
             }
-            var value = (T)navigationParameters["Value"];
-            return value;
+            else
+                return (T)navigationParameters["Value"];
         }
     }
 }

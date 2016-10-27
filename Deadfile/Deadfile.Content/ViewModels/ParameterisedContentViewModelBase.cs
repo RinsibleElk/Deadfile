@@ -16,7 +16,7 @@ namespace Deadfile.Content.ViewModels
     /// I'm assuming here that it is best to keep the dictionary of values in the navigation parameters as simple types.
     /// </remarks>
     /// <typeparam name="T"></typeparam>
-    public abstract class ParameterisedContentViewModelBase<T> : ContentViewModelBase
+    public abstract class ParameterisedContentViewModelBase<T> : ContentViewModelBase where T : new()
     {
         private readonly INavigationParameterMapper _navigationParameterMapper;
         public ParameterisedContentViewModelBase(

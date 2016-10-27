@@ -14,7 +14,7 @@ namespace Deadfile.Content.Interfaces
     public interface IDeadfileNavigationService
     {
         void NavigateTo(Experience experience);
-        void NavigateTo<T>(Experience experience, T parameter);
+        void NavigateTo<T>(Experience experience, T parameter) where T : new();
         void NavigateActionsTo(Experience experience);
         void NavigateJobsChildTo(JobChildExperience jobChildExperience, int jobId);
     }
