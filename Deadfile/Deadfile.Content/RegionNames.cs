@@ -13,5 +13,6 @@ namespace Deadfile.Content
         public const string QuotesRegion = "QuotesRegion";
         public const string BrowserRegion = "BrowserRegion";
         public const string ActionsRegion = "ActionsRegion";
+        public const string JobChildRegion = "JobChildRegion";
     }
 }

@@ -125,6 +125,7 @@
     <Compile Include="Home\HomeActionsPadDesignTimeViewModel.cs" />
     <Compile Include="Interfaces\INavigationParameterMapper.cs" />
     <Compile Include="Interfaces\IQuotationsTimerService.cs" />
+    <Compile Include="JobChildren\JobChildExperience.cs" />
     <Compile Include="Jobs\JobsActionsPad.xaml.cs">
       <DependentUpon>JobsActionsPad.xaml</DependentUpon>
     </Compile>
@@ -253,6 +254,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="JobChildren\PlanningApplications\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

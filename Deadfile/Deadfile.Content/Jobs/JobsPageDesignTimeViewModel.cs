@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Deadfile.Content.Interfaces;
+using Deadfile.Content.JobChildren;
 using Deadfile.Content.Navigation;
 using Deadfile.Model;
 using Deadfile.Model.DesignTime;
@@ -30,5 +31,13 @@ namespace Deadfile.Content.Jobs
 
         public bool Editable { get; } = false;
         public List<string> Errors { get; } = new List<string>();
+
+        public List<JobChildExperience> JobChildren { get; } = new List<JobChildExperience>(new[]
+        {
+            JobChildExperience.PlanningApplication,
+            JobChildExperience.Expenses,
+            JobChildExperience.Payments
+        });
+        public JobChildExperience SelectedJobChild { get; set; } = JobChildExperience.PlanningApplication;
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using Deadfile.Content.Events;
 using Deadfile.Content.Interfaces;
+using Deadfile.Content.JobChildren;
 using Deadfile.Content.Navigation;
 using Deadfile.Content.Undo;
 using Deadfile.Content.ViewModels;
@@ -52,6 +53,20 @@ namespace Deadfile.Content.Jobs
         public override JobModel GetModelById(int id)
         {
             return _repository.GetJobById(id);
+        }
+
+        public List<JobChildExperience> JobChildren { get; } = new List<JobChildExperience>(new[]
+        {
+            JobChildExperience.PlanningApplication,
+            JobChildExperience.Expenses,
+            JobChildExperience.Payments
+        });
+
+        private JobChildExperience _selectedJobChild = JobChildExperience.PlanningApplication;
+        public JobChildExperience SelectedJobChild
+        {
+            get { return _selectedJobChild; }
+            set { SetProperty(ref _selectedJobChild, value); }
         }
     }
 }

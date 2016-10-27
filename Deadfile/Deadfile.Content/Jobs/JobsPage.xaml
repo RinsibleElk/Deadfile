@@ -4,6 +4,7 @@
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
               xmlns:jobs="clr-namespace:Deadfile.Content.Jobs"
+              xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
               xmlns:prism="http://prismlibrary.com/"
               xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
               prism:ViewModelLocator.AutoWireViewModel="True"
@@ -31,6 +32,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0">Address Line 1:</TextBlock>
@@ -44,6 +46,7 @@
         <TextBox Grid.Row="3" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressPostCode}"/>
         <TextBox Grid.Row="4" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Notes}"/>
         <ItemsControl Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" TextBlock.Foreground="Red" />
-        <TreeView Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"></TreeView>
+        <ListBox Grid.Row="6" Grid.Column="0" ItemsSource="{Binding JobChildren}" SelectedItem="{Binding SelectedJobChild, Mode=TwoWay}" />
+        <metro:TransitioningContentControl Grid.Row="6" Grid.RowSpan="2" Grid.Column="1" prism:RegionManager.RegionName="JobChildRegion" Transition="LeftReplace" />
     </Grid>
 </UserControl>
