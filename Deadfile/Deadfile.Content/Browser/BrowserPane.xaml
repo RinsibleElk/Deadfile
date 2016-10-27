@@ -6,6 +6,7 @@
               xmlns:browser="clr-namespace:Deadfile.Content.Browser"
               xmlns:browsermodel="clr-namespace:Deadfile.Model.Browser;assembly=Deadfile.Model"
               xmlns:prism="http://prismlibrary.com/"
+              xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
               xmlns:behaviors="clr-namespace:Deadfile.Content.Behaviors"
               prism:ViewModelLocator.AutoWireViewModel="True"
@@ -33,8 +34,7 @@
                 <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding BrowserSettings.Modes}" IsEnabled="{Binding BrowsingEnabled}" IsEditable="False" SelectedItem="{Binding BrowserSettings.Mode}" />
                 <Label Grid.Row="1" Grid.Column="0">Sort:</Label>
                 <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding BrowserSettings.Sorts}" IsEnabled="{Binding BrowsingEnabled}" IsEditable="False" SelectedItem="{Binding BrowserSettings.Sort}" />
-                <Label Grid.Row="2" Grid.Column="0">Filter:</Label>
-                <TextBox Grid.Row="2" Grid.Column="1" IsEnabled="{Binding BrowsingEnabled}" Text="{Binding BrowserSettings.FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" metro:TextBoxHelper.Watermark="Filter" IsEnabled="{Binding BrowsingEnabled}" Text="{Binding BrowserSettings.FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </Grid>
             <TreeView Grid.Row="1" IsEnabled="{Binding BrowsingEnabled}" ItemsSource="{Binding Items}" Style="{StaticResource TreeViewTransparentBackground}">
                 <i:Interaction.Behaviors>

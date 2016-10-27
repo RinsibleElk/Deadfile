@@ -16,13 +16,14 @@ using Prism.Regions;
 using Deadfile.Content;
 using Deadfile.Content.Interfaces;
 using Deadfile.Content.Navigation;
+using MahApps.Metro.Controls;
 
 namespace Deadfile
 {
     /// <summary>
     /// Interaction logic for Shell.xaml
     /// </summary>
-    public partial class Shell : Window
+    public partial class Shell : MetroWindow
     {
         private readonly IDeadfileNavigationService _navigationService;
 
