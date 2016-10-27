@@ -4,9 +4,12 @@ using Deadfile.Content.Clients;
 using Deadfile.Content.Events;
 using Deadfile.Content.Interfaces;
 using Deadfile.Content.Navigation;
+using Deadfile.Model;
 using Deadfile.Model.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Prism.Events;
+using Prism.Mvvm;
 using Prism.Regions;
 using Xunit;
 
@@ -67,7 +70,7 @@ namespace Deadfile.Content.Test
             return new NavigationContext(navigationServiceMock.Object, uri, parameters);
         }
 
-        private static void NavigateTo(Host host, int selectedIndex)
+        private static void NavigateTo(Host host, ClientModel model)
         {
             // Expect to receive journal via navigation event and be asked to move the actions pad to the clients experience
             var navigationEventMock = new Mock<NavigationEvent>();
@@ -99,16 +102,39 @@ namespace Deadfile.Content.Test
                 .Setup((ea) => ea.GetEvent<EditItemEvent>())
                 .Returns(host.EditItemEvent)
                 .Verifiable();
-            host.ViewModel.OnNavigatedTo(CreateNavigateToNavigationContext(host.NavigationParameterMapper, selectedIndex));
+            if (model.Id != ModelBase.NewModelId)
+            {
+                host.DeadfileRepositoryMock
+                    .Setup((dr) => dr.GetClientById(model.Id))
+                    .Returns(model)
+                    .Verifiable();
+            }
+            host.ViewModel.OnNavigatedTo(CreateNavigateToNavigationContext(host.NavigationParameterMapper, model.Id));
             host.VerifyAll();
         }
 
         [Fact]
+        public void TestNavigateToNewClient()
+        {
+            using (var host = new Host())
+            {
+                NavigateTo(host, new ClientModel());
+            }
+        }
+
+        [Fact(Skip = "I'm still working on this - need to deal with selection events")]
         public void TestNavigateToExistingClient()
         {
             using (var host = new Host())
             {
-                NavigateTo(host, 0);
+                NavigateTo(host,
+                    new ClientModel()
+                    {
+                        ClientId = 1,
+                        AddressFirstLine = "1 Yemen Road",
+                        LastName = "Johnson",
+                        PhoneNumber1 = "07544454514"
+                    });
             }
         }
     }

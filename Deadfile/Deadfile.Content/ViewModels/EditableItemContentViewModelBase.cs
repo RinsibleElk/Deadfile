@@ -115,7 +115,6 @@ namespace Deadfile.Content.ViewModels
             _undoTracker.Redo();
         }
 
-
         // selected item is not nullable
         private T _selectedItem = new T();
 
