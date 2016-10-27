@@ -10,6 +10,7 @@ using Deadfile.Content.Interfaces;
 using Deadfile.Content.Navigation;
 using Deadfile.Content.ViewModels;
 using Deadfile.Model;
+using Deadfile.Model.Browser;
 using Prism.Events;
 using Prism.Regions;
 
@@ -21,7 +22,7 @@ namespace Deadfile.Content.Home
 
         public HomePageViewModel(IDeadfileNavigationService navigationService, IEventAggregator eventAggregator) : base(eventAggregator, navigationService)
         {
-            _clientsCommand = new DelegateCommand(() => this.NavigateToClientsPage(ModelBase.NewModelId));
+            _clientsCommand = new DelegateCommand(() => this.NavigateToExperience(new SelectedItemPacket(BrowserModelType.Client, ModelBase.NewModelId)));
             Title = "Home Page";
         }
 
@@ -36,7 +37,7 @@ namespace Deadfile.Content.Home
             base.OnNavigatedTo(navigationContext);
 
             // Subscribe to selection changes.
-            _navigateToSelectedClientSubscriptionToken = EventAggregator.GetEvent<SelectedItemEvent>().Subscribe(NavigateToClientsPage);
+            _navigateToSelectedClientSubscriptionToken = EventAggregator.GetEvent<SelectedItemEvent>().Subscribe(NavigateToExperience);
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -48,9 +49,17 @@ namespace Deadfile.Content.Home
             _navigateToSelectedClientSubscriptionToken = null;
         }
 
-        private void NavigateToClientsPage(int selectedClientId)
+        private void NavigateToExperience(SelectedItemPacket packet)
         {
-            NavigationService.NavigateTo(Experience.Clients, selectedClientId);
+            switch (packet.Type)
+            {
+                case BrowserModelType.Client:
+                    NavigationService.NavigateTo(Experience.Clients, packet.Id);
+                    break;
+                case BrowserModelType.Job:
+                    NavigationService.NavigateTo(Experience.Jobs, packet.Id);
+                    break;
+            }
         }
 
         public ICommand ClientsCommand { get { return _clientsCommand; } }

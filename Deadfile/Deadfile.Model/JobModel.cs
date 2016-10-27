@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,8 @@ namespace Deadfile.Model
         }
 
         private string _addressFirstLine;
+        [Required(ErrorMessage = "You must provide an address for this Job."),
+         MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
         public string AddressFirstLine
         {
             get { return _addressFirstLine; }
@@ -36,6 +39,7 @@ namespace Deadfile.Model
         }
 
         private string _addressSecondLine;
+        [MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
         public string AddressSecondLine
         {
             get { return _addressSecondLine;}
@@ -43,6 +47,7 @@ namespace Deadfile.Model
         }
 
         private string _addressThirdLine;
+        [MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
         public string AddressThirdLine
         {
             get { return _addressThirdLine; }
@@ -50,6 +55,7 @@ namespace Deadfile.Model
         }
 
         private string _addressPostCode;
+        [MaxLength(20, ErrorMessage = "A postcode must be less than 20 characters long.")]
         public string AddressPostCode
         {
             get { return _addressPostCode; }
@@ -64,6 +70,7 @@ namespace Deadfile.Model
         }
 
         private string _notes;
+        [MaxLength(500, ErrorMessage = "The free notes for a Job must be less than 500 characters long.")]
         public string Notes
         {
             get { return _notes; }

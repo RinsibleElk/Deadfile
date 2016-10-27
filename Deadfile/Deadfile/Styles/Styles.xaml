@@ -301,4 +301,29 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <ImageBrush x:Key="QuoteButtonImageBrush" ImageSource="../Resources/quote.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="QuoteGreyButtonImageBrush" ImageSource="../Resources/quote.png" Stretch="Uniform"/>
+    <ImageBrush x:Key="QuotePurpleButtonImageBrush" ImageSource="../Resources/quote-purple.png" Stretch="Uniform"/>
+
+    <Style x:Key="QuoteButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource QuoteButtonImageBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource QuotePurpleButtonImageBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource QuoteGreyButtonImageBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

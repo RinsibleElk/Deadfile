@@ -47,21 +47,26 @@ namespace Deadfile.Entity
         /// <summary>
         /// First line of the Client's contact address. This is required.
         /// </summary>
+        [Required(ErrorMessage = "You must provide an address for this Client."),
+         MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
         public string AddressFirstLine { get; set; }
 
         /// <summary>
         /// Second line of the Client's contact address.
         /// </summary>
+        [MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
         public string AddressSecondLine { get; set; }
 
         /// <summary>
         /// Third line of the Client's contact address.
         /// </summary>
+        [MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
         public string AddressThirdLine { get; set; }
 
         /// <summary>
         /// Post code for the Client's contact address.
         /// </summary>
+        [MaxLength(20, ErrorMessage = "A postcode must be less than 20 characters long.")]
         public string AddressPostCode { get; set; }
 
         [Phone(ErrorMessage = "Not a valid phone number for Client."),

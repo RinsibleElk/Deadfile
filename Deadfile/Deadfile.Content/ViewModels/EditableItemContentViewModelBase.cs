@@ -6,8 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Content.Events;
 using Deadfile.Content.Interfaces;
+using Deadfile.Content.Navigation;
 using Deadfile.Content.Undo;
 using Deadfile.Model;
+using Deadfile.Model.Browser;
 using Prism.Events;
 using Prism.Regions;
 
@@ -95,7 +97,7 @@ namespace Deadfile.Content.ViewModels
 
             // subscribe to messages from the browser pane
             _navigateToSelectedItemSubscriptionToken =
-                EventAggregator.GetEvent<SelectedItemEvent>().Subscribe(NavigateToPage);
+                EventAggregator.GetEvent<SelectedItemEvent>().Subscribe(NavigateToExperience);
             _undoSubscriptionToken = EventAggregator.GetEvent<UndoEvent>().Subscribe(PerformUndo);
             _redoSubscriptionToken = EventAggregator.GetEvent<RedoEvent>().Subscribe(PerformRedo);
 
@@ -173,9 +175,17 @@ namespace Deadfile.Content.ViewModels
             }
         }
 
-        private void NavigateToPage(int selectedId)
+        private void NavigateToExperience(SelectedItemPacket packet)
         {
-            NavigationService.NavigateTo(Experience, selectedId);
+            switch (packet.Type)
+            {
+                case BrowserModelType.Client:
+                    NavigationService.NavigateTo(Experience.Clients, packet.Id);
+                    break;
+                case BrowserModelType.Job:
+                    NavigationService.NavigateTo(Experience.Jobs, packet.Id);
+                    break;
+            }
         }
 
         private void SelectedItemErrorsChanged(object sender, DataErrorsChangedEventArgs e)

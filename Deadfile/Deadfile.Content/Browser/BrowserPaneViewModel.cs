@@ -46,20 +46,7 @@ namespace Deadfile.Content.Browser
             set
             {
                 if (SetProperty(ref _selectedItem, value))
-                {
-                    switch (_selectedItem.ModelType)
-                    {
-                        case BrowserModelType.Client:
-                            _eventAggregator.GetEvent<SelectedItemEvent>().Publish(_selectedItem.Id);
-                            break;
-                        case BrowserModelType.Job:
-                            _eventAggregator.GetEvent<SelectedJobEvent>().Publish(_selectedItem.Id);
-                            break;
-                        case BrowserModelType.Invoice:
-                            _eventAggregator.GetEvent<SelectedInvoiceEvent>().Publish(_selectedItem.Id);
-                            break;
-                    }
-                }
+                    _eventAggregator.GetEvent<SelectedItemEvent>().Publish(new SelectedItemPacket(_selectedItem.ModelType, _selectedItem.Id));
             }
         }
 

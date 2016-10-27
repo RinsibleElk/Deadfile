@@ -121,6 +121,18 @@
     <Compile Include="Home\HomeActionsPadDesignTimeViewModel.cs" />
     <Compile Include="Interfaces\INavigationParameterMapper.cs" />
     <Compile Include="Interfaces\IQuotationsTimerService.cs" />
+    <Compile Include="Jobs\JobsActionsPad.xaml.cs">
+      <DependentUpon>JobsActionsPad.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Jobs\JobsActionsPadDesignTimeViewModel.cs" />
+    <Compile Include="Jobs\JobsActionsPadViewModel.cs" />
+    <Compile Include="Jobs\JobsPage.xaml.cs">
+      <DependentUpon>JobsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Jobs\JobsPageDesignTimeViewModel.cs" />
+    <Compile Include="Jobs\JobsPageViewModel.cs" />
+    <Compile Include="Jobs\IJobsActionsPadViewModel.cs" />
+    <Compile Include="Jobs\IJobsPageViewModel.cs" />
     <Compile Include="Navigation\NavigationBarDesignTimeViewModel.cs" />
     <Compile Include="Home\HomePageDesignTimeViewModel.cs" />
     <Compile Include="Navigation\NavigationParameterMapper.cs" />
@@ -216,6 +228,14 @@
     <Page Include="Home\HomeActionsPad.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Jobs\JobsActionsPad.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Jobs\JobsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Quotes\QuotesBar.xaml">
       <SubType>Designer</SubType>

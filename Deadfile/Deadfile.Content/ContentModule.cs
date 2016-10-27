@@ -3,6 +3,7 @@ using Deadfile.Content.Browser;
 using Deadfile.Content.Clients;
 using Deadfile.Content.Home;
 using Deadfile.Content.Interfaces;
+using Deadfile.Content.Jobs;
 using Deadfile.Content.Navigation;
 using Deadfile.Content.Quotes;
 using Microsoft.Practices.Unity;
@@ -41,6 +42,8 @@ namespace Deadfile.Content
             _unityContainer.RegisterTypeForNavigation<HomePage>();
             _unityContainer.RegisterType<ClientsPage>();
             _unityContainer.RegisterTypeForNavigation<ClientsPage>();
+            _unityContainer.RegisterType<JobsPage>();
+            _unityContainer.RegisterTypeForNavigation<JobsPage>();
 
             // This excludes the browser region from Journaling.
             _regionManager.RegisterViewWithRegion(RegionNames.BrowserRegion, typeof(BrowserPane));
@@ -48,6 +51,7 @@ namespace Deadfile.Content
             // This excludes the actions region from Journaling.
             _regionManager.RegisterViewWithRegion(RegionNames.ActionsRegion, typeof(HomeActionsPad));
             _regionManager.RegisterViewWithRegion(RegionNames.ActionsRegion, typeof(ClientsActionsPad));
+            _regionManager.RegisterViewWithRegion(RegionNames.ActionsRegion, typeof(JobsActionsPad));
 
             // This excludes the navigation region from Journaling.
             _regionManager.RegisterViewWithRegion(RegionNames.NavigationRegion, typeof(NavigationBar));
