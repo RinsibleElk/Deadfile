@@ -6,7 +6,6 @@ using Deadfile.Content.Interfaces;
 using Deadfile.Content.Navigation;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Prism.Events;
 using Prism.Mvvm;
@@ -28,6 +27,7 @@ namespace Deadfile.Content.Test
             public readonly UndoEvent UndoEvent = new UndoEvent();
             public readonly RedoEvent RedoEvent = new RedoEvent();
             public readonly EditItemEvent EditItemEvent = new EditItemEvent();
+            public readonly CanEditEvent CanEditEvent = new CanEditEvent();
             public Host()
             {
                 ViewModel = new ClientsPageViewModel(EventAggregatorMock.Object, NavigationServiceMock.Object, DeadfileRepositoryMock.Object, NavigationParameterMapper);
@@ -104,6 +104,10 @@ namespace Deadfile.Content.Test
                 .Verifiable();
             if (model.Id != ModelBase.NewModelId)
             {
+                host.EventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<CanEditEvent>())
+                    .Returns(host.CanEditEvent)
+                    .Verifiable();
                 host.DeadfileRepositoryMock
                     .Setup((dr) => dr.GetClientById(model.Id))
                     .Returns(model)
@@ -122,11 +126,19 @@ namespace Deadfile.Content.Test
             }
         }
 
-        [Fact(Skip = "I'm still working on this - need to deal with selection events")]
+        [Fact]
         public void TestNavigateToExistingClient()
         {
             using (var host = new Host())
             {
+                Assert.False(host.ViewModel.CanEdit);
+                var a = 0;
+                var ce = false;
+                host.CanEditEvent.Subscribe((b) =>
+                {
+                    ++a;
+                    ce = b;
+                });
                 NavigateTo(host,
                     new ClientModel()
                     {
@@ -135,6 +147,9 @@ namespace Deadfile.Content.Test
                         LastName = "Johnson",
                         PhoneNumber1 = "07544454514"
                     });
+                Assert.Equal(1, a);
+                Assert.True(ce);
+                Assert.True(host.ViewModel.CanEdit);
             }
         }
     }

@@ -90,7 +90,7 @@ namespace Deadfile.Content.ViewModels
                 else
                     SelectedItem = GetModelById(selectedId);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 SelectedItem = new T();
             }

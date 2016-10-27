@@ -37,11 +37,11 @@
         <TextBlock Grid.Row="2" Grid.Column="0">Address Line 3:</TextBlock>
         <TextBlock Grid.Row="3" Grid.Column="0">Post Code:</TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="0">Notes:</TextBlock>
-        <TextBox Grid.Row="0" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressFirstLine}"/>
-        <TextBox Grid.Row="1" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressSecondLine}"/>
-        <TextBox Grid.Row="2" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressThirdLine}"/>
-        <TextBox Grid.Row="3" Grid.Column="1"  IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressPostCode}"/>
-        <TextBox Grid.Row="4" Grid.Column="1" IsEnabled="{Binding Editable}" Text="{Binding Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Notes}"/>
+        <TextBox Grid.Row="0" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressFirstLine}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressSecondLine}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressThirdLine}"/>
+        <TextBox Grid.Row="3" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressPostCode}"/>
+        <TextBox Grid.Row="4" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Notes}"/>
         <ItemsControl Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" TextBlock.Foreground="Red" />
     </Grid>
 </UserControl>
