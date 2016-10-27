@@ -125,7 +125,25 @@
     <Compile Include="Home\HomeActionsPadDesignTimeViewModel.cs" />
     <Compile Include="Interfaces\INavigationParameterMapper.cs" />
     <Compile Include="Interfaces\IQuotationsTimerService.cs" />
+    <Compile Include="JobChildren\Payments\PaymentsControl.xaml.cs">
+      <DependentUpon>PaymentsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="JobChildren\Payments\PaymentsControlDesignTimeViewModel.cs" />
+    <Compile Include="JobChildren\Payments\PaymentsControlViewModel.cs" />
+    <Compile Include="JobChildren\Payments\IPaymentsControlViewModel.cs" />
     <Compile Include="JobChildren\JobChildExperience.cs" />
+    <Compile Include="JobChildren\Expenses\IExpensesControlViewModel.cs" />
+    <Compile Include="JobChildren\Expenses\ExpensesControl.xaml.cs">
+      <DependentUpon>ExpensesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="JobChildren\Expenses\ExpensesControlDesignTimeViewModel.cs" />
+    <Compile Include="JobChildren\Expenses\ExpensesControlViewModel.cs" />
+    <Compile Include="JobChildren\Applications\IApplicationsControlViewModel.cs" />
+    <Compile Include="JobChildren\Applications\ApplicationsControl.xaml.cs">
+      <DependentUpon>ApplicationsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="JobChildren\Applications\ApplicationsControlDesignTimeViewModel.cs" />
+    <Compile Include="JobChildren\Applications\ApplicationsControlViewModel.cs" />
     <Compile Include="Jobs\JobsActionsPad.xaml.cs">
       <DependentUpon>JobsActionsPad.xaml</DependentUpon>
     </Compile>
@@ -234,6 +252,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="JobChildren\Payments\PaymentsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="JobChildren\Expenses\ExpensesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="JobChildren\Applications\ApplicationsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Jobs\JobsActionsPad.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -255,9 +285,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="JobChildren\PlanningApplications\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

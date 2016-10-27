@@ -65,7 +65,9 @@
     <Compile Include="InvoiceStatus.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="JobStatus.cs" />
-    <Compile Include="PlanningApplication.cs" />
+    <Compile Include="Payment.cs" />
+    <Compile Include="Application.cs" />
+    <Compile Include="ApplicationType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quotation.cs" />
   </ItemGroup>

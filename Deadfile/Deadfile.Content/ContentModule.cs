@@ -3,6 +3,9 @@ using Deadfile.Content.Browser;
 using Deadfile.Content.Clients;
 using Deadfile.Content.Home;
 using Deadfile.Content.Interfaces;
+using Deadfile.Content.JobChildren.Expenses;
+using Deadfile.Content.JobChildren.Payments;
+using Deadfile.Content.JobChildren.Applications;
 using Deadfile.Content.Jobs;
 using Deadfile.Content.Navigation;
 using Deadfile.Content.Quotes;
@@ -52,6 +55,11 @@ namespace Deadfile.Content
             _regionManager.RegisterViewWithRegion(RegionNames.ActionsRegion, typeof(HomeActionsPad));
             _regionManager.RegisterViewWithRegion(RegionNames.ActionsRegion, typeof(ClientsActionsPad));
             _regionManager.RegisterViewWithRegion(RegionNames.ActionsRegion, typeof(JobsActionsPad));
+
+            // This excludes the job child region from Journaling.
+            _regionManager.RegisterViewWithRegion(RegionNames.JobChildRegion, typeof(ApplicationsControl));
+            _regionManager.RegisterViewWithRegion(RegionNames.JobChildRegion, typeof(ExpensesControl));
+            _regionManager.RegisterViewWithRegion(RegionNames.JobChildRegion, typeof(PaymentsControl));
 
             // This excludes the navigation region from Journaling.
             _regionManager.RegisterViewWithRegion(RegionNames.NavigationRegion, typeof(NavigationBar));

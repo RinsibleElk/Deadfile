@@ -30,6 +30,7 @@ namespace Deadfile.Content.Jobs
             : base(eventAggregator, navigationService, mapper)
         {
             _repository = repository;
+            SelectedJobChild = JobChildExperience.Applications;
         }
 
         public override Experience Experience
@@ -57,16 +58,22 @@ namespace Deadfile.Content.Jobs
 
         public List<JobChildExperience> JobChildren { get; } = new List<JobChildExperience>(new[]
         {
-            JobChildExperience.PlanningApplication,
+            JobChildExperience.Applications,
             JobChildExperience.Expenses,
             JobChildExperience.Payments
         });
 
-        private JobChildExperience _selectedJobChild = JobChildExperience.PlanningApplication;
+        private JobChildExperience _selectedJobChild = JobChildExperience.Applications;
         public JobChildExperience SelectedJobChild
         {
             get { return _selectedJobChild; }
-            set { SetProperty(ref _selectedJobChild, value); }
+            set
+            {
+                if (SetProperty(ref _selectedJobChild, value) && SelectedItem.JobId != ModelBase.NewModelId)
+                {
+                    NavigationService.NavigateJobsChildTo(_selectedJobChild, SelectedItem.JobId);
+                }
+            }
         }
     }
 }

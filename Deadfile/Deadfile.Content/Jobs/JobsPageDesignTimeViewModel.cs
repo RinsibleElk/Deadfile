@@ -34,10 +34,10 @@ namespace Deadfile.Content.Jobs
 
         public List<JobChildExperience> JobChildren { get; } = new List<JobChildExperience>(new[]
         {
-            JobChildExperience.PlanningApplication,
+            JobChildExperience.Applications,
             JobChildExperience.Expenses,
             JobChildExperience.Payments
         });
-        public JobChildExperience SelectedJobChild { get; set; } = JobChildExperience.PlanningApplication;
+        public JobChildExperience SelectedJobChild { get; set; } = JobChildExperience.Applications;
     }
 }

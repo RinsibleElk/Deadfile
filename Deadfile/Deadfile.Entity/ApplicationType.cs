@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deadfile.Content.JobChildren
+namespace Deadfile.Entity
 {
-    public enum JobChildExperience
+    public enum ApplicationType
     {
-        Applications,
-        Expenses,
-        Payments
+        BuildingControl,
+        Planning
     }
 }

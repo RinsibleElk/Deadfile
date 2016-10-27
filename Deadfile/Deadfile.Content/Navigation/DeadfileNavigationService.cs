@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Content.Interfaces;
+using Deadfile.Content.JobChildren;
 using Prism.Regions;
 
 namespace Deadfile.Content.Navigation
@@ -63,6 +64,12 @@ namespace Deadfile.Content.Navigation
                     break;
             }
             _regionManager.RequestNavigate(RegionNames.ActionsRegion, uri);
+        }
+
+        public void NavigateJobsChildTo(JobChildExperience jobChildExperience, int jobId)
+        {
+            var uri = new Uri("/" + jobChildExperience + "Control", UriKind.Relative);
+            _regionManager.RequestNavigate(RegionNames.JobChildRegion, uri);
         }
     }
 }

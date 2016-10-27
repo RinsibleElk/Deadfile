@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Content.JobChildren;
 using Deadfile.Content.Navigation;
 
 namespace Deadfile.Content.Interfaces
@@ -15,6 +16,6 @@ namespace Deadfile.Content.Interfaces
         void NavigateTo(Experience experience);
         void NavigateTo<T>(Experience experience, T parameter);
         void NavigateActionsTo(Experience experience);
-
+        void NavigateJobsChildTo(JobChildExperience jobChildExperience, int jobId);
     }
 }

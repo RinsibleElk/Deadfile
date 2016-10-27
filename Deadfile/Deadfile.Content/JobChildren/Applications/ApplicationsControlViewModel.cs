@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deadfile.Content.JobChildren
+namespace Deadfile.Content.JobChildren.Applications
 {
-    public enum JobChildExperience
+    class ApplicationsControlViewModel
     {
-        Applications,
-        Expenses,
-        Payments
     }
 }
