@@ -33,6 +33,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0">Address Line 1:</TextBlock>
@@ -40,13 +41,14 @@
         <TextBlock Grid.Row="2" Grid.Column="0">Address Line 3:</TextBlock>
         <TextBlock Grid.Row="3" Grid.Column="0">Post Code:</TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="0">Notes:</TextBlock>
+        <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"></Label>
         <TextBox Grid.Row="0" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressFirstLine}"/>
         <TextBox Grid.Row="1" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressSecondLine}"/>
         <TextBox Grid.Row="2" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressThirdLine}"/>
         <TextBox Grid.Row="3" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressPostCode}"/>
         <TextBox Grid.Row="4" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Notes}"/>
-        <ItemsControl Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" TextBlock.Foreground="Red" />
-        <ListBox Grid.Row="6" Grid.Column="0" ItemsSource="{Binding JobChildren}" SelectedItem="{Binding SelectedJobChild, Mode=TwoWay}" />
-        <metro:TransitioningContentControl Grid.Row="6" Grid.RowSpan="2" Grid.Column="1" prism:RegionManager.RegionName="JobChildRegion" Transition="LeftReplace" />
+        <ItemsControl Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" TextBlock.Foreground="Red" />
+        <ListBox Grid.Row="7" Grid.Column="0" ItemsSource="{Binding JobChildren}" SelectedItem="{Binding SelectedJobChild, Mode=TwoWay}" />
+        <metro:TransitioningContentControl Grid.Row="7" Grid.RowSpan="2" Grid.Column="1" prism:RegionManager.RegionName="JobChildRegion" Transition="LeftReplace" />
     </Grid>
 </UserControl>
