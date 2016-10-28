@@ -13,7 +13,7 @@
     <Window.Background>
         <ImageBrush ImageSource="Resources/background.png"  Stretch="UniformToFill"/>
     </Window.Background>
-    <Grid Margin="5,5,5,5"  x:Name="LayoutRoot" Width="{Binding ActualWidth, RelativeSource = {RelativeSource AncestorType = {x:Type metro:MetroWindow}}}">
+    <Grid x:Name="LayoutRoot" Width="{Binding ActualWidth, RelativeSource = {RelativeSource AncestorType = {x:Type metro:MetroWindow}}}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
