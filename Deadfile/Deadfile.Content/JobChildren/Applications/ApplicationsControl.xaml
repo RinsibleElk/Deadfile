@@ -16,10 +16,22 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ItemsControl Grid.Row="0" ItemsSource="{Binding Models}">
+        <ItemsControl Grid.Row="0" ItemsSource="{Binding Models}" AlternationCount="2">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="model:ApplicationModel">
                     <Grid Margin="5,5,5,5">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(ItemsControl.AlternationIndex)}" Value="0">
+                                        <Setter Property="Background" Value="{StaticResource GridRowRegularBackground}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(ItemsControl.AlternationIndex)}" Value="1">
+                                        <Setter Property="Background"  Value="{StaticResource GridRowAlternateBackground}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
@@ -31,7 +43,7 @@
                         <TextBlock Grid.Column="0" Text="{Binding LocalAuthorityReference}" />
                         <TextBlock Grid.Column="1" Text="{Binding LocalAuthority}" />
                         <TextBlock Grid.Column="2" Text="{Binding Type}" />
-                        <TextBlock Grid.Column="3" Text="{Binding CreationDate}" />
+                        <TextBlock Grid.Column="3" Text="{Binding CreationDate, StringFormat=\{0:dd/MM/yyyy\}}" />
                         <Button Grid.Column="4" Height="16" Width="16" Style="{StaticResource EditButton}"/>
                         <Button Grid.Column="5" Height="16" Width="16" Style="{StaticResource DeleteButton}"/>
                     </Grid>
@@ -49,7 +61,7 @@
             <TextBox metro:TextBoxHelper.Watermark="Reference" Grid.Column="0" Text="{Binding SelectedModel.LocalAuthorityReference}" />
             <TextBox metro:TextBoxHelper.Watermark="Authority" Grid.Column="1" Text="{Binding SelectedModel.LocalAuthority}" />
             <ComboBox Grid.Column="2" IsEditable="False" ItemsSource="{Binding ApplicationTypes}" SelectedItem="{Binding SelectedModel.Type}" />
-            <metro:DateTimePicker IsClockVisible="False" Grid.Column="3" SelectedDate="{Binding SelectedModel.CreationDate}" />
+            <DatePicker Grid.Column="3" IsTodayHighlighted="True" SelectedDate="{Binding SelectedModel.CreationDate, StringFormat=\{0:dd/MM/yyyy\}}" />
             <Button Grid.Column="4" Height="16" Width="16" Style="{StaticResource AddButton}"/>
         </Grid>
     </Grid>
