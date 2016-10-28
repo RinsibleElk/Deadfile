@@ -11,10 +11,16 @@ namespace Deadfile.Entity
     {
         public int ApplicationId { get; set; }
 
-        [Required(ErrorMessage = "A Planning Application must have a creation date.")]
+        [Required(ErrorMessage = "An Application must have a local authority.")]
+        public string LocalAuthority { get; set; }
+
+        [Required(ErrorMessage = "An Application must have a local authority reference.")]
+        public string LocalAuthorityReference { get; set; }
+
+        [Required(ErrorMessage = "An Application must have a creation date.")]
         public DateTime CreationDate { get; set; }
 
-        [Required(ErrorMessage = "A Planning Application must have a type.")]
+        [Required(ErrorMessage = "An Application must have a type.")]
         public ApplicationType Type { get; set; }
 
         public int JobId { get; set; }

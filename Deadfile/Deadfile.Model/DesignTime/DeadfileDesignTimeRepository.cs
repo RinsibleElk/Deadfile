@@ -24,6 +24,12 @@ namespace Deadfile.Model.DesignTime
             return entityClients.Select(_modelEntityMapper.Mapper.Map<ClientModel>);
         }
 
+        public IEnumerable<ApplicationModel> GetApplicationsForJob(int jobId)
+        {
+            var applications = FakeData.GetFakeApplications();
+            return applications.Select(_modelEntityMapper.Mapper.Map<ApplicationModel>);
+        }
+
         public IEnumerable<ClientModel> GetFilteredClients(string filter)
         {
             // Should never get called as this implementation is only used in design time.

@@ -23,6 +23,8 @@ namespace Deadfile.Model
                 cfg.CreateMap<InvoiceModel, Invoice>();
                 cfg.CreateMap<Quotation, QuotationModel>();
                 cfg.CreateMap<QuotationModel, Quotation>();
+                cfg.CreateMap<Application, ApplicationModel>();
+                cfg.CreateMap<ApplicationModel, Application>();
             });
             Mapper = config.CreateMapper();
         }

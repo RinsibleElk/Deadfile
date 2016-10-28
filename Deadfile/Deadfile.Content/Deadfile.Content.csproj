@@ -114,6 +114,7 @@
     <Compile Include="Events\CanEditEvent.cs" />
     <Compile Include="Events\CanSaveEvent.cs" />
     <Compile Include="Events\CanUndoEvent.cs" />
+    <Compile Include="Events\CurrentJobEvent.cs" />
     <Compile Include="Events\DiscardChangesEvent.cs" />
     <Compile Include="Events\LockedForEditingEvent.cs" />
     <Compile Include="Events\EditItemEvent.cs" />
@@ -230,6 +231,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Deadfile.Entity\Deadfile.Entity.csproj">
+      <Project>{B842CEA7-444E-4B1D-B30E-19471F89A8D6}</Project>
+      <Name>Deadfile.Entity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Deadfile.Model\Deadfile.Model.csproj">
       <Project>{DCF712CD-F90C-49E7-BA66-072EDAB67D19}</Project>
       <Name>Deadfile.Model</Name>

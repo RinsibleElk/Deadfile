@@ -267,6 +267,42 @@ namespace Deadfile.Model.DesignTime
             }
         }
 
+        private static readonly string[] LocalAuthorities =
+                new string[]
+                {
+                    "Enfield",
+                    "Barnet",
+                    "Haringey",
+                    "Brent",
+                    "Islington",
+                    "Hackney"
+                };
+
+        public static void AddFakeApplications(DeadfileContext dbContext)
+        {
+            var random = new Random(712);
+            foreach (var job in dbContext.Jobs)
+            {
+                var numApplicationsToAdd = random.Next(3);
+                for (int i = 0; i < numApplicationsToAdd; i++)
+                {
+                    var r = random.Next(2);
+                    var applicationType = (r == 0) ? ApplicationType.BuildingControl : ApplicationType.Planning;
+                    var creationDate = new DateTime(2015, 1, 1).AddDays(random.Next(500));
+                    var localAuthority = LocalAuthorities[random.Next(LocalAuthorities.Length)];
+                    var reference = random.Next(10000);
+                    dbContext.Applications.Add(new Application()
+                    {
+                        CreationDate = creationDate,
+                        JobId = job.JobId,
+                        Type = applicationType,
+                        LocalAuthority = localAuthority,
+                        LocalAuthorityReference = localAuthority + "_" + reference
+                    });
+                }
+            }
+        }
+
         public static void AddFakeQuotations(DeadfileContext dbContext)
         {
             var homerSimpsonQuotations = new string[]
@@ -303,5 +339,29 @@ namespace Deadfile.Model.DesignTime
             }
         }
 
+        public static IEnumerable<Application> GetFakeApplications()
+        {
+            var random = new Random(2135);
+            var jobId = 17;
+            var numApplicationsToAdd = 3;
+            var li = new List<Application>();
+            for (int i = 0; i < numApplicationsToAdd; i++)
+            {
+                var r = random.Next(2);
+                var applicationType = (r == 0) ? ApplicationType.BuildingControl : ApplicationType.Planning;
+                var creationDate = new DateTime(2015, 1, 1).AddDays(random.Next(500));
+                var localAuthority = LocalAuthorities[random.Next(LocalAuthorities.Length)];
+                var reference = random.Next(10000);
+                li.Add(new Application()
+                {
+                    CreationDate = creationDate,
+                    JobId = jobId,
+                    Type = applicationType,
+                    LocalAuthority = localAuthority,
+                    LocalAuthorityReference = localAuthority + "_" + reference
+                });
+            }
+            return li;
+        }
     }
 }

@@ -35,6 +35,22 @@ namespace Deadfile.Model
             }
         }
 
+        public IEnumerable<ApplicationModel> GetApplicationsForJob(int jobId)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var li = new List<ApplicationModel>();
+                foreach (var application in (from application in dbContext.Applications
+                                             where application.JobId == jobId
+                                             orderby application.CreationDate
+                                             select application))
+                {
+                    li.Add(_modelEntityMapper.Mapper.Map<ApplicationModel>(application));
+                }
+                return li;
+            }
+        }
+
         public IEnumerable<ClientModel> GetFilteredClients(string filter)
         {
             using (var dbContext = new DeadfileContext())
@@ -146,6 +162,8 @@ namespace Deadfile.Model
                     FakeData.AddFakeQuotations(dbContext);
                     dbContext.SaveChanges();
                     FakeData.AddFakeJobs(dbContext);
+                    dbContext.SaveChanges();
+                    FakeData.AddFakeApplications(dbContext);
                     dbContext.SaveChanges();
                 }
             }

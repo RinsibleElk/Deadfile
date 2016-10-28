@@ -13,10 +13,17 @@ namespace Deadfile.Model.Interfaces
     public interface IDeadfileRepository
     {
         /// <summary>
-        /// Synchronous for now.
+        /// Get all clients.
         /// </summary>
         /// <returns></returns>
         IEnumerable<ClientModel> GetClients();
+
+        /// <summary>
+        /// Get the applications for a given job.
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        IEnumerable<ApplicationModel> GetApplicationsForJob(int jobId);
 
         /// <summary>
         /// Naughty method to seed the repository with fake data. Run at initialization time and only changes the database if it's totally empty.

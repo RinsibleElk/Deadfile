@@ -51,6 +51,13 @@ namespace Deadfile.Content.Jobs
             }
         }
 
+        public override void OnNavigatedTo(NavigationContext navigationContext, int selectedId)
+        {
+            base.OnNavigatedTo(navigationContext, selectedId);
+
+            EventAggregator.GetEvent<CurrentJobEvent>().Publish(selectedId);
+        }
+
         public override JobModel GetModelById(int id)
         {
             return _repository.GetJobById(id);
