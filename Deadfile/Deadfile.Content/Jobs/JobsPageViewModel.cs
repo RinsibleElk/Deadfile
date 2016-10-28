@@ -58,6 +58,10 @@ namespace Deadfile.Content.Jobs
             EventAggregator.GetEvent<CurrentJobEvent>().Publish(selectedId);
         }
 
+        public override void EditingStatusChanged(bool editable)
+        {
+        }
+
         public override JobModel GetModelById(int id)
         {
             return _repository.GetJobById(id);

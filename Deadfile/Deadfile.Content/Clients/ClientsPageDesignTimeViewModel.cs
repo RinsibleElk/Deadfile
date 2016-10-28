@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 using Deadfile.Content.Interfaces;
 using Deadfile.Content.Navigation;
 using Deadfile.Model;
@@ -30,5 +32,7 @@ namespace Deadfile.Content.Clients
 
         public bool Editable { get; } = false;
         public List<string> Errors { get; } = new List<string>();
+        public Visibility AddNewJobVisibility { get; } = Visibility.Visible;
+        public ICommand AddNewJobCommand { get; } = null;
     }
 }

@@ -64,11 +64,15 @@ namespace Deadfile.Content.ViewModels
                         _selectedItem.ClearAllErrors();
                     }
 
+                    EditingStatusChanged(_editable);
+
                     // Only fire when it changes.
                     EventAggregator.GetEvent<LockedForEditingEvent>().Publish(_editable);
                 }
             }
         }
+
+        public abstract void EditingStatusChanged(bool editable);
 
         public abstract T GetModelById(int id);
 

@@ -3,6 +3,7 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+              xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
               xmlns:clients="clr-namespace:Deadfile.Content.Clients"
               xmlns:prism="http://prismlibrary.com/"
               xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
@@ -25,6 +26,8 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -67,5 +70,6 @@
         <TextBox Grid.Row="11" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.EmailAddress}"/>
         <TextBox Grid.Row="12" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Notes}"/>
         <ItemsControl Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" TextBlock.Foreground="Red" />
+        <Button Grid.Row="14" Grid.Column="1" Command="{Binding AddNewJobCommand}" Visibility="{Binding AddNewJobVisibility}">Add New Job...</Button>
     </Grid>
 </UserControl>
