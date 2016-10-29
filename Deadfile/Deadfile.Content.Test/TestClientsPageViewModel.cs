@@ -114,6 +114,7 @@ namespace Deadfile.Content.Test
                     .Verifiable();
             }
             host.ViewModel.OnNavigatedTo(CreateNavigateToNavigationContext(host.NavigationParameterMapper, model.Id));
+            host.ViewModel.IsActive = true;
             host.VerifyAll();
         }
 

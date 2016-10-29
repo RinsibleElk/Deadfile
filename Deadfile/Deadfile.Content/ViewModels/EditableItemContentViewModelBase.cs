@@ -98,15 +98,37 @@ namespace Deadfile.Content.ViewModels
             {
                 SelectedItem = new T();
             }
+        }
 
-            // subscribe to messages from the browser pane
-            _navigateToSelectedItemSubscriptionToken =
-                EventAggregator.GetEvent<SelectedItemEvent>().Subscribe(NavigateToExperience);
-            _undoSubscriptionToken = EventAggregator.GetEvent<UndoEvent>().Subscribe(PerformUndo);
-            _redoSubscriptionToken = EventAggregator.GetEvent<RedoEvent>().Subscribe(PerformRedo);
+        public override void OnActiveChanged(bool isActive)
+        {
+            base.OnActiveChanged(isActive);
 
-            // subscribe to messages from the actions pane
-            _editItemSubscriptionToken = EventAggregator.GetEvent<EditItemEvent>().Subscribe(EditItemAction);
+            if (isActive)
+            {
+                // subscribe to messages from the browser pane
+                _navigateToSelectedItemSubscriptionToken =
+                    EventAggregator.GetEvent<SelectedItemEvent>().Subscribe(NavigateToExperience);
+                _undoSubscriptionToken = EventAggregator.GetEvent<UndoEvent>().Subscribe(PerformUndo);
+                _redoSubscriptionToken = EventAggregator.GetEvent<RedoEvent>().Subscribe(PerformRedo);
+
+                // subscribe to messages from the actions pane
+                _editItemSubscriptionToken = EventAggregator.GetEvent<EditItemEvent>().Subscribe(EditItemAction);
+            }
+            else
+            {
+                // Unsubscribe to messages from the browser pane.
+                EventAggregator.GetEvent<SelectedItemEvent>().Unsubscribe(_navigateToSelectedItemSubscriptionToken);
+                _navigateToSelectedItemSubscriptionToken = null;
+                EventAggregator.GetEvent<UndoEvent>().Unsubscribe(_undoSubscriptionToken);
+                _undoSubscriptionToken = null;
+                EventAggregator.GetEvent<RedoEvent>().Unsubscribe(_redoSubscriptionToken);
+                _redoSubscriptionToken = null;
+
+                // Unsubscribe to messages from the actions pad.
+                EventAggregator.GetEvent<EditItemEvent>().Unsubscribe(_editItemSubscriptionToken);
+                _editItemSubscriptionToken = null;
+            }
         }
 
         private void PerformUndo()
@@ -221,23 +243,6 @@ namespace Deadfile.Content.ViewModels
                     EventAggregator.GetEvent<CanRedoEvent>().Publish(_undoTracker.CanRedo);
                     break;
             }
-        }
-
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            // Unsubscribe to messages from the browser pane.
-            EventAggregator.GetEvent<SelectedItemEvent>().Unsubscribe(_navigateToSelectedItemSubscriptionToken);
-            _navigateToSelectedItemSubscriptionToken = null;
-            EventAggregator.GetEvent<UndoEvent>().Unsubscribe(_undoSubscriptionToken);
-            _undoSubscriptionToken = null;
-            EventAggregator.GetEvent<RedoEvent>().Unsubscribe(_redoSubscriptionToken);
-            _redoSubscriptionToken = null;
-
-            // Unsubscribe to messages from the actions pad.
-            EventAggregator.GetEvent<EditItemEvent>().Unsubscribe(_editItemSubscriptionToken);
-            _editItemSubscriptionToken = null;
-
-            base.OnNavigatedFrom(navigationContext);
         }
     }
 }
