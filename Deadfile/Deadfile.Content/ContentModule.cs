@@ -7,6 +7,7 @@ using Deadfile.Content.JobChildren.Expenses;
 using Deadfile.Content.JobChildren.Payments;
 using Deadfile.Content.JobChildren.Applications;
 using Deadfile.Content.Jobs;
+using Deadfile.Content.Main;
 using Deadfile.Content.Navigation;
 using Deadfile.Content.Quotes;
 using Microsoft.Practices.Unity;
@@ -47,6 +48,9 @@ namespace Deadfile.Content
             _unityContainer.RegisterTypeForNavigation<ClientsPage>();
             _unityContainer.RegisterType<JobsPage>();
             _unityContainer.RegisterTypeForNavigation<JobsPage>();
+
+            // This excludes the main region from Journaling.
+            _regionManager.RegisterViewWithRegion(RegionNames.MainRegion, typeof(MainPage));
 
             // This excludes the browser region from Journaling.
             _regionManager.RegisterViewWithRegion(RegionNames.BrowserRegion, typeof(BrowserPane));

@@ -8,6 +8,7 @@ namespace Deadfile.Content
 {
     public static class RegionNames
     {
+        public const string MainRegion = "MainRegion";
         public const string NavigationRegion = "NavigationRegion";
         public const string ContentRegion = "ContentRegion";
         public const string QuotesRegion = "QuotesRegion";

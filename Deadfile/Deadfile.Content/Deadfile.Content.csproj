@@ -161,6 +161,12 @@
     <Compile Include="Jobs\JobsPageViewModel.cs" />
     <Compile Include="Jobs\IJobsActionsPadViewModel.cs" />
     <Compile Include="Jobs\IJobsPageViewModel.cs" />
+    <Compile Include="Main\IMainPageViewModel.cs" />
+    <Compile Include="Main\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Main\MainPageDesignTimeViewModel.cs" />
+    <Compile Include="Main\MainPageViewModel.cs" />
     <Compile Include="Navigation\NavigationBarDesignTimeViewModel.cs" />
     <Compile Include="Home\HomePageDesignTimeViewModel.cs" />
     <Compile Include="Navigation\NavigationParameterMapper.cs" />
@@ -282,6 +288,10 @@
     <Page Include="Jobs\JobsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Main\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Quotes\QuotesBar.xaml">
       <SubType>Designer</SubType>
