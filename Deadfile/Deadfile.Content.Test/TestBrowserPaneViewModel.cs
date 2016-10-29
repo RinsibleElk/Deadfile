@@ -15,6 +15,21 @@ namespace Deadfile.Content.Test
     public class TestBrowserPaneViewModel
     {
         [Fact]
+        public void TestInactiveCreation()
+        {
+            // Setup.
+            var eventAggregatorMock = new Mock<IEventAggregator>();
+            var deadfileRepositoryMock = new Mock<IDeadfileRepository>();
+            var viewModel = new BrowserPaneViewModel(eventAggregatorMock.Object, deadfileRepositoryMock.Object);
+
+            // Nothing.
+
+            // Checks.
+            Assert.False(viewModel.IsActive);
+            eventAggregatorMock.VerifyAll();
+        }
+
+        [Fact]
         public void TestBrowsingEnabledByDefault()
         {
             // Setup.
@@ -26,11 +41,13 @@ namespace Deadfile.Content.Test
                 .Returns(lockedForEditingEvent)
                 .Verifiable();
             var viewModel = new BrowserPaneViewModel(eventAggregatorMock.Object, deadfileRepositoryMock.Object);
+            viewModel.IsActive = true;
 
             // Nothing.
 
             // Checks.
             Assert.True(viewModel.BrowsingEnabled);
+            eventAggregatorMock.VerifyAll();
         }
 
         [Fact]
@@ -46,11 +63,14 @@ namespace Deadfile.Content.Test
                 .Verifiable();
             var viewModel = new BrowserPaneViewModel(eventAggregatorMock.Object, deadfileRepositoryMock.Object);
 
+            // Activate.
+            viewModel.IsActive = true;
+
             // Fire in
             lockedForEditingEvent.Publish(true);
 
             // Checks.
-            eventAggregatorMock.Verify();
+            eventAggregatorMock.VerifyAll();
             Assert.False(viewModel.BrowsingEnabled);
         }
     }

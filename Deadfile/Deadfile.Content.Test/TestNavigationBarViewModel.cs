@@ -52,6 +52,7 @@ namespace Deadfile.Content.Test
                 ViewModel.BackCommand.CanExecuteChanged += (s, e) => ++NumberOfTimesBackCanExecuteChangedFired;
                 ViewModel.HomeCommand.CanExecuteChanged += (s, e) => ++NumberOfTimesHomeCanExecuteChangedFired;
                 ViewModel.ForwardCommand.CanExecuteChanged += (s, e) => ++NumberOfTimesForwardCanExecuteChangedFired;
+                ViewModel.IsActive = true;
             }
 
             public void Dispose()
