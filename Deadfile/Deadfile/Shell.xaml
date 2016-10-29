@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:content="clr-namespace:Deadfile.Content;assembly=Deadfile.Content"
         mc:Ignorable="d"
         xmlns:prism="http://prismlibrary.com/"
         Title="Deadfile"
