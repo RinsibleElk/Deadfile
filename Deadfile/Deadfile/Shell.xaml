@@ -11,5 +11,5 @@
         Icon="Resources/logo.png"
         ShowIconOnTitleBar="True"
         d:DesignHeight="300" d:DesignWidth="400">
-    <ContentControl prism:RegionManager.RegionName="MainRegion" />
+    <ContentControl prism:RegionManager.RegionName="{x:Static content:RegionNames.MainRegion}" />
 </metro:MetroWindow>

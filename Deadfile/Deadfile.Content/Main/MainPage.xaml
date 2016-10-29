@@ -6,6 +6,7 @@
               xmlns:main="clr-namespace:Deadfile.Content.Main"
               xmlns:prism="http://prismlibrary.com/"
               xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+              xmlns:regions="clr-namespace:Deadfile.Content"
               prism:ViewModelLocator.AutoWireViewModel="True"
               mc:Ignorable="d"
               d:DataContext="{d:DesignInstance Type=main:MainPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
@@ -23,11 +24,11 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <GridSplitter Grid.RowSpan="3" Grid.Row="0" Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
-            <ContentControl Grid.Row="0" Grid.Column="0" prism:RegionManager.RegionName="NavigationRegion" />
-            <metro:TransitioningContentControl Grid.Row="1" Grid.Column="0" prism:RegionManager.RegionName="ContentRegion" Transition="LeftReplace" />
-            <ContentControl Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" prism:RegionManager.RegionName="BrowserRegion" />
-            <ContentControl Grid.Row="2" Grid.Column="0" prism:RegionManager.RegionName="QuotesRegion" />
-            <ContentControl Grid.Row="2" Grid.Column="2" prism:RegionManager.RegionName="ActionsRegion" />
+            <ContentControl Grid.Row="0" Grid.Column="0" prism:RegionManager.RegionName="{x:Static regions:RegionNames.NavigationRegion}" />
+            <metro:TransitioningContentControl Grid.Row="1" Grid.Column="0" prism:RegionManager.RegionName="{x:Static regions:RegionNames.ContentRegion}" Transition="LeftReplace" />
+            <ContentControl Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" prism:RegionManager.RegionName="{x:Static regions:RegionNames.BrowserRegion}" />
+            <ContentControl Grid.Row="2" Grid.Column="0" prism:RegionManager.RegionName="{x:Static regions:RegionNames.QuotesRegion}" />
+            <ContentControl Grid.Row="2" Grid.Column="2" prism:RegionManager.RegionName="{x:Static regions:RegionNames.ActionsRegion}" />
         </Grid>
     </Grid>
 </UserControl>
