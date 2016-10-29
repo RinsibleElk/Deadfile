@@ -21,5 +21,7 @@ namespace Deadfile.Content.Browser
         public BrowserModel SelectedItem { get; set; }
         public BrowserSettings BrowserSettings { get; set; } = new BrowserSettings();
         public bool BrowsingEnabled { get; set; } = true;
+        public bool IsActive { get; set; } = true;
+        public event EventHandler IsActiveChanged;
     }
 }

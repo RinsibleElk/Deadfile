@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Deadfile.Model.Browser;
+using Prism;
 
 namespace Deadfile.Content.Browser
 {
-    public interface IBrowserPaneViewModel
+    public interface IBrowserPaneViewModel : IActiveAware
     {
         /// <summary>
         /// The first level of the browser tree.

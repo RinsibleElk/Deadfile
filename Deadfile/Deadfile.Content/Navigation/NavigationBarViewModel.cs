@@ -34,10 +34,6 @@ namespace Deadfile.Content.Navigation
             _forwardCommand=new DelegateCommand(NavigateForward, CanNavigateForward);
             _undoCommand = new DelegateCommand(PerformUndo, CanUndo);
             _redoCommand = new DelegateCommand(PerformRedo, CanRedo);
-            eventAggregator.GetEvent<CanUndoEvent>().Subscribe(UpdateCanUndo);
-            eventAggregator.GetEvent<CanRedoEvent>().Subscribe(UpdateCanRedo);
-            eventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(UpdateLockedForEditing);
-            eventAggregator.GetEvent<DiscardChangesEvent>().Subscribe(DiscardChangesAction);
         }
 
         private void DiscardChangesAction()
@@ -142,5 +138,40 @@ namespace Deadfile.Content.Navigation
         {
             return _canRedo;
         }
+
+        private SubscriptionToken _canUndoEventSubscriptionToken = null;
+        private SubscriptionToken _canRedoEventSubscriptionToken = null;
+        private SubscriptionToken _lockedForEditingEventSubscriptionToken = null;
+        private SubscriptionToken _discardChangesEventSubscriptionToken = null;
+        private bool _isActive = false;
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                if (SetProperty(ref _isActive, value))
+                {
+                    if (_isActive)
+                    {
+                        _canUndoEventSubscriptionToken = _eventAggregator.GetEvent<CanUndoEvent>().Subscribe(UpdateCanUndo);
+                        _canRedoEventSubscriptionToken = _eventAggregator.GetEvent<CanRedoEvent>().Subscribe(UpdateCanRedo);
+                        _lockedForEditingEventSubscriptionToken = _eventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(UpdateLockedForEditing);
+                        _discardChangesEventSubscriptionToken = _eventAggregator.GetEvent<DiscardChangesEvent>().Subscribe(DiscardChangesAction);
+                    }
+                    else
+                    {
+                        _eventAggregator.GetEvent<CanUndoEvent>().Unsubscribe(_canUndoEventSubscriptionToken);
+                        _eventAggregator.GetEvent<CanRedoEvent>().Unsubscribe(_canRedoEventSubscriptionToken);
+                        _eventAggregator.GetEvent<LockedForEditingEvent>().Unsubscribe(_lockedForEditingEventSubscriptionToken);
+                        _eventAggregator.GetEvent<DiscardChangesEvent>().Unsubscribe(_discardChangesEventSubscriptionToken);
+                        _canUndoEventSubscriptionToken = null;
+                        _canRedoEventSubscriptionToken = null;
+                        _lockedForEditingEventSubscriptionToken = null;
+                        _discardChangesEventSubscriptionToken = null;
+                    }
+                }
+            }
+        }
+        public event EventHandler IsActiveChanged;
     }
 }

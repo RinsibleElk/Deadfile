@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Prism;
 
 namespace Deadfile.Content.Navigation
 {
-    public interface INavigationBarViewModel
+    public interface INavigationBarViewModel : IActiveAware
     {
         /// <summary>
         /// Navigate the ContentRegion back.

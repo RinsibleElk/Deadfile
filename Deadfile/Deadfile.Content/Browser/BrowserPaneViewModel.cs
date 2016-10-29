@@ -20,12 +20,12 @@ namespace Deadfile.Content.Browser
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IDeadfileRepository _repository;
+        private SubscriptionToken _lockedForEditingActionSubscriptionToken = null;
         public BrowserPaneViewModel(IEventAggregator eventAggregator, IDeadfileRepository repository)
         {
             _repository = repository;
             _eventAggregator = eventAggregator;
             Items = new ObservableCollection<BrowserModel>(_repository.GetBrowserItems(BrowserSettings));
-            eventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(LockedForEditingAction);
             BrowserSettings.Refresh += BrowserSettingsRefresh;
         }
 
@@ -73,5 +73,27 @@ namespace Deadfile.Content.Browser
                 SetProperty(ref _browsingEnabled, value);
             }
         }
+
+        private bool _isActive = false;
+
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                if (SetProperty(ref _isActive, value))
+                {
+                    if (_isActive)
+                    {
+                        _lockedForEditingActionSubscriptionToken = _eventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(LockedForEditingAction);
+                    }
+                    else
+                    {
+                        _eventAggregator.GetEvent<LockedForEditingEvent>().Unsubscribe(_lockedForEditingActionSubscriptionToken);
+                    }
+                }
+            }
+        }
+        public event EventHandler IsActiveChanged;
     }
 }

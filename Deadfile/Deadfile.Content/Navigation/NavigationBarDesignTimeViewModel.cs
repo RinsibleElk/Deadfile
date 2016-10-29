@@ -15,5 +15,7 @@ namespace Deadfile.Content.Navigation
         public ICommand ForwardCommand { get; } = null;
         public ICommand UndoCommand { get; } = null;
         public ICommand RedoCommand { get; } = null;
+        public bool IsActive { get; set; }
+        public event EventHandler IsActiveChanged;
     }
 }
