@@ -74,7 +74,7 @@ namespace Deadfile.Tab.Common
             }
         }
 
-        private bool _canSave = true;
+        private bool _canSave = false;
         public bool CanSave
         {
             get { return _canSave; }

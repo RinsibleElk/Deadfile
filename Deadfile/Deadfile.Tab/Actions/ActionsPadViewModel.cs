@@ -36,7 +36,6 @@ namespace Deadfile.Tab.Actions
         private bool _canDeleteItem = false;
         private bool _deleteItemIsVisible = true;
         private bool _discardItemIsVisible = false;
-        private bool _canDiscardItem = false;
 
         public bool CanEditItem
         {
@@ -130,23 +129,12 @@ namespace Deadfile.Tab.Actions
 
         public bool CanDiscardItem
         {
-            get { return _canDiscardItem; }
-            set
-            {
-                if (value == _canDiscardItem) return;
-                _canDiscardItem = value;
-                NotifyOfPropertyChange(() => CanDiscardItem);
-            }
-        }
-
-        public bool DiscardItemIsVisible
-        {
             get { return _discardItemIsVisible; }
             set
             {
                 if (value == _discardItemIsVisible) return;
                 _discardItemIsVisible = value;
-                NotifyOfPropertyChange(() => DiscardItemIsVisible);
+                NotifyOfPropertyChange(() => CanDiscardItem);
             }
         }
 
@@ -174,7 +162,7 @@ namespace Deadfile.Tab.Actions
         protected virtual void LockedForEditingAction(LockedForEditingMessage lockedForEditingMessage)
         {
             SaveItemIsVisible = lockedForEditingMessage == LockedForEditingMessage.Locked;
-            DiscardItemIsVisible = lockedForEditingMessage == LockedForEditingMessage.Locked;
+            CanDiscardItem = lockedForEditingMessage == LockedForEditingMessage.Locked;
             EditItemIsVisible = lockedForEditingMessage == LockedForEditingMessage.Unlocked;
             DeleteItemIsVisible = lockedForEditingMessage == LockedForEditingMessage.Unlocked;
         }

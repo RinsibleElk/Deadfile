@@ -38,6 +38,5 @@ namespace Deadfile.Tab.Actions
         }
 
         public bool CanDiscardItem { get; } = false;
-        public bool DiscardItemIsVisible { get; } = false;
     }
 }
