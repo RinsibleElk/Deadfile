@@ -88,6 +88,8 @@ namespace Deadfile.Tab.Common
         }
 
         private bool _editable = false;
+        private SubscriptionToken _handleEditActionSubscriptionToken;
+        private SubscriptionToken _handleUndoSubcriptionToken;
 
         public bool Editable
         {
@@ -177,16 +179,16 @@ namespace Deadfile.Tab.Common
             base.OnNavigatedTo(parameters);
 
             SelectedItem = GetModel(parameters);
-            EventAggregator.GetEvent<EditActionEvent>().Subscribe(HandleEditAction);
-            EventAggregator.GetEvent<UndoEvent>().Subscribe(HandleUndo);
+            _handleEditActionSubscriptionToken = EventAggregator.GetEvent<EditActionEvent>().Subscribe(HandleEditAction);
+            _handleUndoSubcriptionToken = EventAggregator.GetEvent<UndoEvent>().Subscribe(HandleUndo);
         }
 
         public override void OnNavigatedFrom()
         {
             base.OnNavigatedFrom();
 
-            EventAggregator.GetEvent<EditActionEvent>().Unsubscribe(HandleEditAction);
-            EventAggregator.GetEvent<UndoEvent>().Unsubscribe(HandleUndo);
+            EventAggregator.GetEvent<EditActionEvent>().Unsubscribe(_handleEditActionSubscriptionToken);
+            EventAggregator.GetEvent<UndoEvent>().Unsubscribe(_handleUndoSubcriptionToken);
         }
     }
 }

@@ -63,7 +63,7 @@ namespace Deadfile.Tab.Actions
         {
             // Perform the save, and lock the item again.
             //TODO If this fails at the moment I'm pretty boned.
-            EventAggregator.GetEvent<SaveEvent>().Publish(SaveMessage.Instance);
+            EventAggregator.GetEvent<SaveEvent>().Publish(SaveMessage.Save);
 
             // Notify the other pages for the end of editing.
             EventAggregator.GetEvent<EditActionEvent>().Publish(EditActionMessage.EndEditing);

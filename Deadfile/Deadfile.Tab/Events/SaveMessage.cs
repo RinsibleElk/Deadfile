@@ -7,9 +7,9 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Events
 {
-    public class SaveMessage
+    public enum SaveMessage
     {
-        public static readonly SaveMessage Instance = new SaveMessage();
+        Save
     }
 
     public class SaveEvent : PubSubEvent<SaveMessage>
