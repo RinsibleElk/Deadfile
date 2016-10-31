@@ -7,7 +7,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Dynamic;
 using Deadfile.Entity;
-using Prism.Mvvm;
 
 namespace Deadfile.Model
 {

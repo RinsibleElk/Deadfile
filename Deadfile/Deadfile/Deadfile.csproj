@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{99C9E82C-C594-446D-AA59-8FFBC43AD226}</ProjectGuid>
+    <ProjectGuid>{0B41E2EA-462F-45F7-BCB6-9ADDF256663D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Deadfile</RootNamespace>
@@ -35,8 +35,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="Caliburn.Micro, Version=3.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.Core.3.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform, Version=3.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.3.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform.Core, Version=3.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.3.0.1\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Dragablz, Version=0.0.3.176, Culture=neutral, processorArchitecture=MSIL">
@@ -55,32 +63,8 @@
       <HintPath>..\packages\MahApps.Metro.1.3.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Prism, Version=6.2.0.0, Culture=neutral, PublicKeyToken=91a96d2a154366d8, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Core.6.2.0\lib\net45\Prism.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Prism.Unity.Wpf, Version=6.2.0.0, Culture=neutral, PublicKeyToken=91a96d2a154366d8, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Unity.6.2.0\lib\net45\Prism.Unity.Wpf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Prism.Wpf, Version=6.2.0.0, Culture=neutral, PublicKeyToken=91a96d2a154366d8, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Wpf.6.2.0\lib\net45\Prism.Wpf.dll</HintPath>
+    <Reference Include="SimpleInjector, Version=3.2.4.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.3.2.4\lib\net45\SimpleInjector.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -108,26 +92,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Shell.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Shell.xaml.cs">
-      <DependentUpon>Shell.xaml</DependentUpon>
+    <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="InterTabClient.cs" />
+    <Compile Include="ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Styles\Styles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Theme\Theme.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <Compile Include="ShellViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -158,74 +132,65 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Deadfile.Content\Deadfile.Content.csproj">
-      <Project>{ab8b448c-dd74-4d60-a041-3e5d03a32180}</Project>
-      <Name>Deadfile.Content</Name>
+    <Page Include="ShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Deadfile.Infrastructure\Deadfile.Infrastructure.csproj">
+      <Project>{cd07d8ad-c1d6-4c0c-acb5-aefd73173387}</Project>
+      <Name>Deadfile.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Deadfile.Model\Deadfile.Model.csproj">
-      <Project>{DCF712CD-F90C-49E7-BA66-072EDAB67D19}</Project>
+      <Project>{790F6F95-333F-4CD3-BB57-3E745A1C3224}</Project>
       <Name>Deadfile.Model</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\background.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\back.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\forward.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\home.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\redo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\undo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\home-grey.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\home-purple.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\back-grey.png" />
-    <Resource Include="Resources\back-purple.png" />
-    <Resource Include="Resources\forward-grey.png" />
-    <Resource Include="Resources\forward-purple.png" />
-    <Resource Include="Resources\redo-grey.png" />
-    <Resource Include="Resources\redo-purple.png" />
-    <Resource Include="Resources\undo-grey.png" />
-    <Resource Include="Resources\undo-purple.png" />
+    <ProjectReference Include="..\Deadfile.Tab\Deadfile.Tab.csproj">
+      <Project>{25d5d05c-a35d-4e53-96ac-f960edadda99}</Project>
+      <Name>Deadfile.Tab</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\add-grey.png" />
     <Resource Include="Resources\add-purple.png" />
     <Resource Include="Resources\add.png" />
+    <Resource Include="Resources\back-grey.png" />
+    <Resource Include="Resources\back-purple.png" />
+    <Resource Include="Resources\back.png" />
+    <Resource Include="Resources\background.png" />
     <Resource Include="Resources\delete-grey.png" />
     <Resource Include="Resources\delete-purple.png" />
     <Resource Include="Resources\delete.png" />
-    <Resource Include="Resources\edit-grey.png" />
-    <Resource Include="Resources\edit-purple.png" />
-    <Resource Include="Resources\edit.png" />
-    <Resource Include="Resources\save-grey.png" />
-    <Resource Include="Resources\save-purple.png" />
-    <Resource Include="Resources\save.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\discard-grey.png" />
     <Resource Include="Resources\discard-purple.png" />
     <Resource Include="Resources\discard.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="Resources\edit-grey.png" />
+    <Resource Include="Resources\edit-purple.png" />
+    <Resource Include="Resources\edit.png" />
+    <Resource Include="Resources\forward-grey.png" />
+    <Resource Include="Resources\forward-purple.png" />
+    <Resource Include="Resources\forward.png" />
+    <Resource Include="Resources\home-grey.png" />
+    <Resource Include="Resources\home-purple.png" />
+    <Resource Include="Resources\home.png" />
+    <Resource Include="Resources\logo.png" />
     <Resource Include="Resources\quote-purple.png" />
     <Resource Include="Resources\quote.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\logo.png" />
+    <Resource Include="Resources\redo-grey.png" />
+    <Resource Include="Resources\redo-purple.png" />
+    <Resource Include="Resources\redo.png" />
+    <Resource Include="Resources\save-grey.png" />
+    <Resource Include="Resources\save-purple.png" />
+    <Resource Include="Resources\save.png" />
+    <Resource Include="Resources\undo-grey.png" />
+    <Resource Include="Resources\undo-purple.png" />
+    <Resource Include="Resources\undo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

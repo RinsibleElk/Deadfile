@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Core;
 
 namespace Deadfile.Model
 {
-    public abstract class ModelBase : ValidatableBindableBase, INotifyDataErrorInfo, INotifyPropertyChanged, INotifyPropertyChanging
+    public abstract class ModelBase : ValidatableBindableBase
     {
         public ModelBase()
         {

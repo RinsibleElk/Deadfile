@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DeadfileContext.Entity")]
+[assembly: AssemblyTitle("Deadfile.Entity")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DeadfileContext.Entity")]
+[assembly: AssemblyProduct("Deadfile.Entity")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b842cea7-444e-4b1d-b30e-19471f89a8d6")]
+[assembly: Guid("c43da0ca-bd37-4109-a581-695b9080b74c")]
 
 // Version information for an assembly consists of the following four values:
 //

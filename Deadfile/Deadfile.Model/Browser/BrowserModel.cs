@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Core;
 using Prism.Mvvm;
 
 namespace Deadfile.Model.Browser

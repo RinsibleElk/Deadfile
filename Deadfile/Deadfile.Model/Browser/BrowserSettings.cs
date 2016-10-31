@@ -5,7 +5,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Prism.Events;
+using Deadfile.Core;
 using Prism.Mvvm;
 
 namespace Deadfile.Model.Browser

@@ -1,0 +1,54 @@
+﻿<controls:MetroWindow x:Class="Deadfile.ShellView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Deadfile"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             Icon="Resources/logo.png"
+             GlowBrush="Black"
+             BorderThickness="1"
+             mc:Ignorable="d" 
+             Width="400"
+             Height="400"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <!-- Accent and AppTheme setting -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <!-- Dragablz -->
+                <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel>
+<!--        <Button x:Name="OpenTab"
+                Content="Open Tab"
+                DockPanel.Dock="Top" />-->
+        <dragablz:TabablzControl
+            x:Name="Items"
+            ShowDefaultCloseButton="True"
+            ItemContainerStyle="{StaticResource TrapezoidDragableTabItemStyle}"
+            HeaderMemberPath="DisplayName"
+            AdjacentHeaderItemOffset="-10">
+            <dragablz:TabablzControl.InterTabController>
+                <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" />
+            </dragablz:TabablzControl.InterTabController>
+            <dragablz:TabablzControl.HeaderSuffixContent>
+                <StackPanel Orientation="Horizontal">
+                    <Button Height="16" Width="16" Command="{Binding OpenNewTab}" Style="{StaticResource AddButton}" />
+                </StackPanel>
+            </dragablz:TabablzControl.HeaderSuffixContent>
+        </dragablz:TabablzControl>
+    </DockPanel>
+</controls:MetroWindow>
+
