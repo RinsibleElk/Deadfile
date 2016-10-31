@@ -76,10 +76,11 @@
     <Compile Include="Behaviors\TreeViewSelectedItemBehavior.cs" />
     <Compile Include="Interfaces\IJournaled.cs" />
     <Compile Include="Interfaces\INavigationAware.cs" />
+    <Compile Include="Interfaces\INavigationContainer.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
     <Compile Include="Interfaces\IQuotationsTimerService.cs" />
-    <Compile Include="Interfaces\ITabServices.cs" />
     <Compile Include="Interfaces\NavigationContext.cs" />
+    <Compile Include="Services\NavigationContainer.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -95,8 +96,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Services\QuotationsTimerService.cs" />
-    <Compile Include="SimpleCommand.cs" />
-    <Compile Include="Services\TabServices.cs" />
     <Compile Include="UndoRedo\UndoTracker.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

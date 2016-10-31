@@ -30,15 +30,13 @@ namespace Deadfile.Tab
         public TabModule(SimpleContainer globalContainer)
         {
             _container = globalContainer.CreateChildContainer();
+            var navigationContainer = new NavigationContainer(_container);
 
             // Resolve to my NavigationService - a singleton per Tab.
-            _container.RegisterInstance(typeof(INavigationService), nameof(NavigationService), new NavigationService(_container));
+            _container.RegisterInstance(typeof(INavigationService), nameof(NavigationService), new NavigationService(navigationContainer));
 
             // OK and now we have a local EventAggregator override.
             _container.RegisterSingleton(typeof(Prism.Events.IEventAggregator), nameof(Prism.Events.EventAggregator), typeof(Prism.Events.EventAggregator));
-
-            // And we have a local TabServices.
-            _container.RegisterSingleton(typeof(ITabServices), nameof(TabServices), typeof(TabServices));
 
             // We have to tell him about everything in our module.
             _container.RegisterSingleton(typeof(TabViewModel), nameof(TabViewModel), typeof(TabViewModel));

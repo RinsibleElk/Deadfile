@@ -10,8 +10,6 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              Icon="Resources/logo.png"
              mc:Ignorable="d" 
-             Width="400"
-             Height="400"
              d:DesignHeight="300" d:DesignWidth="300">
     <Window.Resources>
         <ResourceDictionary>

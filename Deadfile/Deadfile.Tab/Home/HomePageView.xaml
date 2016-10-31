@@ -6,8 +6,6 @@
              xmlns:local="clr-namespace:Deadfile.Tab.Home"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
-        <TextBlock>Hello world.</TextBlock>
-        <Button x:Name="Clients">Clients</Button>
-    </StackPanel>
+    <Grid>
+    </Grid>
 </UserControl>

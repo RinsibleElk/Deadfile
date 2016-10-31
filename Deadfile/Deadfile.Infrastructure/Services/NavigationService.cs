@@ -11,7 +11,7 @@ namespace Deadfile.Infrastructure.Services
 {
     public sealed class NavigationService : PropertyChangedBase, INavigationService
     {
-        private readonly SimpleContainer _container;
+        private readonly INavigationContainer _container;
         private readonly Stack<NavigationContext> _backStack = new Stack<NavigationContext>();
         private readonly Stack<NavigationContext> _forwardStack = new Stack<NavigationContext>();
         private bool _canGoBack;
@@ -19,7 +19,7 @@ namespace Deadfile.Infrastructure.Services
 
         public void RequestNavigate(object host, string hostKey, string key, object parameters)
         {
-            var targetValue = _container.GetInstance(null, key);
+            var targetValue = _container.GetInstance(key);
             if (targetValue == null)
                 throw new ApplicationException("Failed to find a ViewModel for key " + key + " in host area " + hostKey);
             var property = host.GetType().GetProperty(hostKey, BindingFlags.Instance | BindingFlags.Public);
@@ -43,7 +43,7 @@ namespace Deadfile.Infrastructure.Services
                 .Invoke(host, new object[] { targetValue });
         }
 
-        public NavigationService(SimpleContainer container)
+        public NavigationService(INavigationContainer container)
         {
             _container = container;
         }

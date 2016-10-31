@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using Deadfile.Infrastructure;
 using Deadfile.Tab;
 using Dragablz;
+using Prism.Commands;
 
 namespace Deadfile
 {
@@ -28,7 +29,7 @@ namespace Deadfile
         {
             _container = container;
             InterTabClient = interTabClient;
-            OpenNewTab = new SimpleCommand(OpenTab);
+            OpenNewTab = new DelegateCommand(OpenTab);
             if (_isFirst)
             {
                 OpenTab();
