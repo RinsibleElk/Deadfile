@@ -60,6 +60,7 @@ namespace Deadfile.Tab.Jobs
         }
 
         public Experience Experience { get; } = Experience.Jobs;
+        public bool ShowActionsPad { get; } = true;
 
         public List<JobChildExperience> JobChildren { get; } = AllJobChildExperiences;
 

@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deadfile.Infrastructure.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deadfile.Tab.Test", "Deadfile.Tab.Test\Deadfile.Tab.Test.csproj", "{AB5CB962-E2F7-4264-886B-06DDD81921C1}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Deadfile.Playground", "Deadfile.Playground\Deadfile.Playground.fsproj", "{C72184B4-9DC4-433D-AC10-7587F7C63849}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{AB5CB962-E2F7-4264-886B-06DDD81921C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB5CB962-E2F7-4264-886B-06DDD81921C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB5CB962-E2F7-4264-886B-06DDD81921C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C72184B4-9DC4-433D-AC10-7587F7C63849}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C72184B4-9DC4-433D-AC10-7587F7C63849}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C72184B4-9DC4-433D-AC10-7587F7C63849}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C72184B4-9DC4-433D-AC10-7587F7C63849}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

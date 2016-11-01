@@ -26,6 +26,12 @@ namespace Deadfile.Model.Interfaces
         IEnumerable<ApplicationModel> GetApplicationsForJob(int jobId);
 
         /// <summary>
+        /// Get all the local authorities.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<LocalAuthorityModel> GetLocalAuthorities();
+
+        /// <summary>
         /// Naughty method to seed the repository with fake data. Run at initialization time and only changes the database if it's totally empty.
         /// </summary>
         /// <remarks>

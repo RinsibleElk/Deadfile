@@ -8,8 +8,8 @@ using Deadfile.Tab.Common;
 
 namespace Deadfile.Tab.Home
 {
-    interface IHomePageViewModel : IPageViewModel, IJournaled
+    interface IHomePageViewModel : IPageViewModel
     {
-        void Clients();
+        void LocalAuthorities();
     }
 }

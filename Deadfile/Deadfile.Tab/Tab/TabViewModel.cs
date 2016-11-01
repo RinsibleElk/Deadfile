@@ -25,7 +25,7 @@ namespace Deadfile.Tab.Tab
         {
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
-            eventAggregator.GetEvent<NavigateEvent>().Subscribe(Handle);
+            eventAggregator.GetEvent<NavigateEvent>().Subscribe(NavigateAction);
             eventAggregator.GetEvent<DisplayNameEvent>().Subscribe(DisplayNameChanged);
             navigationService.RequestNavigate(this, nameof(NavigationBar), "NavigationBar", null);
             navigationService.RequestNavigate(this, nameof(ContentArea), "HomePage", null);
@@ -57,7 +57,24 @@ namespace Deadfile.Tab.Tab
                 if (Equals(value, _contentArea)) return;
                 _contentArea = value;
                 NotifyOfPropertyChange(() => ContentArea);
-                _navigationService.RequestNavigate(this, nameof(ActionsPad), value.Experience + "ActionsPad", null);
+                if (_contentArea.ShowActionsPad)
+                {
+                    _navigationService.RequestNavigate(this, nameof(ActionsPad), value.Experience + "ActionsPad", null);
+                    BrowserAndActionsAreVisible = true;
+                }
+                else
+                    BrowserAndActionsAreVisible = false;
+            }
+        }
+
+        public bool BrowserAndActionsAreVisible
+        {
+            get { return _browserAndActionsAreVisible; }
+            set
+            {
+                if (value == _browserAndActionsAreVisible) return;
+                _browserAndActionsAreVisible = value;
+                NotifyOfPropertyChange(() => BrowserAndActionsAreVisible);
             }
         }
 
@@ -94,7 +111,7 @@ namespace Deadfile.Tab.Tab
             }
         }
 
-        public void Handle(NavigateMessage message)
+        public void NavigateAction(NavigateMessage message)
         {
             _navigationService.RequestNavigate(this, nameof(ContentArea), message.Experience + "Page", ModelBase.NewModelId);
         }
@@ -117,6 +134,7 @@ namespace Deadfile.Tab.Tab
         private SubscriptionToken _navigateToSelectedClientSubscriptionToken = null;
         private object _quotesBar;
         private object _actionsPad;
+        private bool _browserAndActionsAreVisible;
 
         private void NavigateToExperience(SelectedItemPacket packet)
         {

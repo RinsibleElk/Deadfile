@@ -25,6 +25,8 @@ namespace Deadfile.Model
                 cfg.CreateMap<QuotationModel, Quotation>();
                 cfg.CreateMap<Application, ApplicationModel>();
                 cfg.CreateMap<ApplicationModel, Application>();
+                cfg.CreateMap<LocalAuthority, LocalAuthorityModel>();
+                cfg.CreateMap<LocalAuthorityModel, LocalAuthority>();
             });
             Mapper = config.CreateMapper();
         }

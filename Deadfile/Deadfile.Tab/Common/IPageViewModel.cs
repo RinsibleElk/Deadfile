@@ -8,8 +8,9 @@ using Deadfile.Infrastructure.Interfaces;
 
 namespace Deadfile.Tab.Common
 {
-    public interface IPageViewModel : IScreen, IJournaled
+    public interface IPageViewModel : IScreen, INavigationAware, IJournaled
     {
         Experience Experience { get; }
+        bool ShowActionsPad { get; }
     }
 }

@@ -7,9 +7,9 @@ using Deadfile.Tab.DesignTime;
 
 namespace Deadfile.Tab.Home
 {
-    class HomePageDesignTimeViewModel : DesignTimeViewModel, IHomePageViewModel
+    class HomePageDesignTimeViewModel : PageDesignTimeViewModel, IHomePageViewModel
     {
-        public void Clients()
+        public void LocalAuthorities()
         {
             throw new NotImplementedException();
         }
@@ -18,5 +18,7 @@ namespace Deadfile.Tab.Home
         {
             get { return Experience.Home; }
         }
+
+        public bool ShowActionsPad { get; } = true;
     }
 }

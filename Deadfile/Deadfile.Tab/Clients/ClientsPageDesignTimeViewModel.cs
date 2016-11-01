@@ -9,7 +9,7 @@ using Deadfile.Tab.Events;
 
 namespace Deadfile.Tab.Clients
 {
-    class ClientsPageDesignTimeViewModel : DesignTimeViewModel, IClientsPageViewModel
+    class ClientsPageDesignTimeViewModel : PageDesignTimeViewModel, IClientsPageViewModel
     {
         public void AddNewJob()
         {
@@ -25,5 +25,6 @@ namespace Deadfile.Tab.Clients
             get { return Experience.Clients; }
         }
 
+        public bool ShowActionsPad { get; } = true;
     }
 }

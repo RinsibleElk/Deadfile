@@ -51,6 +51,21 @@ namespace Deadfile.Model
             }
         }
 
+        public IEnumerable<LocalAuthorityModel> GetLocalAuthorities()
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var li = new List<LocalAuthorityModel>();
+                foreach (var localAuthority in (from localAuthority in dbContext.LocalAuthorities
+                                                orderby localAuthority.Name
+                                                select localAuthority))
+                {
+                    li.Add(_modelEntityMapper.Mapper.Map<LocalAuthorityModel>(localAuthority));
+                }
+                return li;
+            }
+        }
+
         public IEnumerable<ClientModel> GetFilteredClients(string filter)
         {
             using (var dbContext = new DeadfileContext())
@@ -162,6 +177,8 @@ namespace Deadfile.Model
                     FakeData.AddFakeQuotations(dbContext);
                     dbContext.SaveChanges();
                     FakeData.AddFakeJobs(dbContext);
+                    dbContext.SaveChanges();
+                    FakeData.AddFakeLocalAuthorities(dbContext);
                     dbContext.SaveChanges();
                     FakeData.AddFakeApplications(dbContext);
                     dbContext.SaveChanges();

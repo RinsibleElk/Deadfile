@@ -10,6 +10,7 @@ namespace Deadfile.Tab
     {
         Home,
         Clients,
-        Jobs
+        Jobs,
+        LocalAuthorities
     }
 }

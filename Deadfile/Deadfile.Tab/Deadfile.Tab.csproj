@@ -96,7 +96,9 @@
     <Compile Include="Common\EditableItemViewModel.cs" />
     <Compile Include="Common\IEditableItemViewModel.cs" />
     <Compile Include="Common\IPageViewModel.cs" />
+    <Compile Include="Common\ManagementPageViewModel.cs" />
     <Compile Include="Common\ParameterisedViewModel.cs" />
+    <Compile Include="DesignTime\PageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeViewModel.cs" />
     <Compile Include="Events\CanEditMessage.cs" />
     <Compile Include="Events\CanSaveMessage.cs" />
@@ -135,6 +137,12 @@
       <DependentUpon>JobsPageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Jobs\JobsPageViewModel.cs" />
+    <Compile Include="Management\LocalAuthorities\ILocalAuthoritiesPageViewModel.cs" />
+    <Compile Include="Management\LocalAuthorities\LocalAuthoritiesPageDesignTimeViewModel.cs" />
+    <Compile Include="Management\LocalAuthorities\LocalAuthoritiesPageView.xaml.cs">
+      <DependentUpon>LocalAuthoritiesPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Management\LocalAuthorities\LocalAuthoritiesPageViewModel.cs" />
     <Compile Include="Navigation\INavigationBarViewModel.cs" />
     <Compile Include="Navigation\NavigationBarView.xaml.cs">
       <DependentUpon>NavigationBarView.xaml</DependentUpon>
@@ -147,6 +155,7 @@
     </Compile>
     <Compile Include="Quotes\QuotesBarDesignTimeViewModel.cs" />
     <Compile Include="Quotes\QuotesBarViewModel.cs" />
+    <Compile Include="RegionNames.cs" />
     <Compile Include="Tab\ITabViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -204,6 +213,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Jobs\JobsPageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Management\LocalAuthorities\LocalAuthoritiesPageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

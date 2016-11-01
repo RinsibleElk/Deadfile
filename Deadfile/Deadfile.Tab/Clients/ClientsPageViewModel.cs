@@ -87,5 +87,7 @@ namespace Deadfile.Tab.Clients
         {
             get { return Experience.Clients; }
         }
+
+        public bool ShowActionsPad { get; } = true;
     }
 }

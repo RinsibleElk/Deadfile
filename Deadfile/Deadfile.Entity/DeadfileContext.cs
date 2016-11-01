@@ -22,5 +22,6 @@ namespace Deadfile.Entity
         public virtual DbSet<Expense> Expenses { get; set; }
         public virtual DbSet<Quotation> Quotations { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<LocalAuthority> LocalAuthorities { get; set; }
     }
 }

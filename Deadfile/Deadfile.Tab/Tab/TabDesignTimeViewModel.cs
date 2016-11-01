@@ -20,5 +20,7 @@ namespace Deadfile.Tab.Tab
         public object BrowserPane { get; set; } = new BrowserPaneDesignTimeViewModel();
         public object QuotesBar { get; set; } = new QuotesBarDesignTimeViewModel();
         public object ActionsPad { get; set; } = new HomeActionsPadDesignTimeViewModel();
+
+        public bool BrowserAndActionsAreVisible { get; set; } = true;
     }
 }

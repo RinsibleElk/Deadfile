@@ -30,6 +30,12 @@ namespace Deadfile.Model.DesignTime
             return applications.Select(_modelEntityMapper.Mapper.Map<ApplicationModel>);
         }
 
+        public IEnumerable<LocalAuthorityModel> GetLocalAuthorities()
+        {
+            var localAuthorities = FakeData.GetFakeLocalAuthorities();
+            return localAuthorities.Select(_modelEntityMapper.Mapper.Map<LocalAuthorityModel>);
+        }
+
         public IEnumerable<ClientModel> GetFilteredClients(string filter)
         {
             // Should never get called as this implementation is only used in design time.

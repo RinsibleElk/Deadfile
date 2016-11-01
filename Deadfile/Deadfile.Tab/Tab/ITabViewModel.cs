@@ -16,5 +16,6 @@ namespace Deadfile.Tab.Tab
         object BrowserPane { get; set; }
         object QuotesBar { get; set; }
         object ActionsPad { get; set; }
+        bool BrowserAndActionsAreVisible { get; set; }
     }
 }

@@ -91,6 +91,7 @@
     <Compile Include="Interfaces\IRandomNumberGenerator.cs" />
     <Compile Include="InvoiceModel.cs" />
     <Compile Include="JobModel.cs" />
+    <Compile Include="LocalAuthorityModel.cs" />
     <Compile Include="ModelBase.cs" />
     <Compile Include="ModelEntityMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,7 +9,7 @@ using Deadfile.Tab.JobChildren;
 
 namespace Deadfile.Tab.Jobs
 {
-    class JobsPageDesignTimeViewModel : DesignTimeViewModel, IJobsPageViewModel
+    class JobsPageDesignTimeViewModel : PageDesignTimeViewModel, IJobsPageViewModel
     {
         public JobModel SelectedItem { get; set; } = new JobModel()
         {
@@ -19,6 +19,7 @@ namespace Deadfile.Tab.Jobs
         public bool Editable { get; } = false;
         public List<string> Errors { get; } = new List<string>();
         public Experience Experience { get; } = Experience.Jobs;
+        public bool ShowActionsPad { get; } = true;
         public List<JobChildExperience> JobChildren { get; } = JobsPageViewModel.AllJobChildExperiences;
         public JobChildExperience SelectedJobChild { get; set; } = JobChildExperience.Applications;
     }
