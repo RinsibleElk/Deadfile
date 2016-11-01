@@ -4,11 +4,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Caliburn.Micro;
+using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Home;
+using Prism.Commands;
 using IEventAggregator = Prism.Events.IEventAggregator;
 
 namespace Deadfile.Tab.Management.LocalAuthorities
@@ -17,60 +20,47 @@ namespace Deadfile.Tab.Management.LocalAuthorities
     /// View model for the Local Authorities Experience. Allows management of the known set of local
     /// authorities.
     /// </summary>
-    class LocalAuthoritiesPageViewModel : ManagementPageViewModel, ILocalAuthoritiesPageViewModel
+    class LocalAuthoritiesPageViewModel : ManagementPageViewModel<LocalAuthorityModel>, ILocalAuthoritiesPageViewModel
     {
+        private readonly IUrlNavigationService _urlNavigationService;
         private readonly IDeadfileRepository _repository;
-        private ObservableCollection<LocalAuthorityModel> _items;
-        private LocalAuthorityModel _selectedItem = new LocalAuthorityModel();
+        private readonly DelegateCommand<string> _navigateCommand;
 
-        public LocalAuthoritiesPageViewModel(IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator)
+        /// <summary>
+        /// Create a new <see cref="LocalAuthoritiesPageViewModel"/>.
+        /// </summary>
+        /// <param name="urlNavigationService"></param>
+        /// <param name="repository"></param>
+        /// <param name="eventAggregator"></param>
+        public LocalAuthoritiesPageViewModel(IUrlNavigationService urlNavigationService, IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator)
         {
+            _urlNavigationService = urlNavigationService;
             _repository = repository;
+            _navigateCommand = new DelegateCommand<string>(NavigateToUrl);
         }
 
-        public override void OnNavigatedTo(object parameters)
+        private void NavigateToUrl(string url)
         {
-            base.OnNavigatedTo(parameters);
-
-            // Always concatenate an empty one.
-            SelectedItem = new LocalAuthorityModel();
-            Items = new ObservableCollection<LocalAuthorityModel>(_repository.GetLocalAuthorities());
-            Items.Add(SelectedItem);
+            _urlNavigationService.Navigate(url);
         }
 
-        public override void OnNavigatedFrom()
+        /// <summary>
+        /// Perform the database interaction.
+        /// </summary>
+        /// <returns></returns>
+        protected override IEnumerable<LocalAuthorityModel> GetModels()
         {
-            base.OnNavigatedFrom();
-            SelectedItem = new LocalAuthorityModel();
-            Items = new ObservableCollection<LocalAuthorityModel>();
+            return _repository.GetLocalAuthorities();
         }
 
         // Common for every journaled page (content).
         public override Experience Experience { get; } = Experience.LocalAuthorities;
-
-        /// <summary>
-        /// All the known local authorities.
-        /// </summary>
-        public ObservableCollection<LocalAuthorityModel> Items
+        public override void EditingStatusChanged(bool editable)
         {
-            get { return _items; }
-            set
-            {
-                if (Equals(value, _items)) return;
-                _items = value;
-                NotifyOfPropertyChange(() => Items);
-            }
         }
 
-        public LocalAuthorityModel SelectedItem
-        {
-            get { return _selectedItem; }
-            set
-            {
-                if (Equals(value, _selectedItem)) return;
-                _selectedItem = value;
-                NotifyOfPropertyChange(() => SelectedItem);
-            }
+        public ICommand NavigateCommand {
+            get { return _navigateCommand; }
         }
     }
 }

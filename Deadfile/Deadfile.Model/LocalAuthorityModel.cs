@@ -15,6 +15,7 @@ namespace Deadfile.Model
         private int _localAuthorityId;
         private string _name;
         private string _url;
+        private bool _hasUrl;
 
         public override int Id
         {
@@ -40,7 +41,19 @@ namespace Deadfile.Model
         public string Url
         {
             get { return _url; }
-            set { SetProperty(ref _url, value); }
+            set
+            {
+                if (SetProperty(ref _url, value))
+                {
+                    HasUrl = !String.IsNullOrWhiteSpace(_url);
+                }
+            }
+        }
+
+        public bool HasUrl
+        {
+            get { return _hasUrl; }
+            set { SetProperty(ref _hasUrl, value); }
         }
     }
 }

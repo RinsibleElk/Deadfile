@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Deadfile.Core;
+using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using Prism.Mvvm;
 

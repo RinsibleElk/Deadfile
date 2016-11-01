@@ -113,6 +113,8 @@ namespace Deadfile.Tab.Common
                         _undoTracker.Deactivate();
                         // Deliberately do this after deactivation so that the deactivation takes care of notifying the
                         // browser of CanUndo/CanRedo changes.
+                        EventAggregator.GetEvent<SaveEvent>().Unsubscribe(_saveSubscriptionToken);
+                        _saveSubscriptionToken = null;
                         _undoTracker.PropertyChanged -= UndoTrackerPropertyChanged;
                         _selectedItem.ErrorsChanged -= SelectedItemErrorsChanged;
                         _selectedItem.ClearAllErrors();

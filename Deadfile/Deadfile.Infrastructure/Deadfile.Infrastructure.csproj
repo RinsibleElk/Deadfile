@@ -80,6 +80,7 @@
     <Compile Include="Interfaces\INavigationContainer.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
     <Compile Include="Interfaces\IQuotationsTimerService.cs" />
+    <Compile Include="Interfaces\IUrlNavigationService.cs" />
     <Compile Include="Interfaces\NavigationContext.cs" />
     <Compile Include="Services\NavigationContainer.cs" />
     <Compile Include="Services\NavigationService.cs" />
@@ -97,6 +98,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Services\QuotationsTimerService.cs" />
+    <Compile Include="Services\UrlNavigationService.cs" />
+    <Compile Include="Templates\LocalAuthorityHyperlinkHeaderTemplateSelector.cs" />
     <Compile Include="UndoRedo\UndoTracker.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

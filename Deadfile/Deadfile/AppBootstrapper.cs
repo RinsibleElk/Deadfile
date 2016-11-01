@@ -63,6 +63,9 @@ namespace Deadfile
             // Timer.
             ContainerInstance.RegisterSingleton(typeof(IQuotationsTimerService), nameof(QuotationsTimerService), typeof(QuotationsTimerService));
 
+            // Navigation to external browser.
+            ContainerInstance.RegisterSingleton(typeof(IUrlNavigationService), nameof(UrlNavigationService), typeof(UrlNavigationService));
+
             // For testing. If the database is empty, populate it with fake data.
             var repo = ContainerInstance.GetInstance<IDeadfileRepository>();
             repo.SetUpFakeData();

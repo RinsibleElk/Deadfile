@@ -199,6 +199,12 @@
     <Resource Include="Resources\client-tab.png" />
     <Resource Include="Resources\home-tab.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\localauthority-tab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\job-tab.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

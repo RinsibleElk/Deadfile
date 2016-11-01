@@ -5,22 +5,63 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Deadfile.Tab.Management.LocalAuthorities"
              xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:templates="clr-namespace:Deadfile.Infrastructure.Templates;assembly=Deadfile.Infrastructure"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:LocalAuthoritiesPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
-    <ListBox SelectionMode="Single" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
-        <ListBox.ItemContainerStyle>
-            <Style TargetType="{x:Type ListBoxItem}">
-                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                <Setter Property="Padding" Value="0" />
-            </Style>
-        </ListBox.ItemContainerStyle>
-        <ListBox.ItemTemplate>
-            <DataTemplate>
-                <Border BorderThickness="0,0,0,1" BorderBrush="Black">
-                    <Expander IsExpanded="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" />
+    <Grid>
+        <Grid.Resources>
+            <DataTemplate x:Key="ExpanderHeaderTemplate" DataType="model:LocalAuthorityModel">
+                <Border Height="24">
+                    <TextBlock Text="{Binding Name}" 
+                        Margin="4 0"
+                        VerticalAlignment="Center"
+                        FontSize="11" 
+                        FontWeight="Normal"
+                        TextWrapping="Wrap">
+                    </TextBlock>
                 </Border>
             </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox>
+            <DataTemplate x:Key="ExpanderHeaderTemplateWithUrl" DataType="model:LocalAuthorityModel">
+                <Border Height="24">
+                    <TextBlock
+                        Margin="4 0"
+                        VerticalAlignment="Center"
+                        FontSize="11" 
+                        FontWeight="Normal"
+                        TextWrapping="Wrap">
+                        <Hyperlink Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                            CommandParameter="{Binding Url}">
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                        </Hyperlink>
+                    </TextBlock>
+                </Border>
+            </DataTemplate>
+            <templates:LocalAuthorityHyperlinkHeaderTemplateSelector x:Key="ExpanderHeaderTemplateSelector" WithUrlTemplate="{StaticResource ExpanderHeaderTemplateWithUrl}" NoUrlTemplate="{StaticResource ExpanderHeaderTemplate}"/>
+        </Grid.Resources>
+
+        <ListBox SelectionMode="Single" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Background" Value="Transparent"></Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="0,0,0,1" BorderBrush="Black">
+                        <Expander HeaderTemplateSelector="{StaticResource ExpanderHeaderTemplateSelector}"
+                                  Header="{Binding}" Style="{StaticResource GradientExpanderStyle}"
+                                  IsExpanded="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}">
+                            <Grid>
+                                <TextBlock Text="{Binding Name}"></TextBlock>
+                            </Grid>
+                        </Expander>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
 </UserControl>

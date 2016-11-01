@@ -774,9 +774,11 @@ namespace Deadfile.Model.DesignTime
             return
                 li.Select(
                     (s) =>
-                        (s == "Enfield Council"
+                        ((s == "Enfield Council")
                             ? new LocalAuthority() {Name = s, Url = "https://new.enfield.gov.uk/"}
-                            : new LocalAuthority() {Name = s}));
+                            : ((s == "Arun District Council")
+                                ? new LocalAuthority() {Name = s, Url = "http://www.arun.gov.uk/"}
+                                : new LocalAuthority() {Name = s})));
         }
     }
 }
