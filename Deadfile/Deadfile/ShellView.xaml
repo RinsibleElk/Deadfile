@@ -8,6 +8,8 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:converters="clr-namespace:Deadfile.Infrastructure.Converters;assembly=Deadfile.Infrastructure"
+             xmlns:tab="clr-namespace:Deadfile.Tab.Tab;assembly=Deadfile.Tab"
              Icon="Resources/logo.png"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -27,12 +29,27 @@
         </ResourceDictionary>
     </Window.Resources>
     <DockPanel>
+        <DockPanel.Resources>
+            <converters:SwitchConverter x:Key="ExperienceToImage">
+                <converters:SwitchConverterCase When="Clients" Then="Resources/client-tab.png" />
+                <converters:SwitchConverterCase When="Jobs" Then="Resources/client-tab.png" />
+                <converters:SwitchConverterCase When="Home" Then="Resources/home-tab.png" />
+                <converters:SwitchConverterCase When="LocalAuthorities" Then="Resources/client-tab.png" />
+            </converters:SwitchConverter>
+        </DockPanel.Resources>
         <dragablz:TabablzControl
             x:Name="Items"
             ShowDefaultCloseButton="True"
             ItemContainerStyle="{StaticResource TrapezoidDragableTabItemStyle}"
-            HeaderMemberPath="DisplayName"
             AdjacentHeaderItemOffset="-10">
+            <dragablz:TabablzControl.HeaderItemTemplate>
+                <DataTemplate DataType="tab:TabViewModel">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="16" Width="16" Source="{Binding ContentArea.Experience, Converter={StaticResource ExperienceToImage}}"></Image>
+                        <TextBlock Text="{Binding DisplayName}" />
+                    </StackPanel>
+                </DataTemplate>
+            </dragablz:TabablzControl.HeaderItemTemplate>
             <dragablz:TabablzControl.InterTabController>
                 <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" />
             </dragablz:TabablzControl.InterTabController>
@@ -47,4 +64,6 @@
         </dragablz:TabablzControl>
     </DockPanel>
 </dragablz:DragablzWindow>
+
+
 

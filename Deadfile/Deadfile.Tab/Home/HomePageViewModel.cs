@@ -18,6 +18,16 @@ namespace Deadfile.Tab.Home
             _eventAggregator = eventAggregator;
         }
 
+        public void Clients()
+        {
+            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.Clients));
+        }
+
+        public void Jobs()
+        {
+            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.Jobs));
+        }
+
         public void LocalAuthorities()
         {
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.LocalAuthorities));

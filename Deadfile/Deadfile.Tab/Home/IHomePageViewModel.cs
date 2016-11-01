@@ -10,6 +10,8 @@ namespace Deadfile.Tab.Home
 {
     interface IHomePageViewModel : IPageViewModel
     {
+        void Clients();
+        void Jobs();
         void LocalAuthorities();
     }
 }

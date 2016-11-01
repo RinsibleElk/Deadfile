@@ -9,6 +9,16 @@ namespace Deadfile.Tab.Home
 {
     class HomePageDesignTimeViewModel : PageDesignTimeViewModel, IHomePageViewModel
     {
+        public void Clients()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Jobs()
+        {
+            throw new NotImplementedException();
+        }
+
         public void LocalAuthorities()
         {
             throw new NotImplementedException();
