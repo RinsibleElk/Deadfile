@@ -44,18 +44,13 @@ namespace Deadfile.Tab.Common
             _eventAggregator = eventAggregator;
             _editCommand = new DelegateCommand(StartEditing);
             _discardCommand = new DelegateCommand(DiscardEdits);
-            _saveCommand = new DelegateCommand(PerformSaveAction, CanPerformSave);
+            _saveCommand = new DelegateCommand(PerformSaveAction);
         }
 
         private void PerformSaveAction()
         {
             PerformSave();
             Editable = false;
-        }
-
-        private bool CanPerformSave()
-        {
-            return _canSave;
         }
 
         protected abstract void PerformSave();
@@ -116,10 +111,6 @@ namespace Deadfile.Tab.Common
 
         public abstract Experience Experience { get; }
         public bool ShowActionsPad { get; } = false;
-
-        private SubscriptionToken _handleEditActionSubscriptionToken;
-        private SubscriptionToken _handleUndoSubcriptionToken;
-        private bool _canSave = true;
 
         public bool Editable
         {
@@ -227,14 +218,7 @@ namespace Deadfile.Tab.Common
                 if (Equals(value, _errors)) return;
                 _errors = value;
                 NotifyOfPropertyChange(() => Errors);
-                CanSave = _errors.Count == 0;
             }
-        }
-
-        public bool CanSave
-        {
-            get { return _canSave; }
-            set { _canSave = value; }
         }
 
         protected abstract IEnumerable<T> GetModels(string filter);
