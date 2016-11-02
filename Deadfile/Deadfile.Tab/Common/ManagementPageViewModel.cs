@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using Deadfile.Tab.Events;
 using System.Text.RegularExpressions;
+using System.Windows.Input;
 using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
 using Deadfile.Tab.Navigation;
+using Prism.Commands;
 using Prism.Events;
 using IEventAggregator = Prism.Events.IEventAggregator;
 
@@ -24,11 +26,14 @@ namespace Deadfile.Tab.Common
         private readonly IEventAggregator _eventAggregator;
         private ObservableCollection<T> _items;
         private bool _editable;
-        private T _selectedItem;
+        private T _selectedItem = new T();
         private List<string> _errors;
         private readonly UndoTracker<T> _undoTracker = new UndoTracker<T>();
         private SubscriptionToken _undoEventSubscriptionToken = null;
         private string _filter;
+        private readonly DelegateCommand _editCommand;
+        private readonly DelegateCommand _discardCommand;
+        private readonly DelegateCommand _saveCommand;
 
         /// <summary>
         /// Requires an event aggregator to communicate the display name to the tab.
@@ -37,6 +42,34 @@ namespace Deadfile.Tab.Common
         protected ManagementPageViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
+            _editCommand = new DelegateCommand(StartEditing);
+            _discardCommand = new DelegateCommand(DiscardEdits);
+            _saveCommand = new DelegateCommand(PerformSaveAction, CanPerformSave);
+        }
+
+        private void PerformSaveAction()
+        {
+            PerformSave();
+            Editable = false;
+        }
+
+        private bool CanPerformSave()
+        {
+            return _canSave;
+        }
+
+        protected abstract void PerformSave();
+
+        private void DiscardEdits()
+        {
+            while (_undoTracker.CanUndo)
+                _undoTracker.Undo();
+            Editable = false;
+        }
+
+        private void StartEditing()
+        {
+            Editable = true;
         }
 
         /// <summary>
@@ -86,6 +119,7 @@ namespace Deadfile.Tab.Common
 
         private SubscriptionToken _handleEditActionSubscriptionToken;
         private SubscriptionToken _handleUndoSubcriptionToken;
+        private bool _canSave = true;
 
         public bool Editable
         {
@@ -174,7 +208,13 @@ namespace Deadfile.Tab.Common
             set
             {
                 if (Equals(value, _selectedItem)) return;
-                _selectedItem = value;
+
+                // Is this too lame of a user experience????
+                if (Editable)
+                    DiscardEdits();
+
+                if (value == null) _selectedItem = new T();
+                else _selectedItem = value;
                 NotifyOfPropertyChange(() => SelectedItem);
             }
         }
@@ -187,8 +227,16 @@ namespace Deadfile.Tab.Common
                 if (Equals(value, _errors)) return;
                 _errors = value;
                 NotifyOfPropertyChange(() => Errors);
+                CanSave = _errors.Count == 0;
             }
         }
+
+        public bool CanSave
+        {
+            get { return _canSave; }
+            set { _canSave = value; }
+        }
+
         protected abstract IEnumerable<T> GetModels(string filter);
 
         public string Filter
@@ -205,5 +253,8 @@ namespace Deadfile.Tab.Common
             }
         }
 
+        public ICommand EditCommand { get { return _editCommand; } }
+        public ICommand DiscardCommand { get { return _discardCommand; } }
+        public ICommand SaveCommand { get { return _saveCommand; } }
     }
 }

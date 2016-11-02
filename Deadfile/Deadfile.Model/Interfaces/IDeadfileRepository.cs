@@ -89,9 +89,15 @@ namespace Deadfile.Model.Interfaces
         InvoiceModel GetInvoiceById(int invoiceId);
 
         /// <summary>
-        /// Save changes to a client.
+        /// Save changes to a client (or create a new one).
         /// </summary>
-        /// <param name="selectedClient"></param>
-        void SaveClient(ClientModel selectedClient);
+        /// <param name="clientModel"></param>
+        void SaveClient(ClientModel clientModel);
+
+        /// <summary>
+        /// Save changes to a local authority (or create a new one).
+        /// </summary>
+        /// <param name="localAuthorityModel"></param>
+        void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel);
     }
 }

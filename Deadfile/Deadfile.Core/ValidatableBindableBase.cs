@@ -25,6 +25,7 @@ namespace Deadfile.Core
 
         public System.Collections.IEnumerable GetErrors(string propertyName)
         {
+            if (propertyName == null) return null;
             if (Errors.ContainsKey(propertyName))
                 return Errors[propertyName];
             else

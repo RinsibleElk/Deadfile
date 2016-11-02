@@ -53,6 +53,11 @@ namespace Deadfile.Tab.Management.LocalAuthorities
             return _repository.GetLocalAuthorities(filter);
         }
 
+        protected override void PerformSave()
+        {
+            _repository.SaveLocalAuthority(SelectedItem);
+        }
+
         // Common for every journaled page (content).
         public override Experience Experience { get; } = Experience.LocalAuthorities;
         public override void EditingStatusChanged(bool editable)

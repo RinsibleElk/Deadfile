@@ -242,5 +242,24 @@ namespace Deadfile.Model
                 dbContext.SaveChanges();
             }
         }
+
+        public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                if (localAuthorityModel.LocalAuthorityId == ModelBase.NewModelId)
+                {
+                    // Add
+                    dbContext.LocalAuthorities.Add(_modelEntityMapper.Mapper.Map<LocalAuthorityModel, LocalAuthority>(localAuthorityModel));
+                }
+                else
+                {
+                    // Edit
+                    var localAuthority = dbContext.LocalAuthorities.Find(localAuthorityModel.LocalAuthorityId);
+                    _modelEntityMapper.Mapper.Map<LocalAuthorityModel, LocalAuthority>(localAuthorityModel, localAuthority);
+                }
+                dbContext.SaveChanges();
+            }
+        }
     }
 }

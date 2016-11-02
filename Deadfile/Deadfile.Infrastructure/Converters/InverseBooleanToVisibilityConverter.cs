@@ -9,10 +9,13 @@ using System.Windows.Data;
 
 namespace Deadfile.Infrastructure.Converters
 {
+    [ValueConversion(typeof(bool), typeof(Visibility))]
     public class InverseBooleanToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (targetType != typeof(Visibility))
+                throw new InvalidOperationException("The target must be a Visibility");
             var isInvisible = (bool) value;
             return isInvisible ? Visibility.Collapsed : Visibility.Visible;
         }

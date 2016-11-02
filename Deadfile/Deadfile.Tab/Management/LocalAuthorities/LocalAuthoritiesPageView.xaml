@@ -55,9 +55,10 @@
                 NoUrlTemplate="{StaticResource ExpanderHeaderTemplate}"
                 AddNewTemplate="{StaticResource ExpanderHeaderTemplateAddNew}"/>
         </DockPanel.Resources>
-        <TextBox DockPanel.Dock="Top" controls:TextBoxHelper.Watermark="Filter" Text="{Binding Filter, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-        <!-- I need to change this to ItemsControl in order to disable selection for the user when Editable. Bit more work, but necessary... -->
-        <ListBox SelectionMode="Single" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+        <TextBox DockPanel.Dock="Top" controls:TextBoxHelper.Watermark="Filter" Text="{Binding Filter, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
+        <ListBox SelectionMode="Single"
+                 ItemsSource="{Binding Items}"
+                 SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -68,7 +69,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border BorderThickness="0,0,0,1" BorderBrush="Black">
-                        <Expander HeaderTemplateSelector="{StaticResource ExpanderHeaderTemplateSelector}"
+                        <Expander   HeaderTemplateSelector="{StaticResource ExpanderHeaderTemplateSelector}"
                                     Header="{Binding}" Style="{StaticResource GradientExpanderStyle}"
                                     IsExpanded="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}">
                             <Grid Background="White">
