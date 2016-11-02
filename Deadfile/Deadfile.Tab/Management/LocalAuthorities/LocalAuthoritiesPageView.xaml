@@ -78,8 +78,14 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBox Grid.Row="0" IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}" controls:TextBoxHelper.Watermark="Name" Text="{Binding Name}"></TextBox>
-                                <TextBox Grid.Row="1" IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}" controls:TextBoxHelper.Watermark="Url" Text="{Binding Url}"></TextBox>
+                                <TextBox Grid.Row="0"
+                                         IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                         controls:TextBoxHelper.Watermark="Name"
+                                         Text="{Binding Name, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Grid.Row="1"
+                                         IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                         controls:TextBoxHelper.Watermark="Url"
+                                         Text="{Binding Url, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
                                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
                                     <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             Command="{Binding Path=DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
@@ -90,6 +96,7 @@
                                         Discard
                                     </Button>
                                     <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            IsEnabled="{Binding Path=HasErrors, Converter={StaticResource InverseBoolean}}"
                                             Command="{Binding Path=DataContext.SaveCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">Save</Button>
                                 </StackPanel>
                             </Grid>

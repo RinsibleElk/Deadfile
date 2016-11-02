@@ -20,6 +20,7 @@ namespace Deadfile.Tab.Navigation
         private bool _canUndo;
         private bool _canForward;
         private bool _canBack;
+        private bool _lockedForEditing = false;
         private SubscriptionToken _canUndoEventSubscriptionToken;
         private SubscriptionToken _lockedForEditingEventSubscriptionToken;
         private SubscriptionToken _discardChangesEventSubscriptionToken;
@@ -46,7 +47,7 @@ namespace Deadfile.Tab.Navigation
 
         public bool CanHome
         {
-            get { return _canHome; }
+            get { return !_lockedForEditing && _canHome; }
             set
             {
                 if (value == _canHome) return;
@@ -62,7 +63,7 @@ namespace Deadfile.Tab.Navigation
 
         public bool CanBack
         {
-            get { return _canBack; }
+            get { return !_lockedForEditing && _canBack; }
             set
             {
                 if (value == _canBack) return;
@@ -78,7 +79,7 @@ namespace Deadfile.Tab.Navigation
 
         public bool CanForward
         {
-            get { return _canForward; }
+            get { return !_lockedForEditing && _canForward; }
             set
             {
                 if (value == _canForward) return;
@@ -128,10 +129,16 @@ namespace Deadfile.Tab.Navigation
 
         private void DiscardChangesAction(DiscardChangesMessage discardChangesMessage)
         {
+            if (discardChangesMessage == DiscardChangesMessage.Discard)
+                while (CanUndo) Undo();
         }
 
-        private void UpdateLockedForEditing(LockedForEditingMessage obj)
+        private void UpdateLockedForEditing(LockedForEditingMessage lockedForEditingMessage)
         {
+            _lockedForEditing = (lockedForEditingMessage == LockedForEditingMessage.Locked);
+            NotifyOfPropertyChange(nameof(CanHome));
+            NotifyOfPropertyChange(nameof(CanBack));
+            NotifyOfPropertyChange(nameof(CanForward));
         }
 
         private void UpdateCanUndo(CanUndoMessage canUndoMessage)

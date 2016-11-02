@@ -42,7 +42,7 @@ namespace Deadfile.Tab.Test
                     .Returns(DiscardChangesEvent)
                     .Verifiable();
                 ViewModel = new NavigationBarViewModel(NavigationServiceMock.Object, EventAggregatorMock.Object);
-                ViewModel.PropertyChanged += (s,e) =>
+                ViewModel.PropertyChanged += (s, e) =>
                 {
                     switch (e.PropertyName)
                     {
@@ -99,7 +99,8 @@ namespace Deadfile.Tab.Test
                     .Setup((n) => n.CanGoForward)
                     .Returns(false)
                     .Verifiable();
-                host.NavigationServiceMock.Raise(((n) => n.PropertyChanged += null), new PropertyChangedEventArgs("CanGoBack"));
+                host.NavigationServiceMock.Raise(((n) => n.PropertyChanged += null),
+                    new PropertyChangedEventArgs("CanGoBack"));
 
                 // Verify.
                 Assert.True(host.ViewModel.CanBack);
@@ -125,13 +126,41 @@ namespace Deadfile.Tab.Test
                     .Setup((n) => n.CanGoForward)
                     .Returns(true)
                     .Verifiable();
-                host.NavigationServiceMock.Raise(((n) => n.PropertyChanged += null), new PropertyChangedEventArgs("CanGoForward"));
+                host.NavigationServiceMock.Raise(((n) => n.PropertyChanged += null),
+                    new PropertyChangedEventArgs("CanGoForward"));
 
                 // Verify.
                 Assert.True(host.ViewModel.CanForward);
                 Assert.Equal(1, host.NumberOfTimesForwardCanExecuteChangedFired);
                 Assert.Equal(0, host.NumberOfTimesHomeCanExecuteChangedFired);
                 Assert.Equal(0, host.NumberOfTimesBackCanExecuteChangedFired);
+            }
+        }
+
+        [Fact]
+        public void TestLockedForEditing_CantGoBack()
+        {
+            using (var host = new RealEventsHost())
+            {
+                // Fire an event from the NavigationService to say that we can go back.
+                host.NavigationServiceMock
+                    .Setup((n) => n.CanGoBack)
+                    .Returns(true)
+                    .Verifiable();
+                host.NavigationServiceMock
+                    .Setup((n) => n.CanGoForward)
+                    .Returns(false)
+                    .Verifiable();
+                host.NavigationServiceMock.Raise(((n) => n.PropertyChanged += null),
+                    new PropertyChangedEventArgs("CanGoBack"));
+                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+
+                // Verify.
+                Assert.False(host.ViewModel.CanBack);
+                Assert.False(host.ViewModel.CanHome);
+                Assert.Equal(1, host.NumberOfTimesForwardCanExecuteChangedFired);
+                Assert.Equal(2, host.NumberOfTimesHomeCanExecuteChangedFired);
+                Assert.Equal(2, host.NumberOfTimesBackCanExecuteChangedFired);
             }
         }
     }
