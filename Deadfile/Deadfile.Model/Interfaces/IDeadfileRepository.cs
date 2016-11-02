@@ -28,8 +28,9 @@ namespace Deadfile.Model.Interfaces
         /// <summary>
         /// Get all the local authorities.
         /// </summary>
+        /// <param name="filter"></param>
         /// <returns></returns>
-        IEnumerable<LocalAuthorityModel> GetLocalAuthorities();
+        IEnumerable<LocalAuthorityModel> GetLocalAuthorities(string filter);
 
         /// <summary>
         /// Naughty method to seed the repository with fake data. Run at initialization time and only changes the database if it's totally empty.

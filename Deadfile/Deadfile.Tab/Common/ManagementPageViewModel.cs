@@ -28,6 +28,7 @@ namespace Deadfile.Tab.Common
         private List<string> _errors;
         private readonly UndoTracker<T> _undoTracker = new UndoTracker<T>();
         private SubscriptionToken _undoEventSubscriptionToken = null;
+        private string _filter;
 
         /// <summary>
         /// Requires an event aggregator to communicate the display name to the tab.
@@ -64,7 +65,7 @@ namespace Deadfile.Tab.Common
 
             // add a placeholder for an added item
             SelectedItem = new T();
-            Items = new ObservableCollection<T>(GetModels());
+            Items = new ObservableCollection<T>(GetModels(Filter));
             Items.Add(SelectedItem);
         }
 
@@ -188,6 +189,21 @@ namespace Deadfile.Tab.Common
                 NotifyOfPropertyChange(() => Errors);
             }
         }
-        protected abstract IEnumerable<T> GetModels();
+        protected abstract IEnumerable<T> GetModels(string filter);
+
+        public string Filter
+        {
+            get { return _filter; }
+            set
+            {
+                if (value == _filter) return;
+                _filter = value;
+                NotifyOfPropertyChange(() => Filter);
+                SelectedItem = new T();
+                Items = new ObservableCollection<T>(GetModels(Filter));
+                Items.Add(SelectedItem);
+            }
+        }
+
     }
 }

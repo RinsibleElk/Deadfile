@@ -48,9 +48,9 @@ namespace Deadfile.Tab.Management.LocalAuthorities
         /// Perform the database interaction.
         /// </summary>
         /// <returns></returns>
-        protected override IEnumerable<LocalAuthorityModel> GetModels()
+        protected override IEnumerable<LocalAuthorityModel> GetModels(string filter)
         {
-            return _repository.GetLocalAuthorities();
+            return _repository.GetLocalAuthorities(filter);
         }
 
         // Common for every journaled page (content).

@@ -1,7 +1,8 @@
 ﻿<Application x:Class="Deadfile.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Deadfile">
+             xmlns:local="clr-namespace:Deadfile"
+             xmlns:converters="clr-namespace:Deadfile.Infrastructure.Converters;assembly=Deadfile.Infrastructure">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -24,6 +25,7 @@
             </ResourceDictionary.MergedDictionaries>
             <!-- Converters -->
             <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
+            <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibility"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

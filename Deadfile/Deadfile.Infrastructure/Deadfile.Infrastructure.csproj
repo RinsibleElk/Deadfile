@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\TreeViewSelectedItemBehavior.cs" />
+    <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\SwitchConverter.cs" />
     <Compile Include="Interfaces\IJournaled.cs" />
     <Compile Include="Interfaces\INavigationAware.cs" />

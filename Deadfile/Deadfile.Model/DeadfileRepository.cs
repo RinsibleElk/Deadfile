@@ -51,12 +51,13 @@ namespace Deadfile.Model
             }
         }
 
-        public IEnumerable<LocalAuthorityModel> GetLocalAuthorities()
+        public IEnumerable<LocalAuthorityModel> GetLocalAuthorities(string filter)
         {
             using (var dbContext = new DeadfileContext())
             {
                 var li = new List<LocalAuthorityModel>();
                 foreach (var localAuthority in (from localAuthority in dbContext.LocalAuthorities
+                                                where (filter == null || filter == "" || localAuthority.Name.Contains(filter))
                                                 orderby localAuthority.Name
                                                 select localAuthority))
                 {

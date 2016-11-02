@@ -30,7 +30,7 @@ namespace Deadfile.Model.DesignTime
             return applications.Select(_modelEntityMapper.Mapper.Map<ApplicationModel>);
         }
 
-        public IEnumerable<LocalAuthorityModel> GetLocalAuthorities()
+        public IEnumerable<LocalAuthorityModel> GetLocalAuthorities(string filter)
         {
             var localAuthorities = FakeData.GetFakeLocalAuthorities();
             return localAuthorities.Select(_modelEntityMapper.Mapper.Map<LocalAuthorityModel>);

@@ -100,6 +100,7 @@
     <Compile Include="Common\IManagementViewModel.cs" />
     <Compile Include="Common\ManagementPageViewModel.cs" />
     <Compile Include="Common\ParameterisedViewModel.cs" />
+    <Compile Include="DesignTime\ManagementPageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\PageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeViewModel.cs" />
     <Compile Include="Events\CanEditMessage.cs" />

@@ -13,21 +13,16 @@ using Deadfile.Tab.DesignTime;
 namespace Deadfile.Tab.Management.LocalAuthorities
 {
     class LocalAuthoritiesPageDesignTimeViewModel :
-        PageDesignTimeViewModel,
+        ManagementPageDesignTimeViewModel<LocalAuthorityModel>,
         ILocalAuthoritiesPageViewModel
     {
         public LocalAuthoritiesPageDesignTimeViewModel()
         {
             var repository = new DeadfileDesignTimeRepository();
             SelectedItem = new LocalAuthorityModel();
-            Items = new ObservableCollection<LocalAuthorityModel>(repository.GetLocalAuthorities());
+            Items = new ObservableCollection<LocalAuthorityModel>(repository.GetLocalAuthorities(null));
             Items.Add(SelectedItem);
         }
-
-        public ObservableCollection<LocalAuthorityModel> Items { get; set; }
-        public LocalAuthorityModel SelectedItem { get; set; }
-        public bool Editable { get; } = false;
-        public List<string> Errors { get; } = new List<string>();
 
         // Stuff that every page has.
         public override Experience Experience { get; } = Experience.LocalAuthorities;

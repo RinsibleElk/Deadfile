@@ -16,10 +16,12 @@ namespace Deadfile.Infrastructure.Templates
     {
         public DataTemplate WithUrlTemplate { get; set; }
         public DataTemplate NoUrlTemplate { get; set; }
+        public DataTemplate AddNewTemplate { get; set; }
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var hasUrl = (item as LocalAuthorityModel)?.HasUrl;
-            if (hasUrl == null || !hasUrl.Value) return NoUrlTemplate;
+            var localAuthority = (item as LocalAuthorityModel);
+            if (localAuthority == null || localAuthority.Id == ModelBase.NewModelId) return AddNewTemplate;
+            if (!localAuthority.HasUrl) return NoUrlTemplate;
             return WithUrlTemplate;
         }
     }

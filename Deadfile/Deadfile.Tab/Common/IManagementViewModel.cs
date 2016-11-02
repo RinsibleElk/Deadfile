@@ -15,5 +15,6 @@ namespace Deadfile.Tab.Common
         T SelectedItem { get; set; }
         bool Editable { get; }
         List<string> Errors { get; }
+        string Filter { get; set; }
     }
 }
