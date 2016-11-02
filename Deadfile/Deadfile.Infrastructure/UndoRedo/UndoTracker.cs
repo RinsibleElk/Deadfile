@@ -21,8 +21,7 @@ namespace Deadfile.Infrastructure.UndoRedo
     /// Undo-Redo event onto the stack(s) for public settable properties.
     /// </remarks>
     /// <typeparam name="T"></typeparam>
-    public sealed class UndoTracker<T> : BindableBase
-        where T : ModelBase
+    public sealed class UndoTracker<T> : BindableBase, IUndoTracker where T : ModelBase
     {
         private class UndoValue
         {

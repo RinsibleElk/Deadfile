@@ -16,7 +16,13 @@ namespace Deadfile.Tab.Common
     public abstract class EditableItemViewModel<K, T> : ParameterisedViewModel<K>, IEditableItemViewModel<T> where T : ModelBase, new()
     {
         protected readonly IEventAggregator EventAggregator;
+
+        // This is the main undo tracker for the object under management. However, it may not be the active one responding to undo events from the nav-bar.
         private readonly UndoTracker<T> _undoTracker = new UndoTracker<T>();
+
+        // This is the "active" undo tracker. For the Jobs page, this could represent a billable item.
+        private IUndoTracker _activeUndoTracker = null;
+
         private SubscriptionToken _saveSubscriptionToken = null;
         public EditableItemViewModel(IEventAggregator eventAggregator)
         {
@@ -28,9 +34,9 @@ namespace Deadfile.Tab.Common
         private void HandleUndo(UndoMessage message)
         {
             if (message == UndoMessage.Undo)
-                _undoTracker.Undo();
+                _activeUndoTracker.Undo();
             else
-                _undoTracker.Redo();
+                _activeUndoTracker.Redo();
         }
 
         private T _selectedItem = new T();
@@ -102,20 +108,18 @@ namespace Deadfile.Tab.Common
                     NotifyOfPropertyChange(() => Editable);
                     if (_editable)
                     {
-                        _undoTracker.Activate(_selectedItem);
-                        _undoTracker.PropertyChanged += UndoTrackerPropertyChanged;
+                        ActivateUndoTracker(_undoTracker, _selectedItem);
                         _selectedItem.ErrorsChanged += SelectedItemErrorsChanged;
                         _saveSubscriptionToken = EventAggregator.GetEvent<SaveEvent>().Subscribe(PerformSave);
                         _selectedItem.RefreshAllErrors();
                     }
                     else
                     {
-                        _undoTracker.Deactivate();
+                        DeactivateUndoTracker();
                         // Deliberately do this after deactivation so that the deactivation takes care of notifying the
                         // browser of CanUndo/CanRedo changes.
                         EventAggregator.GetEvent<SaveEvent>().Unsubscribe(_saveSubscriptionToken);
                         _saveSubscriptionToken = null;
-                        _undoTracker.PropertyChanged -= UndoTrackerPropertyChanged;
                         _selectedItem.ErrorsChanged -= SelectedItemErrorsChanged;
                         _selectedItem.ClearAllErrors();
                     }
@@ -153,14 +157,16 @@ namespace Deadfile.Tab.Common
         {
             switch (e.PropertyName)
             {
+                // We use the name of the main undo tracker's properties here, however it may not be the one that is firing the event..
                 case nameof(_undoTracker.CanUndo):
-                    EventAggregator.GetEvent<CanUndoEvent>().Publish(_undoTracker.CanUndo ? CanUndoMessage.CanUndo : CanUndoMessage.CannotUndo);
+                    EventAggregator.GetEvent<CanUndoEvent>().Publish(_activeUndoTracker.CanUndo ? CanUndoMessage.CanUndo : CanUndoMessage.CannotUndo);
                     break;
                 case nameof(_undoTracker.CanRedo):
-                    EventAggregator.GetEvent<CanUndoEvent>().Publish(_undoTracker.CanRedo ? CanUndoMessage.CanRedo : CanUndoMessage.CannotRedo);
+                    EventAggregator.GetEvent<CanUndoEvent>().Publish(_activeUndoTracker.CanRedo ? CanUndoMessage.CanRedo : CanUndoMessage.CannotRedo);
                     break;
             }
         }
+
         public abstract void PerformSave();
         private void PerformSave(SaveMessage message)
         {
@@ -191,6 +197,41 @@ namespace Deadfile.Tab.Common
 
             EventAggregator.GetEvent<EditActionEvent>().Unsubscribe(_handleEditActionSubscriptionToken);
             EventAggregator.GetEvent<UndoEvent>().Unsubscribe(_handleUndoSubcriptionToken);
+        }
+
+        /// <summary>
+        /// Can be called by a derived class who manages sub-objects that need to manage the current active undo tracker, responding to Undo
+        /// events from the navigation bar.
+        /// </summary>
+        /// <remarks>
+        /// The motivation is for the Jobs page, where there are related editable items that might be managed on the same page.
+        /// </remarks>
+        /// <typeparam name="TObjectUnderEdit"></typeparam>
+        /// <param name="newActiveUndoTracker"></param>
+        /// <param name="objectUnderEdit"></param>
+        protected void ActivateUndoTracker<TObjectUnderEdit>(UndoTracker<TObjectUnderEdit> newActiveUndoTracker, TObjectUnderEdit objectUnderEdit) where TObjectUnderEdit : ModelBase
+        {
+            if (_activeUndoTracker != null)
+                throw new ApplicationException("There is already an active object handling undo and redo events");
+            newActiveUndoTracker.Activate(objectUnderEdit);
+            _activeUndoTracker = newActiveUndoTracker;
+            _activeUndoTracker.PropertyChanged += UndoTrackerPropertyChanged;
+        }
+
+        /// <summary>
+        /// Can be called by a derived class who manages sub-objects that need to manage the current active undo tracker, responding to Undo
+        /// events from the navigation bar.
+        /// </summary>
+        /// <remarks>
+        /// The motivation is for the Jobs page, where there are related editable items that might be managed on the same page.
+        /// </remarks>
+        protected void DeactivateUndoTracker()
+        {
+            if (_activeUndoTracker == null)
+                throw new ApplicationException("There is no active object handling undo and redo events to deactivate");
+            _activeUndoTracker.PropertyChanged -= UndoTrackerPropertyChanged;
+            _activeUndoTracker.Deactivate();
+            _activeUndoTracker = null;
         }
     }
 }
