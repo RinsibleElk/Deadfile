@@ -163,5 +163,88 @@ namespace Deadfile.Tab.Test
                 Assert.Equal(2, host.NumberOfTimesBackCanExecuteChangedFired);
             }
         }
+
+        [Fact]
+        public void TestLockedForEditing_CantGoForward()
+        {
+            // Setup.
+            using (var host = new RealEventsHost())
+            {
+                // Fire in an event that indicates that navigation forward is cool.
+                host.NavigationServiceMock
+                    .Setup((n) => n.CanGoBack)
+                    .Returns(false)
+                    .Verifiable();
+                host.NavigationServiceMock
+                    .Setup((n) => n.CanGoForward)
+                    .Returns(true)
+                    .Verifiable();
+                host.NavigationServiceMock.Raise(((n) => n.PropertyChanged += null),
+                    new PropertyChangedEventArgs("CanGoForward"));
+                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+
+                // Verify.
+                Assert.False(host.ViewModel.CanForward);
+                Assert.Equal(2, host.NumberOfTimesForwardCanExecuteChangedFired);
+                Assert.Equal(1, host.NumberOfTimesHomeCanExecuteChangedFired);
+                Assert.Equal(1, host.NumberOfTimesBackCanExecuteChangedFired);
+            }
+        }
+
+        [Fact]
+        public void TestUnlockedForEditing_CanGoBack()
+        {
+            using (var host = new RealEventsHost())
+            {
+                // Fire an event from the NavigationService to say that we can go back.
+                host.NavigationServiceMock
+                    .Setup((n) => n.CanGoBack)
+                    .Returns(true)
+                    .Verifiable();
+                host.NavigationServiceMock
+                    .Setup((n) => n.CanGoForward)
+                    .Returns(false)
+                    .Verifiable();
+                host.NavigationServiceMock.Raise(((n) => n.PropertyChanged += null),
+                    new PropertyChangedEventArgs("CanGoBack"));
+                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Unlocked);
+
+                // Verify.
+                Assert.True(host.ViewModel.CanBack);
+                Assert.True(host.ViewModel.CanHome);
+                Assert.Equal(2, host.NumberOfTimesForwardCanExecuteChangedFired);
+                Assert.Equal(3, host.NumberOfTimesHomeCanExecuteChangedFired);
+                Assert.Equal(3, host.NumberOfTimesBackCanExecuteChangedFired);
+            }
+        }
+
+        [Fact]
+        public void TestUnlockedForEditing_CanGoForward()
+        {
+            // Setup.
+            using (var host = new RealEventsHost())
+            {
+                // Fire in an event that indicates that navigation forward is cool.
+                host.NavigationServiceMock
+                    .Setup((n) => n.CanGoBack)
+                    .Returns(false)
+                    .Verifiable();
+                host.NavigationServiceMock
+                    .Setup((n) => n.CanGoForward)
+                    .Returns(true)
+                    .Verifiable();
+                host.NavigationServiceMock.Raise(((n) => n.PropertyChanged += null),
+                    new PropertyChangedEventArgs("CanGoForward"));
+                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Unlocked);
+
+                // Verify.
+                Assert.True(host.ViewModel.CanForward);
+                Assert.Equal(3, host.NumberOfTimesForwardCanExecuteChangedFired);
+                Assert.Equal(2, host.NumberOfTimesHomeCanExecuteChangedFired);
+                Assert.Equal(2, host.NumberOfTimesBackCanExecuteChangedFired);
+            }
+        }
     }
 }
