@@ -311,5 +311,43 @@ namespace Deadfile.Model
                 dbContext.SaveChanges();
             }
         }
+
+        public void SaveExpense(ExpenseModel expenseModel)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                if (expenseModel.ExpenseId == ModelBase.NewModelId)
+                {
+                    // Add
+                    dbContext.Expenses.Add(_modelEntityMapper.Mapper.Map<ExpenseModel, Expense>(expenseModel));
+                }
+                else
+                {
+                    // Edit
+                    var expense = dbContext.Expenses.Find(expenseModel.ExpenseId);
+                    _modelEntityMapper.Mapper.Map<ExpenseModel, Expense>(expenseModel, expense);
+                }
+                dbContext.SaveChanges();
+            }
+        }
+
+        public void SaveBillableHour(BillableHourModel billableHourModel)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                if (billableHourModel.BillableHourId == ModelBase.NewModelId)
+                {
+                    // Add
+                    dbContext.BillableHours.Add(_modelEntityMapper.Mapper.Map<BillableHourModel, BillableHour>(billableHourModel));
+                }
+                else
+                {
+                    // Edit
+                    var billableHour = dbContext.BillableHours.Find(billableHourModel.BillableHourId);
+                    _modelEntityMapper.Mapper.Map<BillableHourModel, BillableHour>(billableHourModel, billableHour);
+                }
+                dbContext.SaveChanges();
+            }
+        }
     }
 }

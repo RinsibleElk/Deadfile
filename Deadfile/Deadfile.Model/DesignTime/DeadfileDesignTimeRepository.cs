@@ -111,5 +111,15 @@ namespace Deadfile.Model.DesignTime
         {
             throw new NotImplementedException();
         }
+
+        public void SaveExpense(ExpenseModel expenseModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveBillableHour(BillableHourModel billableHour)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

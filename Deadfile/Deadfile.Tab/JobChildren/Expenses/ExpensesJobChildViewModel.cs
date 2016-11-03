@@ -23,12 +23,12 @@ namespace Deadfile.Tab.JobChildren.Expenses
 
         protected override void PerformSave()
         {
-            throw new NotImplementedException();
+            _repository.SaveExpense(SelectedItem);
         }
 
         public override IEnumerable<ExpenseModel> GetModelsForJobId(int jobId, string filter)
         {
-            throw new NotImplementedException();
+            return _repository.GetExpensesForJob(jobId, filter);
         }
     }
 }

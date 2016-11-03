@@ -23,12 +23,12 @@ namespace Deadfile.Tab.JobChildren.BillableHours
 
         protected override void PerformSave()
         {
-            throw new NotImplementedException();
+            _repository.SaveBillableHour(SelectedItem);
         }
 
         public override IEnumerable<BillableHourModel> GetModelsForJobId(int jobId, string filter)
         {
-            throw new NotImplementedException();
+            return _repository.GetBillableHoursForJob(jobId, filter);
         }
     }
 }

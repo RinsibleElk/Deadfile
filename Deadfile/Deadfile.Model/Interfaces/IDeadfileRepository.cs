@@ -122,5 +122,17 @@ namespace Deadfile.Model.Interfaces
         /// </summary>
         /// <param name="applicationModel"></param>
         void SaveApplication(ApplicationModel applicationModel);
+
+        /// <summary>
+        /// Save changes to an expense (or create a new one).
+        /// </summary>
+        /// <param name="expenseModel"></param>
+        void SaveExpense(ExpenseModel expenseModel);
+
+        /// <summary>
+        /// Save changes to a billable hour (or create a new one).
+        /// </summary>
+        /// <param name="billableHour"></param>
+        void SaveBillableHour(BillableHourModel billableHour);
     }
 }
