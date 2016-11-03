@@ -91,6 +91,14 @@ namespace Deadfile.Tab.Jobs
             SelectedJobChild = JobChildExperience.Applications;
         }
 
+        public override void OnNavigatedFrom()
+        {
+            base.OnNavigatedFrom();
+
+            // Navigate away from the job child in order to send a navigated from event to the current active one.
+            _navigationService.RequestNavigate(this, nameof(JobChildViewModel), JobChildKeys.EmptyJobChildKey, null);
+        }
+
         /// <summary>
         /// The job child currently being displayed.
         /// </summary>
