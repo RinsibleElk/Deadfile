@@ -107,6 +107,12 @@ namespace Deadfile.Tab.Common
                 if (value == _filter) return;
                 _filter = value;
                 NotifyOfPropertyChange(() => Filter);
+
+                // Populate the table.
+                // We always add one more, to represent the user wanting to add a new one.
+                SelectedItem = new T();
+                Items = new ObservableCollection<T>(GetModelsForJobId(_jobId, _filter));
+                Items.Add(SelectedItem);
             }
         }
 
@@ -122,9 +128,20 @@ namespace Deadfile.Tab.Common
         /// <summary>
         /// The table of items.
         /// </summary>
-        public ObservableCollection<T> Items { get; set; }
+        public ObservableCollection<T> Items
+        {
+            get { return _items; }
+            set
+            {
+                if (Equals(value, _items)) return;
+                _items = value;
+                NotifyOfPropertyChange(() => Items);
+            }
+        }
 
         private T _selectedItem;
+        private int _jobId = ModelBase.NewModelId;
+        private ObservableCollection<T> _items;
 
         /// <summary>
         /// The item selected by the user.
@@ -156,12 +173,18 @@ namespace Deadfile.Tab.Common
         {
             base.OnNavigatedTo(jobId);
 
+            // Hold on to the parent job.
+            _jobId = jobId;
+
             // Populate the table.
             // We always add one more, to represent the user wanting to add a new one.
             SelectedItem = new T();
             Items = new ObservableCollection<T>(GetModelsForJobId(jobId, null));
             Items.Add(SelectedItem);
-            Filter = null;
+
+            // Cheese the filter. We don't want to load the models twice, that's wasteful.
+            _filter = null;
+            NotifyOfPropertyChange(nameof(Filter));
         }
 
         /// <summary>
@@ -171,11 +194,16 @@ namespace Deadfile.Tab.Common
         {
             base.OnNavigatedFrom();
 
+            _jobId = ModelBase.NewModelId;
+
             // Bin the table.
             SelectedItem = new T();
             Items = new ObservableCollection<T>();
             Items.Add(SelectedItem);
-            Filter = null;
+
+            // Same again.
+            _filter = null;
+            NotifyOfPropertyChange(nameof(Filter));
         }
 
         /// <summary>
