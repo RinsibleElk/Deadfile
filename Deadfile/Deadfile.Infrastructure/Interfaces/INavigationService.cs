@@ -22,6 +22,13 @@ namespace Deadfile.Infrastructure.Interfaces
         void RequestNavigate(object host, string hostKey, string key, object parameters);
 
         /// <summary>
+        /// Teardown. Called when a host is going down, so that resources can be freed and individual views deactivated.
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="hostKey"></param>
+        void RequestDeactivate(object host, string hostKey);
+
+        /// <summary>
         /// Go back one in the Journal.
         /// </summary>
         void GoBack();
@@ -40,5 +47,10 @@ namespace Deadfile.Infrastructure.Interfaces
         /// Whether we can go forward one in the Journal.
         /// </summary>
         bool CanGoForward { get; }
+
+        /// <summary>
+        /// Called to end the life of the navigation service.
+        /// </summary>
+        void Teardown();
     }
 }

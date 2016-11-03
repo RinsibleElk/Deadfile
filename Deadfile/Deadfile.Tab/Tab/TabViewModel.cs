@@ -57,7 +57,7 @@ namespace Deadfile.Tab.Tab
                 if (Equals(value, _contentArea)) return;
                 _contentArea = value;
                 NotifyOfPropertyChange(() => ContentArea);
-                if (_contentArea.ShowActionsPad)
+                if (_contentArea != null && _contentArea.ShowActionsPad)
                 {
                     _navigationService.RequestNavigate(this, nameof(ActionsPad), value.Experience + "ActionsPad", null);
                     BrowserAndActionsAreVisible = true;
@@ -126,9 +126,21 @@ namespace Deadfile.Tab.Tab
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
+            
             // Unsubscribe from selection changes.
             _eventAggregator.GetEvent<SelectedItemEvent>().Unsubscribe(_navigateToSelectedClientSubscriptionToken);
             _navigateToSelectedClientSubscriptionToken = null;
+
+            // Tear everything down and free up resources.
+            //TODO for some reason these don't all actually get freed - what the hell is holding on to these damn things????!!
+            if (close)
+            {
+                _navigationService.RequestDeactivate(this, nameof(ContentArea));
+                _navigationService.RequestDeactivate(this, nameof(BrowserPane));
+                _navigationService.RequestDeactivate(this, nameof(ActionsPad));
+                _navigationService.RequestDeactivate(this, nameof(NavigationBar));
+                _navigationService.Teardown();
+            }
         }
 
         private SubscriptionToken _navigateToSelectedClientSubscriptionToken = null;

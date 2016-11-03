@@ -27,6 +27,10 @@ namespace Deadfile
         /// <param name="interTabClient"></param>
         public ShellViewModel(SimpleContainer container, IInterTabClient interTabClient)
         {
+            _closingItemActionCallback = new ItemActionCallback((dataContext) =>
+            {
+                CloseItem((Screen)dataContext.DragablzItem.DataContext);
+            });
             _container = container;
             InterTabClient = interTabClient;
             OpenNewTab = new DelegateCommand(OpenTab);
@@ -44,6 +48,9 @@ namespace Deadfile
             var tabViewModel = tabModule.GetFirstViewModel();
             ActivateItem(tabViewModel);
         }
+
+        public ItemActionCallback ClosingItemActionCallback { get { return _closingItemActionCallback; } }
+        private readonly ItemActionCallback _closingItemActionCallback;
 
         public void CloseItem(Screen dataContext)
         {

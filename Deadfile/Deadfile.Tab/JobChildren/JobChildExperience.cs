@@ -8,7 +8,7 @@ namespace Deadfile.Tab.JobChildren
 {
     public enum JobChildExperience
     {
-        Empty,
+        Empty, // placeholder to mean that the view should be deactivated
         Applications,
         BillableHours,
         Expenses

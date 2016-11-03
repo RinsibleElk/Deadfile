@@ -22,6 +22,11 @@ namespace Deadfile.Infrastructure.Services
             var targetValue = _container.GetInstance(key);
             if (targetValue == null)
                 throw new ApplicationException("Failed to find a ViewModel for key " + key + " in host area " + hostKey);
+            ActuallyNavigate(host, hostKey, targetValue, parameters);
+        }
+
+        private void ActuallyNavigate(object host, string hostKey, object targetValue, object parameters)
+        {
             var property = host.GetType().GetProperty(hostKey, BindingFlags.Instance | BindingFlags.Public);
             var previousValue =
                 property
@@ -41,6 +46,11 @@ namespace Deadfile.Infrastructure.Services
             property
                 .SetMethod
                 .Invoke(host, new object[] { targetValue });
+        }
+
+        public void RequestDeactivate(object host, string hostKey)
+        {
+            ActuallyNavigate(host, hostKey, null, null);
         }
 
         public NavigationService(INavigationContainer container)
@@ -106,6 +116,12 @@ namespace Deadfile.Infrastructure.Services
                 _canGoForward = value;
                 NotifyOfPropertyChange(() => CanGoForward);
             }
+        }
+
+        public void Teardown()
+        {
+            _backStack.Clear();
+            _forwardStack.Clear();
         }
     }
 }

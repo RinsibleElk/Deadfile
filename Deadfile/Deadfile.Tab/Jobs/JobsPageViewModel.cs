@@ -79,7 +79,10 @@ namespace Deadfile.Tab.Jobs
                 NotifyOfPropertyChange(() => SelectedJobChild);
 
                 // Navigate the control to the view.
-                _navigationService.RequestNavigate(this, nameof(JobChildViewModel), _selectedJobChild.ToString() + JobChildKeys.JobChildKey, SelectedItem.JobId);
+                if (_selectedJobChild == JobChildExperience.Empty)
+                    _navigationService.RequestDeactivate(this, nameof(JobChildViewModel));
+                else
+                    _navigationService.RequestNavigate(this, nameof(JobChildViewModel), _selectedJobChild.ToString() + JobChildKeys.JobChildKey, SelectedItem.JobId);
             }
         }
 
