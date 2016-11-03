@@ -53,6 +53,7 @@ namespace Deadfile.Tab.Common
 
         protected abstract void PerformSave();
 
+        private bool _editable;
         public bool Editable
         {
             get { return _editable; }
@@ -125,7 +126,6 @@ namespace Deadfile.Tab.Common
         public ObservableCollection<T> Items { get; set; }
 
         private T _selectedItem;
-        private bool _editable;
 
         /// <summary>
         /// The item selected by the user.
