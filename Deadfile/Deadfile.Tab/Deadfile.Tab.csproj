@@ -141,6 +141,10 @@
     </Compile>
     <Compile Include="JobChildren\BillableHours\BillableHoursJobChildViewModel.cs" />
     <Compile Include="JobChildren\BillableHours\IBillableHoursJobChildViewModel.cs" />
+    <Compile Include="JobChildren\Empty\EmptyJobChildView.xaml.cs">
+      <DependentUpon>EmptyJobChildView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="JobChildren\Empty\EmptyJobChildViewModel.cs" />
     <Compile Include="JobChildren\Expenses\ExpensesJobChildDesignTimeViewModel.cs" />
     <Compile Include="JobChildren\Expenses\ExpensesJobChildView.xaml.cs">
       <DependentUpon>ExpensesJobChildView.xaml</DependentUpon>
@@ -237,6 +241,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="JobChildren\BillableHours\BillableHoursJobChildView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="JobChildren\Empty\EmptyJobChildView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

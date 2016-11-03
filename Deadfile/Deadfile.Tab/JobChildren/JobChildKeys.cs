@@ -8,6 +8,7 @@ namespace Deadfile.Tab.JobChildren
 {
     internal static class JobChildKeys
     {
+        public const string EmptyJobChildKey = "Empty" + JobChildKey;
         public const string JobChildKey = "JobChild";
     }
 }

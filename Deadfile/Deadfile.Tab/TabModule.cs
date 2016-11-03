@@ -12,6 +12,7 @@ using Deadfile.Tab.Home;
 using Deadfile.Tab.JobChildren;
 using Deadfile.Tab.JobChildren.Applications;
 using Deadfile.Tab.JobChildren.BillableHours;
+using Deadfile.Tab.JobChildren.Empty;
 using Deadfile.Tab.JobChildren.Expenses;
 using Deadfile.Tab.Jobs;
 using Deadfile.Tab.Management.LocalAuthorities;
@@ -58,6 +59,7 @@ namespace Deadfile.Tab
             _container.RegisterSingleton(typeof(IApplicationsJobChildViewModel), JobChildExperience.Applications + JobChildKeys.JobChildKey, typeof(ApplicationsJobChildViewModel));
             _container.RegisterSingleton(typeof(IExpensesJobChildViewModel), JobChildExperience.Expenses + JobChildKeys.JobChildKey, typeof(ExpensesJobChildViewModel));
             _container.RegisterSingleton(typeof(IBillableHoursJobChildViewModel), JobChildExperience.BillableHours + JobChildKeys.JobChildKey, typeof(BillableHoursJobChildViewModel));
+            _container.RegisterSingleton(typeof(EmptyJobChildViewModel), JobChildKeys.EmptyJobChildKey, typeof(EmptyJobChildViewModel));
 
             // Actions pads
             _container.RegisterSingleton(typeof(HomeActionsPadViewModel), Experience.Home + RegionNames.ActionsPad, typeof(HomeActionsPadViewModel));
