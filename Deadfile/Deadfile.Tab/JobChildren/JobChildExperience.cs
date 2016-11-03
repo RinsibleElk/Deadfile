@@ -8,6 +8,7 @@ namespace Deadfile.Tab.JobChildren
 {
     public enum JobChildExperience
     {
+        Empty,
         Applications,
         BillableHours,
         Expenses

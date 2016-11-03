@@ -18,7 +18,7 @@ namespace Deadfile.Tab.Jobs
     {
         private readonly INavigationService _navigationService;
         private readonly IDeadfileRepository _repository;
-        private JobChildExperience _selectedJobChild;
+        private JobChildExperience _selectedJobChild = JobChildExperience.Empty;
         private ISimpleEditableItemViewModel _jobChildViewModel;
 
         public static readonly List<JobChildExperience> AllJobChildExperiences = new List<JobChildExperience>(new[]
@@ -95,8 +95,8 @@ namespace Deadfile.Tab.Jobs
         {
             base.OnNavigatedFrom();
 
-            // Navigate away from the job child in order to send a navigated from event to the current active one.
-            _navigationService.RequestNavigate(this, nameof(JobChildViewModel), JobChildKeys.EmptyJobChildKey, null);
+            // Free up resources and disconnect the child.
+            SelectedJobChild = JobChildExperience.Empty;
         }
 
         /// <summary>
