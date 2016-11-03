@@ -76,7 +76,6 @@ namespace Deadfile.Tab.Common
             }
         }
 
-
         private void SelectedItemErrorsChanged(object sender, DataErrorsChangedEventArgs e)
         {
             Errors = FlattenErrors();
