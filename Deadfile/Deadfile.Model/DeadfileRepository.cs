@@ -35,17 +35,48 @@ namespace Deadfile.Model
             }
         }
 
-        public IEnumerable<ApplicationModel> GetApplicationsForJob(int jobId)
+        public IEnumerable<ApplicationModel> GetApplicationsForJob(int jobId, string filter)
         {
             using (var dbContext = new DeadfileContext())
             {
                 var li = new List<ApplicationModel>();
                 foreach (var application in (from application in dbContext.Applications
                                              where application.JobId == jobId
+                                             where (filter == null || filter == "" || application.LocalAuthorityReference.Contains(filter))
                                              orderby application.CreationDate
                                              select application))
                 {
                     li.Add(_modelEntityMapper.Mapper.Map<ApplicationModel>(application));
+                }
+                return li;
+            }
+        }
+
+        public IEnumerable<BillableHourModel> GetBillableHoursForJob(int jobId, string filter)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var li = new List<BillableHourModel>();
+                foreach (var billableHour in (from billableHour in dbContext.BillableHours
+                                              where billableHour.JobId == jobId
+                                              select billableHour))
+                {
+                    li.Add(_modelEntityMapper.Mapper.Map<BillableHourModel>(billableHour));
+                }
+                return li;
+            }
+        }
+
+        public IEnumerable<ExpenseModel> GetExpensesForJob(int jobId, string filter)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var li = new List<ExpenseModel>();
+                foreach (var expense in (from expense in dbContext.Expenses
+                                         where expense.JobId == jobId
+                                         select expense))
+                {
+                    li.Add(_modelEntityMapper.Mapper.Map<ExpenseModel>(expense));
                 }
                 return li;
             }
@@ -257,6 +288,25 @@ namespace Deadfile.Model
                     // Edit
                     var localAuthority = dbContext.LocalAuthorities.Find(localAuthorityModel.LocalAuthorityId);
                     _modelEntityMapper.Mapper.Map<LocalAuthorityModel, LocalAuthority>(localAuthorityModel, localAuthority);
+                }
+                dbContext.SaveChanges();
+            }
+        }
+
+        public void SaveApplication(ApplicationModel applicationModel)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                if (applicationModel.ApplicationId == ModelBase.NewModelId)
+                {
+                    // Add
+                    dbContext.Applications.Add(_modelEntityMapper.Mapper.Map<ApplicationModel, Application>(applicationModel));
+                }
+                else
+                {
+                    // Edit
+                    var application = dbContext.Applications.Find(applicationModel.ApplicationId);
+                    _modelEntityMapper.Mapper.Map<ApplicationModel, Application>(applicationModel, application);
                 }
                 dbContext.SaveChanges();
             }

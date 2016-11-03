@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Deadfile.Tab.JobChildren
 {
-    public enum JobChildExperience
+    internal static class JobChildKeys
     {
-        Applications,
-        BillableHours,
-        Expenses
+        public const string JobChildKey = "JobChild";
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
@@ -15,18 +16,21 @@ namespace Deadfile.Tab.Jobs
 {
     class JobsPageViewModel : EditableItemViewModel<int, JobModel>, IJobsPageViewModel
     {
+        private readonly INavigationService _navigationService;
         private readonly IDeadfileRepository _repository;
         private JobChildExperience _selectedJobChild;
+        private ISimpleEditableItemViewModel _jobChildViewModel;
 
         public static readonly List<JobChildExperience> AllJobChildExperiences = new List<JobChildExperience>(new[]
         {
             JobChildExperience.Applications,
             JobChildExperience.Expenses,
-            JobChildExperience.Payments
+            JobChildExperience.BillableHours
         });
 
-        public JobsPageViewModel(IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator)
+        public JobsPageViewModel(INavigationService navigationService, IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator)
         {
+            _navigationService = navigationService;
             _repository = repository;
         }
 
@@ -69,9 +73,35 @@ namespace Deadfile.Tab.Jobs
             get { return _selectedJobChild; }
             set
             {
+                // Set the value.
                 if (value == _selectedJobChild) return;
                 _selectedJobChild = value;
                 NotifyOfPropertyChange(() => SelectedJobChild);
+
+                // Navigate the control to the view.
+                _navigationService.RequestNavigate(this, nameof(JobChildViewModel), _selectedJobChild.ToString() + JobChildKeys.JobChildKey, SelectedItem.JobId);
+            }
+        }
+
+        public override void OnNavigatedTo(int parameters)
+        {
+            base.OnNavigatedTo(parameters);
+
+            // Select Applications - this should take care of setting up the view model for the JobChildViewModel control.
+            SelectedJobChild = JobChildExperience.Applications;
+        }
+
+        /// <summary>
+        /// The job child currently being displayed.
+        /// </summary>
+        public ISimpleEditableItemViewModel JobChildViewModel
+        {
+            get { return _jobChildViewModel; }
+            set
+            {
+                if (_jobChildViewModel == value) return;
+                _jobChildViewModel = value;
+                NotifyOfPropertyChange(() => JobChildViewModel);
             }
         }
     }

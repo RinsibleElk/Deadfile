@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationModel.cs" />
+    <Compile Include="BillableHourModel.cs" />
     <Compile Include="Browser\BrowserClient.cs" />
     <Compile Include="Browser\BrowserInvoice.cs" />
     <Compile Include="Browser\BrowserJob.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="DeadfileRepository.cs" />
     <Compile Include="DesignTime\DeadfileDesignTimeRepository.cs" />
     <Compile Include="DesignTime\FakeData.cs" />
+    <Compile Include="ExpensesModel.cs" />
     <Compile Include="Interfaces\IDeadfileRepository.cs" />
     <Compile Include="Interfaces\IModelEntityMapper.cs" />
     <Compile Include="Interfaces\IRandomNumberGenerator.cs" />

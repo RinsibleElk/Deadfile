@@ -96,10 +96,12 @@
     <Compile Include="Common\DisplayNameBroadcaster.cs" />
     <Compile Include="Common\EditableItemViewModel.cs" />
     <Compile Include="Common\IEditableItemViewModel.cs" />
+    <Compile Include="Common\ISimpleEditableItemViewModel.cs" />
     <Compile Include="Common\IPageViewModel.cs" />
     <Compile Include="Common\IManagementViewModel.cs" />
     <Compile Include="Common\ManagementPageViewModel.cs" />
     <Compile Include="Common\ParameterisedViewModel.cs" />
+    <Compile Include="Common\SimpleEditableItemViewModel.cs" />
     <Compile Include="DesignTime\ManagementPageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\PageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeViewModel.cs" />
@@ -127,7 +129,26 @@
     <Compile Include="Home\HomePageViewModel.cs" />
     <Compile Include="Home\IHomeActionsPadViewModel.cs" />
     <Compile Include="Home\IHomePageViewModel.cs" />
+    <Compile Include="JobChildren\Applications\ApplicationsJobChildDesignTimeViewModel.cs" />
+    <Compile Include="JobChildren\Applications\ApplicationsJobChildView.xaml.cs">
+      <DependentUpon>ApplicationsJobChildView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="JobChildren\Applications\ApplicationsJobChildViewModel.cs" />
+    <Compile Include="JobChildren\Applications\IApplicationsJobChildViewModel.cs" />
+    <Compile Include="JobChildren\BillableHours\BillableHoursJobChildDesignTimeViewModel.cs" />
+    <Compile Include="JobChildren\BillableHours\BillableHoursJobChildView.xaml.cs">
+      <DependentUpon>BillableHoursJobChildView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="JobChildren\BillableHours\BillableHoursJobChildViewModel.cs" />
+    <Compile Include="JobChildren\BillableHours\IBillableHoursJobChildViewModel.cs" />
+    <Compile Include="JobChildren\Expenses\ExpensesJobChildDesignTimeViewModel.cs" />
+    <Compile Include="JobChildren\Expenses\ExpensesJobChildView.xaml.cs">
+      <DependentUpon>ExpensesJobChildView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="JobChildren\Expenses\ExpensesJobChildViewModel.cs" />
+    <Compile Include="JobChildren\Expenses\IExpensesJobChildViewModel.cs" />
     <Compile Include="JobChildren\JobChildExperience.cs" />
+    <Compile Include="JobChildren\JobChildKeys.cs" />
     <Compile Include="Jobs\IJobsActionsPadViewModel.cs" />
     <Compile Include="Jobs\IJobsPageViewModel.cs" />
     <Compile Include="Jobs\JobsActionsPadDesignTimeViewModel.cs" />
@@ -208,6 +229,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Home\HomePageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="JobChildren\Applications\ApplicationsJobChildView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="JobChildren\BillableHours\BillableHoursJobChildView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="JobChildren\Expenses\ExpensesJobChildView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

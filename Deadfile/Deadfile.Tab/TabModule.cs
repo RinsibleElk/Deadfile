@@ -9,6 +9,10 @@ using Deadfile.Infrastructure.Services;
 using Deadfile.Tab.Browser;
 using Deadfile.Tab.Clients;
 using Deadfile.Tab.Home;
+using Deadfile.Tab.JobChildren;
+using Deadfile.Tab.JobChildren.Applications;
+using Deadfile.Tab.JobChildren.BillableHours;
+using Deadfile.Tab.JobChildren.Expenses;
 using Deadfile.Tab.Jobs;
 using Deadfile.Tab.Management.LocalAuthorities;
 using Deadfile.Tab.Navigation;
@@ -23,7 +27,7 @@ namespace Deadfile.Tab
     /// handle navigation.
     /// </summary>
     /// <remarks>
-    /// No need to make this too general at present.
+    /// No need to make this too general at present. How the hell do I clean this up though?
     /// </remarks>
     public sealed class TabModule
     {
@@ -37,18 +41,23 @@ namespace Deadfile.Tab
             // Resolve to my NavigationService - a singleton per Tab.
             _container.RegisterInstance(typeof(INavigationService), nameof(NavigationService), new NavigationService(navigationContainer));
 
-            // OK and now we have a local EventAggregator.
+            // OK and now we have a local EventAggregator. We use the Prism version because we can keep it local to each tab.
             _container.RegisterSingleton(typeof(Prism.Events.IEventAggregator), nameof(Prism.Events.EventAggregator), typeof(Prism.Events.EventAggregator));
 
             // We have to tell him about everything in our module.
             _container.RegisterSingleton(typeof(TabViewModel), nameof(TabViewModel), typeof(TabViewModel));
             _container.RegisterSingleton(typeof(NavigationBarViewModel), RegionNames.NavigationBar, typeof(NavigationBarViewModel));
 
-            // Pages (content)
+            // Pages (content) - referenced by key
             _container.RegisterSingleton(typeof(HomePageViewModel), Experience.Home + RegionNames.Page, typeof(HomePageViewModel));
             _container.RegisterSingleton(typeof(ClientsPageViewModel), Experience.Clients + RegionNames.Page, typeof(ClientsPageViewModel));
             _container.RegisterSingleton(typeof(JobsPageViewModel), Experience.Jobs + RegionNames.Page, typeof(JobsPageViewModel));
             _container.RegisterSingleton(typeof(LocalAuthoritiesPageViewModel), Experience.LocalAuthorities + RegionNames.Page, typeof(LocalAuthoritiesPageViewModel));
+
+            // Job Children - referenced by key
+            _container.RegisterSingleton(typeof(IApplicationsJobChildViewModel), JobChildExperience.Applications + JobChildKeys.JobChildKey, typeof(ApplicationsJobChildViewModel));
+            _container.RegisterSingleton(typeof(IExpensesJobChildViewModel), JobChildExperience.Expenses + JobChildKeys.JobChildKey, typeof(ExpensesJobChildViewModel));
+            _container.RegisterSingleton(typeof(IBillableHoursJobChildViewModel), JobChildExperience.BillableHours + JobChildKeys.JobChildKey, typeof(BillableHoursJobChildViewModel));
 
             // Actions pads
             _container.RegisterSingleton(typeof(HomeActionsPadViewModel), Experience.Home + RegionNames.ActionsPad, typeof(HomeActionsPadViewModel));

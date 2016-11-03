@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
 using Deadfile.Tab.Common;
 
@@ -20,5 +21,11 @@ namespace Deadfile.Tab.DesignTime
         public ICommand EditCommand { get; }
         public ICommand DiscardCommand { get; }
         public ICommand SaveCommand { get; }
+        public UndoTracker<T> UndoTracker { get; }
+
+        IUndoTracker ISimpleEditableItemViewModel.UndoTracker
+        {
+            get { return UndoTracker; }
+        }
     }
 }

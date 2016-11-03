@@ -22,8 +22,25 @@ namespace Deadfile.Model.Interfaces
         /// Get the applications for a given job.
         /// </summary>
         /// <param name="jobId"></param>
+        /// <param name="filter"></param>
         /// <returns></returns>
-        IEnumerable<ApplicationModel> GetApplicationsForJob(int jobId);
+        IEnumerable<ApplicationModel> GetApplicationsForJob(int jobId, string filter);
+
+        /// <summary>
+        /// Get the expenses for a given job.
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        IEnumerable<ExpenseModel> GetExpensesForJob(int jobId, string filter);
+
+        /// <summary>
+        /// Get the billable hours for a given job.
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        IEnumerable<BillableHourModel> GetBillableHoursForJob(int jobId, string filter);
 
         /// <summary>
         /// Get all the local authorities.
@@ -99,5 +116,11 @@ namespace Deadfile.Model.Interfaces
         /// </summary>
         /// <param name="localAuthorityModel"></param>
         void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel);
+
+        /// <summary>
+        /// Save changes to an application (or create a new one).
+        /// </summary>
+        /// <param name="applicationModel"></param>
+        void SaveApplication(ApplicationModel applicationModel);
     }
 }

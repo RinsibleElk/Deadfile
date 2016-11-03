@@ -240,5 +240,15 @@ namespace Deadfile.Tab.Common
         public ICommand EditCommand { get { return _editCommand; } }
         public ICommand DiscardCommand { get { return _discardCommand; } }
         public ICommand SaveCommand { get { return _saveCommand; } }
+
+        public UndoTracker<T> UndoTracker
+        {
+            get { return _undoTracker; }
+        }
+
+        IUndoTracker ISimpleEditableItemViewModel.UndoTracker
+        {
+            get { return UndoTracker; }
+        }
     }
 }

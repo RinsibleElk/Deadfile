@@ -59,4 +59,15 @@ namespace Deadfile.Model
         // No need to report changes or validate.
         public int JobId { get; set; }
     }
+
+    /// <summary>
+    /// All the application types.
+    /// </summary>
+    public static class ApplciationTypeUtils
+    {
+        /// <summary>
+        /// All the known application types.
+        /// </summary>
+        public static readonly List<ApplicationType> AllApplicationTypes = Enum.GetValues(typeof(ApplicationType)).Cast<ApplicationType>().ToList();
+    }
 }

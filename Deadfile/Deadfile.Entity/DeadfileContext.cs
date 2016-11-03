@@ -19,6 +19,7 @@ namespace Deadfile.Entity
         public virtual DbSet<Invoice> Invoices { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Application> Applications { get; set; }
+        public virtual DbSet<BillableHour> BillableHours { get; set; }
         public virtual DbSet<Expense> Expenses { get; set; }
         public virtual DbSet<Quotation> Quotations { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }

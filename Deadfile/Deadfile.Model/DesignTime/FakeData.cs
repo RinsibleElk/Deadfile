@@ -285,7 +285,7 @@ namespace Deadfile.Model.DesignTime
                 for (int i = 0; i < numApplicationsToAdd; i++)
                 {
                     var r = random.Next(2);
-                    var applicationType = (r == 0) ? ApplicationType.BuildingControl : ApplicationType.Planning;
+                    var applicationType = (r == 0) ? ApplicationType.BuildingControlBuildingNotice : ApplicationType.FullPlanningPermission;
                     var creationDate = new DateTime(2015, 1, 1).AddDays(random.Next(500));
                     var localAuthority = localAuthorities[random.Next(localAuthorities.Length)];
                     var reference = random.Next(10000);
@@ -349,7 +349,7 @@ namespace Deadfile.Model.DesignTime
             for (int i = 0; i < numApplicationsToAdd; i++)
             {
                 var r = random.Next(2);
-                var applicationType = (r == 0) ? ApplicationType.BuildingControl : ApplicationType.Planning;
+                var applicationType = (r == 0) ? ApplicationType.BuildingControlBuildingNotice : ApplicationType.HouseholderPlanningPermission;
                 var creationDate = new DateTime(2015, 1, 1).AddDays(random.Next(500));
                 var localAuthority = localAuthorities[random.Next(localAuthorities.Length)];
                 var reference = random.Next(10000);

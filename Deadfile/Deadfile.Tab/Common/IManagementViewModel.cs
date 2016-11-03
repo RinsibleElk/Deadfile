@@ -9,16 +9,12 @@ using Deadfile.Model;
 
 namespace Deadfile.Tab.Common
 {
-    public interface IManagementViewModel<T> : IPageViewModel
+    /// <summary>
+    /// Represents a simple item for management, with a relatively loose relationship to other entities in the database, managed in its own page.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public interface IManagementViewModel<T> : ISimpleEditableItemViewModel<T>, IPageViewModel
         where T : ModelBase
     {
-        ObservableCollection<T> Items { get; set; }
-        T SelectedItem { get; set; }
-        bool Editable { get; }
-        List<string> Errors { get; }
-        string Filter { get; set; }
-        ICommand EditCommand { get; }
-        ICommand DiscardCommand { get; }
-        ICommand SaveCommand { get; }
     }
 }

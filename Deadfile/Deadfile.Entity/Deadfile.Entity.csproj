@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Application.cs" />
     <Compile Include="ApplicationType.cs" />
+    <Compile Include="BillableHour.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="ClientStatus.cs" />
     <Compile Include="DeadfileContext.cs" />

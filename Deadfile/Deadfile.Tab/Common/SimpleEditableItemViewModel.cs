@@ -1,0 +1,155 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Caliburn.Micro;
+using Deadfile.Infrastructure.UndoRedo;
+using Deadfile.Model;
+using Prism.Commands;
+
+namespace Deadfile.Tab.Common
+{
+    /// <summary>
+    /// These are parameterised by the job id of the parent job.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    abstract class SimpleEditableItemViewModel<T> : ParameterisedViewModel<int>, ISimpleEditableItemViewModel<T> where T : ModelBase, new()
+    {
+        private readonly DelegateCommand _editCommand;
+        private readonly DelegateCommand _discardCommand;
+        private readonly DelegateCommand _saveCommand;
+
+        public SimpleEditableItemViewModel()
+        {
+            _editCommand = new DelegateCommand(StartEditing);
+            _discardCommand = new DelegateCommand(DiscardEdits);
+            _saveCommand = new DelegateCommand(PerformSaveAction);
+        }
+
+        private void DiscardEdits()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void StartEditing()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void PerformSaveAction()
+        {
+            PerformSave();
+            Editable = false;
+        }
+
+        protected abstract void PerformSave();
+
+        public bool Editable
+        {
+            get { return _editable; }
+            set
+            {
+                if (value == _editable) return;
+                _editable = value;
+                NotifyOfPropertyChange(() => Editable);
+            }
+        }
+
+        public List<string> Errors { get; }
+
+        private string _filter = null;
+        /// <summary>
+        /// The user's filter for the table of items.
+        /// </summary>
+        public string Filter
+        {
+            get { return _filter; }
+            set
+            {
+                if (value == _filter) return;
+                _filter = value;
+                NotifyOfPropertyChange(() => Filter);
+            }
+        }
+
+        public ICommand EditCommand { get { return _editCommand; } }
+        public ICommand DiscardCommand { get { return _discardCommand; } }
+        public ICommand SaveCommand { get { return _saveCommand; } }
+
+        /// <summary>
+        /// The type-specific undo tracker.
+        /// </summary>
+        public UndoTracker<T> UndoTracker { get; } = new UndoTracker<T>();
+
+        /// <summary>
+        /// The table of items.
+        /// </summary>
+        public ObservableCollection<T> Items { get; set; }
+
+        private T _selectedItem;
+        private bool _editable;
+
+        /// <summary>
+        /// The item selected by the user.
+        /// </summary>
+        public T SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                if (Equals(value, _selectedItem)) return;
+                _selectedItem = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        /// <summary>
+        /// Provides access to the parent job to perform undos.
+        /// </summary>
+        IUndoTracker ISimpleEditableItemViewModel.UndoTracker
+        {
+            get { return UndoTracker; }
+        }
+
+        /// <summary>
+        /// The user is navigating away.
+        /// </summary>
+        /// <param name="jobId"></param>
+        public override void OnNavigatedTo(int jobId)
+        {
+            base.OnNavigatedTo(jobId);
+
+            // Populate the table.
+            // We always add one more, to represent the user wanting to add a new one.
+            SelectedItem = new T();
+            Items = new ObservableCollection<T>(GetModelsForJobId(jobId, null));
+            Items.Add(SelectedItem);
+            Filter = null;
+        }
+
+        /// <summary>
+        /// Unsubscribe from events.
+        /// </summary>
+        public override void OnNavigatedFrom()
+        {
+            base.OnNavigatedFrom();
+
+            // Bin the table.
+            SelectedItem = new T();
+            Items = new ObservableCollection<T>();
+            Items.Add(SelectedItem);
+            Filter = null;
+        }
+
+        /// <summary>
+        /// Ask the sub class to get all the models for this job, given a user-entered filter (which may be null or empty).
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public abstract IEnumerable<T> GetModelsForJobId(int jobId, string filter);
+    }
+}

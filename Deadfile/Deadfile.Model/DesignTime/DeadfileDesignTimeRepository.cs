@@ -24,10 +24,20 @@ namespace Deadfile.Model.DesignTime
             return entityClients.Select(_modelEntityMapper.Mapper.Map<ClientModel>);
         }
 
-        public IEnumerable<ApplicationModel> GetApplicationsForJob(int jobId)
+        public IEnumerable<ApplicationModel> GetApplicationsForJob(int jobId, string filter)
         {
             var applications = FakeData.GetFakeApplications();
             return applications.Select(_modelEntityMapper.Mapper.Map<ApplicationModel>);
+        }
+
+        public IEnumerable<ExpenseModel> GetExpensesForJob(int jobId, string filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<BillableHourModel> GetBillableHoursForJob(int jobId, string filter)
+        {
+            throw new NotImplementedException();
         }
 
         public IEnumerable<LocalAuthorityModel> GetLocalAuthorities(string filter)
@@ -93,6 +103,11 @@ namespace Deadfile.Model.DesignTime
         }
 
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveApplication(ApplicationModel applicationModel)
         {
             throw new NotImplementedException();
         }

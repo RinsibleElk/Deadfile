@@ -25,6 +25,10 @@ namespace Deadfile.Model
                 cfg.CreateMap<QuotationModel, Quotation>();
                 cfg.CreateMap<Application, ApplicationModel>();
                 cfg.CreateMap<ApplicationModel, Application>();
+                cfg.CreateMap<BillableHour, BillableHourModel>();
+                cfg.CreateMap<BillableHourModel, BillableHour>();
+                cfg.CreateMap<Expense, ExpenseModel>();
+                cfg.CreateMap<ExpenseModel, Expense>();
                 cfg.CreateMap<LocalAuthority, LocalAuthorityModel>();
                 cfg.CreateMap<LocalAuthorityModel, LocalAuthority>();
             });

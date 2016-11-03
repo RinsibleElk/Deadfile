@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\TreeViewSelectedItemBehavior.cs" />
+    <Compile Include="Converters\ApplicationTypeToStringConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\SwitchConverter.cs" />
@@ -119,6 +120,10 @@
     <ProjectReference Include="..\Deadfile.Core\Deadfile.Core.csproj">
       <Project>{0E3750D8-A06C-4B2B-B151-C687281D14BD}</Project>
       <Name>Deadfile.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Deadfile.Entity\Deadfile.Entity.csproj">
+      <Project>{C43DA0CA-BD37-4109-A581-695B9080B74C}</Project>
+      <Name>Deadfile.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Deadfile.Model\Deadfile.Model.csproj">
       <Project>{790F6F95-333F-4CD3-BB57-3E745A1C3224}</Project>
