@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace Deadfile.Tab.Common
         private readonly DelegateCommand _editCommand;
         private readonly DelegateCommand _discardCommand;
         private readonly DelegateCommand _saveCommand;
+        private List<string> _errors;
 
         public SimpleEditableItemViewModel()
         {
@@ -29,14 +31,18 @@ namespace Deadfile.Tab.Common
             _saveCommand = new DelegateCommand(PerformSaveAction);
         }
 
+        //TODO - need to communicate via the job model really
+
         private void DiscardEdits()
         {
-            throw new NotImplementedException();
+            while (UndoTracker.CanUndo)
+                UndoTracker.Undo();
+            Editable = false;
         }
 
         private void StartEditing()
         {
-            throw new NotImplementedException();
+            Editable = true;
         }
 
         private void PerformSaveAction()
@@ -58,7 +64,36 @@ namespace Deadfile.Tab.Common
             }
         }
 
-        public List<string> Errors { get; }
+        public List<string> Errors
+        {
+            get { return _errors; }
+            set
+            {
+                if (Equals(value, _errors)) return;
+                _errors = value;
+                NotifyOfPropertyChange(() => Errors);
+            }
+        }
+
+
+        private void SelectedItemErrorsChanged(object sender, DataErrorsChangedEventArgs e)
+        {
+            Errors = FlattenErrors();
+        }
+
+        private List<string> FlattenErrors()
+        {
+            List<string> errors = new List<string>();
+            Dictionary<string, List<string>> allErrors = SelectedItem.GetAllErrors();
+            foreach (string propertyName in allErrors.Keys)
+            {
+                foreach (var errorString in allErrors[propertyName])
+                {
+                    errors.Add(propertyName + ": " + errorString);
+                }
+            }
+            return errors;
+        }
 
         private string _filter = null;
         /// <summary>
