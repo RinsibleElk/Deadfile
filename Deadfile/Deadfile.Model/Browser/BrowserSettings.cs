@@ -10,6 +10,9 @@ using Prism.Mvvm;
 
 namespace Deadfile.Model.Browser
 {
+    /// <summary>
+    /// Settings used to filter, sort, and format the query for the browser view.
+    /// </summary>
     public class BrowserSettings : BindableBase
     {
         private static readonly ObservableCollection<BrowserSort> ClientSorts = new ObservableCollection<BrowserSort>(new[] { BrowserSort.ClientFirstName, BrowserSort.ClientLastName });

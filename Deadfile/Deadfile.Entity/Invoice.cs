@@ -23,7 +23,7 @@ namespace Deadfile.Entity
 
         public int InvoiceReference { get; set; }
 
-        public virtual Client Client { get; set; }
+        public int ClientId { get; set; }
 
         public virtual ICollection<Job> Jobs { get; set; }
     }

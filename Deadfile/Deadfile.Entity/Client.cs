@@ -89,6 +89,7 @@ namespace Deadfile.Entity
         public string Notes { get; set; }
 
         public virtual ICollection<Job> Jobs { get; set; }
+        public virtual ICollection<Invoice> Invoices { get; set; }
     }
 }
 

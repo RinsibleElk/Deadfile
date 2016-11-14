@@ -120,34 +120,82 @@ namespace Deadfile.Model
         /// <returns></returns>
         public IEnumerable<BrowserModel> GetBrowserItems(BrowserSettings settings)
         {
-            var li = new List<BrowserClient>();
-            using (var dbContext = new DeadfileContext())
+            switch (settings.Mode)
             {
-                foreach (var client in (from client in dbContext.Clients
-                    where
-                    ((settings.FilterText == null || settings.FilterText == "" || client.FirstName == null ||
-                      client.FirstName == "")
-                        ? client.Title + " " + client.LastName
-                        : client.FirstName + " " + client.LastName).Contains(settings.FilterText)
-                    orderby
-                    ((settings.Sort == BrowserSort.ClientFirstName)
-                        ? ((client.FirstName == null || client.FirstName == "") ? client.Title : client.FirstName)
-                        : client.LastName)
-                    select
-                    new BrowserClient()
+                case BrowserMode.Client:
+                    var clients = new List<BrowserClient>();
+                    using (var dbContext = new DeadfileContext())
                     {
-                        Id = client.ClientId,
-                        FullName =
-                        ((client.FirstName == null || client.FirstName == "")
-                            ? client.Title + " " + client.LastName
-                            : client.FirstName + " " + client.LastName)
-                    }))
-                {
-                    client.SetRepository(this);
-                    li.Add(client);
-                }
+                        foreach (var client in (from client in dbContext.Clients
+                                                where
+                                                    ((settings.FilterText == null || settings.FilterText == "" || client.FirstName == null ||
+                                                      client.FirstName == "")
+                                                        ? client.Title + " " + client.LastName
+                                                        : client.FirstName + " " + client.LastName).Contains(settings.FilterText)
+                                                orderby
+                                                    ((settings.Sort == BrowserSort.ClientFirstName)
+                                                        ? ((client.FirstName == null || client.FirstName == "")
+                                                            ? client.Title
+                                                            : client.FirstName)
+                                                        : client.LastName)
+                                                select
+                                                    new BrowserClient()
+                                                    {
+                                                        Id = client.ClientId,
+                                                        FullName =
+                                                        ((client.FirstName == null || client.FirstName == "")
+                                                            ? client.Title + " " + client.LastName
+                                                            : client.FirstName + " " + client.LastName)
+                                                    }))
+                        {
+                            client.SetRepository(this);
+                            clients.Add(client);
+                        }
+                    }
+                    return clients;
+                case BrowserMode.Job:
+                    var jobs = new List<BrowserJob>();
+                    using (var dbContext = new DeadfileContext())
+                    {
+                        foreach (var job in (from job in dbContext.Jobs
+                                             where ((settings.FilterText == null || settings.FilterText == "") || job.AddressFirstLine.Contains(settings.FilterText))
+                                             orderby job.AddressFirstLine
+                                             select
+                                                new BrowserJob()
+                                                {
+                                                    Id = job.JobId,
+                                                    ParentId = job.ClientId,
+                                                    FullAddress = job.AddressFirstLine
+                                                }))
+                        {
+                            job.SetRepository(this);
+                            jobs.Add(job);
+                        }
+                    }
+                    return jobs;
+                case BrowserMode.Invoice:
+                    var invoices = new List<BrowserInvoice>();
+                    using (var dbContext = new DeadfileContext())
+                    {
+                        foreach (var invoice in (from invoice in dbContext.Invoices
+                                                 where ((settings.FilterText == null || settings.FilterText == "") || invoice.InvoiceReference.ToString().StartsWith(settings.FilterText))
+                                                 orderby invoice.CreatedDate
+                                                 select
+                                                    new BrowserInvoice()
+                                                    {
+                                                        Id = invoice.InvoiceId,
+                                                        ParentId = invoice.ClientId,
+                                                        InvoiceReference = invoice.InvoiceReference
+                                                    }))
+                        {
+                            invoice.SetRepository(this);
+                            invoices.Add(invoice);
+                        }
+                    }
+                    return invoices;
+                default:
+                    return new List<BrowserModel>();
             }
-            return li;
         }
 
         public IEnumerable<BrowserJob> GetBrowserJobsForClient(int clientId)
@@ -184,17 +232,23 @@ namespace Deadfile.Model
 
         public IEnumerable<BrowserInvoice> GetBrowserInvoicesForJob(int jobId)
         {
+            var li = new List<BrowserInvoice>();
             using (var dbContext = new DeadfileContext())
             {
-                return new List<BrowserInvoice>(from invoice in dbContext.Invoices
+                foreach (var invoice in (from invoice in dbContext.Invoices
                     where invoice.Jobs.FirstOrDefault((job) => job.JobId == jobId) != null
                     select
                     new BrowserInvoice()
                     {
                         Id = invoice.InvoiceId,
-                        InvoiceReference = invoice.InvoiceReference.ToString()
-                    });
+                        InvoiceReference = invoice.InvoiceReference
+                    }))
+                {
+                    invoice.SetRepository(this);
+                    li.Add(invoice);
+                }
             }
+            return li;
         }
 
         public void SetUpFakeData()
