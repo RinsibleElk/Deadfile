@@ -370,11 +370,11 @@
                         <StackPanel Height="{StaticResource ActionsPadButtonHeight}"
                                     Width="{StaticResource ActionsPadButtonSize}">
                             <Image Width="{StaticResource ActionsPadButtonSize}"
-                                       Height="{StaticResource ActionsPadButtonSize}"
-                                       Source="../Resources/edit.png"/>
+                                   Height="{StaticResource ActionsPadButtonSize}"
+                                   Source="../Resources/edit.png"/>
                             <Label Width="{StaticResource ActionsPadButtonSize}"
                                    Height="{StaticResource ActionsPadButtonLabelHeight}"
-                                       HorizontalContentAlignment="Center"
+                                   HorizontalContentAlignment="Center"
                                    HorizontalAlignment="Center">Edit</Label>
                         </StackPanel>
                     </Border>
@@ -431,7 +431,7 @@
                                Source="../Resources/delete.png"/>
                         <Label Width="{StaticResource ActionsPadButtonSize}"
                                Height="{StaticResource ActionsPadButtonLabelHeight}"
-                                       HorizontalContentAlignment="Center"
+                               HorizontalContentAlignment="Center"
                                HorizontalAlignment="Center">Delete</Label>
                     </StackPanel>
                 </ControlTemplate>
@@ -486,7 +486,7 @@
                                Source="../Resources/discard.png"/>
                         <Label Width="{StaticResource ActionsPadButtonSize}"
                                Height="{StaticResource ActionsPadButtonLabelHeight}"
-                                       HorizontalContentAlignment="Center"
+                               HorizontalContentAlignment="Center"
                                HorizontalAlignment="Center">Discard</Label>
                     </StackPanel>
                 </ControlTemplate>
