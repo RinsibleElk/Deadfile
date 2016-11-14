@@ -14,39 +14,23 @@
         <DockPanel.Resources>
             <DataTemplate x:Key="ExpanderHeaderTemplate" DataType="model:LocalAuthorityModel">
                 <Border Height="24">
-                    <TextBlock Text="{Binding Name}" 
-                        Margin="4 0"
-                        VerticalAlignment="Center"
-                        FontSize="11" 
-                        FontWeight="Normal"
-                        TextWrapping="Wrap">
-                    </TextBlock>
+                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
                 </Border>
             </DataTemplate>
             <DataTemplate x:Key="ExpanderHeaderTemplateWithUrl" DataType="model:LocalAuthorityModel">
                 <Border Height="24">
-                    <TextBlock
-                        Margin="4 0"
-                        VerticalAlignment="Center"
-                        FontSize="11" 
-                        FontWeight="Normal"
-                        TextWrapping="Wrap">
-                        <Hyperlink Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                            CommandParameter="{Binding Url}">
-                            <TextBlock Text="{Binding Name}"></TextBlock>
+                    <TextBlock VerticalAlignment="Center">
+                        <Hyperlink
+                                Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                CommandParameter="{Binding Url}">
+                            <TextBlock Text="{Binding Name}" />
                         </Hyperlink>
                     </TextBlock>
                 </Border>
             </DataTemplate>
             <DataTemplate x:Key="ExpanderHeaderTemplateAddNew" DataType="model:LocalAuthorityModel">
                 <Border Height="24">
-                    <TextBlock Text="Add New..." 
-                        Margin="4 0"
-                        VerticalAlignment="Center"
-                        FontSize="11" 
-                        FontWeight="Normal"
-                        TextWrapping="Wrap">
-                    </TextBlock>
+                    <TextBlock Text="Add New..." VerticalAlignment="Center"/>
                 </Border>
             </DataTemplate>
             <templates:LocalAuthorityHyperlinkHeaderTemplateSelector

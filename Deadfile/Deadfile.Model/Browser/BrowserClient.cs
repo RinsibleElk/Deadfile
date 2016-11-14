@@ -26,6 +26,7 @@ namespace Deadfile.Model.Browser
         public BrowserClient() : base(false)
         {
             Id = ModelBase.NewModelId;
+            ParentId = ModelBase.NewModelId;
         }
 
         protected override void LoadChildren()

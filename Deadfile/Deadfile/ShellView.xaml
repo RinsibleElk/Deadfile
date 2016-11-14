@@ -1,4 +1,4 @@
-﻿<dragablz:DragablzWindow x:Class="Deadfile.ShellView"
+﻿<controls:MetroWindow x:Class="Deadfile.ShellView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,24 +10,27 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:converters="clr-namespace:Deadfile.Infrastructure.Converters;assembly=Deadfile.Infrastructure"
              xmlns:tab="clr-namespace:Deadfile.Tab.Tab;assembly=Deadfile.Tab"
+             Background="Black"
+             GlowBrush="Black"
+             BorderThickness="0"
+             TitleCharacterCasing="Lower"
+             x:Name="Deadfile"
+             Title="deadfile"
              Icon="Resources/logo.png"
+             WindowStartupLocation="CenterScreen"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <!-- Accent and AppTheme setting -->
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
-                <!-- Dragablz -->
-                <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/Generic.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
+    <controls:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <TextBlock Margin="0 -1 8 0"
+                        VerticalAlignment="Center"
+                        FontFamily="Harlow"
+                        FontSize="{DynamicResource WindowTitleFontSize}"
+                        FontStyle="Italic"
+                        Text="{TemplateBinding Content}"
+                        TextTrimming="CharacterEllipsis" />
+        </DataTemplate>
+    </controls:MetroWindow.TitleTemplate>
     <DockPanel>
         <DockPanel.Resources>
             <converters:SwitchConverter x:Key="ExperienceToImage">
@@ -54,17 +57,14 @@
             <dragablz:TabablzControl.InterTabController>
                 <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" />
             </dragablz:TabablzControl.InterTabController>
-            <dragablz:TabablzControl.HeaderPrefixContent>
-                <Image Height="24" Width="24" Source="Resources/logo.png"/>
-            </dragablz:TabablzControl.HeaderPrefixContent>
             <dragablz:TabablzControl.HeaderSuffixContent>
                 <StackPanel Orientation="Horizontal">
-                    <Button Height="16" Width="16" Command="{Binding OpenNewTab}" Style="{StaticResource AddButton}" />
+                    <Button Command="{Binding OpenNewTab}" Style="{StaticResource AddTabButton}" />
                 </StackPanel>
             </dragablz:TabablzControl.HeaderSuffixContent>
         </dragablz:TabablzControl>
     </DockPanel>
-</dragablz:DragablzWindow>
+</controls:MetroWindow>
 
 
 

@@ -161,6 +161,7 @@ namespace Deadfile.Model
                     new BrowserJob()
                     {
                         Id = job.JobId,
+                        ParentId = clientId,
                         FullAddress =
                             job.AddressFirstLine +
                             ((job.AddressSecondLine == null || job.AddressSecondLine == "")

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Dragablz;
+using MahApps.Metro;
 using MahApps.Metro.Controls;
 
 namespace Deadfile
@@ -20,7 +21,7 @@ namespace Deadfile
     /// <summary>
     /// Interaction logic for ShellView.xaml
     /// </summary>
-    public partial class ShellView : DragablzWindow
+    public partial class ShellView : MetroWindow
     {
         public ShellView()
         {

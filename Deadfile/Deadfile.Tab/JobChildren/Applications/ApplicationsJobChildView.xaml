@@ -15,24 +15,10 @@
             <DataTemplate x:Key="ExpanderHeaderTemplate" DataType="model:ApplicationModel">
                 <Border Height="24">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding LocalAuthorityReference}" 
-                            Margin="4 0"
-                            VerticalAlignment="Center"
-                            FontSize="11" 
-                            FontWeight="Normal">
-                        </TextBlock>
-                        <TextBlock Text=" ("
-                            VerticalAlignment="Center"
-                            FontSize="11" 
-                            FontWeight="Normal"/>
-                        <TextBlock Text="{Binding Type, Converter={StaticResource ApplicationTypeToString}}"
-                                   VerticalAlignment="Center"
-                                   FontSize="11" 
-                                   FontWeight="Normal"/>
-                        <TextBlock Text=")"
-                                   VerticalAlignment="Center"
-                                   FontSize="11" 
-                                   FontWeight="Normal"/>
+                        <TextBlock Text="{Binding LocalAuthorityReference}" VerticalAlignment="Center" />
+                        <TextBlock Text=" (" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding Type, Converter={StaticResource ApplicationTypeToString}}" VerticalAlignment="Center" />
+                        <TextBlock Text=")" VerticalAlignment="Center" />
                     </StackPanel>
                 </Border>
             </DataTemplate>

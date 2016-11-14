@@ -10,12 +10,14 @@ namespace Deadfile.Tab.Events
 {
     internal struct SelectedItemPacket
     {
-        public SelectedItemPacket(BrowserModelType type, int id)
+        public SelectedItemPacket(BrowserModelType type, int parentId, int id)
         {
             Type = type;
+            ParentId = parentId;
             Id = id;
         }
         public BrowserModelType Type { get; private set; }
+        public int ParentId { get; private set; }
         public int Id { get; private set; }
     }
     /// <summary>

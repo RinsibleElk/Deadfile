@@ -22,9 +22,13 @@ namespace Deadfile.Tab.Clients
             _repository = repository;
         }
 
+        /// <summary>
+        /// User hits the button for Add New Job.
+        /// </summary>
         public void AddNewJob()
         {
-            throw new NotImplementedException();
+            // Navigate to the Jobs page with the specified Client and no job given.
+            EventAggregator.GetEvent<AddNewJobEvent>().Publish(SelectedItem.ClientId);
         }
 
         public bool CanAddNewJob

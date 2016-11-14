@@ -140,6 +140,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\DeadfileAccent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\DeadfileTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Fonts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -160,39 +172,39 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\add-grey.png" />
-    <Resource Include="Resources\add-purple.png" />
+    <Resource Include="Resources\add-inactive.png" />
+    <Resource Include="Resources\add-hover.png" />
     <Resource Include="Resources\add.png" />
-    <Resource Include="Resources\back-grey.png" />
-    <Resource Include="Resources\back-purple.png" />
+    <Resource Include="Resources\back-inactive.png" />
+    <Resource Include="Resources\back-hover.png" />
     <Resource Include="Resources\back.png" />
     <Resource Include="Resources\background.png" />
-    <Resource Include="Resources\delete-grey.png" />
-    <Resource Include="Resources\delete-purple.png" />
+    <Resource Include="Resources\delete-inactive.png" />
+    <Resource Include="Resources\delete-hover.png" />
     <Resource Include="Resources\delete.png" />
-    <Resource Include="Resources\discard-grey.png" />
-    <Resource Include="Resources\discard-purple.png" />
+    <Resource Include="Resources\discard-inactive.png" />
+    <Resource Include="Resources\discard-hover.png" />
     <Resource Include="Resources\discard.png" />
-    <Resource Include="Resources\edit-grey.png" />
-    <Resource Include="Resources\edit-purple.png" />
+    <Resource Include="Resources\edit-inactive.png" />
+    <Resource Include="Resources\edit-hover.png" />
     <Resource Include="Resources\edit.png" />
-    <Resource Include="Resources\forward-grey.png" />
-    <Resource Include="Resources\forward-purple.png" />
+    <Resource Include="Resources\forward-inactive.png" />
+    <Resource Include="Resources\forward-hover.png" />
     <Resource Include="Resources\forward.png" />
-    <Resource Include="Resources\home-grey.png" />
-    <Resource Include="Resources\home-purple.png" />
+    <Resource Include="Resources\home-inactive.png" />
+    <Resource Include="Resources\home-hover.png" />
     <Resource Include="Resources\home.png" />
     <Resource Include="Resources\logo.png" />
-    <Resource Include="Resources\quote-purple.png" />
+    <Resource Include="Resources\quote-hover.png" />
     <Resource Include="Resources\quote.png" />
-    <Resource Include="Resources\redo-grey.png" />
-    <Resource Include="Resources\redo-purple.png" />
+    <Resource Include="Resources\redo-inactive.png" />
+    <Resource Include="Resources\redo-hover.png" />
     <Resource Include="Resources\redo.png" />
-    <Resource Include="Resources\save-grey.png" />
-    <Resource Include="Resources\save-purple.png" />
+    <Resource Include="Resources\save-inactive.png" />
+    <Resource Include="Resources\save-hover.png" />
     <Resource Include="Resources\save.png" />
-    <Resource Include="Resources\undo-grey.png" />
-    <Resource Include="Resources\undo-purple.png" />
+    <Resource Include="Resources\undo-inactive.png" />
+    <Resource Include="Resources\undo-hover.png" />
     <Resource Include="Resources\undo.png" />
   </ItemGroup>
   <ItemGroup>

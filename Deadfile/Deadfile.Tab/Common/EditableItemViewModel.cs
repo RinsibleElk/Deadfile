@@ -8,7 +8,9 @@ using Deadfile.Infrastructure.Services;
 using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
+using Deadfile.Tab.Browser;
 using Deadfile.Tab.Events;
+using Deadfile.Tab.Navigation;
 using Prism.Events;
 
 namespace Deadfile.Tab.Common
@@ -29,8 +31,18 @@ namespace Deadfile.Tab.Common
             EventAggregator = eventAggregator;
         }
 
+        /// <summary>
+        /// Ask the specific implementation to look up a value in the database.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public abstract T GetModel(K key);
 
+        /// <summary>
+        /// Respond to an event from the <see cref="NavigationBarViewModel"/>. This should only happen if an Undo or Redo is possible (marshalled to the
+        /// <see cref="NavigationBarViewModel"/> via the <see cref="CanUndoEvent"/>).
+        /// </summary>
+        /// <param name="message"></param>
         private void HandleUndo(UndoMessage message)
         {
             if (message == UndoMessage.Undo)
@@ -40,6 +52,9 @@ namespace Deadfile.Tab.Common
         }
 
         private T _selectedItem = new T();
+        /// <summary>
+        /// The item selected in the <see cref="BrowserPaneViewModel"/>.
+        /// </summary>
         public T SelectedItem
         {
             get { return _selectedItem; }

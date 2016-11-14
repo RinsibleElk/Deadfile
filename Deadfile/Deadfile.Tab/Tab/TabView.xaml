@@ -4,30 +4,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:local="clr-namespace:Deadfile"
+             d:DataContext="{d:DesignInstance Type=local:TabDesignTimeViewModel, IsDesignTimeCreatable=True}"
+             xmlns:local="clr-namespace:Deadfile.Tab.Tab"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Background="{StaticResource WindowBackgroundBrush}">
-        <Grid>
-            <Grid.Resources>
-                <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
-            </Grid.Resources>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="5"></ColumnDefinition>
-                <ColumnDefinition Width="Auto" MaxWidth="300" MinWidth="100"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-            </Grid.RowDefinitions>
-            <GridSplitter Grid.RowSpan="3" Grid.Row="0" Grid.Column="1" Width="5" HorizontalAlignment="Stretch" Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
-            <ContentControl Grid.Row="0" Grid.Column="0" x:Name="NavigationBar" />
-            <metro:TransitioningContentControl x:Name="ContentArea" Grid.Row="1" Grid.Column="0" Transition="LeftReplace" />
-            <ContentControl Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" x:Name="BrowserPane" Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
-            <ContentControl Grid.Row="2" Grid.Column="0" x:Name="QuotesBar" />
-            <ContentControl Grid.Row="2" Grid.Column="2" x:Name="ActionsPad" Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
-        </Grid>
+    <Grid>
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="5"></ColumnDefinition>
+            <ColumnDefinition Width="Auto" MaxWidth="300" MinWidth="100"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <GridSplitter Grid.RowSpan="3" Grid.Row="0" Grid.Column="1" Width="5" HorizontalAlignment="Stretch" Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
+        <ContentControl Grid.Row="0" Grid.Column="0" x:Name="NavigationBar" />
+        <metro:TransitioningContentControl x:Name="ContentArea" Grid.Row="1" Grid.Column="0" Transition="LeftReplace" />
+        <ContentControl Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" x:Name="BrowserPane" Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
+        <ContentControl Grid.Row="2" Grid.Column="0" x:Name="QuotesBar" />
+        <ContentControl Grid.Row="2" Grid.Column="2" x:Name="ActionsPad" Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
     </Grid>
 </UserControl>

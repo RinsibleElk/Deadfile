@@ -47,7 +47,7 @@ namespace Deadfile.Tab.Browser
                 if (_selectedItem == value) return;
                 _selectedItem = value;
                 NotifyOfPropertyChange(() => SelectedItem);
-                _eventAggregator.GetEvent<SelectedItemEvent>().Publish(new SelectedItemPacket(_selectedItem.ModelType, _selectedItem.Id));
+                _eventAggregator.GetEvent<SelectedItemEvent>().Publish(new SelectedItemPacket(_selectedItem.ModelType, _selectedItem.ParentId, _selectedItem.Id));
             }
         }
 

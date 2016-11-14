@@ -93,6 +93,7 @@
     <Compile Include="Clients\ClientsPageViewModel.cs" />
     <Compile Include="Clients\IClientsActionsPadViewModel.cs" />
     <Compile Include="Clients\IClientsPageViewModel.cs" />
+    <Compile Include="Common\ClientAndJob.cs" />
     <Compile Include="Common\DisplayNameBroadcaster.cs" />
     <Compile Include="Common\EditableItemViewModel.cs" />
     <Compile Include="Common\IEditableItemViewModel.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="DesignTime\ManagementPageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\PageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeViewModel.cs" />
+    <Compile Include="Events\AddNewJobEvent.cs" />
     <Compile Include="Events\CanEditMessage.cs" />
     <Compile Include="Events\CanSaveMessage.cs" />
     <Compile Include="Events\CanUndoMessage.cs" />

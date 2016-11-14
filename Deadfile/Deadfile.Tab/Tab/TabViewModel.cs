@@ -119,8 +119,18 @@ namespace Deadfile.Tab.Tab
         protected override void OnActivate()
         {
             base.OnActivate();
+
             // Subscribe to selection changes.
             _navigateToSelectedClientSubscriptionToken = _eventAggregator.GetEvent<SelectedItemEvent>().Subscribe(NavigateToExperience);
+
+            // Subscribe to the clients page requesting navigation to create a new job for a selected client.
+            _addNewJobSubscriptionToken = _eventAggregator.GetEvent<AddNewJobEvent>().Subscribe(AddNewJobAction);
+        }
+
+        private void AddNewJobAction(int clientId)
+        {
+            //TODO Sort out magic strings.
+            _navigationService.RequestNavigate(this, nameof(ContentArea), "JobsPage", new ClientAndJob(clientId, ModelBase.NewModelId));
         }
 
         protected override void OnDeactivate(bool close)
@@ -130,6 +140,10 @@ namespace Deadfile.Tab.Tab
             // Unsubscribe from selection changes.
             _eventAggregator.GetEvent<SelectedItemEvent>().Unsubscribe(_navigateToSelectedClientSubscriptionToken);
             _navigateToSelectedClientSubscriptionToken = null;
+
+            // Unsubscribe from the clients page notifications.
+            _eventAggregator.GetEvent<AddNewJobEvent>().Unsubscribe(_addNewJobSubscriptionToken);
+            _addNewJobSubscriptionToken = null;
 
             // Tear everything down and free up resources.
             //TODO for some reason these don't all actually get freed - what the hell is holding on to these damn things????!!
@@ -147,6 +161,7 @@ namespace Deadfile.Tab.Tab
         private object _quotesBar;
         private object _actionsPad;
         private bool _browserAndActionsAreVisible;
+        private SubscriptionToken _addNewJobSubscriptionToken = null;
 
         private void NavigateToExperience(SelectedItemPacket packet)
         {
@@ -156,7 +171,7 @@ namespace Deadfile.Tab.Tab
                     _navigationService.RequestNavigate(this, nameof(ContentArea), "ClientsPage", packet.Id);
                     break;
                 case BrowserModelType.Job:
-                    _navigationService.RequestNavigate(this, nameof(ContentArea), "JobsPage", packet.Id);
+                    _navigationService.RequestNavigate(this, nameof(ContentArea), "JobsPage", new ClientAndJob(packet.ParentId, packet.Id));
                     break;
             }
         }

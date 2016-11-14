@@ -6,7 +6,11 @@
              xmlns:local="clr-namespace:Deadfile.Tab.Jobs"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-            
-    </Grid>
+    <StackPanel Orientation="Horizontal">
+        <Button x:Name="AddItem" Visibility="{Binding AddItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource AddButton}"/>
+        <Button x:Name="EditItem" Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource EditButton}"/>
+        <Button x:Name="SaveItem" Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" IsDefault="True" Style="{StaticResource SaveButton}"/>
+        <Button x:Name="DiscardItem" Visibility="{Binding CanDiscardItem, Converter={StaticResource BooleanToVisibility}}" IsCancel="True" Style="{StaticResource DiscardButton}"/>
+        <Button x:Name="DeleteItem" Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource DeleteButton}"/>
+    </StackPanel>
 </UserControl>

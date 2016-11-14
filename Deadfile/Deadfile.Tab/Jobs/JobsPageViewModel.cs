@@ -14,12 +14,13 @@ using IEventAggregator = Prism.Events.IEventAggregator;
 
 namespace Deadfile.Tab.Jobs
 {
-    class JobsPageViewModel : EditableItemViewModel<int, JobModel>, IJobsPageViewModel
+    class JobsPageViewModel : EditableItemViewModel<ClientAndJob, JobModel>, IJobsPageViewModel
     {
         private readonly INavigationService _navigationService;
         private readonly IDeadfileRepository _repository;
         private JobChildExperience _selectedJobChild = JobChildExperience.Empty;
         private ISimpleEditableItemViewModel _jobChildViewModel;
+        private int _clientId;
 
         public static readonly List<JobChildExperience> AllJobChildExperiences = new List<JobChildExperience>(new[]
         {
@@ -34,19 +35,20 @@ namespace Deadfile.Tab.Jobs
             _repository = repository;
         }
 
-        public override JobModel GetModel(int id)
+        public override JobModel GetModel(ClientAndJob clientAndJob)
         {
             JobModel jobModel;
-            if (id == 0 || id == ModelBase.NewModelId)
+            if (clientAndJob.Equals(default(ClientAndJob)) || clientAndJob.JobId == 0 || clientAndJob.JobId == ModelBase.NewModelId)
             {
                 jobModel = new JobModel();
-                DisplayName = "Jobs";
+                DisplayName = "New Job";
+                Editable = true;
             }
             else
             {
-                jobModel = _repository.GetJobById(id);
+                jobModel = _repository.GetJobById(clientAndJob.JobId);
                 if (jobModel.JobId == ModelBase.NewModelId)
-                    DisplayName = "Jobs";
+                    DisplayName = "New Job";
                 else
                     DisplayName = jobModel.AddressFirstLine;
             }
@@ -86,9 +88,22 @@ namespace Deadfile.Tab.Jobs
             }
         }
 
-        public override void OnNavigatedTo(int parameters)
+        public int ClientId
         {
-            base.OnNavigatedTo(parameters);
+            get { return _clientId; }
+            set
+            {
+                if (value == _clientId) return;
+                _clientId = value;
+                NotifyOfPropertyChange(() => ClientId);
+            }
+        }
+
+        public override void OnNavigatedTo(ClientAndJob clientAndJob)
+        {
+            ClientId = clientAndJob.ClientId;
+
+            base.OnNavigatedTo(clientAndJob);
 
             // Select Applications - this should take care of setting up the view model for the JobChildViewModel control.
             SelectedJobChild = JobChildExperience.Applications;

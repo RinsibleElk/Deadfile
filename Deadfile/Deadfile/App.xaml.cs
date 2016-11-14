@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using MahApps.Metro;
 
 namespace Deadfile
 {
@@ -13,5 +14,21 @@ namespace Deadfile
     /// </summary>
     public partial class App : Application
     {
+        private const string DeadfileAccent = "DeadfileAccent";
+        private const string DeadfileTheme = "DeadfileTheme";
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            // Add Deadfile Accent and Theme Resource Dictionaries to the ThemeManager.
+            ThemeManager.AddAccent(DeadfileAccent, new Uri("pack://application:,,,/Deadfile;component/Styles/DeadfileAccent.xaml"));
+            ThemeManager.AddAppTheme(DeadfileTheme, new Uri("pack://application:,,,/Deadfile;component/Styles/DeadfileTheme.xaml"));
+
+            // Change app style to the Deadfile theme.
+            ThemeManager.ChangeAppStyle(Application.Current,
+                                        ThemeManager.GetAccent(DeadfileAccent),
+                                        ThemeManager.GetAppTheme(DeadfileTheme));
+
+            base.OnStartup(e);
+        }
     }
 }

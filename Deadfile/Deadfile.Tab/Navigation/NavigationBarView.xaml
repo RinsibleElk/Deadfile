@@ -8,10 +8,10 @@
              d:DataContext="{d:DesignInstance Type=local:NavigationBarDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Orientation="Horizontal" Background="Transparent">
-        <Button Height="40" Width="40" x:Name="Home" Style="{StaticResource HomeButton}" />
-        <Button Height="40" Width="40" x:Name="Back" Style="{StaticResource BackButton}" />
-        <Button Height="40" Width="40" x:Name="Forward" Style="{StaticResource ForwardButton}" />
-        <Button Height="40" Width="40" x:Name="Undo" Style="{StaticResource UndoButton}" />
-        <Button Height="40" Width="40" x:Name="Redo" Style="{StaticResource RedoButton}" />
+        <Button Height="32" Width="32" Margin="3" x:Name="Home" Style="{StaticResource HomeButton}" />
+        <Button Height="32" Width="32" Margin="3" x:Name="Back" Style="{StaticResource BackButton}" />
+        <Button Height="32" Width="32" Margin="3" x:Name="Forward" Style="{StaticResource ForwardButton}" />
+        <Button Height="32" Width="32" Margin="3" x:Name="Undo" Style="{StaticResource UndoButton}" />
+        <Button Height="32" Width="32" Margin="3" x:Name="Redo" Style="{StaticResource RedoButton}" />
     </StackPanel>
 </UserControl>

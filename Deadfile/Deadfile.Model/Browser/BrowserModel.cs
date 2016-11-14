@@ -66,6 +66,8 @@ namespace Deadfile.Model.Browser
         }
 
         private int _id;
+        private int _parentId;
+
         public int Id
         {
             get { return _id; }
@@ -86,5 +88,11 @@ namespace Deadfile.Model.Browser
         /// </summary>
         protected abstract void LoadChildren();
         public abstract BrowserModelType ModelType { get; }
+
+        public int ParentId
+        {
+            get { return _parentId; }
+            set { SetProperty(ref _parentId, value); }
+        }
     }
 }
