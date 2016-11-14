@@ -148,7 +148,7 @@ namespace Deadfile.Model
                                                             : client.FirstName + " " + client.LastName)
                                                     }))
                         {
-                            client.SetRepository(this);
+                            client.SetRepository(settings.Mode, settings.IncludeInactiveEnabled, false, this);
                             clients.Add(client);
                         }
                     }
@@ -168,7 +168,7 @@ namespace Deadfile.Model
                                                     FullAddress = job.AddressFirstLine
                                                 }))
                         {
-                            job.SetRepository(this);
+                            job.SetRepository(settings.Mode, settings.IncludeInactiveEnabled, false, this);
                             jobs.Add(job);
                         }
                     }
@@ -179,7 +179,7 @@ namespace Deadfile.Model
                     {
                         foreach (var invoice in (from invoice in dbContext.Invoices
                                                  where ((settings.FilterText == null || settings.FilterText == "") || invoice.InvoiceReference.ToString().StartsWith(settings.FilterText))
-                                                 orderby invoice.CreatedDate
+                                                 orderby (settings.Sort == BrowserSort.InvoiceCreationDate ? -(invoice.CreatedDate.Year * 10000 + invoice.CreatedDate.Month * 100 + invoice.CreatedDate.Day) : invoice.InvoiceReference)
                                                  select
                                                     new BrowserInvoice()
                                                     {
@@ -188,7 +188,7 @@ namespace Deadfile.Model
                                                         InvoiceReference = invoice.InvoiceReference
                                                     }))
                         {
-                            invoice.SetRepository(this);
+                            invoice.SetRepository(settings.Mode, settings.IncludeInactiveEnabled, false, this);
                             invoices.Add(invoice);
                         }
                     }
@@ -198,7 +198,7 @@ namespace Deadfile.Model
             }
         }
 
-        public IEnumerable<BrowserJob> GetBrowserJobsForClient(int clientId)
+        public IEnumerable<BrowserJob> GetBrowserJobsForClient(BrowserMode mode, bool includeInactiveEnabled, int clientId)
         {
             var li = new List<BrowserJob>();
             using (var dbContext = new DeadfileContext())
@@ -223,28 +223,30 @@ namespace Deadfile.Model
                                 : ", " + job.AddressPostCode)
                     }))
                 {
-                    job.SetRepository(this);
+                    job.SetRepository(mode, includeInactiveEnabled, false, this);
                     li.Add(job);
                 }
             }
             return li;
         }
 
-        public IEnumerable<BrowserInvoice> GetBrowserInvoicesForJob(int jobId)
+        public IEnumerable<BrowserInvoice> GetBrowserInvoicesForJob(BrowserMode mode, bool includeInactiveEnabled, int jobId)
         {
             var li = new List<BrowserInvoice>();
             using (var dbContext = new DeadfileContext())
             {
                 foreach (var invoice in (from invoice in dbContext.Invoices
-                    where invoice.Jobs.FirstOrDefault((job) => job.JobId == jobId) != null
-                    select
-                    new BrowserInvoice()
-                    {
-                        Id = invoice.InvoiceId,
-                        InvoiceReference = invoice.InvoiceReference
-                    }))
+                                         join jim in dbContext.JobInvoiceMappings on invoice.InvoiceId equals jim.InvoiceId
+                                         where jim.JobId == jobId
+                                         select
+                                             new BrowserInvoice()
+                                             {
+                                                 Id = invoice.InvoiceId,
+                                                 ParentId = invoice.ClientId,
+                                                 InvoiceReference = invoice.InvoiceReference
+                                             }))
                 {
-                    invoice.SetRepository(this);
+                    invoice.SetRepository(mode, includeInactiveEnabled, true, this);
                     li.Add(invoice);
                 }
             }
@@ -264,6 +266,10 @@ namespace Deadfile.Model
                     FakeData.AddFakeQuotations(dbContext);
                     dbContext.SaveChanges();
                     FakeData.AddFakeJobs(dbContext);
+                    dbContext.SaveChanges();
+                    FakeData.AddFakeInvoices(dbContext);
+                    dbContext.SaveChanges();
+                    FakeData.SetUpJobInvoiceMappings(dbContext);
                     dbContext.SaveChanges();
                     FakeData.AddFakeLocalAuthorities(dbContext);
                     dbContext.SaveChanges();
@@ -403,6 +409,57 @@ namespace Deadfile.Model
                 }
                 dbContext.SaveChanges();
             }
+        }
+
+        public BrowserModel GetBrowserClientById(BrowserMode mode, bool includeInactiveEnabled, int clientId)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var client = dbContext.Clients.Find(new object[1] { clientId });
+                var model = new BrowserClient()
+                    {
+                        Id = client.ClientId,
+                        FullName =
+                        ((client.FirstName == null || client.FirstName == "")
+                            ? client.Title + " " + client.LastName
+                            : client.FirstName + " " + client.LastName)
+                    };
+                model.SetRepository(mode, includeInactiveEnabled, true, this);
+                return model;
+            }
+        }
+
+        public IEnumerable<BrowserModel> GetBrowserJobsForInvoice(BrowserMode mode, bool includeInactiveEnabled, int invoiceId)
+        {
+            var li = new List<BrowserJob>();
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var job in (from job in dbContext.Jobs
+                                     join jim in dbContext.JobInvoiceMappings on job.JobId equals jim.JobId
+                                     where jim.InvoiceId == invoiceId
+                                     select
+                                         new BrowserJob()
+                                         {
+                                             Id = job.JobId,
+                                             ParentId = job.ClientId,
+                                             FullAddress =
+                                                 job.AddressFirstLine +
+                                                 ((job.AddressSecondLine == null || job.AddressSecondLine == "")
+                                                     ? ""
+                                                     : ", " + job.AddressSecondLine) +
+                                                 ((job.AddressThirdLine == null || job.AddressThirdLine == "")
+                                                     ? ""
+                                                     : ", " + job.AddressThirdLine) +
+                                                 ((job.AddressPostCode == null || job.AddressPostCode == "")
+                                                     ? ""
+                                                     : ", " + job.AddressPostCode)
+                                     }))
+                {
+                    job.SetRepository(mode, includeInactiveEnabled, true, this);
+                    li.Add(job);
+                }
+            }
+            return li;
         }
     }
 }

@@ -54,6 +54,7 @@
     <Compile Include="BillableHour.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="ClientStatus.cs" />
+    <Compile Include="Company.cs" />
     <Compile Include="DeadfileContext.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="EmployeeStatus.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Invoice.cs" />
     <Compile Include="InvoiceStatus.cs" />
     <Compile Include="Job.cs" />
+    <Compile Include="JobInvoiceMapping.cs" />
     <Compile Include="JobStatus.cs" />
     <Compile Include="LocalAuthority.cs" />
     <Compile Include="Payment.cs" />

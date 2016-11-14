@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 namespace Deadfile.Entity
 {
     /// <summary>
-    /// A state tracking the status of an invoice that has been issued.
+    /// The set of companies that can be invoiced for.
     /// </summary>
-    public enum InvoiceStatus
+    public enum Company
     {
-        Created,
-        Cancelled,
-        Paid
+        PaulSamsonCharteredSurveyorLtd,
+        Imagine3DLtd
     }
 }

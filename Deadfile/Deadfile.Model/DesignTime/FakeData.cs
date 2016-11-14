@@ -267,6 +267,50 @@ namespace Deadfile.Model.DesignTime
             }
         }
 
+        private static int lastPaulSamsonInvoiceReference = 1000;
+        private static int lastImagine3DInvoiceReference = 50;
+
+        private static Dictionary<int, List<Tuple<Company, int>>> _addedInvoicesForJob = new Dictionary<int, List<Tuple<Company, int>>>();
+
+        private static void AddSingleFakeInvoice(DeadfileContext dbContext, int clientId, int jobId, Random random)
+        {
+            var creationDate = new DateTime(2015, 1, 1).AddDays(random.Next(500));
+            var company = (random.Next(2) == 0) ? Company.PaulSamsonCharteredSurveyorLtd : Company.Imagine3DLtd;
+            int reference;
+            if (company == Company.PaulSamsonCharteredSurveyorLtd)
+                reference = lastPaulSamsonInvoiceReference++;
+            else
+                reference = lastImagine3DInvoiceReference++;
+            var netAmount = (double)random.Next(100, 500);
+            var invoice =
+                new Invoice()
+                    {
+                        ClientId = clientId,
+                        CreatedDate = creationDate,
+                        Status = InvoiceStatus.Created,
+                        Company = company,
+                        InvoiceReference = reference,
+                        GrossAmount = netAmount * (company == Company.PaulSamsonCharteredSurveyorLtd ? 1.2 : 1.0),
+                        NetAmount = netAmount
+                    };
+            dbContext.Invoices.Add(invoice);
+            _addedInvoicesForJob[jobId].Add(new Tuple<Company, int>(company, reference));
+        }
+
+        public static void AddFakeInvoices(DeadfileContext dbContext)
+        {
+            var random = new Random(354);
+            foreach (var job in dbContext.Jobs)
+            {
+                var numInvoicesToAdd = random.Next(3);
+                _addedInvoicesForJob.Add(job.JobId, new List<Tuple<Company, int>>());
+                for (int i = 0; i < numInvoicesToAdd; i++)
+                {
+                    AddSingleFakeInvoice(dbContext, job.ClientId, job.JobId, random);
+                }
+            }
+        }
+
         public static void AddFakeLocalAuthorities(DeadfileContext dbContext)
         {
             foreach (var localAuthority in GetFakeLocalAuthorities())
@@ -779,6 +823,25 @@ namespace Deadfile.Model.DesignTime
                             : ((s == "Arun District Council")
                                 ? new LocalAuthority() {Name = s, Url = "http://www.arun.gov.uk/"}
                                 : new LocalAuthority() {Name = s})));
+        }
+
+        public static void SetUpJobInvoiceMappings(DeadfileContext dbContext)
+        {
+            foreach (var job in _addedInvoicesForJob)
+            {
+                var jobId = job.Key;
+                foreach (var invoiceMapping in job.Value)
+                {
+                    var invoiceIds =
+                        (from invoice in dbContext.Invoices
+                         where invoice.Company == invoiceMapping.Item1
+                         where invoice.InvoiceReference == invoiceMapping.Item2
+                         select invoice.InvoiceId).ToArray();
+                    if (invoiceIds.Length != 1) throw new ApplicationException("Screwed up");
+                    var invoiceId = invoiceIds[0];
+                    dbContext.JobInvoiceMappings.Add(new JobInvoiceMapping() {JobId = jobId, InvoiceId = invoiceId});
+                }
+            }
         }
     }
 }

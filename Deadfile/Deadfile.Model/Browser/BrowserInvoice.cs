@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Entity;
 using Deadfile.Model.Interfaces;
 
 namespace Deadfile.Model.Browser
@@ -16,25 +17,33 @@ namespace Deadfile.Model.Browser
             set { SetProperty(ref _invoiceReference, value); }
         }
 
-        public BrowserInvoice() : base(true)
-        {
-            Id = ModelBase.NewModelId;
-        }
-
-        private IDeadfileRepository _repository;
-        internal void SetRepository(IDeadfileRepository repository)
-        {
-            _repository = repository;
-        }
-
         protected override void LoadChildren()
         {
-            throw new NotImplementedException();
+            if (Mode == BrowserMode.Invoice)
+            {
+                foreach (var job in Repository.GetBrowserJobsForInvoice(Mode, IncludeInactiveEnabled, Id))
+                    Children.Add(job);
+                Children.Add(Repository.GetBrowserClientById(Mode, IncludeInactiveEnabled, ParentId));
+            }
         }
 
         public override BrowserModelType ModelType
         {
             get { return BrowserModelType.Invoice; }
+        }
+
+        private bool _isActive;
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set { SetProperty(ref _isActive, value); }
+        }
+
+        private Company _company;
+        public Company Company
+        {
+            get { return _company; }
+            set { SetProperty(ref _company, value); }
         }
     }
 }

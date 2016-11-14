@@ -80,16 +80,20 @@ namespace Deadfile.Model.Interfaces
         /// <summary>
         /// Get Jobs for a given client for use in Browser.
         /// </summary>
+        /// <param name="mode"></param>
+        /// <param name="includeInactiveEnabled"></param>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        IEnumerable<BrowserJob> GetBrowserJobsForClient(int clientId);
+        IEnumerable<BrowserJob> GetBrowserJobsForClient(BrowserMode mode, bool includeInactiveEnabled, int clientId);
 
         /// <summary>
         /// Get Invoices for a given job for use in Browser.
         /// </summary>
+        /// <param name="mode"></param>
+        /// <param name="includeInactiveEnabled"></param>
         /// <param name="jobId"></param>
         /// <returns></returns>
-        IEnumerable<BrowserInvoice> GetBrowserInvoicesForJob(int jobId);
+        IEnumerable<BrowserInvoice> GetBrowserInvoicesForJob(BrowserMode mode, bool includeInactiveEnabled, int jobId);
 
         /// <summary>
         /// Synchronously fetch a <see cref="JobModel"/>, given the unique id in the database.
@@ -134,5 +138,16 @@ namespace Deadfile.Model.Interfaces
         /// </summary>
         /// <param name="billableHour"></param>
         void SaveBillableHour(BillableHourModel billableHour);
+
+        /// <summary>
+        /// Get the Browser client for a given client id.
+        /// </summary>
+        /// <param name="mode"></param>
+        /// <param name="includeInactiveEnabled"></param>
+        /// <param name="clientId"></param>
+        /// <returns></returns>
+        BrowserModel GetBrowserClientById(BrowserMode mode, bool includeInactiveEnabled, int clientId);
+
+        IEnumerable<BrowserModel> GetBrowserJobsForInvoice(BrowserMode mode, bool includeInactiveEnabled, int invoiceId);
     }
 }

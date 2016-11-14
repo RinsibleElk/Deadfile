@@ -8,6 +8,7 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviors="clr-namespace:Deadfile.Infrastructure.Behaviors;assembly=Deadfile.Infrastructure"
+             xmlns:converters="clr-namespace:Deadfile.Infrastructure.Converters;assembly=Deadfile.Infrastructure"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:BrowserPaneDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -46,19 +47,22 @@
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type browsermodel:BrowserClient}" ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding FullName}" />
+                            <Image Height="16" Width="16" Source="pack://application:,,,/Deadfile;component/Resources/client-tab.png" />
+                            <TextBlock Padding="4,0,0,0" Text="{Binding FullName}" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type browsermodel:BrowserJob}" ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding FullAddress}" />
+                            <Image Height="16" Width="16" Source="pack://application:,,,/Deadfile;component/Resources/job-tab.png" />
+                            <TextBlock Padding="4,0,0,0" Text="{Binding FullAddress}" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
-                    <DataTemplate DataType="{x:Type browsermodel:BrowserInvoice}">
+                    <HierarchicalDataTemplate DataType="{x:Type browsermodel:BrowserInvoice}" ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding InvoiceReference}" />
+                            <Image Height="16" Width="16" Source="pack://application:,,,/Deadfile;component/Resources/invoice-tab.png" />
+                            <TextBlock Padding="4,0,0,0" Text="{Binding InvoiceReference}" />
                         </StackPanel>
-                    </DataTemplate>
+                    </HierarchicalDataTemplate>
                 </TreeView.Resources>
             </TreeView>
         </Grid>

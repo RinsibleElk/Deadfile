@@ -22,13 +22,38 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <controls:MetroWindow.TitleTemplate>
         <DataTemplate>
-            <TextBlock Margin="0 -1 8 0"
-                        VerticalAlignment="Center"
-                        FontFamily="Harlow"
-                        FontSize="{DynamicResource WindowTitleFontSize}"
-                        FontStyle="Italic"
-                        Text="{TemplateBinding Content}"
-                        TextTrimming="CharacterEllipsis" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="0 -1 0 0"
+                           VerticalAlignment="Center"
+                           FontFamily="Harlow"
+                           FontSize="{DynamicResource WindowTitleFontSize}"
+                           FontStyle="Oblique"
+                           Text="d"
+                           Foreground="LightGray"
+                           TextTrimming="CharacterEllipsis" />
+                <TextBlock Margin="0 -1 0 0"
+                           VerticalAlignment="Center"
+                           FontFamily="Harlow"
+                           FontSize="{DynamicResource WindowTitleFontSize}"
+                           FontStyle="Oblique"
+                           Text="ead"
+                           TextTrimming="CharacterEllipsis" />
+                <TextBlock Margin="0 -1 0 0"
+                           VerticalAlignment="Center"
+                           FontFamily="Harlow"
+                           FontSize="{DynamicResource WindowTitleFontSize}"
+                           FontStyle="Oblique"
+                           Text="f"
+                           Foreground="#FF00AFFF"
+                           TextTrimming="CharacterEllipsis" />
+                <TextBlock Margin="0 -1 8 0"
+                           VerticalAlignment="Center"
+                           FontFamily="Harlow"
+                           FontSize="{DynamicResource WindowTitleFontSize}"
+                           FontStyle="Oblique"
+                           Text="ile"
+                           TextTrimming="CharacterEllipsis" />
+            </StackPanel>
         </DataTemplate>
     </controls:MetroWindow.TitleTemplate>
     <DockPanel>

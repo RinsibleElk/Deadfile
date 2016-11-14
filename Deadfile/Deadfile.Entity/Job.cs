@@ -32,7 +32,6 @@ namespace Deadfile.Entity
         public int ClientId { get; set; }
 
         public virtual Client Client { get; set; }
-
-        public virtual Invoice Invoice { get; set; }
+        public virtual ICollection<JobInvoiceMapping> JobInvoiceMappings { get; set; }
     }
 }

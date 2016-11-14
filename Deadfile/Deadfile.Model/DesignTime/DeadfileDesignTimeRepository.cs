@@ -77,12 +77,12 @@ namespace Deadfile.Model.DesignTime
                 select new BrowserClient() { Id = client.ClientId, FullName = client.FullName };
         }
 
-        public IEnumerable<BrowserJob> GetBrowserJobsForClient(int clientId)
+        public IEnumerable<BrowserJob> GetBrowserJobsForClient(BrowserMode mode, bool includeInactiveEnabled, int clientId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<BrowserInvoice> GetBrowserInvoicesForJob(int jobId)
+        public IEnumerable<BrowserInvoice> GetBrowserInvoicesForJob(BrowserMode mode, bool includeInactiveEnabled, int jobId)
         {
             throw new NotImplementedException();
         }
@@ -118,6 +118,16 @@ namespace Deadfile.Model.DesignTime
         }
 
         public void SaveBillableHour(BillableHourModel billableHour)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BrowserModel GetBrowserClientById(BrowserMode mode, bool includeInactiveEnabled, int clientId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<BrowserModel> GetBrowserJobsForInvoice(BrowserMode mode, bool includeInactiveEnabled, int invoiceId)
         {
             throw new NotImplementedException();
         }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Core;
+using Deadfile.Model.Interfaces;
 using Prism.Mvvm;
 
 namespace Deadfile.Model.Browser
@@ -13,7 +14,7 @@ namespace Deadfile.Model.Browser
     {
         private sealed class BrowserDummy : BrowserModel
         {
-            public BrowserDummy() : base(true)
+            public BrowserDummy() : base()
             {
             }
 
@@ -37,9 +38,21 @@ namespace Deadfile.Model.Browser
             set { SetProperty(ref _children, value); }
         }
 
-        protected BrowserModel(bool isLeaf)
+        protected BrowserModel()
         {
             _children = new ObservableCollection<BrowserModel>();
+            Id = ModelBase.NewModelId;
+            ParentId = ModelBase.NewModelId;
+        }
+
+        protected IDeadfileRepository Repository;
+        protected BrowserMode Mode;
+        protected bool IncludeInactiveEnabled;
+        internal void SetRepository(BrowserMode mode, bool includeInactiveEnabled, bool isLeaf, IDeadfileRepository repository)
+        {
+            Mode = mode;
+            IncludeInactiveEnabled = includeInactiveEnabled;
+            Repository = repository;
             if (!isLeaf)
                 _children.Add(DummyChild);
         }

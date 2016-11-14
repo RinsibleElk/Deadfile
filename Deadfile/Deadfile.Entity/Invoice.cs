@@ -23,8 +23,11 @@ namespace Deadfile.Entity
 
         public int InvoiceReference { get; set; }
 
+        [Required(ErrorMessage = "An Invoice requires a Company that it has been issued for.")]
+        public Company Company { get; set; }
+
         public int ClientId { get; set; }
 
-        public virtual ICollection<Job> Jobs { get; set; }
+        public virtual ICollection<JobInvoiceMapping> JobInvoiceMappings { get; set; }
     }
 }

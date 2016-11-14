@@ -17,27 +17,26 @@ namespace Deadfile.Model.Browser
             set { SetProperty(ref _fullName, value); }
         }
 
-        private IDeadfileRepository _repository;
-        internal void SetRepository(IDeadfileRepository repository)
-        {
-            _repository = repository;
-        }
-
-        public BrowserClient() : base(false)
-        {
-            Id = ModelBase.NewModelId;
-            ParentId = ModelBase.NewModelId;
-        }
-
+        /// <summary>
+        /// Only get called when in Client mode.
+        /// </summary>
         protected override void LoadChildren()
         {
-            foreach (var job in _repository.GetBrowserJobsForClient(Id))
-                Children.Add(job);
+            if (Mode == BrowserMode.Client)
+                foreach (var job in Repository.GetBrowserJobsForClient(Mode, IncludeInactiveEnabled, Id))
+                    Children.Add(job);
         }
 
         public override BrowserModelType ModelType
         {
             get { return BrowserModelType.Client; }
+        }
+
+        private bool _isActive;
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set { SetProperty(ref _isActive, value); }
         }
     }
 }
