@@ -136,6 +136,11 @@ namespace Deadfile.Tab.Navigation
         private void UpdateLockedForEditing(LockedForEditingMessage lockedForEditingMessage)
         {
             _lockedForEditing = (lockedForEditingMessage == LockedForEditingMessage.Locked);
+            if (!_lockedForEditing)
+            {
+                CanUndo = false;
+                CanRedo = false;
+            }
             NotifyOfPropertyChange(nameof(CanHome));
             NotifyOfPropertyChange(nameof(CanBack));
             NotifyOfPropertyChange(nameof(CanForward));

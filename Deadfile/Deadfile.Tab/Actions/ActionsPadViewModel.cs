@@ -120,7 +120,7 @@ namespace Deadfile.Tab.Actions
 
         public void DiscardItem()
         {
-            // Notify of the Discard. This leads to en mass Undo-ing.
+            // Notify of the Discard. This leads to en masse Undo-ing.
             EventAggregator.GetEvent<DiscardChangesEvent>().Publish(DiscardChangesMessage.Discard);
 
             // Notify the other pages for the end of editing.
