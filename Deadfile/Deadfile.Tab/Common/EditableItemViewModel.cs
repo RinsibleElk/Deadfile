@@ -111,6 +111,7 @@ namespace Deadfile.Tab.Common
         private bool _editable = false;
         private SubscriptionToken _handleEditActionSubscriptionToken;
         private SubscriptionToken _handleUndoSubcriptionToken;
+        private SubscriptionToken _discardChangesSubscriptionToken;
 
         public bool Editable
         {
@@ -126,6 +127,7 @@ namespace Deadfile.Tab.Common
                         ActivateUndoTracker(_undoTracker, _selectedItem);
                         _selectedItem.ErrorsChanged += SelectedItemErrorsChanged;
                         _saveSubscriptionToken = EventAggregator.GetEvent<SaveEvent>().Subscribe(PerformSave);
+                        _discardChangesSubscriptionToken = EventAggregator.GetEvent<DiscardChangesEvent>().Subscribe(DiscardChangesAction);
                         _selectedItem.RefreshAllErrors();
                     }
                     else
@@ -134,6 +136,7 @@ namespace Deadfile.Tab.Common
                         // Deliberately do this after deactivation so that the deactivation takes care of notifying the
                         // browser of CanUndo/CanRedo changes.
                         EventAggregator.GetEvent<SaveEvent>().Unsubscribe(_saveSubscriptionToken);
+                        EventAggregator.GetEvent<DiscardChangesEvent>().Unsubscribe(_discardChangesSubscriptionToken);
                         _saveSubscriptionToken = null;
                         _selectedItem.ErrorsChanged -= SelectedItemErrorsChanged;
                         _selectedItem.ClearAllErrors();
@@ -186,6 +189,12 @@ namespace Deadfile.Tab.Common
         private void PerformSave(SaveMessage message)
         {
             PerformSave();
+        }
+
+        private void DiscardChangesAction(DiscardChangesMessage discardChangesMessage)
+        {
+            if (discardChangesMessage == DiscardChangesMessage.Discard)
+                while (_activeUndoTracker.CanUndo) _activeUndoTracker.Undo();
         }
 
         private void HandleEditAction(EditActionMessage editAction)

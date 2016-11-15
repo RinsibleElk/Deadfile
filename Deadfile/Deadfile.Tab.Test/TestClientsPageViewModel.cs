@@ -26,6 +26,7 @@ namespace Deadfile.Tab.Test
             public readonly CanEditEvent CanEditEvent = new CanEditEvent();
             public readonly CanSaveEvent CanSaveEvent = new CanSaveEvent();
             public readonly SaveEvent SaveEvent = new SaveEvent();
+            public readonly DiscardChangesEvent DiscardChangesEvent = new DiscardChangesEvent();
 
             public readonly Mock<UndoEvent> UndoEventMock = new Mock<UndoEvent>();
             public readonly Mock<EditActionEvent> EditActionEventMock = new Mock<EditActionEvent>();
@@ -119,10 +120,14 @@ namespace Deadfile.Tab.Test
 
             public void StartEditing()
             {
-                // He'll subscribe to the save event.
+                // He'll subscribe to the save event and discard changes event.
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<SaveEvent>())
                     .Returns(SaveEvent)
+                    .Verifiable();
+                EventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DiscardChangesEvent>())
+                    .Returns(DiscardChangesEvent)
                     .Verifiable();
                 // And he'll publish that we're locked for editing.
                 EventAggregatorMock

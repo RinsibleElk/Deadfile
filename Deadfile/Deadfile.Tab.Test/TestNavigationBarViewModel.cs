@@ -19,9 +19,9 @@ namespace Deadfile.Tab.Test
         {
             public readonly Mock<IEventAggregator> EventAggregatorMock = new Mock<IEventAggregator>();
             public readonly Mock<INavigationService> NavigationServiceMock = new Mock<INavigationService>();
+            public readonly UndoEvent UndoEvent = new UndoEvent();
             public readonly CanUndoEvent CanUndoEvent = new CanUndoEvent();
             public readonly LockedForEditingEvent LockedForEditingEvent = new LockedForEditingEvent();
-            public readonly DiscardChangesEvent DiscardChangesEvent = new DiscardChangesEvent();
             public readonly NavigationBarViewModel ViewModel;
             public int NumberOfTimesBackCanExecuteChangedFired = 0;
             public int NumberOfTimesHomeCanExecuteChangedFired = 0;
@@ -36,10 +36,6 @@ namespace Deadfile.Tab.Test
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
                     .Returns(LockedForEditingEvent)
-                    .Verifiable();
-                EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<DiscardChangesEvent>())
-                    .Returns(DiscardChangesEvent)
                     .Verifiable();
                 ViewModel = new NavigationBarViewModel(NavigationServiceMock.Object, EventAggregatorMock.Object);
                 ViewModel.PropertyChanged += (s, e) =>
@@ -58,6 +54,15 @@ namespace Deadfile.Tab.Test
                     }
                 };
                 ViewModel.OnNavigatedTo(null);
+            }
+
+            public void Undo()
+            {
+                EventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<UndoEvent>())
+                    .Returns(UndoEvent)
+                    .Verifiable();
+                ViewModel.Undo();
             }
 
             public void Dispose()
@@ -244,6 +249,60 @@ namespace Deadfile.Tab.Test
                 Assert.Equal(3, host.NumberOfTimesForwardCanExecuteChangedFired);
                 Assert.Equal(2, host.NumberOfTimesHomeCanExecuteChangedFired);
                 Assert.Equal(2, host.NumberOfTimesBackCanExecuteChangedFired);
+            }
+        }
+
+        [Fact]
+        public void TestLockedForEditing_CannotUndo()
+        {
+            // Setup.
+            using (var host = new RealEventsHost())
+            {
+                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+
+                // Verify.
+                Assert.False(host.ViewModel.CanUndo);
+                Assert.False(host.ViewModel.CanRedo);
+            }
+        }
+
+        [Fact]
+        public void TestLockedForEditing_MakeEdit_CanUndo()
+        {
+            // Setup.
+            using (var host = new RealEventsHost())
+            {
+                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+                host.CanUndoEvent.Publish(CanUndoMessage.CanUndo);
+
+                // Verify.
+                Assert.True(host.ViewModel.CanUndo);
+                Assert.False(host.ViewModel.CanRedo);
+            }
+        }
+
+        [Fact]
+        public void TestLockedForEditing_UndoEdit_FiresUndo()
+        {
+            // Setup.
+            using (var host = new RealEventsHost())
+            {
+                var numUndos = 0;
+                var numRedos = 0;
+                host.UndoEvent.Subscribe((m) =>
+                {
+                    if (m == UndoMessage.Undo) ++numUndos;
+                    else ++numRedos;
+                });
+                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+                host.CanUndoEvent.Publish(CanUndoMessage.CanUndo);
+                host.Undo();
+
+                // Verify.
+                Assert.True(host.ViewModel.CanUndo);
+                Assert.False(host.ViewModel.CanRedo);
+                Assert.Equal(1, numUndos);
+                Assert.Equal(0, numRedos);
             }
         }
     }

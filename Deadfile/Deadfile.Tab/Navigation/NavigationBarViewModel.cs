@@ -23,14 +23,12 @@ namespace Deadfile.Tab.Navigation
         private bool _lockedForEditing = false;
         private SubscriptionToken _canUndoEventSubscriptionToken;
         private SubscriptionToken _lockedForEditingEventSubscriptionToken;
-        private SubscriptionToken _discardChangesEventSubscriptionToken;
 
         public NavigationBarViewModel(INavigationService navigationService, Prism.Events.IEventAggregator eventAggregator)
         {
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
             _navigationService.PropertyChanged += NavigationPropertyChanged;
-
         }
 
         private void NavigationPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -124,13 +122,6 @@ namespace Deadfile.Tab.Navigation
         {
             _canUndoEventSubscriptionToken = _eventAggregator.GetEvent<CanUndoEvent>().Subscribe(UpdateCanUndo);
             _lockedForEditingEventSubscriptionToken = _eventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(UpdateLockedForEditing);
-            _discardChangesEventSubscriptionToken = _eventAggregator.GetEvent<DiscardChangesEvent>().Subscribe(DiscardChangesAction);
-        }
-
-        private void DiscardChangesAction(DiscardChangesMessage discardChangesMessage)
-        {
-            if (discardChangesMessage == DiscardChangesMessage.Discard)
-                while (CanUndo) Undo();
         }
 
         private void UpdateLockedForEditing(LockedForEditingMessage lockedForEditingMessage)
@@ -169,10 +160,8 @@ namespace Deadfile.Tab.Navigation
         {
             _eventAggregator.GetEvent<CanUndoEvent>().Unsubscribe(_canUndoEventSubscriptionToken);
             _eventAggregator.GetEvent<LockedForEditingEvent>().Unsubscribe(_lockedForEditingEventSubscriptionToken);
-            _eventAggregator.GetEvent<DiscardChangesEvent>().Unsubscribe(_discardChangesEventSubscriptionToken);
             _canUndoEventSubscriptionToken = null;
             _lockedForEditingEventSubscriptionToken = null;
-            _discardChangesEventSubscriptionToken = null;
         }
     }
 }
