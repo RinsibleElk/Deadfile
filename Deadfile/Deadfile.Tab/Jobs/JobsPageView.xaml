@@ -17,7 +17,7 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <Grid Margin="5,5,5,5">
+    <Grid Margin="5,5,5,5" Background="{StaticResource ContentBackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>

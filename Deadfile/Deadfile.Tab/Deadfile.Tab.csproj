@@ -93,6 +93,7 @@
     <Compile Include="Clients\ClientsPageViewModel.cs" />
     <Compile Include="Clients\IClientsActionsPadViewModel.cs" />
     <Compile Include="Clients\IClientsPageViewModel.cs" />
+    <Compile Include="Common\ClientAndInvoice.cs" />
     <Compile Include="Common\ClientAndJob.cs" />
     <Compile Include="Common\DisplayNameBroadcaster.cs" />
     <Compile Include="Common\EditableItemViewModel.cs" />
@@ -131,6 +132,18 @@
     <Compile Include="Home\HomePageViewModel.cs" />
     <Compile Include="Home\IHomeActionsPadViewModel.cs" />
     <Compile Include="Home\IHomePageViewModel.cs" />
+    <Compile Include="Invoices\IInvoicesActionsPadViewModel.cs" />
+    <Compile Include="Invoices\IInvoicesPageViewModel.cs" />
+    <Compile Include="Invoices\InvoicesActionsPadDesignTimeViewModel.cs" />
+    <Compile Include="Invoices\InvoicesActionsPadView.xaml.cs">
+      <DependentUpon>InvoicesActionsPadView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Invoices\InvoicesActionsPadViewModel.cs" />
+    <Compile Include="Invoices\InvoicesPageDesignTimeViewModel.cs" />
+    <Compile Include="Invoices\InvoicesPageView.xaml.cs">
+      <DependentUpon>InvoicesPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Invoices\InvoicesPageViewModel.cs" />
     <Compile Include="JobChildren\Applications\ApplicationsJobChildDesignTimeViewModel.cs" />
     <Compile Include="JobChildren\Applications\ApplicationsJobChildView.xaml.cs">
       <DependentUpon>ApplicationsJobChildView.xaml</DependentUpon>
@@ -231,6 +244,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Home\HomePageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Invoices\InvoicesActionsPadView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Invoices\InvoicesPageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

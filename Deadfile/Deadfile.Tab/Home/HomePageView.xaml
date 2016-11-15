@@ -7,7 +7,7 @@
              d:DataContext="{d:DesignInstance Type=local:HomePageDesignTimeViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
+    <StackPanel Background="{StaticResource ContentBackgroundBrush}">
         <Button x:Name="Clients">Clients</Button>
         <Button x:Name="Jobs">Jobs</Button>
         <Button x:Name="LocalAuthorities">Local Authorities</Button>

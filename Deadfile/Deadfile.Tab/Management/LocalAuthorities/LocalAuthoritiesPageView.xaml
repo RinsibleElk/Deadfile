@@ -10,7 +10,7 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:LocalAuthoritiesPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
-    <DockPanel LastChildFill="True">
+    <DockPanel LastChildFill="True" Background="{StaticResource ContentBackgroundBrush}">
         <DockPanel.Resources>
             <DataTemplate x:Key="ExpanderHeaderTemplate" DataType="model:LocalAuthorityModel">
                 <Border Height="24">

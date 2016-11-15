@@ -9,6 +9,7 @@ using Deadfile.Infrastructure.Services;
 using Deadfile.Tab.Browser;
 using Deadfile.Tab.Clients;
 using Deadfile.Tab.Home;
+using Deadfile.Tab.Invoices;
 using Deadfile.Tab.JobChildren;
 using Deadfile.Tab.JobChildren.Applications;
 using Deadfile.Tab.JobChildren.BillableHours;
@@ -53,6 +54,7 @@ namespace Deadfile.Tab
             _container.RegisterSingleton(typeof(ClientsPageViewModel), Experience.Clients + RegionNames.Page, typeof(ClientsPageViewModel));
             _container.RegisterSingleton(typeof(JobsPageViewModel), Experience.Jobs + RegionNames.Page, typeof(JobsPageViewModel));
             _container.RegisterSingleton(typeof(LocalAuthoritiesPageViewModel), Experience.LocalAuthorities + RegionNames.Page, typeof(LocalAuthoritiesPageViewModel));
+            _container.RegisterSingleton(typeof(InvoicesPageViewModel), Experience.Invoices + RegionNames.Page, typeof(InvoicesPageViewModel));
 
             // Job Children - referenced by key
             _container.RegisterSingleton(typeof(IApplicationsJobChildViewModel), JobChildExperience.Applications + JobChildKeys.JobChildKey, typeof(ApplicationsJobChildViewModel));
@@ -63,6 +65,7 @@ namespace Deadfile.Tab
             _container.RegisterSingleton(typeof(HomeActionsPadViewModel), Experience.Home + RegionNames.ActionsPad, typeof(HomeActionsPadViewModel));
             _container.RegisterSingleton(typeof(ClientsActionsPadViewModel), Experience.Clients + RegionNames.ActionsPad, typeof(ClientsActionsPadViewModel));
             _container.RegisterSingleton(typeof(JobsActionsPadViewModel), Experience.Jobs + RegionNames.ActionsPad, typeof(JobsActionsPadViewModel));
+            _container.RegisterSingleton(typeof(InvoicesActionsPadViewModel), Experience.Invoices + RegionNames.ActionsPad, typeof(InvoicesActionsPadViewModel));
 
             // Browser
             _container.RegisterSingleton(typeof(BrowserPaneViewModel), RegionNames.BrowserPane, typeof(BrowserPaneViewModel));

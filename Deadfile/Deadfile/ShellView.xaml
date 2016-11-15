@@ -61,6 +61,7 @@
             <converters:SwitchConverter x:Key="ExperienceToImage">
                 <converters:SwitchConverterCase When="Clients" Then="Resources/client-tab.png" />
                 <converters:SwitchConverterCase When="Jobs" Then="Resources/job-tab.png" />
+                <converters:SwitchConverterCase When="Invoices" Then="Resources/invoice-tab.png" />
                 <converters:SwitchConverterCase When="Home" Then="Resources/home-tab.png" />
                 <converters:SwitchConverterCase When="LocalAuthorities" Then="Resources/localauthority-tab.png" />
             </converters:SwitchConverter>

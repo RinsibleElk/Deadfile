@@ -21,7 +21,7 @@ namespace Deadfile.Model
             set { ClientId = value; }
         }
 
-        private int _clientId;
+        private int _clientId = ModelBase.NewModelId;
         /// <summary>
         /// This is Entity's model for this Client, or if it is not in the database yet then default.
         /// </summary>

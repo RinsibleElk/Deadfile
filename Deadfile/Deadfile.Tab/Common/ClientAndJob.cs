@@ -15,7 +15,7 @@ namespace Deadfile.Tab.Common
     {
         /// <summary>
         /// Navigate to the <see cref="JobsPageViewModel"/> for the specified client and job. The job may not exist, this will be specified by the
-        /// <see cref="ClientId"/> being <see cref="ModelBase.NewModelId"/>.
+        /// <see cref="JobId"/> being <see cref="ModelBase.NewModelId"/>.
         /// </summary>
         /// <param name="clientId"></param>
         /// <param name="jobId"></param>
@@ -31,7 +31,7 @@ namespace Deadfile.Tab.Common
         public int ClientId { get; }
 
         /// <summary>
-        /// Uniquely specified the job. May be NewModelId if this is for creation.
+        /// Uniquely specifies the job. May be NewModelId if this is for creation.
         /// </summary>
         public int JobId { get; }
     }

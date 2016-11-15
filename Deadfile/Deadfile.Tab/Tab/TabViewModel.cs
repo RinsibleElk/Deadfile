@@ -168,10 +168,13 @@ namespace Deadfile.Tab.Tab
             switch (packet.Type)
             {
                 case BrowserModelType.Client:
-                    _navigationService.RequestNavigate(this, nameof(ContentArea), "ClientsPage", packet.Id);
+                    _navigationService.RequestNavigate(this, nameof(ContentArea), Experience.Clients + RegionNames.Page, packet.Id);
                     break;
                 case BrowserModelType.Job:
-                    _navigationService.RequestNavigate(this, nameof(ContentArea), "JobsPage", new ClientAndJob(packet.ParentId, packet.Id));
+                    _navigationService.RequestNavigate(this, nameof(ContentArea), Experience.Jobs + RegionNames.Page, new ClientAndJob(packet.ParentId, packet.Id));
+                    break;
+                case BrowserModelType.Invoice:
+                    _navigationService.RequestNavigate(this, nameof(ContentArea), Experience.Invoices + RegionNames.Page, new ClientAndInvoice(packet.ParentId, packet.Id));
                     break;
             }
         }

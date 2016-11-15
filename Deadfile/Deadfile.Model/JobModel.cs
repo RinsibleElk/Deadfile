@@ -19,7 +19,7 @@ namespace Deadfile.Model
             set { JobId = value; }
         }
 
-        private int _jobId;
+        private int _jobId = ModelBase.NewModelId;
         /// <summary>
         /// This is Entity's model for this Job, or if it is not in the database yet then default.
         /// </summary>

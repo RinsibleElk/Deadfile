@@ -11,6 +11,7 @@ namespace Deadfile.Tab
         Home,
         Clients,
         Jobs,
-        LocalAuthorities
+        LocalAuthorities,
+        Invoices
     }
 }
