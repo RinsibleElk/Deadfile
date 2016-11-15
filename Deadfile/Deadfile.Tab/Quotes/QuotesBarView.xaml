@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Deadfile.Tab.Quotes"
+             xmlns:converters="clr-namespace:Deadfile.Infrastructure.Converters;assembly=Deadfile.Infrastructure"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:QuotesBarDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -16,8 +17,44 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Style="{StaticResource QuotationPhrase}" Grid.Row="0" Grid.Column="0" Text="{Binding Quotation.Phrase}"></TextBlock>
-        <TextBlock Style="{StaticResource QuotationAuthor}" Grid.Row="1" Grid.Column="0" Text="{Binding Quotation.Author}"></TextBlock>
-        <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Height="64" Width="64" Command="{Binding NextQuotationCommand}" Style="{StaticResource QuoteButton}" />
+        <DockPanel Grid.Row="0" Grid.Column="0" x:Name="PhraseDockPanel">
+            <Canvas ClipToBounds="True">
+                <TextBlock Style="{StaticResource QuotationPhrase}"
+                           Text="{Binding Quotation.Phrase}"
+                           TextWrapping="NoWrap"
+                           x:Name="PhraseTextBlock">
+                    <TextBlock.RenderTransform>
+                        <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
+                    </TextBlock.RenderTransform>
+                    <TextBlock.Triggers>
+                        <EventTrigger RoutedEvent="TextBlock.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform"
+                                                     Storyboard.TargetProperty="X"
+                                                     From="0"
+                                                     To="-500"
+                                                     BeginTime="00:00:03"
+                                                     Duration="00:00:08"
+                                                     AutoReverse="True"
+                                                     RepeatBehavior="Forever" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </TextBlock.Triggers>
+                </TextBlock>
+            </Canvas>
+        </DockPanel>
+        <TextBlock Style="{StaticResource QuotationAuthor}"
+                   Grid.Row="1"
+                   Grid.Column="0"
+                   Text="{Binding Quotation.Author}" />
+        <Button Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                Height="64"
+                Width="64"
+                Command="{Binding NextQuotationCommand}"
+                Style="{StaticResource QuoteButton}" />
     </Grid>
 </UserControl>

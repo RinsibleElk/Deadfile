@@ -206,8 +206,8 @@
     </Style>
 
     <system:Double x:Key="TabButtonSize">16</system:Double>
-    <system:Double x:Key="ActionsPadButtonSize">64</system:Double>
-    <system:Double x:Key="ActionsPadButtonHeight">90</system:Double>
+    <system:Double x:Key="ActionsPadButtonSize">50</system:Double>
+    <system:Double x:Key="ActionsPadButtonHeight">76</system:Double>
     <system:Double x:Key="ActionsPadButtonLabelHeight">26</system:Double>
 
     <Style x:Key="AddTabButton" TargetType="{x:Type Button}">
@@ -405,7 +405,8 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
-                            <StackPanel Height="{StaticResource ActionsPadButtonHeight}" Width="{StaticResource ActionsPadButtonSize}">
+                            <StackPanel Height="{StaticResource ActionsPadButtonHeight}"
+                                        Width="{StaticResource ActionsPadButtonSize}">
                                 <Image Width="{StaticResource ActionsPadButtonSize}"
                                        Height="{StaticResource ActionsPadButtonSize}"
                                        Source="../Resources/edit-inactive.png"></Image>

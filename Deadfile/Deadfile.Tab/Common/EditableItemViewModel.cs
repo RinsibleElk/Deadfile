@@ -91,7 +91,7 @@ namespace Deadfile.Tab.Common
                 if (_errors == value) return;
                 _errors = value;
                 NotifyOfPropertyChange(() => Errors);
-                CanSave = _errors.Count == 0;
+                CanSave = Editable && _errors.Count == 0;
             }
         }
 

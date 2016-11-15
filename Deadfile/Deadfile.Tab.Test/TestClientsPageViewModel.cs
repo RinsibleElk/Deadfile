@@ -73,20 +73,12 @@ namespace Deadfile.Tab.Test
                     if (_useRealEvents)
                     {
                         EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<CanSaveEvent>())
-                            .Returns(CanSaveEvent)
-                            .Verifiable();
-                        EventAggregatorMock
                             .Setup((ea) => ea.GetEvent<CanEditEvent>())
                             .Returns(CanEditEvent)
                             .Verifiable();
                     }
                     else
                     {
-                        EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<CanSaveEvent>())
-                            .Returns(CanSaveEventMock.Object)
-                            .Verifiable();
                         EventAggregatorMock
                             .Setup((ea) => ea.GetEvent<CanEditEvent>())
                             .Returns(CanEditEventMock.Object)
@@ -140,6 +132,21 @@ namespace Deadfile.Tab.Test
                 LockedForEditingMock
                     .Setup((ev) => ev.Publish(LockedForEditingMessage.Locked))
                     .Verifiable();
+                // And he'll publish that it is allowed to save.
+                if (_useRealEvents)
+                {
+                    EventAggregatorMock
+                        .Setup((ea) => ea.GetEvent<CanSaveEvent>())
+                        .Returns(CanSaveEvent)
+                        .Verifiable();
+                }
+                else
+                {
+                    EventAggregatorMock
+                        .Setup((ea) => ea.GetEvent<CanSaveEvent>())
+                        .Returns(CanSaveEventMock.Object)
+                        .Verifiable();
+                }
                 // only makes sense if using real events
                 Assert.True(_useRealEvents);
                 EditActionEvent.Publish(EditActionMessage.StartEditing);
@@ -222,9 +229,9 @@ namespace Deadfile.Tab.Test
                         PhoneNumber1 = "07544454514"
                     });
                 Assert.Equal(1, a);
-                Assert.Equal(1, c);
+                Assert.Equal(0, c);
                 Assert.Equal(CanEditMessage.CanEdit, ce);
-                Assert.Equal(CanSaveMessage.CanSave, cs);
+                Assert.Equal(CanSaveMessage.CannotSave, cs);
                 Assert.True(host.ViewModel.CanEdit);
             }
         }
@@ -249,14 +256,16 @@ namespace Deadfile.Tab.Test
                         LastName = "Johnson",
                         PhoneNumber1 = "07544454514"
                     });
-                host.StartEditing();
                 var c = 0;
-                var m = CanSaveMessage.CanSave;
+                var m = CanSaveMessage.CannotSave;
                 host.CanSaveEvent.Subscribe((message) =>
                 {
                     ++c;
                     m = message;
                 });
+                host.StartEditing();
+                Assert.Equal(1, c);
+                Assert.Equal(m, CanSaveMessage.CanSave);
                 host.EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<CanSaveEvent>())
                     .Returns(host.CanSaveEvent)
@@ -270,7 +279,7 @@ namespace Deadfile.Tab.Test
                     .Verifiable();
                 typeof(ClientModel).GetProperty(propertyName)
                     .SetMethod.Invoke(host.ViewModel.SelectedItem, new object[1] { newValue });
-                Assert.Equal(1, c);
+                Assert.Equal(2, c);
                 Assert.Equal(m, CanSaveMessage.CannotSave);
             }
         }
