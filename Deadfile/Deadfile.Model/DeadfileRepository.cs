@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Entity;
+using Deadfile.Model.Billable;
 using Deadfile.Model.Browser;
 using Deadfile.Model.DesignTime;
 using Deadfile.Model.Interfaces;
@@ -456,6 +457,32 @@ namespace Deadfile.Model
                                      }))
                 {
                     job.SetRepository(mode, includeInactiveEnabled, true, this);
+                    li.Add(job);
+                }
+            }
+            return li;
+        }
+
+        /// <summary>
+        /// Get the billable models for a client. Attribute them by state based on <see cref="invoiceId"/>.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="invoiceId"></param>
+        /// <returns></returns>
+        public IEnumerable<BillableModel> GetBillableModelsForClient(int clientId, int invoiceId)
+        {
+            var li = new List<BillableJob>();
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var job in (from job in dbContext.Jobs
+                                     where job.ClientId == clientId
+                                     select new BillableJob()
+                                     {
+                                         JobId = job.JobId,
+                                         FullAddress = job.AddressFirstLine
+                                     }))
+                {
+
                     li.Add(job);
                 }
             }

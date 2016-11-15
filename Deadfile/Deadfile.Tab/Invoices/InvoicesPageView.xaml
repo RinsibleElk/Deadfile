@@ -4,10 +4,71 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Deadfile.Tab.Invoices"
+             xmlns:entity="clr-namespace:Deadfile.Entity;assembly=Deadfile.Entity"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:Deadfile.Infrastructure.Behaviors;assembly=Deadfile.Infrastructure"
+             xmlns:billablemodel="clr-namespace:Deadfile.Model.Billable;assembly=Deadfile.Model"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:InvoicesPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-            
+    <Grid Margin="5,5,5,5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ComboBox IsEditable="False"
+                      ItemsSource="{x:Static entity:CompanyUtils.AllCompanies}"
+                      SelectedItem="{Binding SelectedItem.Company, Mode=TwoWay}" />
+            <TextBox Grid.Row="1"
+                     controls:TextBoxHelper.Watermark="Filter"
+                     Text="{Binding FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TreeView Grid.Row="2"
+                      ItemsSource="{Binding Jobs}"
+                      Style="{StaticResource TreeViewTransparentBackground}">
+                <i:Interaction.Behaviors>
+                    <behaviors:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
+                </i:Interaction.Behaviors>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type billablemodel:BillableJob}" ItemsSource="{Binding Children}">
+                        <CheckBox Content="{Binding FullAddress}"
+                                  IsEnabled="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToIsEnabled}}"
+                                  IsThreeState="True"
+                                  IsChecked="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToNullableBool}}" />
+                    </HierarchicalDataTemplate>
+                    <DataTemplate DataType="{x:Type billablemodel:BillableApplication}">
+                        <CheckBox Content="{Binding LocalAuthorityReference}"
+                                  IsEnabled="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToIsEnabled}}"
+                                  IsThreeState="False"
+                                  IsChecked="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToNullableBool}}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type billablemodel:BillableExpense}">
+                        <CheckBox Content="Expense"
+                                  IsEnabled="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToIsEnabled}}"
+                                  IsThreeState="False"
+                                  IsChecked="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToNullableBool}}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type billablemodel:BillableBillableHour}">
+                        <CheckBox Content="Billable Hour"
+                                  IsEnabled="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToIsEnabled}}"
+                                  IsThreeState="False"
+                                  IsChecked="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToNullableBool}}" />
+                    </DataTemplate>
+                </TreeView.Resources>
+            </TreeView>
+            <TextBlock Grid.Row="3" />
+        </Grid>
     </Grid>
 </UserControl>

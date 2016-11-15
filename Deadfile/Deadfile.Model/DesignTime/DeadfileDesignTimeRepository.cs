@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Entity;
+using Deadfile.Model.Billable;
 using Deadfile.Model.Browser;
 using Deadfile.Model.Interfaces;
 
@@ -128,6 +129,11 @@ namespace Deadfile.Model.DesignTime
         }
 
         public IEnumerable<BrowserModel> GetBrowserJobsForInvoice(BrowserMode mode, bool includeInactiveEnabled, int invoiceId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<BillableModel> GetBillableModelsForClient(int clientId, int invoiceId)
         {
             throw new NotImplementedException();
         }

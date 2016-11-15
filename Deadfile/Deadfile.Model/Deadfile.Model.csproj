@@ -75,6 +75,13 @@
   <ItemGroup>
     <Compile Include="ApplicationModel.cs" />
     <Compile Include="BillableHourModel.cs" />
+    <Compile Include="Billable\BillableApplication.cs" />
+    <Compile Include="Billable\BillableBillableHour.cs" />
+    <Compile Include="Billable\BillableExpense.cs" />
+    <Compile Include="Billable\BillableJob.cs" />
+    <Compile Include="Billable\BillableModel.cs" />
+    <Compile Include="Billable\BillableModelState.cs" />
+    <Compile Include="Billable\BillableModelType.cs" />
     <Compile Include="Browser\BrowserClient.cs" />
     <Compile Include="Browser\BrowserInvoice.cs" />
     <Compile Include="Browser\BrowserJob.cs" />

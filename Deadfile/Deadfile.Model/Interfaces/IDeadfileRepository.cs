@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Model.Billable;
 using Deadfile.Model.Browser;
 
 namespace Deadfile.Model.Interfaces
@@ -148,6 +149,21 @@ namespace Deadfile.Model.Interfaces
         /// <returns></returns>
         BrowserModel GetBrowserClientById(BrowserMode mode, bool includeInactiveEnabled, int clientId);
 
+        /// <summary>
+        /// Get the browser jobs for a given invoice.
+        /// </summary>
+        /// <param name="mode"></param>
+        /// <param name="includeInactiveEnabled"></param>
+        /// <param name="invoiceId"></param>
+        /// <returns></returns>
         IEnumerable<BrowserModel> GetBrowserJobsForInvoice(BrowserMode mode, bool includeInactiveEnabled, int invoiceId);
+
+        /// <summary>
+        /// Get the billable models for a given client.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="invoiceId"></param>
+        /// <returns></returns>
+        IEnumerable<BillableModel> GetBillableModelsForClient(int clientId, int invoiceId);
     }
 }

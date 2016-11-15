@@ -14,5 +14,6 @@ namespace Deadfile.Entity
         public int BillableHourId { get; set; }
 
         public int JobId { get; set; }
+        public int? InvoiceId { get; set; }
     }
 }

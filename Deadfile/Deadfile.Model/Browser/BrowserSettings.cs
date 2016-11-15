@@ -31,7 +31,6 @@ namespace Deadfile.Model.Browser
         }
 
         private string _filterText = "";
-
         public string FilterText
         {
             get { return _filterText; }

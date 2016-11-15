@@ -25,6 +25,6 @@ namespace Deadfile.Entity
 
         public int JobId { get; set; }
 
-        public virtual Job Job { get; set; }
+        public int? InvoiceId { get; set; }
     }
 }

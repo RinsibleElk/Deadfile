@@ -10,7 +10,7 @@ using Deadfile.Entity;
 namespace Deadfile.Infrastructure.Converters
 {
     [ValueConversion(typeof(ApplicationType), typeof(string))]
-    public class ApplicationTypeToStringConerter : IValueConverter
+    public class ApplicationTypeToStringConverter : IValueConverter
     {
         /// <summary>
         /// Convert camel case to spaces and '_' to ' - ' and ' Of ' to ' of '.
