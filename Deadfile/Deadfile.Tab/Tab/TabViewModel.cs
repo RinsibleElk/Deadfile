@@ -63,7 +63,11 @@ namespace Deadfile.Tab.Tab
                     BrowserAndActionsAreVisible = true;
                 }
                 else
+                {
+                    _navigationService.RequestDeactivate(this, nameof(ActionsPad));
                     BrowserAndActionsAreVisible = false;
+                }
+                ContentArea?.CompleteNavigation();
             }
         }
 
@@ -125,12 +129,21 @@ namespace Deadfile.Tab.Tab
 
             // Subscribe to the clients page requesting navigation to create a new job for a selected client.
             _addNewJobSubscriptionToken = _eventAggregator.GetEvent<AddNewJobEvent>().Subscribe(AddNewJobAction);
+
+            // Subscribe to the clients page requesting navigation to create a new invoice for a selected client.
+            _invoiceClientSubscriptionToken = _eventAggregator.GetEvent<InvoiceClientEvent>().Subscribe(InvoiceClientAction);
         }
 
         private void AddNewJobAction(int clientId)
         {
             //TODO Sort out magic strings.
             _navigationService.RequestNavigate(this, nameof(ContentArea), "JobsPage", new ClientAndJob(clientId, ModelBase.NewModelId));
+        }
+
+        private void InvoiceClientAction(int clientId)
+        {
+            //TODO Sort out magic strings.
+            _navigationService.RequestNavigate(this, nameof(ContentArea), "InvoicesPage", new ClientAndInvoice(clientId, ModelBase.NewModelId));
         }
 
         protected override void OnDeactivate(bool close)
@@ -144,6 +157,8 @@ namespace Deadfile.Tab.Tab
             // Unsubscribe from the clients page notifications.
             _eventAggregator.GetEvent<AddNewJobEvent>().Unsubscribe(_addNewJobSubscriptionToken);
             _addNewJobSubscriptionToken = null;
+            _eventAggregator.GetEvent<InvoiceClientEvent>().Unsubscribe(_invoiceClientSubscriptionToken);
+            _invoiceClientSubscriptionToken = null;
 
             // Tear everything down and free up resources.
             //TODO for some reason these don't all actually get freed - what the hell is holding on to these damn things????!!
@@ -162,6 +177,7 @@ namespace Deadfile.Tab.Tab
         private object _actionsPad;
         private bool _browserAndActionsAreVisible;
         private SubscriptionToken _addNewJobSubscriptionToken = null;
+        private SubscriptionToken _invoiceClientSubscriptionToken = null;
 
         private void NavigateToExperience(SelectedItemPacket packet)
         {

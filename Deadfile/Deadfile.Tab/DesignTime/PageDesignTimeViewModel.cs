@@ -24,6 +24,11 @@ namespace Deadfile.Tab.DesignTime
 
         public virtual Experience Experience { get; }
         public bool ShowActionsPad { get; } = false;
+        public void CompleteNavigation()
+        {
+            throw new NotImplementedException();
+        }
+
         public void ActivateUndoTracker<TObjectUnderEdit>(UndoTracker<TObjectUnderEdit> newActiveUndoTracker, TObjectUnderEdit objectUnderEdit) where TObjectUnderEdit : ModelBase
         {
             throw new NotImplementedException();

@@ -12,5 +12,7 @@ namespace Deadfile.Tab.Clients
     {
         void AddNewJob();
         bool CanAddNewJob { get; }
+        void InvoiceClient();
+        bool CanInvoiceClient { get; }
     }
 }

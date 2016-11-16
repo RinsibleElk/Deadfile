@@ -111,6 +111,9 @@ namespace Deadfile.Tab.Common
 
         public abstract Experience Experience { get; }
         public bool ShowActionsPad { get; } = false;
+        public void CompleteNavigation()
+        {
+        }
 
         public bool Editable
         {

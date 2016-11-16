@@ -39,6 +39,9 @@ namespace Deadfile.Tab.Home
         }
 
         public bool ShowActionsPad { get; } = true;
+        public void CompleteNavigation()
+        {
+        }
 
         public void OnNavigatedTo(object parameters)
         {

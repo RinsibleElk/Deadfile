@@ -32,14 +32,13 @@ namespace Deadfile.Tab.Invoices
             Jobs = new ObservableCollection<BillableModel>(_repository.GetBillableModelsForClient(clientAndInvoice.ClientId, clientAndInvoice.InvoiceId));
         }
 
-        public override InvoiceModel GetModel(ClientAndInvoice clientAndInvoice)
+        protected override InvoiceModel GetModel(ClientAndInvoice clientAndInvoice)
         {
             InvoiceModel invoiceModel;
             if (clientAndInvoice.Equals(default(ClientAndInvoice)) || clientAndInvoice.InvoiceId == 0 || clientAndInvoice.InvoiceId == ModelBase.NewModelId)
             {
                 invoiceModel = new InvoiceModel();
                 DisplayName = "New Invoice";
-                Editable = true;
             }
             else
             {
@@ -51,6 +50,11 @@ namespace Deadfile.Tab.Invoices
             }
             EventAggregator.GetEvent<DisplayNameEvent>().Publish(DisplayName);
             return invoiceModel;
+        }
+
+        protected override bool ShouldEditOnNavigate(ClientAndInvoice clientAndInvoice)
+        {
+            return clientAndInvoice.InvoiceId == ModelBase.NewModelId;
         }
 
         public override void EditingStatusChanged(bool editable)

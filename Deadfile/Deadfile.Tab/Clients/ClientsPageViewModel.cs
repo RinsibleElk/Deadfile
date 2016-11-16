@@ -14,7 +14,6 @@ namespace Deadfile.Tab.Clients
 {
     public class ClientsPageViewModel : EditableItemViewModel<int, ClientModel>, IClientsPageViewModel
     {
-        private bool _canAddNewJob = false;
         private readonly IDeadfileRepository _repository;
 
         public ClientsPageViewModel(IEventAggregator eventAggregator, IDeadfileRepository repository) : base(eventAggregator)
@@ -31,6 +30,16 @@ namespace Deadfile.Tab.Clients
             EventAggregator.GetEvent<AddNewJobEvent>().Publish(SelectedItem.ClientId);
         }
 
+        /// <summary>
+        /// User hits the button for Invoice Client.
+        /// </summary>
+        public void InvoiceClient()
+        {
+            // Navigate to the Invoices page with the specified Client and no invoice given.
+            EventAggregator.GetEvent<InvoiceClientEvent>().Publish(SelectedItem.ClientId);
+        }
+
+        private bool _canAddNewJob = false;
         public bool CanAddNewJob
         {
             get { return _canAddNewJob; }
@@ -42,14 +51,28 @@ namespace Deadfile.Tab.Clients
             }
         }
 
-        public override void OnNavigatedTo(int selectedId)
+        private bool _canInvoiceClient = false;
+        public bool CanInvoiceClient
         {
-            base.OnNavigatedTo(selectedId == 0 ? ModelBase.NewModelId : selectedId);
-
-            CanAddNewJob = !Editable;
+            get { return _canInvoiceClient; }
+            set
+            {
+                if (value == _canInvoiceClient) return;
+                _canInvoiceClient = value;
+                NotifyOfPropertyChange(() => CanInvoiceClient);
+            }
         }
 
-        public override ClientModel GetModel(int id)
+        public override void OnNavigatedTo(int selectedId)
+        {
+            var idToSelect = selectedId == 0 ? ModelBase.NewModelId : selectedId;
+            base.OnNavigatedTo(idToSelect);
+
+            CanAddNewJob = (!Editable) && (idToSelect != ModelBase.NewModelId);
+            CanInvoiceClient = (!Editable) && (idToSelect != ModelBase.NewModelId);
+        }
+
+        protected override ClientModel GetModel(int id)
         {
             ClientModel clientModel;
             if (id == 0 || id == ModelBase.NewModelId)
@@ -69,9 +92,15 @@ namespace Deadfile.Tab.Clients
             return clientModel;
         }
 
+        protected override bool ShouldEditOnNavigate(int key)
+        {
+            return false;
+        }
+
         public override void EditingStatusChanged(bool editable)
         {
             CanAddNewJob = (!Editable) && (SelectedItem.ClientId != ModelBase.NewModelId);
+            CanInvoiceClient = (!Editable) && (SelectedItem.ClientId != ModelBase.NewModelId);
         }
 
         public override void PerformSave()

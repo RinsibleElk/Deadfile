@@ -115,6 +115,7 @@
     <Compile Include="Events\DiscardChangesEvent.cs" />
     <Compile Include="Events\DisplayNameEvent.cs" />
     <Compile Include="Events\EditActionMessage.cs" />
+    <Compile Include="Events\InvoiceClientEvent.cs" />
     <Compile Include="Events\LockedForEditingMessage.cs" />
     <Compile Include="Events\NavigateMessage.cs" />
     <Compile Include="Events\SaveMessage.cs" />

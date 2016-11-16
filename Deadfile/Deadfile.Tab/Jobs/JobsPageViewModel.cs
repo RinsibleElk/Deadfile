@@ -35,14 +35,13 @@ namespace Deadfile.Tab.Jobs
             _repository = repository;
         }
 
-        public override JobModel GetModel(ClientAndJob clientAndJob)
+        protected override JobModel GetModel(ClientAndJob clientAndJob)
         {
             JobModel jobModel;
             if (clientAndJob.Equals(default(ClientAndJob)) || clientAndJob.JobId == 0 || clientAndJob.JobId == ModelBase.NewModelId)
             {
                 jobModel = new JobModel();
                 DisplayName = "New Job";
-                Editable = true;
             }
             else
             {
@@ -54,6 +53,11 @@ namespace Deadfile.Tab.Jobs
             }
             EventAggregator.GetEvent<DisplayNameEvent>().Publish(DisplayName);
             return jobModel;
+        }
+
+        protected override bool ShouldEditOnNavigate(ClientAndJob clientAndJob)
+        {
+            return clientAndJob.JobId == ModelBase.NewModelId;
         }
 
         public override void EditingStatusChanged(bool editable)

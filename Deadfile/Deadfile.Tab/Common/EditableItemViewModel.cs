@@ -36,7 +36,14 @@ namespace Deadfile.Tab.Common
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public abstract T GetModel(K key);
+        protected abstract T GetModel(K key);
+
+        /// <summary>
+        /// Ask the specific implementation whether to edit on navigate.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        protected abstract bool ShouldEditOnNavigate(K key);
 
         /// <summary>
         /// Respond to an event from the <see cref="NavigationBarViewModel"/>. This should only happen if an Undo or Redo is possible (marshalled to the
@@ -206,13 +213,31 @@ namespace Deadfile.Tab.Common
             Editable = editAction != EditActionMessage.EndEditing;
         }
 
+        private bool _pendingEdit = false;
+
         public override void OnNavigatedTo(K parameters)
         {
             base.OnNavigatedTo(parameters);
 
+            // Get the model.
             SelectedItem = GetModel(parameters);
             _handleEditActionSubscriptionToken = EventAggregator.GetEvent<EditActionEvent>().Subscribe(HandleEditAction);
             _handleUndoSubcriptionToken = EventAggregator.GetEvent<UndoEvent>().Subscribe(HandleUndo);
+
+            // Important. We cannot just immediately start editing - this is because the actions pad will not be loaded yet.
+            _pendingEdit = ShouldEditOnNavigate(parameters);
+        }
+
+        /// <summary>
+        /// Finalise navigation by enabling editing if requested.
+        /// </summary>
+        public void CompleteNavigation()
+        {
+            if (_pendingEdit)
+            {
+                _pendingEdit = false;
+                Editable = true;
+            }
         }
 
         public override void OnNavigatedFrom()
