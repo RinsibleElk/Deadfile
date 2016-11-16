@@ -15,5 +15,7 @@ namespace Deadfile.Model.Billable
         {
             get { return BillableModelType.Expense; }
         }
+
+        public override string Text { get { return "Expense (" + NetAmount + ")"; } }
     }
 }

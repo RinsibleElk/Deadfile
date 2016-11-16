@@ -30,5 +30,27 @@ namespace Deadfile.Model.Billable
             get { return _state; }
             set { SetProperty(ref _state, value); }
         }
+
+        private double _netAmount;
+        public double NetAmount
+        {
+            get { return _netAmount; }
+            set { SetProperty(ref _netAmount, value); }
+        }
+
+        public abstract string Text { get; }
+
+        private bool _isExpanded = false;
+        /// <summary>
+        /// Gets/sets whether the TreeViewItem associated with this object is expanded.
+        /// </summary>
+        public bool IsExpanded
+        {
+            get { return _isExpanded; }
+            set
+            {
+                SetProperty(ref _isExpanded, value);
+            }
+        }
     }
 }

@@ -26,5 +26,14 @@ namespace Deadfile.Model.Billable
             get { return _fullAddress; }
             set { SetProperty(ref _fullAddress, value); }
         }
+
+        private double _totalPossibleNetAmount;
+        public double TotalPossibleNetAmount
+        {
+            get { return _totalPossibleNetAmount; }
+            set { SetProperty(ref _totalPossibleNetAmount, value); }
+        }
+
+        public override string Text { get { return FullAddress + " (" + NetAmount + "/" + TotalPossibleNetAmount + ")"; } }
     }
 }

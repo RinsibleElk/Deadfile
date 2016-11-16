@@ -42,30 +42,12 @@
                     </Style>
                 </TreeView.ItemContainerStyle>
                 <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type billablemodel:BillableJob}" ItemsSource="{Binding Children}">
-                        <CheckBox Content="{Binding FullAddress}"
+                    <HierarchicalDataTemplate DataType="{x:Type billablemodel:BillableModel}" ItemsSource="{Binding Children}">
+                        <CheckBox Content="{Binding Text}"
                                   IsEnabled="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToIsEnabled}}"
-                                  IsThreeState="True"
+                                  IsThreeState="False"
                                   IsChecked="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToNullableBool}}" />
                     </HierarchicalDataTemplate>
-                    <DataTemplate DataType="{x:Type billablemodel:BillableApplication}">
-                        <CheckBox Content="{Binding LocalAuthorityReference}"
-                                  IsEnabled="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToIsEnabled}}"
-                                  IsThreeState="False"
-                                  IsChecked="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToNullableBool}}" />
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type billablemodel:BillableExpense}">
-                        <CheckBox Content="Expense"
-                                  IsEnabled="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToIsEnabled}}"
-                                  IsThreeState="False"
-                                  IsChecked="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToNullableBool}}" />
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type billablemodel:BillableBillableHour}">
-                        <CheckBox Content="Billable Hour"
-                                  IsEnabled="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToIsEnabled}}"
-                                  IsThreeState="False"
-                                  IsChecked="{Binding State, Mode=TwoWay, Converter={StaticResource BillableModelStateToNullableBool}}" />
-                    </DataTemplate>
                 </TreeView.Resources>
             </TreeView>
             <TextBlock Grid.Row="3" />

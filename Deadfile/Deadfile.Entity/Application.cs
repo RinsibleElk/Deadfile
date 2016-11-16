@@ -23,6 +23,9 @@ namespace Deadfile.Entity
         [Required(ErrorMessage = "An Application must have a type.")]
         public ApplicationType Type { get; set; }
 
+        [Required(ErrorMessage = "An Application must have an amount associated")]
+        public double NetAmount { get; set; }
+
         public int JobId { get; set; }
 
         public int? InvoiceId { get; set; }

@@ -339,7 +339,8 @@ namespace Deadfile.Model.DesignTime
                         JobId = job.JobId,
                         Type = applicationType,
                         LocalAuthority = localAuthority,
-                        LocalAuthorityReference = localAuthority + "_" + reference
+                        LocalAuthorityReference = localAuthority + "_" + reference,
+                        NetAmount = (double)random.Next(50, 150)
                     });
                 }
             }

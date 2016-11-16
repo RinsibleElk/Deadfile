@@ -11,6 +11,9 @@ namespace Deadfile.Entity
     {
         public int ExpenseId { get; set; }
 
+        [Required(ErrorMessage = "An Expense must have an amount associated")]
+        public double NetAmount { get; set; }
+
         [MaxLength(500, ErrorMessage = "The free notes for an Expense must be less than 500 characters long.")]
         public string Notes { get; set; }
 

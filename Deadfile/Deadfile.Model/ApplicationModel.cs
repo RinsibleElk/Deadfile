@@ -48,6 +48,14 @@ namespace Deadfile.Model
             set { SetProperty(ref _creationDate, value); }
         }
 
+        private double _netAmount;
+        [Required(ErrorMessage = "An Application must have an amount associated")]
+        public double NetAmount
+        {
+            get { return _netAmount; }
+            set { SetProperty(ref _netAmount, value); }
+        }
+
         private ApplicationType _applicationType;
         [Required(ErrorMessage = "A Planning Application must have a type.")]
         public ApplicationType Type

@@ -463,6 +463,32 @@ namespace Deadfile.Model
             return li;
         }
 
+        private static void AddBillableToJob(BillableJob job,
+            BillableModel billable,
+            ref bool hasClaimed,
+            ref bool hasExcluded,
+            ref bool hasIncluded,
+            ref double totalAmount,
+            ref double includedAmount)
+        {
+            switch (billable.State)
+            {
+                case BillableModelState.Claimed:
+                    hasClaimed = true;
+                    break;
+                case BillableModelState.Excluded:
+                    hasExcluded = true;
+                    totalAmount += billable.NetAmount;
+                    break;
+                default:
+                    hasIncluded = true;
+                    includedAmount += billable.NetAmount;
+                    totalAmount += billable.NetAmount;
+                    break;
+            }
+            job.Children.Add(billable);
+        }
+
         /// <summary>
         /// Get the billable models for a client. Attribute them by state based on <see cref="invoiceId"/>.
         /// </summary>
@@ -471,22 +497,146 @@ namespace Deadfile.Model
         /// <returns></returns>
         public IEnumerable<BillableModel> GetBillableModelsForClient(int clientId, int invoiceId)
         {
-            var li = new List<BillableJob>();
+            var li2 = new List<BillableJob>();
             using (var dbContext = new DeadfileContext())
             {
                 foreach (var job in (from job in dbContext.Jobs
-                                     where job.ClientId == clientId
-                                     select new BillableJob()
-                                     {
-                                         JobId = job.JobId,
-                                         FullAddress = job.AddressFirstLine
-                                     }))
+                    where job.ClientId == clientId
+                    select new BillableJob()
+                    {
+                        JobId = job.JobId,
+                        FullAddress = job.AddressFirstLine
+                    }))
                 {
-
-                    li.Add(job);
+                    li2.Add(job);
                 }
             }
+
+            var li = new List<BillableModel>();
+            foreach (var job in li2)
+            {
+                var hasClaimed = false;
+                var hasIncluded = false;
+                var hasExcluded = false;
+                double includedAmount = 0;
+                double totalAmount = 0;
+
+                // Find all applications for this job.
+                AddApplicationsForJob(invoiceId, job, ref hasClaimed, ref hasExcluded, ref hasIncluded, ref totalAmount, ref includedAmount);
+
+                // Find all expenses for this job.
+                AddExpensesForJob(invoiceId, job, ref hasClaimed, ref hasExcluded, ref hasIncluded, ref totalAmount, ref includedAmount);
+
+                // Find all billable hours for this job.
+                AddBillableHoursForJob(invoiceId, job, ref hasClaimed, ref hasExcluded, ref hasIncluded, ref totalAmount, ref includedAmount);
+
+                // Calculate the job state based on the billable items that are included.
+                if (hasIncluded)
+                {
+                    job.State = hasClaimed || hasExcluded
+                        ? BillableModelState.PartiallyIncluded
+                        : BillableModelState.FullyIncluded;
+                }
+                else if (hasClaimed)
+                {
+                    job.State = hasExcluded ? BillableModelState.Excluded : BillableModelState.Claimed;
+                }
+                else
+                {
+                    // Includes the case where there are not any billables at all.
+                    job.State = BillableModelState.Excluded;
+                }
+                job.NetAmount = includedAmount;
+                job.TotalPossibleNetAmount = totalAmount;
+                li.Add(job);
+            }
             return li;
+        }
+
+        private static void AddBillableHoursForJob(int invoiceId, BillableJob job,
+            ref bool hasClaimed, ref bool hasExcluded, ref bool hasIncluded, ref double totalAmount,
+            ref double includedAmount)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var billableHour in (from billableHour in dbContext.BillableHours
+                    where billableHour.JobId == job.JobId
+                    select new BillableBillableHour()
+                    {
+                        NetAmount = billableHour.NetAmount,
+                        State =
+                            (invoiceId == ModelBase.NewModelId)
+                                ? (billableHour.InvoiceId == null
+                                    ? BillableModelState.Excluded
+                                    : BillableModelState.Claimed)
+                                : (billableHour.InvoiceId == null
+                                    ? BillableModelState.Excluded
+                                    : (billableHour.InvoiceId.Value == invoiceId
+                                        ? BillableModelState.FullyIncluded
+                                        : BillableModelState.Claimed))
+                    }))
+                {
+                    AddBillableToJob(job, billableHour, ref hasClaimed, ref hasExcluded, ref hasIncluded,
+                        ref totalAmount,
+                        ref includedAmount);
+                }
+            }
+        }
+
+        private static void AddExpensesForJob(int invoiceId, BillableJob job, ref bool hasClaimed,
+            ref bool hasExcluded, ref bool hasIncluded, ref double totalAmount, ref double includedAmount)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var expense in (from expense in dbContext.Expenses
+                    where expense.JobId == job.JobId
+                    select new BillableExpense()
+                    {
+                        NetAmount = expense.NetAmount,
+                        State =
+                            (invoiceId == ModelBase.NewModelId)
+                                ? (expense.InvoiceId == null ? BillableModelState.Excluded : BillableModelState.Claimed)
+                                : (expense.InvoiceId == null
+                                    ? BillableModelState.Excluded
+                                    : (expense.InvoiceId.Value == invoiceId
+                                        ? BillableModelState.FullyIncluded
+                                        : BillableModelState.Claimed))
+                    }))
+                {
+                    AddBillableToJob(job, expense, ref hasClaimed, ref hasExcluded, ref hasIncluded, ref totalAmount,
+                        ref includedAmount);
+                }
+            }
+        }
+
+        private static void AddApplicationsForJob(int invoiceId, BillableJob job, ref bool hasClaimed,
+            ref bool hasExcluded, ref bool hasIncluded, ref double totalAmount, ref double includedAmount)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var application in (from application in dbContext.Applications
+                    where application.JobId == job.JobId
+                    select new BillableApplication()
+                    {
+                        ApplicationId = application.ApplicationId,
+                        LocalAuthorityReference = application.LocalAuthorityReference,
+                        NetAmount = application.NetAmount,
+                        State =
+                            (invoiceId == ModelBase.NewModelId)
+                                ? (application.InvoiceId == null
+                                    ? BillableModelState.Excluded
+                                    : BillableModelState.Claimed)
+                                : (application.InvoiceId == null
+                                    ? BillableModelState.Excluded
+                                    : (application.InvoiceId.Value == invoiceId
+                                        ? BillableModelState.FullyIncluded
+                                        : BillableModelState.Claimed))
+                    }))
+                {
+                    AddBillableToJob(job, application, ref hasClaimed, ref hasExcluded, ref hasIncluded, ref totalAmount,
+                        ref includedAmount);
+                }
+            }
         }
     }
 }

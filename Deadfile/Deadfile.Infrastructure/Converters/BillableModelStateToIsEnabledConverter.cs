@@ -15,7 +15,7 @@ namespace Deadfile.Infrastructure.Converters
         {
             if (targetType != typeof(bool))
                 throw new ApplicationException(
-                    "Attempted to convert a billable model state to something other than a bool?");
+                    "Attempted to convert a billable model state to something other than a bool");
             var state = (BillableModelState)value;
             switch (state)
             {

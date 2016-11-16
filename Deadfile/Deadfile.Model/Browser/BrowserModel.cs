@@ -59,8 +59,7 @@ namespace Deadfile.Model.Browser
 
         private bool _isExpanded = false;
         /// <summary>
-        /// Gets/sets whether the TreeViewItem 
-        /// associated with this object is expanded.
+        /// Gets/sets whether the TreeViewItem associated with this object is expanded.
         /// </summary>
         public bool IsExpanded
         {

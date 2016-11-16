@@ -11,13 +11,21 @@ namespace Deadfile.Model.Billable
     /// </summary>
     public class BillableApplication : BillableModel
     {
-        private string _localAuthorityReference;
+        private int _applicationId;
+        public int ApplicationId
+        {
+            get { return _applicationId; }
+            set { SetProperty(ref _applicationId, value); }
+        }
 
         public override BillableModelType ModelType
         {
             get { return BillableModelType.Application; }
         }
 
+        public override string Text { get { return _localAuthorityReference + " (" + NetAmount + ")"; } }
+
+        private string _localAuthorityReference;
         public string LocalAuthorityReference
         {
             get { return _localAuthorityReference; }
