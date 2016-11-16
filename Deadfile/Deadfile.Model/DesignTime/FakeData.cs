@@ -275,6 +275,7 @@ namespace Deadfile.Model.DesignTime
         private static void AddSingleFakeInvoice(DeadfileContext dbContext, int clientId, int jobId, Random random)
         {
             var client = dbContext.Clients.Find(new object[1] {clientId});
+            var job = dbContext.Jobs.Find(new object[1] {jobId});
             var clientFullName = String.Join(" ", new string[] {client.Title, client.FirstName, client.LastName});
             var creationDate = new DateTime(2015, 1, 1).AddDays(random.Next(500));
             var company = (random.Next(2) == 0) ? Company.PaulSamsonCharteredSurveyorLtd : Company.Imagine3DLtd;
@@ -295,7 +296,9 @@ namespace Deadfile.Model.DesignTime
                         GrossAmount = netAmount * (company == Company.PaulSamsonCharteredSurveyorLtd ? 1.2 : 1.0),
                         NetAmount = netAmount,
                         ClientName = clientFullName,
-                        ClientAddress = client.AddressFirstLine
+                        ClientAddress = client.AddressFirstLine,
+                        Project = job.Description,
+                        Description = job.Description + " Description"
                     };
             dbContext.Invoices.Add(invoice);
             _addedInvoicesForJob[jobId].Add(new Tuple<Company, int>(company, reference));

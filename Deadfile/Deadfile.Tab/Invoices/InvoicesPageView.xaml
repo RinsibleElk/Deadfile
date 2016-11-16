@@ -15,20 +15,34 @@
              d:DataContext="{d:DesignInstance Type=local:InvoicesPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="1000" d:DesignWidth="1200">
     <UserControl.Resources>
-        <Style x:Key="PksTextBlock" TargetType="TextBlock">
+        <Style x:Key="PksTextBlock" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="FontSize" Value="12" />
             <Setter Property="Foreground" Value="DarkBlue" />
             <Setter Property="Margin" Value="20" />
         </Style>
-        <Style x:Key="InvoiceTextBox" TargetType="TextBox">
+        <Style x:Key="InvoiceTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
             <Setter Property="Width" Value="150" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="Calibri" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+        <Style x:Key="PksTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Margin" Value="0,15,0,15" />
             <Setter Property="FontSize" Value="12" />
             <Setter Property="FontFamily" Value="Calibri" />
             <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
         <Style x:Key="InvoiceDatePicker" TargetType="DatePicker">
             <Setter Property="Width" Value="150" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="Calibri" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+        <Style x:Key="PksDatePicker" TargetType="DatePicker">
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Margin" Value="0,15,0,15" />
             <Setter Property="FontSize" Value="12" />
             <Setter Property="FontFamily" Value="Calibri" />
             <Setter Property="HorizontalAlignment" Value="Left" />
@@ -84,18 +98,37 @@
                                        Grid.Column="0"
                                        Style="{StaticResource PksTextBlock}"
                                        Text="Invoice Number:"/>
+                            <TextBox Grid.Row="0"
+                                     Grid.Column="1"
+                                     Style="{StaticResource PksTextBox}"
+                                     controls:TextBoxHelper.Watermark="Reference"
+                                     Text="{Binding InvoiceReference}" />
                             <TextBlock Grid.Row="1"
                                        Grid.Column="0"
                                        Style="{StaticResource PksTextBlock}"
-                                       Text="Invoice Date:"/>
+                                       Text="Invoice Date:" />
+                            <DatePicker Grid.Row="1"
+                                        Grid.Column="1"
+                                        Style="{StaticResource PksDatePicker}"
+                                        SelectedDate="{Binding CreatedDate}" />
                             <TextBlock Grid.Row="0"
                                        Grid.Column="2"
                                        Style="{StaticResource PksTextBlock}"
                                        Text="Invoiced To:"/>
+                            <TextBox Grid.Row="0"
+                                     Grid.Column="3"
+                                     Style="{StaticResource PksTextBox}"
+                                     Text="{Binding ClientName}"
+                                     controls:TextBoxHelper.Watermark="Client Name" />
                             <TextBlock Grid.Row="1"
                                        Grid.Column="2"
                                        Style="{StaticResource PksTextBlock}"
                                        Text="Invoice Address:"/>
+                            <TextBox Grid.Row="1"
+                                     Grid.Column="3"
+                                     Style="{StaticResource PksTextBox}"
+                                     Text="{Binding ClientAddress}"
+                                     controls:TextBoxHelper.Watermark="Client Address" />
                             <TextBlock Grid.Row="2"
                                        Grid.Column="0"
                                        Style="{StaticResource PksTextBlock}"
@@ -104,6 +137,11 @@
                                        Grid.Column="0"
                                        Style="{StaticResource PksTextBlock}"
                                        Text="Property:"/>
+                            <!--Text="{Binding }"-->
+                            <TextBox Grid.Row="3"
+                                     Grid.Column="1"
+                                     Style="{StaticResource PksTextBox}"
+                                     controls:TextBoxHelper.Watermark="Client Address" />
                             <TextBlock Grid.Row="4"
                                        Grid.Column="0"
                                        Style="{StaticResource PksTextBlock}"
@@ -305,7 +343,7 @@
             </ScrollViewer>
         </DataTemplate>
         <Style TargetType="{x:Type ContentControl}" x:Key="InvoiceDisplay">
-            <Setter Property="ContentTemplate" Value="{StaticResource PksTemplate}" />
+            <Setter Property="ContentTemplate" Value="{StaticResource I3DTemplate}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding SelectedItem.Company}" 
                              Value="{x:Static entity:Company.PaulSamsonCharteredSurveyorLtd}">

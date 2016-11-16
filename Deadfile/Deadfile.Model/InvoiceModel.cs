@@ -93,6 +93,24 @@ namespace Deadfile.Model
             set { SetProperty(ref _clientAddress, value); }
         }
 
+        private string _project;
+        [Required(ErrorMessage = "An Invoice must have a Project."),
+         MinLength(1, ErrorMessage = "A Project must be at least 1 character long."),
+         MaxLength(100, ErrorMessage = "A Project must be at most 100 characters long.")]
+        public string Project
+        {
+            get { return _project; }
+            set { SetProperty(ref _project, value); }
+        }
+
+        private string _description;
+        [MaxLength(100, ErrorMessage = "A Description must be at most 100 characters long.")]
+        public string Description
+        {
+            get { return _description; }
+            set { SetProperty(ref _description, value); }
+        }
+
         private ObservableCollection<InvoiceItemModel> _activeItems = new ObservableCollection<InvoiceItemModel>();
         public ObservableCollection<InvoiceItemModel> ActiveItems
         {

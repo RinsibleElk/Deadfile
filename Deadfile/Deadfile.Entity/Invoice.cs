@@ -36,6 +36,14 @@ namespace Deadfile.Entity
          MaxLength(100, ErrorMessage = "Client Address must be at most 100 character long.")]
         public string ClientAddress { get; set; }
 
+        [Required(ErrorMessage = "An Invoice must have a Project."),
+         MinLength(1, ErrorMessage = "A Project must be at least 1 character long."),
+         MaxLength(100, ErrorMessage = "A Project must be at most 100 characters long.")]
+        public string Project { get; set; }
+
+        [MaxLength(100, ErrorMessage = "A Description must be at most 100 characters long.")]
+        public string Description { get; set; }
+
         public int ClientId { get; set; }
 
         public virtual ICollection<JobInvoiceMapping> JobInvoiceMappings { get; set; }
