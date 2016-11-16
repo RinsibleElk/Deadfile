@@ -63,6 +63,15 @@ namespace Deadfile.Tab.Invoices
 
         public override void PerformSave()
         {
+            try
+            {
+                _repository.SaveInvoice(SelectedItem);
+            }
+            catch (Exception)
+            {
+                //TODO Do something. Like raise a dialog box or something. Then clean up.
+                throw;
+            }
         }
 
         public Experience Experience { get; } = Experience.Invoices;

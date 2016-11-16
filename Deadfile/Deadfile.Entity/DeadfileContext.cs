@@ -34,5 +34,6 @@ namespace Deadfile.Entity
         public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<LocalAuthority> LocalAuthorities { get; set; }
         public virtual DbSet<JobInvoiceMapping> JobInvoiceMappings { get; set; }
+        public virtual DbSet<InvoiceItem> InvoiceItems { get; set; }
     }
 }

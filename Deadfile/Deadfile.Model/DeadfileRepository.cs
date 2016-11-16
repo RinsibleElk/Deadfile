@@ -314,11 +314,26 @@ namespace Deadfile.Model
 
         public InvoiceModel GetInvoiceById(int invoiceId)
         {
+            // Get the invoice model.
+            InvoiceModel invoiceModel;
             using (var dbContext = new DeadfileContext())
             {
                 var invoice = dbContext.Invoices.Find(invoiceId);
-                return _modelEntityMapper.Mapper.Map<InvoiceModel>(invoice);
+                invoiceModel = _modelEntityMapper.Mapper.Map<InvoiceModel>(invoice);
             }
+
+            // Get the active items.
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var invoiceItem in (from invoiceItem in dbContext.InvoiceItems
+                                             where invoiceItem.InvoiceId == invoiceId
+                                             select invoiceItem))
+                {
+                    invoiceModel.ActiveItems.Add(_modelEntityMapper.Mapper.Map<InvoiceItemModel>(invoiceItem));
+                }
+            }
+
+            return invoiceModel;
         }
 
         public void SaveClient(ClientModel clientModel)
@@ -337,6 +352,70 @@ namespace Deadfile.Model
                     _modelEntityMapper.Mapper.Map<ClientModel, Client>(clientModel, client);
                 }
                 dbContext.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Save changes to an invoice (or add a new one).
+        /// </summary>
+        /// <param name="invoiceModel"></param>
+        public void SaveInvoice(InvoiceModel invoiceModel)
+        {
+            if (invoiceModel.InvoiceId == ModelBase.NewModelId)
+            {
+                // Add
+                int invoiceId;
+                using (var dbContext = new DeadfileContext())
+                {
+                    var invoice = _modelEntityMapper.Mapper.Map<InvoiceModel, Invoice>(invoiceModel);
+                    dbContext.Invoices.Add(invoice);
+                    dbContext.SaveChanges();
+                    invoiceId = invoice.InvoiceId;
+                }
+
+                // Now I'm rather hoping that the invoiceId has been updated.
+                if (invoiceId == ModelBase.NewModelId)
+                    throw new ApplicationException("The invoice id has not been updated");
+                invoiceModel.InvoiceId = invoiceId;
+            }
+            else
+            {
+                // Edit
+                using (var dbContext = new DeadfileContext())
+                {
+                    var invoice = dbContext.Invoices.Find(new object[1] {invoiceModel.InvoiceId});
+                    _modelEntityMapper.Mapper.Map<InvoiceModel, Invoice>(invoiceModel, invoice);
+                    dbContext.SaveChanges();
+                }
+            }
+
+            // Now remove the newly deleted invoice items.
+            foreach (var inactiveInvoiceItemModel in invoiceModel.InactiveItems)
+            {
+                using (var dbContext = new DeadfileContext())
+                {
+                    var inactiveInvoiceItem = dbContext.InvoiceItems.Find(new object[1] {inactiveInvoiceItemModel.InvoiceItemId});
+                    dbContext.InvoiceItems.Remove(inactiveInvoiceItem);
+                    dbContext.SaveChanges();
+                }
+            }
+
+            // Finally add/edit the active invoice items.
+            foreach (var invoiceItemModel in invoiceModel.ActiveItems)
+            {
+                using (var dbContext = new DeadfileContext())
+                {
+                    if (invoiceItemModel.InvoiceItemId == ModelBase.NewModelId)
+                    {
+                        dbContext.InvoiceItems.Add(_modelEntityMapper.Mapper.Map<InvoiceItemModel, InvoiceItem>(invoiceItemModel));
+                    }
+                    else
+                    {
+                        var invoiceItem = dbContext.InvoiceItems.Find(new object[1] {invoiceItemModel.InvoiceItemId});
+                        _modelEntityMapper.Mapper.Map<InvoiceItemModel, InvoiceItem>(invoiceItemModel, invoiceItem);
+                    }
+                    dbContext.SaveChanges();
+                }
             }
         }
 

@@ -26,8 +26,20 @@ namespace Deadfile.Entity
         [Required(ErrorMessage = "An Invoice requires a Company that it has been issued for.")]
         public Company Company { get; set; }
 
+        [Required(ErrorMessage = "An Invoice requires a Client Name."),
+         MinLength(1, ErrorMessage = "Client Name must be at least 1 character long."),
+         MaxLength(100, ErrorMessage = "Client Name must be at most 100 character long.")]
+        public string ClientName { get; set; }
+
+        [Required(ErrorMessage = "An Invoice requires a Client Address."),
+         MinLength(1, ErrorMessage = "Client Address must be at least 1 character long."),
+         MaxLength(100, ErrorMessage = "Client Address must be at most 100 character long.")]
+        public string ClientAddress { get; set; }
+
         public int ClientId { get; set; }
 
         public virtual ICollection<JobInvoiceMapping> JobInvoiceMappings { get; set; }
+
+        public virtual ICollection<InvoiceItem> InvoiceItems { get; set; }
     }
 }

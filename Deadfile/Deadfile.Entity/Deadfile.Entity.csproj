@@ -60,6 +60,7 @@
     <Compile Include="EmployeeStatus.cs" />
     <Compile Include="Expense.cs" />
     <Compile Include="Invoice.cs" />
+    <Compile Include="InvoiceItem.cs" />
     <Compile Include="InvoiceStatus.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="JobInvoiceMapping.cs" />

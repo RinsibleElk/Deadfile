@@ -98,6 +98,7 @@
     <Compile Include="Interfaces\IDeadfileRepository.cs" />
     <Compile Include="Interfaces\IModelEntityMapper.cs" />
     <Compile Include="Interfaces\IRandomNumberGenerator.cs" />
+    <Compile Include="InvoiceItemModel.cs" />
     <Compile Include="InvoiceModel.cs" />
     <Compile Include="JobChildModelBase.cs" />
     <Compile Include="JobModel.cs" />

@@ -21,6 +21,8 @@ namespace Deadfile.Model
                 cfg.CreateMap<JobModel, Job>();
                 cfg.CreateMap<Invoice, InvoiceModel>();
                 cfg.CreateMap<InvoiceModel, Invoice>();
+                cfg.CreateMap<InvoiceItem, InvoiceItemModel>();
+                cfg.CreateMap<InvoiceItemModel, InvoiceItem>();
                 cfg.CreateMap<Quotation, QuotationModel>();
                 cfg.CreateMap<QuotationModel, Quotation>();
                 cfg.CreateMap<Application, ApplicationModel>();

@@ -171,5 +171,11 @@ namespace Deadfile.Model.Interfaces
         /// </summary>
         /// <param name="jobModel"></param>
         void SaveJob(JobModel jobModel);
+
+        /// <summary>
+        /// Save changes to an invoice (or create a new one).
+        /// </summary>
+        /// <param name="invoiceModel"></param>
+        void SaveInvoice(InvoiceModel invoiceModel);
     }
 }

@@ -214,7 +214,6 @@ namespace Deadfile.Tab.Common
         }
 
         private bool _pendingEdit = false;
-
         public override void OnNavigatedTo(K parameters)
         {
             base.OnNavigatedTo(parameters);

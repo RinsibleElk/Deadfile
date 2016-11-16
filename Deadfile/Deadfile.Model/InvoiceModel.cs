@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -26,8 +27,7 @@ namespace Deadfile.Model
             set { SetProperty(ref _invoiceId, value); }
         }
 
-        private DateTime _createdDate;
-
+        private DateTime _createdDate = DateTime.Today;
         [Required(ErrorMessage = "An Invoice must have a creation date.")]
         public DateTime CreatedDate
         {
@@ -70,6 +70,41 @@ namespace Deadfile.Model
         {
             get { return _company; }
             set { SetProperty(ref _company, value); }
+        }
+
+        private string _clientName;
+        [Required(ErrorMessage = "An Invoice requires a Client Name."),
+         MinLength(1, ErrorMessage = "Client Name must be at least 1 character long."),
+         MaxLength(100, ErrorMessage = "Client Name must be at most 100 character long.")]
+        public string ClientName
+        {
+            get { return _clientName; }
+            set { SetProperty(ref _clientName, value); }
+        }
+
+        private string _clientAddress;
+
+        [Required(ErrorMessage = "An Invoice requires a Client Address."),
+         MinLength(1, ErrorMessage = "Client Address must be at least 1 character long."),
+         MaxLength(100, ErrorMessage = "Client Address must be at most 100 character long.")]
+        public string ClientAddress
+        {
+            get { return _clientAddress; }
+            set { SetProperty(ref _clientAddress, value); }
+        }
+
+        private ObservableCollection<InvoiceItemModel> _activeItems = new ObservableCollection<InvoiceItemModel>();
+        public ObservableCollection<InvoiceItemModel> ActiveItems
+        {
+            get { return _activeItems; }
+            set { SetProperty(ref _activeItems, value); }
+        }
+
+        private ObservableCollection<InvoiceItemModel> _inactiveItems = new ObservableCollection<InvoiceItemModel>();
+        public ObservableCollection<InvoiceItemModel> InactiveItems
+        {
+            get { return _inactiveItems; }
+            set { SetProperty(ref _inactiveItems, value); }
         }
     }
 }

@@ -21,6 +21,18 @@
             <Setter Property="Foreground" Value="DarkBlue" />
             <Setter Property="Margin" Value="20" />
         </Style>
+        <Style x:Key="InvoiceTextBox" TargetType="TextBox">
+            <Setter Property="Width" Value="150" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="Calibri" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+        <Style x:Key="InvoiceDatePicker" TargetType="DatePicker">
+            <Setter Property="Width" Value="150" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="Calibri" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
         <DataTemplate x:Key="PksTemplate" DataType="model:InvoiceModel">
             <ScrollViewer>
                 <Grid Margin="50,50,50,50">
@@ -233,20 +245,23 @@
                             <TextBlock Grid.Row="5" Grid.Column="0" FontSize="12" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Of:"/>
                             <TextBox    Grid.Row="0"
                                         Grid.Column="1"
-                                        Width="150"
-                                        FontSize="12"
-                                        FontFamily="Calibri"
-                                        controls:TextBoxHelper.Watermark="Invoice"
-                                        HorizontalAlignment="Left" />
+                                        Style="{StaticResource InvoiceTextBox}"
+                                        Text="{Binding InvoiceReference}"
+                                        controls:TextBoxHelper.Watermark="Reference" />
                             <DatePicker Grid.Row="1"
                                         Grid.Column="1"
-                                        Width="150"
-                                        FontSize="12"
-                                        FontFamily="Calibri"
-                                        HorizontalAlignment="Left"
+                                        Style="{StaticResource InvoiceDatePicker}"
                                         SelectedDate="{Binding CreatedDate}" />
-                            <TextBox    Grid.Row="3" Grid.Column="1" Width="150" FontSize="12" FontFamily="Calibri" controls:TextBoxHelper.Watermark="To" HorizontalAlignment="Left" />
-                            <TextBox    Grid.Row="5" Grid.Column="1" Width="150" FontSize="12" FontFamily="Calibri" controls:TextBoxHelper.Watermark="Of" HorizontalAlignment="Left" />
+                            <TextBox    Grid.Row="3"
+                                        Grid.Column="1"
+                                        Style="{StaticResource InvoiceTextBox}"
+                                        Text="{Binding ClientName}"
+                                        controls:TextBoxHelper.Watermark="Client Name"/>
+                            <TextBox    Grid.Row="5"
+                                        Grid.Column="1"
+                                        Style="{StaticResource InvoiceTextBox}"
+                                        Text="{Binding ClientAddress}"
+                                        controls:TextBoxHelper.Watermark="Client Address"/>
                         </Grid>
                     </Grid>
                     <Grid Grid.Row="2" Margin="0,50,0,0">
