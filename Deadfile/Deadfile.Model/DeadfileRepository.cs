@@ -276,6 +276,10 @@ namespace Deadfile.Model
                     dbContext.SaveChanges();
                     FakeData.AddFakeApplications(dbContext);
                     dbContext.SaveChanges();
+                    FakeData.AddFakeExpenses(dbContext);
+                    dbContext.SaveChanges();
+                    FakeData.AddFakeBillableHours(dbContext);
+                    dbContext.SaveChanges();
                 }
             }
         }

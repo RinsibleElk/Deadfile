@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
 using Deadfile.Entity;
 using Deadfile.Model;
 using Deadfile.Model.Billable;
@@ -48,7 +49,9 @@ namespace Deadfile.Tab.Invoices
                 State = BillableModelState.FullyIncluded
             });
         }
+
         public InvoiceModel SelectedItem { get; set; }
+
         public bool Editable { get; } = true;
         public List<string> Errors { get; } = new List<string>();
         public string FilterText { get; set; } = "";

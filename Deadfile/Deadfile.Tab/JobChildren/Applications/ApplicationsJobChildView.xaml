@@ -33,7 +33,7 @@
                     </StackPanel>
                 </Border>
             </DataTemplate>
-            <DataTemplate x:Key="ExpanderHeaderTemplateAddNew" DataType="model:LocalAuthorityModel">
+            <DataTemplate x:Key="ExpanderHeaderTemplateAddNew" DataType="model:ApplicationModel">
                 <Border Height="24">
                     <TextBlock Text="Add New..." 
                         Margin="4 0"

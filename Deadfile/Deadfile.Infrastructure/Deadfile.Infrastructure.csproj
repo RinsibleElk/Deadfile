@@ -105,6 +105,7 @@
     </Compile>
     <Compile Include="Services\QuotationsTimerService.cs" />
     <Compile Include="Services\UrlNavigationService.cs" />
+    <Compile Include="Templates\InvoiceTemplateSelector.cs" />
     <Compile Include="Templates\LocalAuthorityHyperlinkHeaderTemplateSelector.cs" />
     <Compile Include="Templates\ModelTemplateSelector.cs" />
     <Compile Include="UndoRedo\IUndoTracker.cs" />

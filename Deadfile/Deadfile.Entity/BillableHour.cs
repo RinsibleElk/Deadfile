@@ -25,6 +25,9 @@ namespace Deadfile.Entity
         [MaxLength(500, ErrorMessage = "The free notes for a BillableHour must be less than 500 characters long.")]
         public string Notes { get; set; }
 
+        [Required(ErrorMessage = "A BillableHour must have a creation date.")]
+        public DateTime CreationDate { get; set; }
+
         public int JobId { get; set; }
         public int? InvoiceId { get; set; }
     }

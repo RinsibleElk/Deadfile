@@ -52,5 +52,13 @@ namespace Deadfile.Model
             get { return _notes; }
             set { SetProperty(ref _notes, value); }
         }
+
+        private DateTime _creationDate = DateTime.Today;
+        [Required(ErrorMessage = "An Expense must have a creation date.")]
+        public DateTime CreationDate
+        {
+            get { return _creationDate; }
+            set { SetProperty(ref _creationDate, value); }
+        }
     }
 }

@@ -346,6 +346,48 @@ namespace Deadfile.Model.DesignTime
             }
         }
 
+        public static void AddFakeExpenses(DeadfileContext dbContext)
+        {
+            var random = new Random(456);
+            foreach (var job in dbContext.Jobs)
+            {
+                var numExpensesToAdd = random.Next(3);
+                for (int i = 0; i < numExpensesToAdd; i++)
+                {
+                    var creationDate = new DateTime(2015, 1, 1).AddDays(random.Next(500));
+                    dbContext.Expenses.Add(new Expense()
+                    {
+                        Description = "Expense " + random.Next(1000),
+                        JobId = job.JobId,
+                        Notes = "Some notes",
+                        NetAmount = (double)random.Next(25, 75),
+                        CreationDate = creationDate
+                    });
+                }
+            }
+        }
+
+        public static void AddFakeBillableHours(DeadfileContext dbContext)
+        {
+            var random = new Random(789);
+            foreach (var job in dbContext.Jobs)
+            {
+                var numBillableHoursToAdd = random.Next(3);
+                for (int i = 0; i < numBillableHoursToAdd; i++)
+                {
+                    var creationDate = new DateTime(2015, 1, 1).AddDays(random.Next(500));
+                    dbContext.BillableHours.Add(new BillableHour()
+                    {
+                        Description = "BillableHour " + random.Next(1000),
+                        JobId = job.JobId,
+                        Notes = "Some notes",
+                        CreationDate = creationDate,
+                        NetAmount = (double)random.Next(25, 125)
+                    });
+                }
+            }
+        }
+
         public static void AddFakeQuotations(DeadfileContext dbContext)
         {
             var homerSimpsonQuotations = new string[]
@@ -381,8 +423,6 @@ namespace Deadfile.Model.DesignTime
                 });
             }
         }
-
-
 
         public static IEnumerable<Application> GetFakeApplications()
         {

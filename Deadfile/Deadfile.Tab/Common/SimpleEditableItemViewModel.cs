@@ -28,15 +28,13 @@ namespace Deadfile.Tab.Common
         private readonly DelegateCommand _saveCommand;
         private List<string> _errors;
 
-        public SimpleEditableItemViewModel(Prism.Events.IEventAggregator eventAggregator)
+        public SimpleEditableItemViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _editCommand = new DelegateCommand(StartEditing);
             _discardCommand = new DelegateCommand(DiscardEdits);
             _saveCommand = new DelegateCommand(PerformSaveAction);
         }
-
-        //TODO - need to communicate via the job model really
 
         private void DiscardEdits()
         {

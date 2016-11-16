@@ -9,9 +9,300 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviors="clr-namespace:Deadfile.Infrastructure.Behaviors;assembly=Deadfile.Infrastructure"
              xmlns:billablemodel="clr-namespace:Deadfile.Model.Billable;assembly=Deadfile.Model"
+             xmlns:templates="clr-namespace:Deadfile.Infrastructure.Templates;assembly=Deadfile.Infrastructure"
+             xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:InvoicesPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="1000" d:DesignWidth="1200">
+    <UserControl.Resources>
+        <Style x:Key="PksTextBlock" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="DarkBlue" />
+            <Setter Property="Margin" Value="20" />
+        </Style>
+        <DataTemplate x:Key="PksTemplate" DataType="model:InvoiceModel">
+            <ScrollViewer>
+                <Grid Margin="50,50,50,50">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Foreground="DarkBlue" Text="THE GLASGOW STUD," />
+                            <TextBlock Foreground="DarkBlue" Text="BURNT FARM RIDE," />
+                            <TextBlock Foreground="DarkBlue" Text="CREWS HILL, EN2 9DY" />
+                        </StackPanel>
+                        <Image Grid.Column="2" Source="Resources/PKS/pks-logo.png" />
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <StackPanel Margin="20,20,20,20" Background="LightSteelBlue">
+                            <TextBlock Text="INVOICE" HorizontalAlignment="Center" Foreground="DarkBlue" FontWeight="Bold" FontSize="16" />
+                        </StackPanel>
+                    </Grid>
+                    <Border Grid.Row="2"
+                            BorderThickness="4"
+                            BorderBrush="DarkBlue">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="0"
+                                       Style="{StaticResource PksTextBlock}"
+                                       Text="Invoice Number:"/>
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="0"
+                                       Style="{StaticResource PksTextBlock}"
+                                       Text="Invoice Date:"/>
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="2"
+                                       Style="{StaticResource PksTextBlock}"
+                                       Text="Invoiced To:"/>
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="2"
+                                       Style="{StaticResource PksTextBlock}"
+                                       Text="Invoice Address:"/>
+                            <TextBlock Grid.Row="2"
+                                       Grid.Column="0"
+                                       Style="{StaticResource PksTextBlock}"
+                                       Text="Invoice Reference:"/>
+                            <TextBlock Grid.Row="3"
+                                       Grid.Column="0"
+                                       Style="{StaticResource PksTextBlock}"
+                                       Text="Property:"/>
+                            <TextBlock Grid.Row="4"
+                                       Grid.Column="0"
+                                       Style="{StaticResource PksTextBlock}"
+                                       Text="Job Description:"/>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0"
+                                       Grid.Column="0"
+                                       Style="{StaticResource PksTextBlock}"
+                                       Text="For:"/>
+                    </Grid>
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="1"
+                                   Style="{StaticResource PksTextBlock}"
+                                   Text="Fee For Above:"/>
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="1"
+                                   Style="{StaticResource PksTextBlock}"
+                                   Text="VAT @ 20%:"/>
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="1"
+                                   Style="{StaticResource PksTextBlock}"
+                                   FontSize="14"
+                                   Text="Total amount due:"/>
+                        <Border Grid.Row="2"
+                                Grid.Column="2"
+                                BorderThickness="0,4,0,4"
+                                Background="LightSteelBlue"
+                                Margin="0,10,20,10"
+                                BorderBrush="DarkBlue">
+                        </Border>
+                    </Grid>
+                    <StackPanel Grid.Row="5">
+                        <TextBlock HorizontalAlignment="Center">Payment terms are 14 days from the date of invoice. Late payments will be charged at a rate of 2% per</TextBlock>
+                        <TextBlock HorizontalAlignment="Center">month. Payment can be made via cheque, made payable to PAUL SAMSON or via bank transfer to Account</TextBlock>
+                        <TextBlock HorizontalAlignment="Center">Number: 80780111 Sort Code 20‐52‐74</TextBlock>
+                        <TextBlock HorizontalAlignment="Center">VAT Registration No: 713 9749 10</TextBlock>
+                    </StackPanel>
+                    <Image Grid.Row="6"
+                           Source="Resources/PKS/pks-footer.png"/>
+                </Grid>
+            </ScrollViewer>
+        </DataTemplate>
+        <DataTemplate x:Key="I3DTemplate" DataType="model:InvoiceModel">
+            <ScrollViewer>
+                <Grid Margin="50,0,50,50">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Row="0"
+                               Grid.RowSpan="2"
+                               Grid.Column="0"
+                               Source="Resources/I3D/i3d-logo.png"
+                               Stretch="UniformToFill" />
+                        <DockPanel Margin="0,30,0,0"
+                                   Grid.Row="0"
+                                   Grid.Column="1"
+                                   LastChildFill="True">
+                            <TextBlock DockPanel.Dock="Right"
+                                       HorizontalAlignment="Right"
+                                       Background="#FFFFDDCC"
+                                       Text="INVOICE "
+                                       FontSize="54"
+                                       FontWeight="Bold"/>
+                            <TextBlock Background="#FFFFDDCC" />
+                        </DockPanel>
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="Imagine3D Ltd."
+                                   FontFamily="Lucida Handwriting"
+                                   Foreground="DarkOrange"
+                                   TextDecorations="Underline"
+                                   FontSize="32"
+                                   Margin="25"
+                                   FontStyle="Italic"/>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock FontSize="14" FontFamily="Calibri" Text="The Glasgow Stud,"/>
+                            <TextBlock FontSize="14" FontFamily="Calibri" Text="Burnt Farm Ride,"/>
+                            <TextBlock FontSize="14" FontFamily="Calibri" Text="Crews Hill,"/>
+                            <TextBlock FontSize="14" FontFamily="Calibri" Text="Enfield, EN2 9DY"/>
+                        </StackPanel>
+                        <Grid Grid.Column="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" FontSize="12" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Invoice Number:"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" FontSize="12" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Date:"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" />
+                            <TextBlock Grid.Row="3" Grid.Column="0" FontSize="12" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="To:"/>
+                            <TextBlock Grid.Row="4" Grid.Column="0" />
+                            <TextBlock Grid.Row="5" Grid.Column="0" FontSize="12" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Of:"/>
+                            <TextBox    Grid.Row="0"
+                                        Grid.Column="1"
+                                        Width="150"
+                                        FontSize="12"
+                                        FontFamily="Calibri"
+                                        controls:TextBoxHelper.Watermark="Invoice"
+                                        HorizontalAlignment="Left" />
+                            <DatePicker Grid.Row="1"
+                                        Grid.Column="1"
+                                        Width="150"
+                                        FontSize="12"
+                                        FontFamily="Calibri"
+                                        HorizontalAlignment="Left"
+                                        SelectedDate="{Binding CreatedDate}" />
+                            <TextBox    Grid.Row="3" Grid.Column="1" Width="150" FontSize="12" FontFamily="Calibri" controls:TextBoxHelper.Watermark="To" HorizontalAlignment="Left" />
+                            <TextBox    Grid.Row="5" Grid.Column="1" Width="150" FontSize="12" FontFamily="Calibri" controls:TextBoxHelper.Watermark="Of" HorizontalAlignment="Left" />
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="2" Margin="0,50,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBlock FontSize="14" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Project:"/>
+                            <TextBox Width="275" FontSize="12" FontFamily="Calibri" controls:TextBoxHelper.Watermark="Project" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="3"
+                          Margin="0,50,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="200" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Background="DarkOrange" Grid.Row="0" Grid.Column="0" Foreground="White" Text="DESCRIPTION" />
+                        <TextBlock Background="DarkOrange" Grid.Row="0" Grid.Column="1" Foreground="White" />
+                        <TextBlock Background="DarkOrange" Grid.Row="0" Grid.Column="2" Foreground="White" Text="TOTAL" />
+                        <TextBlock Foreground="DarkOrange" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"  Text="TOTAL DUE" />
+                        <Border MinWidth="150" Grid.Row="3" Grid.Column="2" Background="#FFFFDDCC" BorderThickness="0,2,0,2" BorderBrush="DarkOrange">
+                            <controls:NumericUpDown />
+                        </Border>
+                    </Grid>
+                    <StackPanel Grid.Row="4" Margin="0,20,0,0">
+                        <TextBlock HorizontalAlignment="Center">Payment terms are 14 days from the date of invoice. Late payments will be charged at a rate of 2% per month.</TextBlock>
+                        <TextBlock HorizontalAlignment="Center">Payment can be made via cheque, made payable to Imagine3D Ltd. or via bank transfer to Account Number:</TextBlock>
+                        <TextBlock HorizontalAlignment="Center">92563142 Sort Code 40‐01‐06</TextBlock>
+                        <TextBlock HorizontalAlignment="Center">Company Registration No: 7595218</TextBlock>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </DataTemplate>
+        <Style TargetType="{x:Type ContentControl}" x:Key="InvoiceDisplay">
+            <Setter Property="ContentTemplate" Value="{StaticResource PksTemplate}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SelectedItem.Company}" 
+                             Value="{x:Static entity:Company.PaulSamsonCharteredSurveyorLtd}">
+                    <Setter Property="ContentTemplate" Value="{StaticResource PksTemplate}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding SelectedItem.Company}" 
+                             Value="{x:Static entity:Company.Imagine3DLtd}">
+                    <Setter Property="ContentTemplate" Value="{StaticResource I3DTemplate}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid Margin="5,5,5,5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -25,12 +316,15 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <ComboBox IsEditable="False"
+                      IsEnabled="{Binding Editable}"
                       ItemsSource="{x:Static entity:CompanyUtils.AllCompanies}"
                       SelectedItem="{Binding SelectedItem.Company, Mode=TwoWay}" />
             <TextBox Grid.Row="1"
+                     IsEnabled="{Binding Editable}"
                      controls:TextBoxHelper.Watermark="Filter"
                      Text="{Binding FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TreeView Grid.Row="2"
+                      IsEnabled="{Binding Editable}"
                       ItemsSource="{Binding Jobs}"
                       Style="{StaticResource TreeViewTransparentBackground}">
                 <i:Interaction.Behaviors>
@@ -52,5 +346,9 @@
             </TreeView>
             <TextBlock Grid.Row="3" />
         </Grid>
+        <ContentControl Grid.Column="1"
+                        Content="{Binding SelectedItem}"
+                        Style="{StaticResource InvoiceDisplay}" />
     </Grid>
 </UserControl>
+
