@@ -246,6 +246,12 @@ namespace Deadfile.Tab.Common
             get { return _undoTracker; }
         }
 
+        protected IUndoTrackerActivatable UndoTrackerActivatable = null;
+        public void RegisterUndoTrackerActivatable(IUndoTrackerActivatable undoTrackerActivatable)
+        {
+            UndoTrackerActivatable = undoTrackerActivatable;
+        }
+
         IUndoTracker ISimpleEditableItemViewModel.UndoTracker
         {
             get { return UndoTracker; }

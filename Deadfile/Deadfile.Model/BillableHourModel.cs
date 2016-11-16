@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Deadfile.Model
 {
-    public class BillableHourModel : ModelBase
+    public class BillableHourModel : JobChildModelBase
     {
         // No need to report changes or validate.
         public override int Id

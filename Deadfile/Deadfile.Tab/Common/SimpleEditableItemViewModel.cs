@@ -6,10 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Caliburn.Micro;
 using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
+using Deadfile.Tab.Events;
 using Prism.Commands;
+using Prism.Events;
+using EventAggregator = Caliburn.Micro.EventAggregator;
+using IEventAggregator = Prism.Events.IEventAggregator;
 
 namespace Deadfile.Tab.Common
 {
@@ -17,15 +20,17 @@ namespace Deadfile.Tab.Common
     /// These are parameterised by the job id of the parent job.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    abstract class SimpleEditableItemViewModel<T> : ParameterisedViewModel<int>, ISimpleEditableItemViewModel<T> where T : ModelBase, new()
+    abstract class SimpleEditableItemViewModel<T> : ParameterisedViewModel<int>, ISimpleEditableItemViewModel<T> where T : JobChildModelBase, new()
     {
+        private readonly IEventAggregator _eventAggregator;
         private readonly DelegateCommand _editCommand;
         private readonly DelegateCommand _discardCommand;
         private readonly DelegateCommand _saveCommand;
         private List<string> _errors;
 
-        public SimpleEditableItemViewModel()
+        public SimpleEditableItemViewModel(Prism.Events.IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             _editCommand = new DelegateCommand(StartEditing);
             _discardCommand = new DelegateCommand(DiscardEdits);
             _saveCommand = new DelegateCommand(PerformSaveAction);
@@ -62,6 +67,27 @@ namespace Deadfile.Tab.Common
                 if (value == _editable) return;
                 _editable = value;
                 NotifyOfPropertyChange(() => Editable);
+
+                if (_editable)
+                {
+                    UndoTrackerActivatable.ActivateUndoTracker(UndoTracker, SelectedItem);
+                    _selectedItem.ErrorsChanged += SelectedItemErrorsChanged;
+                    _selectedItem.RefreshAllErrors();
+                }
+                else
+                {
+                    UndoTrackerActivatable.DeactivateUndoTracker();
+                    // Deliberately do this after deactivation so that the deactivation takes care of notifying the
+                    // browser of CanUndo/CanRedo changes.
+                    _selectedItem.ErrorsChanged -= SelectedItemErrorsChanged;
+                    _selectedItem.ClearAllErrors();
+
+                    // Reload the data.
+                    Populate();
+                }
+
+                // Only fire when it changes.
+                _eventAggregator.GetEvent<LockedForEditingEvent>().Publish(_editable ? LockedForEditingMessage.Locked : LockedForEditingMessage.Unlocked);
             }
         }
 
@@ -95,6 +121,16 @@ namespace Deadfile.Tab.Common
             return errors;
         }
 
+        private void Populate()
+        {
+            // Populate the table.
+            // We always add one more, to represent the user wanting to add a new one.
+            var value = new T() { JobId = _jobId };
+            Items = new ObservableCollection<T>(GetModelsForJobId(_jobId, _filter));
+            Items.Add(value);
+            SelectedItem = value;
+        }
+
         private string _filter = null;
         /// <summary>
         /// The user's filter for the table of items.
@@ -108,11 +144,7 @@ namespace Deadfile.Tab.Common
                 _filter = value;
                 NotifyOfPropertyChange(() => Filter);
 
-                // Populate the table.
-                // We always add one more, to represent the user wanting to add a new one.
-                SelectedItem = new T();
-                Items = new ObservableCollection<T>(GetModelsForJobId(_jobId, _filter));
-                Items.Add(SelectedItem);
+                Populate();
             }
         }
 
@@ -176,11 +208,8 @@ namespace Deadfile.Tab.Common
             // Hold on to the parent job.
             _jobId = jobId;
 
-            // Populate the table.
-            // We always add one more, to represent the user wanting to add a new one.
-            SelectedItem = new T();
-            Items = new ObservableCollection<T>(GetModelsForJobId(jobId, null));
-            Items.Add(SelectedItem);
+            // Populate.
+            Populate();
 
             // Cheese the filter. We don't want to load the models twice, that's wasteful.
             _filter = null;
@@ -197,7 +226,7 @@ namespace Deadfile.Tab.Common
             _jobId = ModelBase.NewModelId;
 
             // Bin the table.
-            SelectedItem = new T();
+            SelectedItem = new T() {JobId = _jobId};
             Items = new ObservableCollection<T>();
             Items.Add(SelectedItem);
 
@@ -213,5 +242,16 @@ namespace Deadfile.Tab.Common
         /// <param name="filter"></param>
         /// <returns></returns>
         public abstract IEnumerable<T> GetModelsForJobId(int jobId, string filter);
+
+        protected IUndoTrackerActivatable UndoTrackerActivatable = null;
+
+        /// <summary>
+        /// Register an undo tracker activatable.
+        /// </summary>
+        /// <param name="undoTrackerActivatable"></param>
+        public void RegisterUndoTrackerActivatable(IUndoTrackerActivatable undoTrackerActivatable)
+        {
+            UndoTrackerActivatable = undoTrackerActivatable;
+        }
     }
 }

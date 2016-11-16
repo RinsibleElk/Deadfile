@@ -8,7 +8,7 @@ using Deadfile.Entity;
 
 namespace Deadfile.Model
 {
-    public class ApplicationModel : ModelBase
+    public class ApplicationModel : JobChildModelBase
     {
         // No need to report changes or validate.
         public override int Id
@@ -40,7 +40,7 @@ namespace Deadfile.Model
             set { SetProperty(ref _localAuthorityReference, value); }
         }
 
-        private DateTime _creationDate;
+        private DateTime _creationDate = DateTime.Today;
         [Required(ErrorMessage = "A Planning Application must have a creation date.")]
         public DateTime CreationDate
         {
@@ -63,15 +63,12 @@ namespace Deadfile.Model
             get { return _applicationType; }
             set { SetProperty(ref _applicationType, value); }
         }
-
-        // No need to report changes or validate.
-        public int JobId { get; set; }
     }
 
     /// <summary>
     /// All the application types.
     /// </summary>
-    public static class ApplciationTypeUtils
+    public static class ApplicationTypeUtils
     {
         /// <summary>
         /// All the known application types.

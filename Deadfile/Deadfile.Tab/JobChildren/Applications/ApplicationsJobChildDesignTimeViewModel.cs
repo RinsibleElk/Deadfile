@@ -22,6 +22,9 @@ namespace Deadfile.Tab.JobChildren.Applications
                 Items.Add(application);
             }
             Items.Add(SelectedItem);
+            LocalAuthorities = new ObservableCollection<string>(repository.GetLocalAuthorities(null).Select((la) => la.Name));
         }
+
+        public ObservableCollection<string> LocalAuthorities { get; set; }
     }
 }

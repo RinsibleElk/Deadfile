@@ -22,6 +22,10 @@ namespace Deadfile.Tab.DesignTime
         public ICommand DiscardCommand { get; }
         public ICommand SaveCommand { get; }
         public UndoTracker<T> UndoTracker { get; }
+        public void RegisterUndoTrackerActivatable(IUndoTrackerActivatable undoTrackerActivatable)
+        {
+            throw new NotImplementedException();
+        }
 
         IUndoTracker ISimpleEditableItemViewModel.UndoTracker
         {

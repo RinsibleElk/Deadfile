@@ -12,7 +12,7 @@ using Deadfile.Tab.Events;
 
 namespace Deadfile.Tab.Common
 {
-    public interface IEditableItemViewModel<T>
+    public interface IEditableItemViewModel<T> : IUndoTrackerActivatable
         where T : ModelBase, new()
     {
         T SelectedItem { get; set; }

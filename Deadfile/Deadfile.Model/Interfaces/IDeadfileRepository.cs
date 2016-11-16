@@ -165,5 +165,11 @@ namespace Deadfile.Model.Interfaces
         /// <param name="invoiceId"></param>
         /// <returns></returns>
         IEnumerable<BillableModel> GetBillableModelsForClient(int clientId, int invoiceId);
+
+        /// <summary>
+        /// Save changes to a job (or create a new one).
+        /// </summary>
+        /// <param name="jobModel"></param>
+        void SaveJob(JobModel jobModel);
     }
 }

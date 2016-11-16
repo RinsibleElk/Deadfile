@@ -11,7 +11,7 @@ namespace Deadfile.Model
     /// <summary>
     /// UI representation of an <see cref="Expense"/>.
     /// </summary>
-    public class ExpenseModel : ModelBase
+    public class ExpenseModel : JobChildModelBase
     {
         // No need to report changes or validate.
         public override int Id

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
+using Prism.Events;
 
 namespace Deadfile.Tab.JobChildren.Expenses
 {
@@ -16,7 +17,7 @@ namespace Deadfile.Tab.JobChildren.Expenses
     {
         private readonly IDeadfileRepository _repository;
 
-        public ExpensesJobChildViewModel(IDeadfileRepository repository)
+        public ExpensesJobChildViewModel(IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator)
         {
             _repository = repository;
         }

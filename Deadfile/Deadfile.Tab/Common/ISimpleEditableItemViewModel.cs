@@ -72,5 +72,11 @@ namespace Deadfile.Tab.Common
         /// The undo tracker for this editable item.
         /// </summary>
         IUndoTracker UndoTracker { get; }
+
+        /// <summary>
+        /// Register a parent <see cref="IUndoTrackerActivatable"/> object with a child management view model.
+        /// </summary>
+        /// <param name="undoTrackerActivatable"></param>
+        void RegisterUndoTrackerActivatable(IUndoTrackerActivatable undoTrackerActivatable);
     }
 }

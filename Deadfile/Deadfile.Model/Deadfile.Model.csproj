@@ -94,11 +94,12 @@
     <Compile Include="DeadfileRepository.cs" />
     <Compile Include="DesignTime\DeadfileDesignTimeRepository.cs" />
     <Compile Include="DesignTime\FakeData.cs" />
-    <Compile Include="ExpensesModel.cs" />
+    <Compile Include="ExpenseModel.cs" />
     <Compile Include="Interfaces\IDeadfileRepository.cs" />
     <Compile Include="Interfaces\IModelEntityMapper.cs" />
     <Compile Include="Interfaces\IRandomNumberGenerator.cs" />
     <Compile Include="InvoiceModel.cs" />
+    <Compile Include="JobChildModelBase.cs" />
     <Compile Include="JobModel.cs" />
     <Compile Include="LocalAuthorityModel.cs" />
     <Compile Include="ModelBase.cs" />

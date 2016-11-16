@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
+using Prism.Events;
 
 namespace Deadfile.Tab.JobChildren.BillableHours
 {
@@ -16,7 +17,7 @@ namespace Deadfile.Tab.JobChildren.BillableHours
     {
         private readonly IDeadfileRepository _repository;
 
-        public BillableHoursJobChildViewModel(IDeadfileRepository repository)
+        public BillableHoursJobChildViewModel(IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator)
         {
             _repository = repository;
         }

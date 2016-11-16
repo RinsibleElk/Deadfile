@@ -489,6 +489,25 @@ namespace Deadfile.Model
             job.Children.Add(billable);
         }
 
+        public void SaveJob(JobModel jobModel)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                if (jobModel.JobId == ModelBase.NewModelId)
+                {
+                    // Add
+                    dbContext.Jobs.Add(_modelEntityMapper.Mapper.Map<JobModel, Job>(jobModel));
+                }
+                else
+                {
+                    // Edit
+                    var job = dbContext.Jobs.Find(jobModel.JobId);
+                    _modelEntityMapper.Mapper.Map<JobModel, Job>(jobModel, job);
+                }
+                dbContext.SaveChanges();
+            }
+        }
+
         /// <summary>
         /// Get the billable models for a client. Attribute them by state based on <see cref="invoiceId"/>.
         /// </summary>
@@ -533,7 +552,8 @@ namespace Deadfile.Model
                 // Calculate the job state based on the billable items that are included.
                 if (hasIncluded)
                 {
-                    job.State = hasClaimed || hasExcluded
+                    // Don't care about claimed if there are any excluded or included.
+                    job.State = hasExcluded
                         ? BillableModelState.PartiallyIncluded
                         : BillableModelState.FullyIncluded;
                 }
@@ -564,6 +584,7 @@ namespace Deadfile.Model
                     select new BillableBillableHour()
                     {
                         NetAmount = billableHour.NetAmount,
+                        Description = billableHour.Description,
                         State =
                             (invoiceId == ModelBase.NewModelId)
                                 ? (billableHour.InvoiceId == null
@@ -593,6 +614,7 @@ namespace Deadfile.Model
                     select new BillableExpense()
                     {
                         NetAmount = expense.NetAmount,
+                        Description = expense.Description,
                         State =
                             (invoiceId == ModelBase.NewModelId)
                                 ? (expense.InvoiceId == null ? BillableModelState.Excluded : BillableModelState.Claimed)

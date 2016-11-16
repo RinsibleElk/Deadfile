@@ -62,7 +62,15 @@ namespace Deadfile.Tab.Jobs
 
         public override void PerformSave()
         {
-            throw new NotImplementedException();
+            try
+            {
+                _repository.SaveJob(SelectedItem);
+            }
+            catch (Exception)
+            {
+                //TODO Do something. Like raise a dialog box or something. Then clean up.
+                throw;
+            }
         }
 
         public Experience Experience { get; } = Experience.Jobs;
@@ -84,7 +92,7 @@ namespace Deadfile.Tab.Jobs
                 if (_selectedJobChild == JobChildExperience.Empty)
                     _navigationService.RequestDeactivate(this, nameof(JobChildViewModel));
                 else
-                    _navigationService.RequestNavigate(this, nameof(JobChildViewModel), _selectedJobChild.ToString() + JobChildKeys.JobChildKey, SelectedItem.JobId);
+                    _navigationService.RequestNavigate(this, nameof(JobChildViewModel), _selectedJobChild + JobChildKeys.JobChildKey, SelectedItem.JobId);
             }
         }
 
@@ -128,6 +136,9 @@ namespace Deadfile.Tab.Jobs
                 if (_jobChildViewModel == value) return;
                 _jobChildViewModel = value;
                 NotifyOfPropertyChange(() => JobChildViewModel);
+
+                // Tell the child about this entity, in order to allow them to activate undo/redo tracking.
+                _jobChildViewModel?.RegisterUndoTrackerActivatable(this);
             }
         }
     }

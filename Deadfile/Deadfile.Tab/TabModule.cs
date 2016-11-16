@@ -57,9 +57,9 @@ namespace Deadfile.Tab
             _container.RegisterSingleton(typeof(InvoicesPageViewModel), Experience.Invoices + RegionNames.Page, typeof(InvoicesPageViewModel));
 
             // Job Children - referenced by key
-            _container.RegisterSingleton(typeof(IApplicationsJobChildViewModel), JobChildExperience.Applications + JobChildKeys.JobChildKey, typeof(ApplicationsJobChildViewModel));
-            _container.RegisterSingleton(typeof(IExpensesJobChildViewModel), JobChildExperience.Expenses + JobChildKeys.JobChildKey, typeof(ExpensesJobChildViewModel));
-            _container.RegisterSingleton(typeof(IBillableHoursJobChildViewModel), JobChildExperience.BillableHours + JobChildKeys.JobChildKey, typeof(BillableHoursJobChildViewModel));
+            _container.RegisterSingleton(typeof(ApplicationsJobChildViewModel), JobChildExperience.Applications + JobChildKeys.JobChildKey, typeof(ApplicationsJobChildViewModel));
+            _container.RegisterSingleton(typeof(ExpensesJobChildViewModel), JobChildExperience.Expenses + JobChildKeys.JobChildKey, typeof(ExpensesJobChildViewModel));
+            _container.RegisterSingleton(typeof(BillableHoursJobChildViewModel), JobChildExperience.BillableHours + JobChildKeys.JobChildKey, typeof(BillableHoursJobChildViewModel));
 
             // Actions pads
             _container.RegisterSingleton(typeof(HomeActionsPadViewModel), Experience.Home + RegionNames.ActionsPad, typeof(HomeActionsPadViewModel));
