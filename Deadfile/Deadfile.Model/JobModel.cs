@@ -77,6 +77,16 @@ namespace Deadfile.Model
             set { SetProperty(ref _notes, value); }
         }
 
+        private string _description;
+        [Required(ErrorMessage = "Every Job must have a description"),
+         MinLength(5, ErrorMessage = "The Description must have at least 5 characters"),
+         MaxLength(50, ErrorMessage = "The Description must have at most 50 characters")]
+        public string Description
+        {
+            get { return _description; }
+            set { SetProperty(ref _description, value); }
+        }
+
         private int _clientId;
         public int ClientId
         {

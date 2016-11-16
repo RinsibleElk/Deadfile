@@ -250,7 +250,8 @@ namespace Deadfile.Model.DesignTime
                 ClientId = clientId,
                 AddressFirstLine = firstLine,
                 AddressSecondLine = secondLine,
-                AddressPostCode = postCode
+                AddressPostCode = postCode,
+                Description = "Description for " + firstLine
             };
         }
 

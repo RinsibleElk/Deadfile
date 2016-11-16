@@ -26,6 +26,11 @@ namespace Deadfile.Entity
 
         public JobStatus Status { get; set; }
 
+        [Required(ErrorMessage = "Every Job must have a description"),
+         MinLength(5, ErrorMessage = "The Description must have at least 5 characters"),
+         MaxLength(50, ErrorMessage = "The Description must have at most 50 characters")]
+        public string Description { get; set; }
+
         [MaxLength(500, ErrorMessage = "The free notes for a Job must be less than 500 characters long.")]
         public string Notes { get; set; }
 
