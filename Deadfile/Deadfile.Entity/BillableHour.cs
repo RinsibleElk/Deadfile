@@ -14,8 +14,16 @@ namespace Deadfile.Entity
     {
         public int BillableHourId { get; set; }
 
+        [Required(ErrorMessage = "A BillableHour must be given a short description"),
+         MinLength(5, ErrorMessage = "A BillableHour must have at least 5 characters"),
+         MaxLength(30, ErrorMessage = "A BillableHour must have at most 30 characters")]
+        public string Description { get; set; }
+
         [Required(ErrorMessage = "A BillableHour must have an amount associated")]
         public double NetAmount { get; set; }
+
+        [MaxLength(500, ErrorMessage = "The free notes for a BillableHour must be less than 500 characters long.")]
+        public string Notes { get; set; }
 
         public int JobId { get; set; }
         public int? InvoiceId { get; set; }

@@ -16,6 +16,17 @@ namespace Deadfile.Model.Billable
             get { return BillableModelType.BillableHour; }
         }
 
-        public override string Text { get { return "Billable Hour (" + NetAmount + ")"; } }
+        private string _description;
+        public string Description
+        {
+            get { return _description; }
+            set
+            {
+                if (SetProperty(ref _description, value))
+                    OnPropertyChanged(nameof(Text));
+            }
+        }
+
+        public override string Text { get { return Description + " (" + NetAmount + ")"; } }
     }
 }

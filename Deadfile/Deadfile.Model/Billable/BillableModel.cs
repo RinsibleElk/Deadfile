@@ -35,7 +35,11 @@ namespace Deadfile.Model.Billable
         public double NetAmount
         {
             get { return _netAmount; }
-            set { SetProperty(ref _netAmount, value); }
+            set
+            {
+                if (SetProperty(ref _netAmount, value))
+                    OnPropertyChanged(nameof(Text));
+            }
         }
 
         public abstract string Text { get; }

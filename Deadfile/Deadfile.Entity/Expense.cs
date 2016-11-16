@@ -11,6 +11,11 @@ namespace Deadfile.Entity
     {
         public int ExpenseId { get; set; }
 
+        [Required(ErrorMessage = "An Expense must be given a short description"),
+         MinLength(5, ErrorMessage = "An Expense must have at least 5 characters"),
+         MaxLength(30, ErrorMessage = "An Expense must have at most 30 characters")]
+        public string Description { get; set; }
+
         [Required(ErrorMessage = "An Expense must have an amount associated")]
         public double NetAmount { get; set; }
 

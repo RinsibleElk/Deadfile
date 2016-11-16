@@ -29,7 +29,11 @@ namespace Deadfile.Model.Billable
         public string LocalAuthorityReference
         {
             get { return _localAuthorityReference; }
-            set { SetProperty(ref _localAuthorityReference, value); }
+            set
+            {
+                if (SetProperty(ref _localAuthorityReference, value))
+                    OnPropertyChanged(nameof(Text));
+            }
         }
     }
 }
