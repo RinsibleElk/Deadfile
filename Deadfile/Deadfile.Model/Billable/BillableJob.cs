@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Deadfile.Model.Billable
 {
-    public class BillableJob : BillableModel
+    public class BillableJob : BillableModel, IBillableModelContainer
     {
         public override BillableModelType ModelType
         {
@@ -43,5 +43,30 @@ namespace Deadfile.Model.Billable
         }
 
         public override string Text { get { return FullAddress + " (" + NetAmount + "/" + TotalPossibleNetAmount + ")"; } }
+
+        public bool AutomaticEditingInProgress { get; set; } = false;
+        public void StateChanged(int index)
+        {
+            if (!AutomaticEditingInProgress)
+            {
+                AutomaticEditingInProgress = true;
+                var hasExcluded = false;
+                var hasIncluded = false;
+                foreach (var child in Children)
+                {
+                    hasExcluded |= child.State == BillableModelState.Excluded;
+                    hasIncluded |= child.State == BillableModelState.FullyIncluded;
+                }
+                if (hasExcluded && hasIncluded)
+                    State = BillableModelState.PartiallyIncluded;
+                else if (hasExcluded)
+                    State = BillableModelState.Excluded;
+                else if (hasIncluded)
+                    State = BillableModelState.FullyIncluded;
+                else
+                    State = BillableModelState.Claimed;
+                AutomaticEditingInProgress = false;
+            }
+        }
     }
 }

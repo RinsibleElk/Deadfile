@@ -260,10 +260,23 @@ namespace Deadfile.Model.DesignTime
             var random = new Random(64);
             foreach (var client in dbContext.Clients)
             {
-                var numJobsToAdd = random.Next(3);
-                for (int i = 0; i < numJobsToAdd; i++)
+                // For some special clients, Bruce Wayne and Morticia Addams, we set up some special jobs and invoices and invoice items to better represent how things might actually look IRL.
+                // Add loads of jobs for these two so that we can have some interesting cases.
+                if ((client.FirstName == "Bruce" && client.LastName == "Wayne") || (client.FirstName == "Morticia" && client.LastName == "Addams"))
                 {
-                    dbContext.Jobs.Add(MakeFakeJob(client.ClientId, random));
+                    var numJobsToAdd = 10;
+                    for (int i = 0; i < numJobsToAdd; i++)
+                    {
+                        dbContext.Jobs.Add(MakeFakeJob(client.ClientId, random));
+                    }
+                }
+                else
+                {
+                    var numJobsToAdd = random.Next(3);
+                    for (int i = 0; i < numJobsToAdd; i++)
+                    {
+                        dbContext.Jobs.Add(MakeFakeJob(client.ClientId, random));
+                    }
                 }
             }
         }
@@ -309,11 +322,24 @@ namespace Deadfile.Model.DesignTime
             var random = new Random(354);
             foreach (var job in dbContext.Jobs)
             {
-                var numInvoicesToAdd = random.Next(3);
-                _addedInvoicesForJob.Add(job.JobId, new List<Tuple<Company, int>>());
-                for (int i = 0; i < numInvoicesToAdd; i++)
+                var client = dbContext.Clients.Find(new object[1] {job.ClientId});
+                // For now, leave empty for Bruce and Morticia. Can experiment with what fake data I need added later.
+                if (client.FirstName == "Bruce" && client.LastName == "Wayne")
                 {
-                    AddSingleFakeInvoice(dbContext, job.ClientId, job.JobId, random);
+
+                }
+                else if (client.FirstName == "Morticia" && client.LastName == "Adams")
+                {
+                    
+                }
+                else
+                {
+                    var numInvoicesToAdd = random.Next(3);
+                    _addedInvoicesForJob.Add(job.JobId, new List<Tuple<Company, int>>());
+                    for (int i = 0; i < numInvoicesToAdd; i++)
+                    {
+                        AddSingleFakeInvoice(dbContext, job.ClientId, job.JobId, random);
+                    }
                 }
             }
         }

@@ -16,7 +16,7 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Invoices
 {
-    class InvoicesPageViewModel : EditableItemViewModel<ClientAndInvoice, InvoiceModel>, IInvoicesPageViewModel
+    class InvoicesPageViewModel : EditableItemViewModel<ClientAndInvoice, InvoiceModel>, IInvoicesPageViewModel, IBillableModelContainer
     {
         private readonly IDeadfileRepository _repository;
 
@@ -31,7 +31,22 @@ namespace Deadfile.Tab.Invoices
 
             // Find all the billable items for this client, attributing them by whether they are included in this invoice
             // or any other invoice.
-            Jobs = new ObservableCollection<BillableModel>(_repository.GetBillableModelsForClient(clientAndInvoice.ClientId, clientAndInvoice.InvoiceId));
+            var jobs = new ObservableCollection<BillableModel>(_repository.GetBillableModelsForClient(clientAndInvoice.ClientId, clientAndInvoice.InvoiceId));
+
+            // Listen for changes to job state (whether selected as a billed item in this invoice).
+            int index = 0;
+            foreach (var job in jobs)
+            {
+                job.Index = index++;
+                job.Parent = this;
+                int subIndex = 0;
+                foreach (var child in job.Children)
+                {
+                    child.Index = subIndex++;
+                    child.Parent = (BillableJob)job;
+                }
+            }
+            Jobs = jobs;
 
             // Hook up to changes in editing state.
             SelectedItem.PropertyChanged += SelectedItemOnPropertyChanged;
@@ -152,6 +167,28 @@ namespace Deadfile.Tab.Invoices
             SelectedItem.CreationState = InvoiceCreationState.DefineInvoice;
             NotifyOfPropertyChange(nameof(CanSetBillableItems));
             NotifyOfPropertyChange(nameof(InvoiceEditable));
+        }
+
+        public bool AutomaticEditingInProgress { get; set; } = false;
+        public void StateChanged(int index)
+        {
+            // Received notification that the job at this index has had its state changed.
+            // Propagate change down to children.
+            if (!AutomaticEditingInProgress)
+            {
+                AutomaticEditingInProgress = true;
+                var job = (BillableJob) Jobs[index];
+                if (!job.AutomaticEditingInProgress)
+                {
+                    job.AutomaticEditingInProgress = true;
+                    if (job.State == BillableModelState.FullyIncluded || job.State == BillableModelState.Excluded)
+                        foreach (var child in job.Children)
+                            if (child.State != BillableModelState.Claimed)
+                                child.State = job.State;
+                    job.AutomaticEditingInProgress = false;
+                }
+                AutomaticEditingInProgress = false;
+            }
         }
     }
 }

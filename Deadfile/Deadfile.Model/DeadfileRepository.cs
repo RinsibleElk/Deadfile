@@ -268,10 +268,6 @@ namespace Deadfile.Model
                     dbContext.SaveChanges();
                     FakeData.AddFakeJobs(dbContext);
                     dbContext.SaveChanges();
-                    FakeData.AddFakeInvoices(dbContext);
-                    dbContext.SaveChanges();
-                    FakeData.SetUpJobInvoiceMappings(dbContext);
-                    dbContext.SaveChanges();
                     FakeData.AddFakeLocalAuthorities(dbContext);
                     dbContext.SaveChanges();
                     FakeData.AddFakeApplications(dbContext);
@@ -279,6 +275,10 @@ namespace Deadfile.Model
                     FakeData.AddFakeExpenses(dbContext);
                     dbContext.SaveChanges();
                     FakeData.AddFakeBillableHours(dbContext);
+                    dbContext.SaveChanges();
+                    FakeData.AddFakeInvoices(dbContext);
+                    dbContext.SaveChanges();
+                    FakeData.SetUpJobInvoiceMappings(dbContext);
                     dbContext.SaveChanges();
                 }
             }

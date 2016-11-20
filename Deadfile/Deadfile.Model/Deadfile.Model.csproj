@@ -82,6 +82,7 @@
     <Compile Include="Billable\BillableModel.cs" />
     <Compile Include="Billable\BillableModelState.cs" />
     <Compile Include="Billable\BillableModelType.cs" />
+    <Compile Include="Billable\IBillableModelContainer.cs" />
     <Compile Include="Browser\BrowserClient.cs" />
     <Compile Include="Browser\BrowserInvoice.cs" />
     <Compile Include="Browser\BrowserJob.cs" />

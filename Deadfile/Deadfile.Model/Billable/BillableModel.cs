@@ -11,6 +11,7 @@ namespace Deadfile.Model.Billable
     public abstract class BillableModel : BindableBase
     {
         private ObservableCollection<BillableModel> _children;
+
         public ObservableCollection<BillableModel> Children
         {
             get { return _children; }
@@ -25,11 +26,28 @@ namespace Deadfile.Model.Billable
         public abstract BillableModelType ModelType { get; }
 
         private BillableModelState _state;
+
         public BillableModelState State
         {
             get { return _state; }
-            set { SetProperty(ref _state, value); }
+            set
+            {
+                if (SetProperty(ref _state, value))
+                {
+                    Parent?.StateChanged(Index);
+                }
+            }
         }
+
+        /// <summary>
+        /// Index into this billable model from parent.
+        /// </summary>
+        public int Index { get; set; }
+
+        /// <summary>
+        /// Parent to call back to set changes.
+        /// </summary>
+        public IBillableModelContainer Parent { get; set; }
 
         private double _netAmount;
         public double NetAmount
