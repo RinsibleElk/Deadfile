@@ -72,6 +72,13 @@ namespace Deadfile.Model
             set { SetProperty(ref _company, value); }
         }
 
+        private InvoiceCreationState _creationState = InvoiceCreationState.DefineCompany;
+        public InvoiceCreationState CreationState
+        {
+            get { return _creationState; }
+            set { SetProperty(ref _creationState, value); }
+        }
+
         private string _clientName;
         [Required(ErrorMessage = "An Invoice requires a Client Name."),
          MinLength(1, ErrorMessage = "Client Name must be at least 1 character long."),

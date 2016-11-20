@@ -58,7 +58,7 @@ namespace Deadfile.Tab.Common
                 _activeUndoTracker.Redo();
         }
 
-        private T _selectedItem = new T();
+        private T _selectedItem = new T() {Id = ModelBase.NewModelId};
         /// <summary>
         /// The item selected in the <see cref="BrowserPaneViewModel"/>.
         /// </summary>

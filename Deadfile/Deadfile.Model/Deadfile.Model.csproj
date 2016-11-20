@@ -100,6 +100,7 @@
     <Compile Include="Interfaces\IRandomNumberGenerator.cs" />
     <Compile Include="InvoiceItemModel.cs" />
     <Compile Include="InvoiceModel.cs" />
+    <Compile Include="InvoiceCreationState.cs" />
     <Compile Include="JobChildModelBase.cs" />
     <Compile Include="JobModel.cs" />
     <Compile Include="LocalAuthorityModel.cs" />

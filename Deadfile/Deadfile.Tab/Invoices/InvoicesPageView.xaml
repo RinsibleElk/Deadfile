@@ -101,7 +101,7 @@
                             <TextBox Grid.Row="0"
                                      Grid.Column="1"
                                      Style="{StaticResource PksTextBox}"
-                                     IsEnabled="{Binding Editable}"
+                                     IsEnabled="{Binding InvoiceEditable}"
                                      Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.InvoiceReference}"
                                      controls:TextBoxHelper.Watermark="Reference" />
                             <TextBlock Grid.Row="1"
@@ -111,7 +111,7 @@
                             <DatePicker Grid.Row="1"
                                         Grid.Column="1"
                                         Style="{StaticResource PksDatePicker}"
-                                        IsEnabled="{Binding Editable}"
+                                        IsEnabled="{Binding InvoiceEditable}"
                                         SelectedDate="{Binding SelectedItem.CreatedDate, Mode=TwoWay}" />
                             <TextBlock Grid.Row="0"
                                        Grid.Column="2"
@@ -120,7 +120,7 @@
                             <TextBox Grid.Row="0"
                                      Grid.Column="3"
                                      Style="{StaticResource PksTextBox}"
-                                     IsEnabled="{Binding Editable}"
+                                     IsEnabled="{Binding InvoiceEditable}"
                                      Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientName}"
                                      controls:TextBoxHelper.Watermark="Client Name" />
                             <TextBlock Grid.Row="1"
@@ -130,7 +130,7 @@
                             <TextBox Grid.Row="1"
                                      Grid.Column="3"
                                      Style="{StaticResource PksTextBox}"
-                                     IsEnabled="{Binding Editable}"
+                                     IsEnabled="{Binding InvoiceEditable}"
                                      Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddress}"
                                      controls:TextBoxHelper.Watermark="Client Address" />
                             <TextBlock Grid.Row="2"
@@ -144,7 +144,7 @@
                             <TextBox Grid.Row="3"
                                      Grid.Column="1"
                                      Style="{StaticResource PksTextBox}"
-                                     IsEnabled="{Binding Editable}"
+                                     IsEnabled="{Binding InvoiceEditable}"
                                      Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Project}"
                                      controls:TextBoxHelper.Watermark="Property" />
                             <TextBlock Grid.Row="4"
@@ -154,7 +154,7 @@
                             <TextBox Grid.Row="4"
                                      Grid.Column="1"
                                      Style="{StaticResource PksTextBox}"
-                                     IsEnabled="{Binding Editable}"
+                                     IsEnabled="{Binding InvoiceEditable}"
                                      Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Description}"
                                      controls:TextBoxHelper.Watermark="Description" />
                         </Grid>
@@ -295,23 +295,23 @@
                             <TextBox    Grid.Row="0"
                                         Grid.Column="1"
                                         Style="{StaticResource InvoiceTextBox}"
-                                        IsEnabled="{Binding Editable}"
+                                        IsEnabled="{Binding InvoiceEditable}"
                                         Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.InvoiceReference}"
                                         controls:TextBoxHelper.Watermark="Reference" />
                             <DatePicker Grid.Row="1"
                                         Grid.Column="1"
                                         Style="{StaticResource InvoiceDatePicker}"
-                                        IsEnabled="{Binding Editable}"
+                                        IsEnabled="{Binding InvoiceEditable}"
                                         SelectedDate="{Binding SelectedItem.CreatedDate, Mode=TwoWay}" />
                             <TextBox    Grid.Row="3"
                                         Grid.Column="1"
                                         Style="{StaticResource InvoiceTextBox}"
-                                        IsEnabled="{Binding Editable}"
+                                        IsEnabled="{Binding InvoiceEditable}"
                                         Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientName}"
                                         controls:TextBoxHelper.Watermark="Client Name"/>
                             <TextBox    Grid.Row="5"
                                         Grid.Column="1"
-                                        IsEnabled="{Binding Editable}"
+                                        IsEnabled="{Binding InvoiceEditable}"
                                         Style="{StaticResource InvoiceTextBox}"
                                         Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddress}"
                                         controls:TextBoxHelper.Watermark="Client Address"/>
@@ -328,7 +328,7 @@
                                      FontSize="12"
                                      FontFamily="Calibri"
                                      controls:TextBoxHelper.Watermark="Project"
-                                     IsEnabled="{Binding Editable}"
+                                     IsEnabled="{Binding InvoiceEditable}"
                                      Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Project}"
                                      HorizontalAlignment="Left"/>
                         </StackPanel>
@@ -386,19 +386,25 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ComboBox IsEditable="False"
-                      IsEnabled="{Binding Editable}"
+            <ComboBox Grid.Row="0"
+                      IsEditable="False"
+                      IsEnabled="{Binding CanSetCompany}"
                       ItemsSource="{x:Static entity:CompanyUtils.AllCompanies}"
                       SelectedItem="{Binding SelectedItem.Company, Mode=TwoWay}" />
-            <TextBox Grid.Row="1"
-                     IsEnabled="{Binding Editable}"
+            <Button Grid.Row="1" x:Name="SetCompany">
+                Set Company
+            </Button>
+            <TextBox Grid.Row="2"
+                     IsEnabled="{Binding CanSetBillableItems}"
                      controls:TextBoxHelper.Watermark="Filter"
                      Text="{Binding FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TreeView Grid.Row="2"
-                      IsEnabled="{Binding Editable}"
+            <TreeView Grid.Row="3"
+                      IsEnabled="{Binding CanSetBillableItems}"
                       ItemsSource="{Binding Jobs}"
                       Style="{StaticResource TreeViewTransparentBackground}">
                 <i:Interaction.Behaviors>
@@ -418,7 +424,10 @@
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
             </TreeView>
-            <TextBlock Grid.Row="3" />
+            <Button Grid.Row="4" x:Name="SetBillableItems">
+                Set Billable Items
+            </Button>
+            <TextBlock Grid.Row="5" />
         </Grid>
         <ContentControl Grid.Column="1"
                         Content="{Binding}"

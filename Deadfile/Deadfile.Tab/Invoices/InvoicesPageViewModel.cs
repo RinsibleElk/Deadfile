@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Entity;
+using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using Deadfile.Model.Billable;
 using Deadfile.Model.Interfaces;
@@ -30,6 +32,25 @@ namespace Deadfile.Tab.Invoices
             // Find all the billable items for this client, attributing them by whether they are included in this invoice
             // or any other invoice.
             Jobs = new ObservableCollection<BillableModel>(_repository.GetBillableModelsForClient(clientAndInvoice.ClientId, clientAndInvoice.InvoiceId));
+
+            // Hook up to changes in editing state.
+            SelectedItem.PropertyChanged += SelectedItemOnPropertyChanged;
+        }
+
+        private void SelectedItemOnPropertyChanged(object sender, PropertyChangedEventArgs eventArgs)
+        {
+            if (eventArgs.PropertyName == nameof(InvoiceModel.CreationState))
+            {
+                NotifyOfPropertyChange(nameof(CanSetCompany));
+                NotifyOfPropertyChange(nameof(CanSetBillableItems));
+                NotifyOfPropertyChange(nameof(InvoiceEditable));
+            }
+        }
+
+        void INavigationAware.OnNavigatedFrom()
+        {
+            Jobs = new ObservableCollection<BillableModel>();
+            SelectedItem.PropertyChanged -= SelectedItemOnPropertyChanged;
         }
 
         protected override InvoiceModel GetModel(ClientAndInvoice clientAndInvoice)
@@ -59,6 +80,24 @@ namespace Deadfile.Tab.Invoices
 
         public override void EditingStatusChanged(bool editable)
         {
+            NotifyOfPropertyChange(nameof(CanSetCompany));
+            NotifyOfPropertyChange(nameof(CanSetBillableItems));
+            NotifyOfPropertyChange(nameof(InvoiceEditable));
+        }
+
+        public bool CanSetCompany
+        {
+            get { return Editable && SelectedItem.CreationState == InvoiceCreationState.DefineCompany; }
+        }
+
+        public bool CanSetBillableItems
+        {
+            get { return Editable && SelectedItem.CreationState == InvoiceCreationState.DefineBillables; }
+        }
+
+        public bool InvoiceEditable
+        {
+            get { return Editable && SelectedItem.CreationState == InvoiceCreationState.DefineInvoice; }
         }
 
         public override void PerformSave()
@@ -99,6 +138,20 @@ namespace Deadfile.Tab.Invoices
                 _jobs = value;
                 NotifyOfPropertyChange(() => Jobs);
             }
+        }
+
+        public void SetCompany()
+        {
+            SelectedItem.CreationState = InvoiceCreationState.DefineBillables;
+            NotifyOfPropertyChange(nameof(CanSetCompany));
+            NotifyOfPropertyChange(nameof(CanSetBillableItems));
+        }
+
+        public void SetBillableItems()
+        {
+            SelectedItem.CreationState = InvoiceCreationState.DefineInvoice;
+            NotifyOfPropertyChange(nameof(CanSetBillableItems));
+            NotifyOfPropertyChange(nameof(InvoiceEditable));
         }
     }
 }
