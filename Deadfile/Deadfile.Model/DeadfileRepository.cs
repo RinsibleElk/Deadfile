@@ -637,7 +637,7 @@ namespace Deadfile.Model
         /// <param name="clientId"></param>
         /// <param name="invoiceId"></param>
         /// <returns></returns>
-        public IEnumerable<BillableModel> GetBillableModelsForClient(int clientId, int invoiceId)
+        public IEnumerable<BillableModel> GetBillableModelsForClientAndInvoice(int clientId, int invoiceId)
         {
             var li2 = new List<BillableJob>();
             using (var dbContext = new DeadfileContext())

@@ -31,7 +31,7 @@ namespace Deadfile.Model
 
         private string _addressFirstLine;
         [Required(ErrorMessage = "You must provide an address for this Job."),
-         MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
+         MaxLength(200, ErrorMessage = "A line of an address must be less than 200 characters long.")]
         public string AddressFirstLine
         {
             get { return _addressFirstLine; }
@@ -39,7 +39,7 @@ namespace Deadfile.Model
         }
 
         private string _addressSecondLine;
-        [MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
+        [MaxLength(200, ErrorMessage = "A line of an address must be less than 200 characters long.")]
         public string AddressSecondLine
         {
             get { return _addressSecondLine;}
@@ -47,7 +47,7 @@ namespace Deadfile.Model
         }
 
         private string _addressThirdLine;
-        [MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
+        [MaxLength(200, ErrorMessage = "A line of an address must be less than 200 characters long.")]
         public string AddressThirdLine
         {
             get { return _addressThirdLine; }

@@ -159,12 +159,12 @@ namespace Deadfile.Model.Interfaces
         IEnumerable<BrowserModel> GetBrowserJobsForInvoice(BrowserMode mode, bool includeInactiveEnabled, int invoiceId);
 
         /// <summary>
-        /// Get the billable models for a given client.
+        /// Get the billable models for a given client and invoice.
         /// </summary>
         /// <param name="clientId"></param>
         /// <param name="invoiceId"></param>
         /// <returns></returns>
-        IEnumerable<BillableModel> GetBillableModelsForClient(int clientId, int invoiceId);
+        IEnumerable<BillableModel> GetBillableModelsForClientAndInvoice(int clientId, int invoiceId);
 
         /// <summary>
         /// Save changes to a job (or create a new one).

@@ -25,7 +25,7 @@ namespace Deadfile.Model
         private string _description;
         [Required(ErrorMessage = "An InvoiceItem requires a Description"),
          MinLength(5, ErrorMessage = "Description must be at least 5 characters long"),
-         MaxLength(50, ErrorMessage = "Description must be at most 50 characters long")]
+         MaxLength(200, ErrorMessage = "Description must be at most 200 characters long")]
         public string Description
         {
             get { return _description; }

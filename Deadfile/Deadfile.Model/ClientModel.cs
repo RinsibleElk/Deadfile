@@ -136,7 +136,7 @@ namespace Deadfile.Model
         /// First line of the Client's contact address. This is required.
         /// </summary>
         [Required(ErrorMessage = "You must provide an address for this Client."),
-         MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
+         MaxLength(200, ErrorMessage = "A line of an address must be less than 200 characters long.")]
         public string AddressFirstLine
         {
             get { return _addressFirstLine; }
@@ -152,7 +152,7 @@ namespace Deadfile.Model
         /// <summary>
         /// Second line of the Client's contact address.
         /// </summary>
-        [MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
+        [MaxLength(200, ErrorMessage = "A line of an address must be less than 200 characters long.")]
         public string AddressSecondLine
         {
             get { return _addressSecondLine; }
@@ -168,7 +168,7 @@ namespace Deadfile.Model
         /// <summary>
         /// Third line of the Client's contact address.
         /// </summary>
-        [MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
+        [MaxLength(200, ErrorMessage = "A line of an address must be less than 200 characters long.")]
         public string AddressThirdLine
         {
             get { return _addressThirdLine; }

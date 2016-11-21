@@ -31,14 +31,16 @@ namespace Deadfile.Tab.Invoices
 
             // Find all the billable items for this client, attributing them by whether they are included in this invoice
             // or any other invoice.
-            var jobs = new ObservableCollection<BillableModel>(_repository.GetBillableModelsForClient(clientAndInvoice.ClientId, clientAndInvoice.InvoiceId));
+            var jobs = new ObservableCollection<BillableModel>(_repository.GetBillableModelsForClientAndInvoice(clientAndInvoice.ClientId, clientAndInvoice.InvoiceId));
 
             // Listen for changes to job state (whether selected as a billed item in this invoice).
             int index = 0;
+            NetAmount = 0;
             foreach (var job in jobs)
             {
                 job.Index = index++;
                 job.Parent = this;
+                NetAmount += job.NetAmount;
                 int subIndex = 0;
                 foreach (var child in job.Children)
                 {

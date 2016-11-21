@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Deadfile.Entity;
+using Deadfile.Model;
 
 namespace Deadfile.Infrastructure.Converters
 {
@@ -26,37 +27,7 @@ namespace Deadfile.Infrastructure.Converters
                 throw new ApplicationException(
                     "Attempted to convert an application type to something other than a string");
             var applicationType = (ApplicationType) value;
-            switch (applicationType)
-            {
-                case ApplicationType.HouseholderPlanningPermission:
-                    return "Householder Planning Permission";
-                case ApplicationType.FullPlanningPermission:
-                    return "Full Planning Permission";
-                case ApplicationType.LawfulDevelopmentCertificate:
-                    return "Lawful Development Certificate";
-                case ApplicationType.MinorAmendment:
-                    return "Minor Amendment";
-                case ApplicationType.Appeal:
-                    return "Appeal";
-                case ApplicationType.ConservationAreaConsent:
-                    return "Conservation Area Consent";
-                case ApplicationType.ListedBuildingConsent:
-                    return "Listed Building Consent";
-                case ApplicationType.BuildingControlBuildingNotice:
-                    return "Building Control - Building Notice";
-                case ApplicationType.BuildingControlFullPlans:
-                    return "Building Control - Full Plans";
-                case ApplicationType.OutlinePermission:
-                    return "Outline- Permission";
-                case ApplicationType.PriorNotification:
-                    return "Prior Notification";
-                case ApplicationType.ConditionsApplication:
-                    return "Conditions Application";
-                case ApplicationType.DisplayOfAdvertisment:
-                    return "Display of Advertisment";
-                default:
-                    throw new ApplicationException("Unknown application type: " + applicationType);
-            }
+            return ApplicationTypeUtils.ConvertToString(applicationType);
         }
 
         /// <summary>

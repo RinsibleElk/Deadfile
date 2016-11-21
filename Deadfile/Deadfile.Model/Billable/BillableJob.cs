@@ -59,22 +59,33 @@ namespace Deadfile.Model.Billable
             if (!AutomaticEditingInProgress)
             {
                 AutomaticEditingInProgress = true;
+                var hasClaimed = false;
                 var hasExcluded = false;
                 var hasIncluded = false;
                 foreach (var child in Children)
                 {
+                    hasClaimed |= child.State == BillableModelState.Claimed;
                     hasExcluded |= child.State == BillableModelState.Excluded;
                     hasIncluded |= child.State == BillableModelState.FullyIncluded;
-                    if (hasExcluded && hasIncluded) break;
+                    if (hasClaimed && hasExcluded && hasIncluded) break;
                 }
-                if (hasExcluded && hasIncluded)
-                    State = BillableModelState.PartiallyIncluded;
-                else if (hasExcluded)
-                    State = BillableModelState.Excluded;
-                else if (hasIncluded)
-                    State = BillableModelState.FullyIncluded;
+                // Calculate the job state based on the billable items that are included.
+                if (hasIncluded)
+                {
+                    // Don't care about claimed if there are any excluded or included.
+                    State = hasExcluded
+                        ? BillableModelState.PartiallyIncluded
+                        : BillableModelState.FullyIncluded;
+                }
+                else if (hasClaimed)
+                {
+                    State = hasExcluded ? BillableModelState.Excluded : BillableModelState.Claimed;
+                }
                 else
-                    State = BillableModelState.Claimed;
+                {
+                    // Includes the case where there are not any billables at all.
+                    State = BillableModelState.Excluded;
+                }
                 AutomaticEditingInProgress = false;
             }
         }

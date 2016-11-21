@@ -143,7 +143,7 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
-        public IEnumerable<BillableModel> GetBillableModelsForClient(int clientId, int invoiceId)
+        public IEnumerable<BillableModel> GetBillableModelsForClientAndInvoice(int clientId, int invoiceId)
         {
             throw new NotImplementedException();
         }
