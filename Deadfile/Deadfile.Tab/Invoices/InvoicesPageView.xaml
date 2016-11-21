@@ -407,9 +407,6 @@
                       IsEnabled="{Binding CanSetBillableItems}"
                       ItemsSource="{Binding Jobs}"
                       Style="{StaticResource TreeViewTransparentBackground}">
-                <i:Interaction.Behaviors>
-                    <behaviors:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
-                </i:Interaction.Behaviors>
                 <TreeView.ItemContainerStyle>
                     <Style TargetType="{x:Type TreeViewItem}">
                         <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
