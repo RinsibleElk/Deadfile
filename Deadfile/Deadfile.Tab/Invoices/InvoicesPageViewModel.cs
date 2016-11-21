@@ -52,6 +52,23 @@ namespace Deadfile.Tab.Invoices
 
             // Hook up to changes in editing state.
             SelectedItem.PropertyChanged += SelectedItemOnPropertyChanged;
+
+            // Set up the vat values.
+            if ((SelectedItem.NetAmount > 0) && (SelectedItem.GrossAmount > 0))
+            {
+                VatValue = SelectedItem.GrossAmount - SelectedItem.NetAmount;
+                VatRate = 100 * VatValue/SelectedItem.NetAmount;
+            }
+            else if (SelectedItem.Company == Company.PaulSamsonCharteredSurveyorLtd)
+            {
+                VatRate = 20; // current default
+                VatValue = 0;
+            }
+            else
+            {
+                VatRate = 0;
+                VatValue = 0;
+            }
         }
 
         private void SelectedItemOnPropertyChanged(object sender, PropertyChangedEventArgs eventArgs)
@@ -147,6 +164,8 @@ namespace Deadfile.Tab.Invoices
 
         private ObservableCollection<BillableModel> _jobs;
         private double _netAmount;
+        private double _vatValue;
+        private double _vatRate;
 
         public ObservableCollection<BillableModel> Jobs
         {
@@ -181,6 +200,28 @@ namespace Deadfile.Tab.Invoices
                 if (value.Equals(_netAmount)) return;
                 _netAmount = value;
                 NotifyOfPropertyChange(() => NetAmount);
+            }
+        }
+
+        public double VatValue
+        {
+            get { return _vatValue; }
+            set
+            {
+                if (value.Equals(_vatValue)) return;
+                _vatValue = value;
+                NotifyOfPropertyChange(() => VatValue);
+            }
+        }
+
+        public double VatRate
+        {
+            get { return _vatRate; }
+            set
+            {
+                if (value.Equals(_vatRate)) return;
+                _vatRate = value;
+                NotifyOfPropertyChange(() => VatRate);
             }
         }
 

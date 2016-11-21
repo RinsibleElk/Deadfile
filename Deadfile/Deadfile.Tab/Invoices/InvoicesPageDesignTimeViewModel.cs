@@ -69,5 +69,7 @@ namespace Deadfile.Tab.Invoices
         public bool CanSetBillableItems { get; } = false;
         public bool InvoiceEditable { get; } = false;
         public double NetAmount { get; set; } = 365.0;
+        public double VatValue { get; set; } = 365*0.2;
+        public double VatRate { get; set; } = 20;
     }
 }
