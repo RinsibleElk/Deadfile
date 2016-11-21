@@ -144,6 +144,8 @@ namespace Deadfile.Tab.Invoices
         }
 
         private ObservableCollection<BillableModel> _jobs;
+        private double _netAmount;
+
         public ObservableCollection<BillableModel> Jobs
         {
             get { return _jobs; }
@@ -169,6 +171,17 @@ namespace Deadfile.Tab.Invoices
             NotifyOfPropertyChange(nameof(InvoiceEditable));
         }
 
+        public double NetAmount
+        {
+            get { return _netAmount; }
+            set
+            {
+                if (value.Equals(_netAmount)) return;
+                _netAmount = value;
+                NotifyOfPropertyChange(() => NetAmount);
+            }
+        }
+
         public bool AutomaticEditingInProgress { get; set; } = false;
         public void StateChanged(int index)
         {
@@ -182,12 +195,28 @@ namespace Deadfile.Tab.Invoices
                 {
                     job.AutomaticEditingInProgress = true;
                     if (job.State == BillableModelState.FullyIncluded || job.State == BillableModelState.Excluded)
+                    {
                         foreach (var child in job.Children)
+                        {
                             if (child.State != BillableModelState.Claimed)
+                            {
                                 child.State = job.State;
+                            }
+                        }
+                    }
                     job.AutomaticEditingInProgress = false;
                 }
                 AutomaticEditingInProgress = false;
+            }
+            NetAmountChanged(0);
+        }
+
+        public void NetAmountChanged(int index)
+        {
+            NetAmount = 0;
+            foreach (var job in Jobs)
+            {
+                NetAmount += job.NetAmount;
             }
         }
     }

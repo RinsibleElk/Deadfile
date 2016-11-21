@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Entity;
+using Deadfile.Model.Billable;
 
 namespace Deadfile.Model.DesignTime
 {
@@ -260,43 +261,109 @@ namespace Deadfile.Model.DesignTime
             var random = new Random(64);
             foreach (var client in dbContext.Clients)
             {
-                // For some special clients, Bruce Wayne and Morticia Addams, we set up some special jobs and invoices and invoice items to better represent how things might actually look IRL.
-                // Add loads of jobs for these two so that we can have some interesting cases.
-                if ((client.FirstName == "Bruce" && client.LastName == "Wayne") || (client.FirstName == "Morticia" && client.LastName == "Addams"))
+                var numJobsToAdd = random.Next(3);
+                for (int i = 0; i < numJobsToAdd; i++)
                 {
-                    var numJobsToAdd = 10;
-                    for (int i = 0; i < numJobsToAdd; i++)
-                    {
-                        dbContext.Jobs.Add(MakeFakeJob(client.ClientId, random));
-                    }
-                }
-                else
-                {
-                    var numJobsToAdd = random.Next(3);
-                    for (int i = 0; i < numJobsToAdd; i++)
-                    {
-                        dbContext.Jobs.Add(MakeFakeJob(client.ClientId, random));
-                    }
+                    dbContext.Jobs.Add(MakeFakeJob(client.ClientId, random));
                 }
             }
         }
 
-        private static int lastPaulSamsonInvoiceReference = 1000;
-        private static int lastImagine3DInvoiceReference = 50;
+        private static int _lastPaulSamsonInvoiceReference = 1000;
+        private static int _lastImagine3DInvoiceReference = 50;
 
-        private static Dictionary<int, List<Tuple<Company, int>>> _addedInvoicesForJob = new Dictionary<int, List<Tuple<Company, int>>>();
-        private static void AddSingleFakeInvoice(DeadfileContext dbContext, int clientId, int jobId, Random random)
+        private static void AddSingleFakeInvoice(int clientId, Random random)
         {
-            var client = dbContext.Clients.Find(new object[1] {clientId});
-            var job = dbContext.Jobs.Find(new object[1] {jobId});
-            var clientFullName = String.Join(" ", new string[] {client.Title, client.FirstName, client.LastName});
+            // Get the client and all billables.
+            // Select some billables at random that do not already have an invoice. If there are none remaining, bail.
+            // Figure out a suitable project and description based on the billables and job(s) selected.
+            string clientFullName;
+            string clientAddressFirstLine;
+            string clientAddressSecondLine;
+            string clientAddressThirdLine;
+            string clientAddressPostCode;
+            using (var dbContext = new DeadfileContext())
+            {
+                var client = dbContext.Clients.Find(new object[1] {clientId});
+                clientFullName = String.Join(" ", new string[] {client.Title, client.FirstName, client.LastName});
+                clientAddressFirstLine = client.AddressFirstLine;
+                clientAddressSecondLine = client.AddressSecondLine;
+                clientAddressThirdLine = client.AddressThirdLine;
+                clientAddressPostCode = client.AddressPostCode;
+            }
+            var allBillableTypesAndIds = new List<Tuple<BillableModelType, int>>();
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var billable in (from job in dbContext.Jobs
+                                          join billable in dbContext.Applications on job.JobId equals billable.JobId
+                                          where job.ClientId == clientId
+                                          where !billable.InvoiceId.HasValue
+                                          select billable))
+                {
+                    allBillableTypesAndIds.Add(new Tuple<BillableModelType, int>(BillableModelType.Application, billable.ApplicationId));
+                }
+                foreach (var billable in (from job in dbContext.Jobs
+                                          join billable in dbContext.Expenses on job.JobId equals billable.JobId
+                                          where job.ClientId == clientId
+                                          where !billable.InvoiceId.HasValue
+                                          select billable))
+                {
+                    allBillableTypesAndIds.Add(new Tuple<BillableModelType, int>(BillableModelType.Expense, billable.ExpenseId));
+                }
+                foreach (var billable in (from job in dbContext.Jobs
+                                          join billable in dbContext.BillableHours on job.JobId equals billable.JobId
+                                          where job.ClientId == clientId
+                                          where !billable.InvoiceId.HasValue
+                                          select billable))
+                {
+                    allBillableTypesAndIds.Add(new Tuple<BillableModelType, int>(BillableModelType.BillableHour, billable.BillableHourId));
+                }
+            }
+            if (allBillableTypesAndIds.Count == 0) return;
+            var numBillablesToSelect = random.Next(1, Math.Min(5, allBillableTypesAndIds.Count));
+            var selectedBillableTypesAndIds =
+                new List<Tuple<BillableModelType, int>>(
+                    (from billable in allBillableTypesAndIds
+                     orderby random.Next()
+                     select billable).Take(numBillablesToSelect));
+            var selectedJobIds = new HashSet<int>();
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var selectedBillableTypesAndId in selectedBillableTypesAndIds)
+                {
+                    if (selectedBillableTypesAndId.Item1 == BillableModelType.Application)
+                    {
+                        var billable = dbContext.Applications.Find(new object[1] { selectedBillableTypesAndId.Item2 });
+                        selectedJobIds.Add(billable.JobId);
+                    }
+                    else if (selectedBillableTypesAndId.Item1 == BillableModelType.BillableHour)
+                    {
+                        var billable = dbContext.BillableHours.Find(new object[1] { selectedBillableTypesAndId.Item2 });
+                        selectedJobIds.Add(billable.JobId);
+                    }
+                    else
+                    {
+                        var billable = dbContext.Expenses.Find(new object[1] { selectedBillableTypesAndId.Item2 });
+                        selectedJobIds.Add(billable.JobId);
+                    }
+                }
+            }
+            var selectedJobAddresses = new List<string>();
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var selectedJobId in selectedJobIds)
+                {
+                    var job = dbContext.Jobs.Find(new object[1] {selectedJobId});
+                    selectedJobAddresses.Add(job.AddressFirstLine);
+                }
+            }
             var creationDate = new DateTime(2015, 1, 1).AddDays(random.Next(500));
             var company = (random.Next(2) == 0) ? Company.PaulSamsonCharteredSurveyorLtd : Company.Imagine3DLtd;
             int reference;
             if (company == Company.PaulSamsonCharteredSurveyorLtd)
-                reference = lastPaulSamsonInvoiceReference++;
+                reference = _lastPaulSamsonInvoiceReference++;
             else
-                reference = lastImagine3DInvoiceReference++;
+                reference = _lastImagine3DInvoiceReference++;
             var netAmount = (double)random.Next(100, 500);
             var invoice =
                 new Invoice()
@@ -309,37 +376,60 @@ namespace Deadfile.Model.DesignTime
                         GrossAmount = netAmount * (company == Company.PaulSamsonCharteredSurveyorLtd ? 1.2 : 1.0),
                         NetAmount = netAmount,
                         ClientName = clientFullName,
-                        ClientAddress = client.AddressFirstLine,
-                        Project = job.Description,
-                        Description = job.Description + " Description"
+                        ClientAddressFirstLine = clientAddressFirstLine,
+                        ClientAddressSecondLine = clientAddressSecondLine,
+                        ClientAddressThirdLine = clientAddressThirdLine,
+                        ClientAddressPostCode = clientAddressPostCode,
+                        Project = selectedJobAddresses.Count == 1 ? selectedJobAddresses[0] : "Various",
+                        Description = "Description"
                     };
-            dbContext.Invoices.Add(invoice);
-            _addedInvoicesForJob[jobId].Add(new Tuple<Company, int>(company, reference));
+            using (var dbContext = new DeadfileContext())
+            {
+                dbContext.Invoices.Add(invoice);
+                dbContext.SaveChanges();
+            }
+            var invoiceId = invoice.InvoiceId;
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var typeAndId in selectedBillableTypesAndIds)
+                {
+                    if (typeAndId.Item1 == BillableModelType.Application)
+                    {
+                        var billable = dbContext.Applications.Find(new object[1] { typeAndId.Item2 });
+                        billable.InvoiceId = invoiceId;
+                    }
+                    else if (typeAndId.Item1 == BillableModelType.Expense)
+                    {
+                        var billable = dbContext.Expenses.Find(new object[1] { typeAndId.Item2 });
+                        billable.InvoiceId = invoiceId;
+                    }
+                    else
+                    {
+                        var billable = dbContext.BillableHours.Find(new object[1] { typeAndId.Item2 });
+                        billable.InvoiceId = invoiceId;
+                    }
+                }
+                dbContext.SaveChanges();
+            }
         }
 
-        public static void AddFakeInvoices(DeadfileContext dbContext)
+        public static void AddFakeInvoices()
         {
             var random = new Random(354);
-            foreach (var job in dbContext.Jobs)
+            var clientIds = new List<int>();
+            using (var dbContext = new DeadfileContext())
             {
-                var client = dbContext.Clients.Find(new object[1] {job.ClientId});
-                // For now, leave empty for Bruce and Morticia. Can experiment with what fake data I need added later.
-                if (client.FirstName == "Bruce" && client.LastName == "Wayne")
+                foreach (var clientId in (from client in dbContext.Clients select client.ClientId))
                 {
-
+                    clientIds.Add(clientId);
                 }
-                else if (client.FirstName == "Morticia" && client.LastName == "Adams")
+            }
+            foreach (var clientId in clientIds)
+            {
+                var numInvoicesToAdd = random.Next(3);
+                for (int i = 0; i < numInvoicesToAdd; i++)
                 {
-                    
-                }
-                else
-                {
-                    var numInvoicesToAdd = random.Next(3);
-                    _addedInvoicesForJob.Add(job.JobId, new List<Tuple<Company, int>>());
-                    for (int i = 0; i < numInvoicesToAdd; i++)
-                    {
-                        AddSingleFakeInvoice(dbContext, job.ClientId, job.JobId, random);
-                    }
+                    AddSingleFakeInvoice(clientId, random);
                 }
             }
         }
@@ -897,25 +987,6 @@ namespace Deadfile.Model.DesignTime
                             : ((s == "Arun District Council")
                                 ? new LocalAuthority() {Name = s, Url = "http://www.arun.gov.uk/"}
                                 : new LocalAuthority() {Name = s})));
-        }
-
-        public static void SetUpJobInvoiceMappings(DeadfileContext dbContext)
-        {
-            foreach (var job in _addedInvoicesForJob)
-            {
-                var jobId = job.Key;
-                foreach (var invoiceMapping in job.Value)
-                {
-                    var invoiceIds =
-                        (from invoice in dbContext.Invoices
-                         where invoice.Company == invoiceMapping.Item1
-                         where invoice.InvoiceReference == invoiceMapping.Item2
-                         select invoice.InvoiceId).ToArray();
-                    if (invoiceIds.Length != 1) throw new ApplicationException("Screwed up");
-                    var invoiceId = invoiceIds[0];
-                    dbContext.JobInvoiceMappings.Add(new JobInvoiceMapping() {JobId = jobId, InvoiceId = invoiceId});
-                }
-            }
         }
     }
 }

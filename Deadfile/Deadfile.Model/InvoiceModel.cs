@@ -89,15 +89,49 @@ namespace Deadfile.Model
             set { SetProperty(ref _clientName, value); }
         }
 
-        private string _clientAddress;
-
-        [Required(ErrorMessage = "An Invoice requires a Client Address."),
-         MinLength(1, ErrorMessage = "Client Address must be at least 1 character long."),
-         MaxLength(100, ErrorMessage = "Client Address must be at most 100 character long.")]
-        public string ClientAddress
+        private string _clientAddressFirstLine;
+        /// <summary>
+        /// First line of the Client's contact address. This is required.
+        /// </summary>
+        [Required(ErrorMessage = "You must provide an address for this Client."),
+         MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
+        public string ClientAddressFirstLine
         {
-            get { return _clientAddress; }
-            set { SetProperty(ref _clientAddress, value); }
+            get { return _clientAddressFirstLine; }
+            set { SetProperty(ref _clientAddressFirstLine, value); }
+        }
+
+        private string _clientAddressSecondLine;
+        /// <summary>
+        /// Second line of the Client's contact address.
+        /// </summary>
+        [MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
+        public string ClientAddressSecondLine
+        {
+            get { return _clientAddressSecondLine; }
+            set { SetProperty(ref _clientAddressSecondLine, value); }
+        }
+
+        private string _clientAddressThirdLine;
+        /// <summary>
+        /// Third line of the Client's contact address.
+        /// </summary>
+        [MaxLength(100, ErrorMessage = "A line of an address must be less than 100 characters long.")]
+        public string ClientAddressThirdLine
+        {
+            get { return _clientAddressThirdLine; }
+            set { SetProperty(ref _clientAddressThirdLine, value); }
+        }
+
+        private string _clientAddressPostCode;
+        /// <summary>
+        /// Post code for the Client's contact address.
+        /// </summary>
+        [MaxLength(20, ErrorMessage = "A postcode must be less than 20 characters long.")]
+        public string ClientAddressPostCode
+        {
+            get { return _clientAddressPostCode; }
+            set { SetProperty(ref _clientAddressPostCode, value); }
         }
 
         private string _project;
@@ -118,18 +152,18 @@ namespace Deadfile.Model
             set { SetProperty(ref _description, value); }
         }
 
-        private ObservableCollection<InvoiceItemModel> _activeItems = new ObservableCollection<InvoiceItemModel>();
-        public ObservableCollection<InvoiceItemModel> ActiveItems
+        private ObservableCollection<InvoiceItemModel> _invoiceItemModels = new ObservableCollection<InvoiceItemModel>();
+        public ObservableCollection<InvoiceItemModel> InvoiceItemModels
         {
-            get { return _activeItems; }
-            set { SetProperty(ref _activeItems, value); }
+            get { return _invoiceItemModels; }
+            set { SetProperty(ref _invoiceItemModels, value); }
         }
 
-        private ObservableCollection<InvoiceItemModel> _inactiveItems = new ObservableCollection<InvoiceItemModel>();
-        public ObservableCollection<InvoiceItemModel> InactiveItems
+        private ObservableCollection<JobInvoiceMappingModel> _jobInvoiceMappingModels = new ObservableCollection<JobInvoiceMappingModel>();
+        public ObservableCollection<JobInvoiceMappingModel> JobInvoiceMappingModels
         {
-            get { return _inactiveItems; }
-            set { SetProperty(ref _inactiveItems, value); }
+            get { return _jobInvoiceMappingModels; }
+            set { SetProperty(ref _jobInvoiceMappingModels, value); }
         }
     }
 }

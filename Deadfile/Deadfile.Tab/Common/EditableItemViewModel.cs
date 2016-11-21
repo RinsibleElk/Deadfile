@@ -67,8 +67,9 @@ namespace Deadfile.Tab.Common
             get { return _selectedItem; }
             set
             {
-                if (value.Id == _selectedItem.Id) return;
-                _selectedItem = value;
+                var valueToSet = value ?? new T() {Id = ModelBase.NewModelId};
+                if (valueToSet.Id == _selectedItem.Id) return;
+                _selectedItem = valueToSet;
                 NotifyOfPropertyChange(() => SelectedItem);
                 Editable = false;
                 Errors = new List<string>();

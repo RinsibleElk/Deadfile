@@ -14,15 +14,6 @@ namespace Deadfile.Entity
         {
         }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            // Disable cascade delete from job/invoice to job-invoice mappings.
-            modelBuilder.Entity<Job>().HasMany(i => i.JobInvoiceMappings).WithOptional().WillCascadeOnDelete(false);
-            modelBuilder.Entity<Invoice>().HasMany(i => i.JobInvoiceMappings).WithOptional().WillCascadeOnDelete(false);
-        }
-
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Job> Jobs { get; set; }
         public virtual DbSet<Invoice> Invoices { get; set; }
@@ -33,7 +24,6 @@ namespace Deadfile.Entity
         public virtual DbSet<Quotation> Quotations { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<LocalAuthority> LocalAuthorities { get; set; }
-        public virtual DbSet<JobInvoiceMapping> JobInvoiceMappings { get; set; }
         public virtual DbSet<InvoiceItem> InvoiceItems { get; set; }
     }
 }

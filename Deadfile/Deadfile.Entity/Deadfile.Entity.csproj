@@ -63,7 +63,6 @@
     <Compile Include="InvoiceItem.cs" />
     <Compile Include="InvoiceStatus.cs" />
     <Compile Include="Job.cs" />
-    <Compile Include="JobInvoiceMapping.cs" />
     <Compile Include="JobStatus.cs" />
     <Compile Include="LocalAuthority.cs" />
     <Compile Include="Payment.cs" />

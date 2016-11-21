@@ -46,5 +46,12 @@ namespace Deadfile.Model
             get { return _invoiceId; }
             set { SetProperty(ref _invoiceId, value); }
         }
+
+        private bool _markedForDeletion;
+        public bool MarkedForDeletion
+        {
+            get { return _markedForDeletion; }
+            set { SetProperty(ref _markedForDeletion, value); }
+        }
     }
 }

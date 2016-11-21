@@ -20,5 +20,6 @@ namespace Deadfile.Tab.Invoices
         void SetBillableItems();
         bool CanSetBillableItems { get; }
         bool InvoiceEditable { get; }
+        double NetAmount { get; set; }
     }
 }

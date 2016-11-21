@@ -10,5 +10,6 @@ namespace Deadfile.Model.Billable
     {
         bool AutomaticEditingInProgress { get; set; }
         void StateChanged(int index);
+        void NetAmountChanged(int index);
     }
 }

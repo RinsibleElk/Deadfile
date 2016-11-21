@@ -73,7 +73,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationInvoiceMappingModel.cs" />
     <Compile Include="ApplicationModel.cs" />
+    <Compile Include="BillableHourInvoiceMappingModel.cs" />
     <Compile Include="BillableHourModel.cs" />
     <Compile Include="Billable\BillableApplication.cs" />
     <Compile Include="Billable\BillableBillableHour.cs" />
@@ -95,6 +97,7 @@
     <Compile Include="DeadfileRepository.cs" />
     <Compile Include="DesignTime\DeadfileDesignTimeRepository.cs" />
     <Compile Include="DesignTime\FakeData.cs" />
+    <Compile Include="ExpenseInvoiceMappingModel.cs" />
     <Compile Include="ExpenseModel.cs" />
     <Compile Include="Interfaces\IDeadfileRepository.cs" />
     <Compile Include="Interfaces\IModelEntityMapper.cs" />
@@ -103,6 +106,7 @@
     <Compile Include="InvoiceModel.cs" />
     <Compile Include="InvoiceCreationState.cs" />
     <Compile Include="JobChildModelBase.cs" />
+    <Compile Include="JobInvoiceMappingModel.cs" />
     <Compile Include="JobModel.cs" />
     <Compile Include="LocalAuthorityModel.cs" />
     <Compile Include="ModelBase.cs" />

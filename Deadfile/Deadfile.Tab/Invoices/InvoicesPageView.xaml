@@ -131,7 +131,7 @@
                                      Grid.Column="3"
                                      Style="{StaticResource PksTextBox}"
                                      IsEnabled="{Binding InvoiceEditable}"
-                                     Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddress}"
+                                     Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressFirstLine}"
                                      controls:TextBoxHelper.Watermark="Client Address" />
                             <TextBlock Grid.Row="2"
                                        Grid.Column="0"
@@ -313,7 +313,7 @@
                                         Grid.Column="1"
                                         IsEnabled="{Binding InvoiceEditable}"
                                         Style="{StaticResource InvoiceTextBox}"
-                                        Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddress}"
+                                        Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressFirstLine}"
                                         controls:TextBoxHelper.Watermark="Client Address"/>
                         </Grid>
                     </Grid>
@@ -427,7 +427,10 @@
             <Button Grid.Row="4" x:Name="SetBillableItems">
                 Set Billable Items
             </Button>
-            <TextBlock Grid.Row="5" />
+            <StackPanel Grid.Row="5" Orientation="Horizontal">
+                <TextBlock Text="Total: "/>
+                <TextBlock Text="{Binding NetAmount}"/>
+            </StackPanel>
         </Grid>
         <ContentControl Grid.Column="1"
                         Content="{Binding}"

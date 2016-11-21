@@ -47,6 +47,15 @@ namespace Deadfile.Model.Billable
         public bool AutomaticEditingInProgress { get; set; } = false;
         public void StateChanged(int index)
         {
+            NetAmount = 0;
+            foreach (var child in Children)
+            {
+                if (child.State == BillableModelState.FullyIncluded)
+                {
+                    NetAmount += child.NetAmount;
+                    Parent?.NetAmountChanged(Index);
+                }
+            }
             if (!AutomaticEditingInProgress)
             {
                 AutomaticEditingInProgress = true;
@@ -56,6 +65,7 @@ namespace Deadfile.Model.Billable
                 {
                     hasExcluded |= child.State == BillableModelState.Excluded;
                     hasIncluded |= child.State == BillableModelState.FullyIncluded;
+                    if (hasExcluded && hasIncluded) break;
                 }
                 if (hasExcluded && hasIncluded)
                     State = BillableModelState.PartiallyIncluded;
@@ -67,6 +77,10 @@ namespace Deadfile.Model.Billable
                     State = BillableModelState.Claimed;
                 AutomaticEditingInProgress = false;
             }
+        }
+
+        public void NetAmountChanged(int index)
+        {
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -233,20 +234,41 @@ namespace Deadfile.Model
 
         public IEnumerable<BrowserInvoice> GetBrowserInvoicesForJob(BrowserMode mode, bool includeInactiveEnabled, int jobId)
         {
+            var invoiceIdSet = new HashSet<int>();
             var li = new List<BrowserInvoice>();
             using (var dbContext = new DeadfileContext())
             {
-                foreach (var invoice in (from invoice in dbContext.Invoices
-                                         join jim in dbContext.JobInvoiceMappings on invoice.InvoiceId equals jim.InvoiceId
-                                         where jim.JobId == jobId
-                                         select
-                                             new BrowserInvoice()
-                                             {
-                                                 Id = invoice.InvoiceId,
-                                                 ParentId = invoice.ClientId,
-                                                 InvoiceReference = invoice.InvoiceReference
-                                             }))
+                foreach (var invoiceId in (from billable in dbContext.Applications
+                                           where billable.InvoiceId.HasValue
+                                           where billable.JobId == jobId
+                                           select billable.InvoiceId.Value))
                 {
+                    invoiceIdSet.Add(invoiceId);
+                }
+                foreach (var invoiceId in (from billable in dbContext.Expenses
+                                           where billable.InvoiceId.HasValue
+                                           where billable.JobId == jobId
+                                           select billable.InvoiceId.Value))
+                {
+                    invoiceIdSet.Add(invoiceId);
+                }
+                foreach (var invoiceId in (from billable in dbContext.BillableHours
+                                           where billable.InvoiceId.HasValue
+                                           where billable.JobId == jobId
+                                           select billable.InvoiceId.Value))
+                {
+                    invoiceIdSet.Add(invoiceId);
+                }
+                foreach (var invoiceId in invoiceIdSet)
+                {
+                    var invoiceEntity = dbContext.Invoices.Find(new object[1] {invoiceId});
+                    var invoice =
+                        new BrowserInvoice()
+                        {
+                            InvoiceReference = invoiceEntity.InvoiceReference,
+                            Id = invoiceEntity.InvoiceId,
+                            ParentId = invoiceEntity.ClientId,
+                        };
                     invoice.SetRepository(mode, includeInactiveEnabled, true, this);
                     li.Add(invoice);
                 }
@@ -256,10 +278,12 @@ namespace Deadfile.Model
 
         public void SetUpFakeData()
         {
+            var addInvoices = false;
             using (var dbContext = new DeadfileContext())
             {
                 if ((from client in dbContext.Clients select client).FirstOrDefault() == null)
                 {
+                    addInvoices = true;
                     foreach (var clientModel in FakeData.GetFakeClients())
                     {
                         dbContext.Clients.Add(_modelEntityMapper.Mapper.Map<Client>(clientModel));
@@ -276,12 +300,10 @@ namespace Deadfile.Model
                     dbContext.SaveChanges();
                     FakeData.AddFakeBillableHours(dbContext);
                     dbContext.SaveChanges();
-                    FakeData.AddFakeInvoices(dbContext);
-                    dbContext.SaveChanges();
-                    FakeData.SetUpJobInvoiceMappings(dbContext);
-                    dbContext.SaveChanges();
                 }
             }
+            if (addInvoices)
+                FakeData.AddFakeInvoices();
         }
 
         public QuotationModel GetRandomQuotation()
@@ -329,7 +351,7 @@ namespace Deadfile.Model
                                              where invoiceItem.InvoiceId == invoiceId
                                              select invoiceItem))
                 {
-                    invoiceModel.ActiveItems.Add(_modelEntityMapper.Mapper.Map<InvoiceItemModel>(invoiceItem));
+                    invoiceModel.InvoiceItemModels.Add(_modelEntityMapper.Mapper.Map<InvoiceItemModel>(invoiceItem));
                 }
             }
 
@@ -389,30 +411,27 @@ namespace Deadfile.Model
                 }
             }
 
-            // Now remove the newly deleted invoice items.
-            foreach (var inactiveInvoiceItemModel in invoiceModel.InactiveItems)
-            {
-                using (var dbContext = new DeadfileContext())
-                {
-                    var inactiveInvoiceItem = dbContext.InvoiceItems.Find(new object[1] {inactiveInvoiceItemModel.InvoiceItemId});
-                    dbContext.InvoiceItems.Remove(inactiveInvoiceItem);
-                    dbContext.SaveChanges();
-                }
-            }
-
             // Finally add/edit the active invoice items.
-            foreach (var invoiceItemModel in invoiceModel.ActiveItems)
+            foreach (var invoiceItemModel in invoiceModel.InvoiceItemModels)
             {
                 using (var dbContext = new DeadfileContext())
                 {
                     if (invoiceItemModel.InvoiceItemId == ModelBase.NewModelId)
                     {
-                        dbContext.InvoiceItems.Add(_modelEntityMapper.Mapper.Map<InvoiceItemModel, InvoiceItem>(invoiceItemModel));
+                        if (!invoiceItemModel.MarkedForDeletion)
+                            dbContext.InvoiceItems.Add(_modelEntityMapper.Mapper.Map<InvoiceItemModel, InvoiceItem>(invoiceItemModel));
                     }
                     else
                     {
                         var invoiceItem = dbContext.InvoiceItems.Find(new object[1] {invoiceItemModel.InvoiceItemId});
-                        _modelEntityMapper.Mapper.Map<InvoiceItemModel, InvoiceItem>(invoiceItemModel, invoiceItem);
+                        if (invoiceItemModel.MarkedForDeletion)
+                        {
+                            dbContext.InvoiceItems.Remove(invoiceItem);
+                        }
+                        else
+                        {
+                            _modelEntityMapper.Mapper.Map<InvoiceItemModel, InvoiceItem>(invoiceItemModel, invoiceItem);
+                        }
                     }
                     dbContext.SaveChanges();
                 }
@@ -515,30 +534,51 @@ namespace Deadfile.Model
 
         public IEnumerable<BrowserModel> GetBrowserJobsForInvoice(BrowserMode mode, bool includeInactiveEnabled, int invoiceId)
         {
+            var jobIdSet = new HashSet<int>();
             var li = new List<BrowserJob>();
             using (var dbContext = new DeadfileContext())
             {
-                foreach (var job in (from job in dbContext.Jobs
-                                     join jim in dbContext.JobInvoiceMappings on job.JobId equals jim.JobId
-                                     where jim.InvoiceId == invoiceId
-                                     select
-                                         new BrowserJob()
-                                         {
-                                             Id = job.JobId,
-                                             ParentId = job.ClientId,
-                                             FullAddress =
-                                                 job.AddressFirstLine +
-                                                 ((job.AddressSecondLine == null || job.AddressSecondLine == "")
-                                                     ? ""
-                                                     : ", " + job.AddressSecondLine) +
-                                                 ((job.AddressThirdLine == null || job.AddressThirdLine == "")
-                                                     ? ""
-                                                     : ", " + job.AddressThirdLine) +
-                                                 ((job.AddressPostCode == null || job.AddressPostCode == "")
-                                                     ? ""
-                                                     : ", " + job.AddressPostCode)
-                                     }))
+                foreach (var jobId in (from billable in dbContext.Applications
+                                       where billable.InvoiceId.HasValue
+                                       where billable.InvoiceId.Value == invoiceId
+                                       select billable.JobId))
                 {
+                    jobIdSet.Add(jobId);
+                }
+                foreach (var jobId in (from billable in dbContext.Expenses
+                                       where billable.InvoiceId.HasValue
+                                       where billable.InvoiceId.Value == invoiceId
+                                       select billable.JobId))
+                {
+                    jobIdSet.Add(jobId);
+                }
+                foreach (var jobId in (from billable in dbContext.BillableHours
+                                       where billable.InvoiceId.HasValue
+                                       where billable.InvoiceId.Value == invoiceId
+                                       select billable.JobId))
+                {
+                    jobIdSet.Add(jobId);
+                }
+                foreach (var jobId in jobIdSet)
+                {
+                    var jobEntity = dbContext.Jobs.Find(new object[1] {jobId});
+                    var job =
+                        new BrowserJob()
+                        {
+                            Id = jobEntity.JobId,
+                            ParentId = jobEntity.ClientId,
+                            FullAddress =
+                                jobEntity.AddressFirstLine +
+                                ((jobEntity.AddressSecondLine == null || jobEntity.AddressSecondLine == "")
+                                    ? ""
+                                    : ", " + jobEntity.AddressSecondLine) +
+                                ((jobEntity.AddressThirdLine == null || jobEntity.AddressThirdLine == "")
+                                    ? ""
+                                    : ", " + jobEntity.AddressThirdLine) +
+                                ((jobEntity.AddressPostCode == null || jobEntity.AddressPostCode == "")
+                                    ? ""
+                                    : ", " + jobEntity.AddressPostCode)
+                        };
                     job.SetRepository(mode, includeInactiveEnabled, true, this);
                     li.Add(job);
                 }

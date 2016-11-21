@@ -20,6 +20,7 @@ namespace Deadfile.Infrastructure.Converters
             switch (state)
             {
                 case BillableModelState.Excluded:
+                case BillableModelState.Claimed:
                     return false;
                 case BillableModelState.PartiallyIncluded:
                     return null;
