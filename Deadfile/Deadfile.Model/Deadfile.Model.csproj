@@ -105,8 +105,8 @@
     <Compile Include="InvoiceItemModel.cs" />
     <Compile Include="InvoiceModel.cs" />
     <Compile Include="InvoiceCreationState.cs" />
+    <Compile Include="InvoiceModelInvoiceReferenceValidator.cs" />
     <Compile Include="JobChildModelBase.cs" />
-    <Compile Include="JobInvoiceMappingModel.cs" />
     <Compile Include="JobModel.cs" />
     <Compile Include="LocalAuthorityModel.cs" />
     <Compile Include="ModelBase.cs" />

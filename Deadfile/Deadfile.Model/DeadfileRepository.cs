@@ -438,6 +438,20 @@ namespace Deadfile.Model
             }
         }
 
+        public bool HasUniqueInvoiceReference(InvoiceModel invoiceModel)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                return !(from invoice in dbContext.Invoices
+                           where invoice.Company == invoiceModel.Company
+                           where invoice.InvoiceReference == invoiceModel.InvoiceReference
+                           where
+                           (invoiceModel.InvoiceId == ModelBase.NewModelId ||
+                            invoiceModel.InvoiceId != invoice.InvoiceId)
+                           select invoice.InvoiceId).Any();
+            }
+        }
+
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
             using (var dbContext = new DeadfileContext())

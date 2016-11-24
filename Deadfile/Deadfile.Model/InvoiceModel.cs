@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Entity;
+using Deadfile.Model.Interfaces;
 
 namespace Deadfile.Model
 {
@@ -58,14 +59,26 @@ namespace Deadfile.Model
         }
 
         private int _invoiceReference = ModelBase.NewModelId;
+        [CustomValidation(typeof(InvoiceModelInvoiceReferenceValidator), nameof(InvoiceModelInvoiceReferenceValidator.InvoiceReferenceIsValid))]
         public int InvoiceReference
         {
             get { return _invoiceReference; }
             set { SetProperty(ref _invoiceReference, value); }
         }
 
+        public IDeadfileRepository Repository { get; set; } = null;
+
+        internal bool InvoiceReferenceIsUniqueForCompany()
+        {
+            // Just creating.
+            if (Repository == null)
+                return true;
+            return Repository.HasUniqueInvoiceReference(this);
+        }
+
         private Company _company = Company.PaulSamsonCharteredSurveyorLtd;
-        [Required(ErrorMessage = "An Invoice requires a Company that it has been issued for.")]
+        [Required(ErrorMessage = "An Invoice requires a Company that it has been issued for."),
+         CustomValidation(typeof(InvoiceModelInvoiceReferenceValidator), nameof(InvoiceModelInvoiceReferenceValidator.CompanyIsValid))]
         public Company Company
         {
             get { return _company; }
@@ -157,13 +170,6 @@ namespace Deadfile.Model
         {
             get { return _invoiceItemModels; }
             set { SetProperty(ref _invoiceItemModels, value); }
-        }
-
-        private ObservableCollection<JobInvoiceMappingModel> _jobInvoiceMappingModels = new ObservableCollection<JobInvoiceMappingModel>();
-        public ObservableCollection<JobInvoiceMappingModel> JobInvoiceMappingModels
-        {
-            get { return _jobInvoiceMappingModels; }
-            set { SetProperty(ref _jobInvoiceMappingModels, value); }
         }
     }
 }

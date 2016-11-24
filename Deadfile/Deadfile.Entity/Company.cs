@@ -44,5 +44,21 @@ namespace Deadfile.Entity
                     return "I3D";
             }
         }
+
+        /// <summary>
+        /// Get the name of the company for display purposes.
+        /// </summary>
+        /// <param name="company"></param>
+        /// <returns></returns>
+        public static string GetName(Company company)
+        {
+            switch (company)
+            {
+                case Company.PaulSamsonCharteredSurveyorLtd:
+                    return "Paul Samson Chartered Surveyor Ltd";
+                default:
+                    return "Imagine 3D Ltd";
+            }
+        }
     }
 }

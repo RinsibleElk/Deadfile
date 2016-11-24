@@ -177,5 +177,12 @@ namespace Deadfile.Model.Interfaces
         /// </summary>
         /// <param name="invoiceModel"></param>
         void SaveInvoice(InvoiceModel invoiceModel);
+
+        /// <summary>
+        /// Validate that the invoice reference is unique (for the specified company).
+        /// </summary>
+        /// <param name="invoiceModel"></param>
+        /// <returns></returns>
+        bool HasUniqueInvoiceReference(InvoiceModel invoiceModel);
     }
 }

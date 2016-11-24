@@ -103,6 +103,7 @@ namespace Deadfile.Tab.Invoices
                 else
                     DisplayName = CompanyUtils.GetShortName(invoiceModel.Company) + " " + invoiceModel.InvoiceReference;
             }
+            invoiceModel.Repository = _repository;
             EventAggregator.GetEvent<DisplayNameEvent>().Publish(DisplayName);
             return invoiceModel;
         }

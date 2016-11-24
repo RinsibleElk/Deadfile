@@ -83,8 +83,7 @@
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
@@ -127,31 +126,45 @@
                                        Grid.Column="2"
                                        Style="{StaticResource PksTextBlock}"
                                        Text="Invoice Address:"/>
-                            <TextBox Grid.Row="1"
-                                     Grid.Column="3"
-                                     Style="{StaticResource PksTextBox}"
-                                     IsEnabled="{Binding InvoiceEditable}"
-                                     Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressFirstLine}"
-                                     controls:TextBoxHelper.Watermark="Client Address" />
+                            <StackPanel Grid.Row="1"
+                                        Grid.RowSpan="2"
+                                        Grid.Column="3">
+                                <TextBox Style="{StaticResource PksTextBox}"
+                                         Margin="0,20,0,0"
+                                         IsEnabled="{Binding InvoiceEditable}"
+                                         Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressFirstLine}"
+                                         controls:TextBoxHelper.Watermark="Client Address First Line" />
+                                <TextBox Style="{StaticResource PksTextBox}"
+                                         Margin="0,0,0,0"
+                                         IsEnabled="{Binding InvoiceEditable}"
+                                         Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressSecondLine}"
+                                         controls:TextBoxHelper.Watermark="Client Address Second Line" />
+                                <TextBox Style="{StaticResource PksTextBox}"
+                                         Margin="0,0,0,0"
+                                         IsEnabled="{Binding InvoiceEditable}"
+                                         Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressThirdLine}"
+                                         controls:TextBoxHelper.Watermark="Client Address Third Line" />
+                                <TextBox Style="{StaticResource PksTextBox}"
+                                         Margin="0,0,0,0"
+                                         IsEnabled="{Binding InvoiceEditable}"
+                                         Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressPostCode}"
+                                         controls:TextBoxHelper.Watermark="Client Post Code" />
+                            </StackPanel>
                             <TextBlock Grid.Row="2"
                                        Grid.Column="0"
                                        Style="{StaticResource PksTextBlock}"
-                                       Text="Invoice Reference:"/>
-                            <TextBlock Grid.Row="3"
-                                       Grid.Column="0"
-                                       Style="{StaticResource PksTextBlock}"
                                        Text="Property:"/>
-                            <TextBox Grid.Row="3"
+                            <TextBox Grid.Row="2"
                                      Grid.Column="1"
                                      Style="{StaticResource PksTextBox}"
                                      IsEnabled="{Binding InvoiceEditable}"
                                      Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Project}"
                                      controls:TextBoxHelper.Watermark="Property" />
-                            <TextBlock Grid.Row="4"
+                            <TextBlock Grid.Row="3"
                                        Grid.Column="0"
                                        Style="{StaticResource PksTextBlock}"
                                        Text="Job Description:"/>
-                            <TextBox Grid.Row="4"
+                            <TextBox Grid.Row="3"
                                      Grid.Column="1"
                                      Style="{StaticResource PksTextBox}"
                                      IsEnabled="{Binding InvoiceEditable}"
@@ -167,9 +180,30 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="0"
-                                       Grid.Column="0"
-                                       Style="{StaticResource PksTextBlock}"
-                                       Text="For:"/>
+                                   Grid.Column="0"
+                                   Style="{StaticResource PksTextBlock}"
+                                   Text="For:"/>
+                        <ItemsControl Grid.Row="0"
+                                      Grid.Column="1"
+                                      Grid.ColumnSpan="3"
+                                      Margin="0,20,0,20"
+                                      IsEnabled="{Binding InvoiceEditable}"
+                                      ItemsSource="{Binding SelectedItem.InvoiceItemModels}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="model:InvoiceItemModel">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox Style="{StaticResource PksTextBox}"
+                                                 Margin="0"
+                                                 Width="400"
+                                                 controls:TextBoxHelper.Watermark="Item Description"
+                                                 Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=Description}" />
+                                        <controls:NumericUpDown Height="20"
+                                                                Value="{Binding NetAmount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                        <Button Style="{StaticResource DeleteMiniButton}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </Grid>
                     <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
@@ -186,16 +220,17 @@
                                    Grid.Column="1"
                                    Style="{StaticResource PksTextBlock}"
                                    Text="Fee For Above:"/>
-                        <controls:NumericUpDown Grid.Row="0"
-                                                Grid.Column="2"
-                                                Value="{Binding SelectedItem.NetAmount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-                                                IsEnabled="{Binding InvoiceEditable}"/>
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="2"
+                                   Height="20"
+                                   Text="{Binding SelectedItem.NetAmount}" />
                         <StackPanel Grid.Row="1"
                                     Grid.Column="1"
                                     Orientation="Horizontal">
                             <TextBlock Style="{StaticResource PksTextBlock}"
                                        Text="VAT @ "/>
                             <controls:NumericUpDown Value="{Binding VatRate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                                                    Height="20"
                                                     IsEnabled="{Binding InvoiceEditable}"/>
                             <TextBlock Style="{StaticResource PksTextBlock}"
                                        Text="%:"/>
