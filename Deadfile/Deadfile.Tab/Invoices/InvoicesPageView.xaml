@@ -15,6 +15,13 @@
              d:DataContext="{d:DesignInstance Type=local:InvoicesPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="1000" d:DesignWidth="1200">
     <UserControl.Resources>
+        <ObjectDataProvider MethodName="GetValues"
+                ObjectType="{x:Type entity:InvoiceStatus}"
+                x:Key="InvoiceStatusValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="entity:InvoiceStatus" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
         <Style x:Key="PksTextBlock" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="FontSize" Value="12" />
@@ -75,6 +82,10 @@
                     <Grid Grid.Row="1">
                         <StackPanel Margin="20,20,20,20" Background="LightSteelBlue">
                             <TextBlock Text="INVOICE" HorizontalAlignment="Center" Foreground="DarkBlue" FontWeight="Bold" FontSize="16" />
+                            <ComboBox ItemsSource="{Binding Source={StaticResource InvoiceStatusValues}}"
+                                      IsEditable="False"
+                                      SelectedItem="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Status}"
+                                      IsEnabled="{Binding InvoiceEditable}" />
                         </StackPanel>
                     </Grid>
                     <Border Grid.Row="2"

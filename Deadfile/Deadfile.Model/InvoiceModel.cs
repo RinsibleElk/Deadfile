@@ -55,10 +55,15 @@ namespace Deadfile.Model
         public InvoiceStatus Status
         {
             get { return _status; }
-            set { SetProperty(ref _status, value); }
+            set
+            {
+                // revalidate the invoice reference
+                if (SetProperty(ref _status, value))
+                    ValidateProperty(nameof(InvoiceReference), _invoiceReference);
+            }
         }
 
-        private int _invoiceReference = ModelBase.NewModelId;
+        private int _invoiceReference = 0;
         [CustomValidation(typeof(InvoiceModelInvoiceReferenceValidator), nameof(InvoiceModelInvoiceReferenceValidator.InvoiceReferenceIsValid))]
         public int InvoiceReference
         {
@@ -77,12 +82,16 @@ namespace Deadfile.Model
         }
 
         private Company _company = Company.PaulSamsonCharteredSurveyorLtd;
-        [Required(ErrorMessage = "An Invoice requires a Company that it has been issued for."),
-         CustomValidation(typeof(InvoiceModelInvoiceReferenceValidator), nameof(InvoiceModelInvoiceReferenceValidator.CompanyIsValid))]
+        [Required(ErrorMessage = "An Invoice requires a Company that it has been issued for.")]
         public Company Company
         {
             get { return _company; }
-            set { SetProperty(ref _company, value); }
+            set
+            {
+                // revalidate the invoice reference
+                if (SetProperty(ref _company, value))
+                    ValidateProperty(nameof(InvoiceReference), _invoiceReference);
+            }
         }
 
         private InvoiceCreationState _creationState = InvoiceCreationState.DefineCompany;

@@ -118,6 +118,7 @@
     <Compile Include="Events\InvoiceClientEvent.cs" />
     <Compile Include="Events\LockedForEditingMessage.cs" />
     <Compile Include="Events\NavigateMessage.cs" />
+    <Compile Include="Events\HaveSavedEvent.cs" />
     <Compile Include="Events\SaveMessage.cs" />
     <Compile Include="Events\SelectedItemEvent.cs" />
     <Compile Include="Events\UndoMessage.cs" />

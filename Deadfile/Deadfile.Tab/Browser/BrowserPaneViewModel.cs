@@ -20,6 +20,7 @@ namespace Deadfile.Tab.Browser
         private readonly IEventAggregator _eventAggregator;
         private readonly IDeadfileRepository _repository;
         private SubscriptionToken _lockedForEditingActionSubscriptionToken = null;
+        private SubscriptionToken _haveSavedSubscriptionToken = null;
         public BrowserPaneViewModel(IEventAggregator eventAggregator, IDeadfileRepository repository)
         {
             _repository = repository;
@@ -30,12 +31,22 @@ namespace Deadfile.Tab.Browser
 
         private void BrowserSettingsRefresh(object sender, EventArgs e)
         {
+            RefreshBrowser();
+        }
+
+        private void RefreshBrowser()
+        {
             Items = new ObservableCollection<BrowserModel>(_repository.GetBrowserItems(BrowserSettings));
         }
 
         private void LockedForEditingAction(LockedForEditingMessage message)
         {
             BrowsingEnabled = (message == LockedForEditingMessage.Unlocked);
+        }
+
+        private void HaveSavedAction(HaveSavedMessage message)
+        {
+            RefreshBrowser();
         }
 
         private BrowserModel _selectedItem;
@@ -92,11 +103,13 @@ namespace Deadfile.Tab.Browser
         public void OnNavigatedTo(object parameters)
         {
             _lockedForEditingActionSubscriptionToken = _eventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(LockedForEditingAction);
+            _haveSavedSubscriptionToken = _eventAggregator.GetEvent<HaveSavedEvent>().Subscribe(HaveSavedAction);
         }
 
         public void OnNavigatedFrom()
         {
             _eventAggregator.GetEvent<LockedForEditingEvent>().Unsubscribe(_lockedForEditingActionSubscriptionToken);
+            _eventAggregator.GetEvent<HaveSavedEvent>().Unsubscribe(_haveSavedSubscriptionToken);
         }
     }
 }

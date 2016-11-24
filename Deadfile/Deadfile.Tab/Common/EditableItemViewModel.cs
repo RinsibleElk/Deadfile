@@ -197,6 +197,9 @@ namespace Deadfile.Tab.Common
         private void PerformSave(SaveMessage message)
         {
             PerformSave();
+
+            // Notify the browser that something has changed.
+            EventAggregator.GetEvent<HaveSavedEvent>().Publish(HaveSavedMessage.Saved);
         }
 
         private void DiscardChangesAction(DiscardChangesMessage discardChangesMessage)

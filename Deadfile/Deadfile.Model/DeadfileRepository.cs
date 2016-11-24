@@ -134,6 +134,8 @@ namespace Deadfile.Model
                                                       client.FirstName == "")
                                                         ? client.Title + " " + client.LastName
                                                         : client.FirstName + " " + client.LastName).Contains(settings.FilterText)
+                                                where
+                                                    ((settings.IncludeInactiveEnabled) || client.Status==ClientStatus.Active)
                                                 orderby
                                                     ((settings.Sort == BrowserSort.ClientFirstName)
                                                         ? ((client.FirstName == null || client.FirstName == "")
@@ -161,6 +163,8 @@ namespace Deadfile.Model
                     {
                         foreach (var job in (from job in dbContext.Jobs
                                              where ((settings.FilterText == null || settings.FilterText == "") || job.AddressFirstLine.Contains(settings.FilterText))
+                                             where
+                                                 ((settings.IncludeInactiveEnabled) || job.Status == JobStatus.Active)
                                              orderby job.AddressFirstLine
                                              select
                                                 new BrowserJob()
@@ -181,6 +185,8 @@ namespace Deadfile.Model
                     {
                         foreach (var invoice in (from invoice in dbContext.Invoices
                                                  where ((settings.FilterText == null || settings.FilterText == "") || invoice.InvoiceReference.ToString().StartsWith(settings.FilterText))
+                                                 where
+                                                     ((settings.IncludeInactiveEnabled) || invoice.Status == InvoiceStatus.Created)
                                                  orderby (settings.Sort == BrowserSort.InvoiceCreationDate ? -(invoice.CreatedDate.Year * 10000 + invoice.CreatedDate.Month * 100 + invoice.CreatedDate.Day) : invoice.InvoiceReference)
                                                  select
                                                     new BrowserInvoice()
@@ -440,6 +446,7 @@ namespace Deadfile.Model
 
         public bool HasUniqueInvoiceReference(InvoiceModel invoiceModel)
         {
+            if (invoiceModel.InvoiceReference == 0) return invoiceModel.Status == InvoiceStatus.Cancelled;
             using (var dbContext = new DeadfileContext())
             {
                 return !(from invoice in dbContext.Invoices
