@@ -19,6 +19,7 @@ using Deadfile.Tab.Management.LocalAuthorities;
 using Deadfile.Tab.Navigation;
 using Deadfile.Tab.Quotes;
 using Deadfile.Tab.Tab;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Deadfile.Tab
 {

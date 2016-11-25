@@ -12,6 +12,7 @@ using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab;
 using Dragablz;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Deadfile
 {
@@ -72,6 +73,9 @@ namespace Deadfile
 
             // We have a module for each tab. This creates the local environment for each tab. For instance, navigation and messaging are local within each tab.
             ContainerInstance.RegisterPerRequest(typeof(TabModule), nameof(TabModule), typeof(TabModule));
+
+            // Dialog coordinator
+            ContainerInstance.RegisterInstance(typeof(IDialogCoordinator), nameof(DialogCoordinator), DialogCoordinator.Instance);
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)

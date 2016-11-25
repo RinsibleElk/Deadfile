@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Deadfile.Tab.Clients"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:ClientsActionsPadDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="100" d:DesignWidth="300">
@@ -12,6 +13,9 @@
         <Button x:Name="EditItem" Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource EditButton}"/>
         <Button x:Name="SaveItem" Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" IsDefault="True" Style="{StaticResource SaveButton}"/>
         <Button x:Name="DiscardItem" Visibility="{Binding CanDiscardItem, Converter={StaticResource BooleanToVisibility}}" IsCancel="True" Style="{StaticResource DiscardButton}"/>
-        <Button x:Name="DeleteItem" Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource DeleteButton}"/>
+        <Button Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}"
+                Style="{StaticResource DeleteButton}"
+                Command="{Binding DeleteItemCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" />
     </StackPanel>
 </UserControl>

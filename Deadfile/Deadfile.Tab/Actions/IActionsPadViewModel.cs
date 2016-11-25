@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Deadfile.Infrastructure.Interfaces;
 
 namespace Deadfile.Tab.Actions
@@ -15,10 +16,11 @@ namespace Deadfile.Tab.Actions
         void SaveItem();
         bool CanSaveItem { get; }
         bool SaveItemIsVisible { get; }
-        void DeleteItem();
+        void DeleteItem(object window);
         bool CanDeleteItem { get; }
         bool DeleteItemIsVisible { get; }
         void DiscardItem();
         bool CanDiscardItem { get; }
+        ICommand DeleteItemCommand { get; }
     }
 }

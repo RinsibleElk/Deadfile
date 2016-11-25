@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Deadfile.Infrastructure.Services;
 using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
@@ -11,6 +12,7 @@ using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Browser;
 using Deadfile.Tab.Events;
 using Deadfile.Tab.Navigation;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Events;
 
 namespace Deadfile.Tab.Common
@@ -18,6 +20,7 @@ namespace Deadfile.Tab.Common
     public abstract class EditableItemViewModel<K, T> : ParameterisedViewModel<K>, IEditableItemViewModel<T> where T : ModelBase, new()
     {
         protected readonly IEventAggregator EventAggregator;
+        private readonly IDialogCoordinator _dialogCoordinator;
 
         // This is the main undo tracker for the object under management. However, it may not be the active one responding to undo events from the nav-bar.
         private readonly UndoTracker<T> _undoTracker = new UndoTracker<T>();
@@ -27,9 +30,10 @@ namespace Deadfile.Tab.Common
 
         private SubscriptionToken _saveSubscriptionToken = null;
         private SubscriptionToken _deleteSubscriptionToken = null;
-        public EditableItemViewModel(IEventAggregator eventAggregator)
+        public EditableItemViewModel(IEventAggregator eventAggregator, IDialogCoordinator dialogCoordinator)
         {
             EventAggregator = eventAggregator;
+            _dialogCoordinator = dialogCoordinator;
         }
 
         /// <summary>
@@ -220,12 +224,17 @@ namespace Deadfile.Tab.Common
         }
 
         public abstract void PerformDelete();
-        private void PerformDelete(DeleteMessage message)
+        private async void PerformDelete(DeleteMessage message)
         {
-            PerformDelete();
+            var result = await _dialogCoordinator.ShowMessageAsync(this, "Confirm Deletion", "Are you sure?", MessageDialogStyle.AffirmativeAndNegative);
+            // Open a dialog to ask the user if they are sure.
+            if (result == MessageDialogResult.Affirmative)
+            {
+                PerformDelete();
 
-            // Notify the browser that something has changed.
-            EventAggregator.GetEvent<HaveSavedEvent>().Publish(HaveSavedMessage.Saved);
+                // Notify the browser that something has changed.
+                EventAggregator.GetEvent<HaveSavedEvent>().Publish(HaveSavedMessage.Saved);
+            }
         }
 
         private void DiscardChangesAction(DiscardChangesMessage discardChangesMessage)

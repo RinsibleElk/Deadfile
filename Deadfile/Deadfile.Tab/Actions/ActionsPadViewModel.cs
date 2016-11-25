@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Tab.Events;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using IEventAggregator = Prism.Events.IEventAggregator;
@@ -20,10 +22,12 @@ namespace Deadfile.Tab.Actions
         private SubscriptionToken _canSaveEventSubscriptionToken;
         private SubscriptionToken _canDeleteEventSubscriptionToken;
         protected IEventAggregator EventAggregator { get; private set; }
+        private readonly DelegateCommand<object> _deleteItemCommand;
 
         public ActionsPadViewModel(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
+            _deleteItemCommand = new DelegateCommand<object>(DeleteItem, CanDelete);
         }
 
         public void EditItem()
@@ -93,15 +97,15 @@ namespace Deadfile.Tab.Actions
             }
         }
 
-        public void DeleteItem()
+        public void DeleteItem(object window)
         {
-            // Open a dialog to ask the user if they are sure.
-            MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo);
-            if (messageBoxResult == MessageBoxResult.Yes)
-            {
-                // Perform the deletion.
-                EventAggregator.GetEvent<DeleteEvent>().Publish(DeleteMessage.Delete);
-            }
+            // Perform the deletion.
+            EventAggregator.GetEvent<DeleteEvent>().Publish(new DeleteMessage(window));
+        }
+
+        public bool CanDelete(object window)
+        {
+            return CanDeleteItem;
         }
 
         public bool CanDeleteItem
@@ -112,6 +116,7 @@ namespace Deadfile.Tab.Actions
                 if (value == _canDeleteItem) return;
                 _canDeleteItem = value;
                 NotifyOfPropertyChange(() => CanDeleteItem);
+                _deleteItemCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -145,6 +150,8 @@ namespace Deadfile.Tab.Actions
                 NotifyOfPropertyChange(() => CanDiscardItem);
             }
         }
+
+        public ICommand DeleteItemCommand { get { return _deleteItemCommand; } }
 
         public void OnNavigatedTo(object parameters)
         {

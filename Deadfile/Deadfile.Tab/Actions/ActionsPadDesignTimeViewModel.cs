@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Deadfile.Tab.Actions
 {
@@ -24,7 +25,7 @@ namespace Deadfile.Tab.Actions
         public bool CanSaveItem { get; } = false;
         public bool SaveItemIsVisible { get; } = false;
 
-        public void DeleteItem()
+        public void DeleteItem(object window)
         {
             throw new NotImplementedException();
         }
@@ -38,5 +39,6 @@ namespace Deadfile.Tab.Actions
         }
 
         public bool CanDiscardItem { get; } = false;
+        public ICommand DeleteItemCommand { get; } = null;
     }
 }

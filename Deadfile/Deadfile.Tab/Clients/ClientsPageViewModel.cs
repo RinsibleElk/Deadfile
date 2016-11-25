@@ -8,6 +8,7 @@ using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Events;
 
 namespace Deadfile.Tab.Clients
@@ -16,7 +17,9 @@ namespace Deadfile.Tab.Clients
     {
         private readonly IDeadfileRepository _repository;
 
-        public ClientsPageViewModel(IEventAggregator eventAggregator, IDeadfileRepository repository) : base(eventAggregator)
+        public ClientsPageViewModel(IEventAggregator eventAggregator,
+            IDeadfileRepository repository,
+            IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator)
         {
             _repository = repository;
         }

@@ -10,6 +10,7 @@ using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
 using Deadfile.Tab.JobChildren;
+using MahApps.Metro.Controls.Dialogs;
 using IEventAggregator = Prism.Events.IEventAggregator;
 
 namespace Deadfile.Tab.Jobs
@@ -29,7 +30,10 @@ namespace Deadfile.Tab.Jobs
             JobChildExperience.BillableHours
         });
 
-        public JobsPageViewModel(INavigationService navigationService, IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator)
+        public JobsPageViewModel(INavigationService navigationService,
+            IDeadfileRepository repository,
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator)
         {
             _navigationService = navigationService;
             _repository = repository;

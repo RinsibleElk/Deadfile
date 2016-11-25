@@ -4,6 +4,7 @@ using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Clients;
 using Deadfile.Tab.Events;
+using MahApps.Metro.Controls.Dialogs;
 using Moq;
 using Prism.Events;
 using Xunit;
@@ -42,12 +43,14 @@ namespace Deadfile.Tab.Test
             public readonly SubscriptionToken UndoEventSubscriptionToken = new SubscriptionToken((a) => { });
             public readonly SubscriptionToken DeleteEventSubscriptionToken = new SubscriptionToken((a) => { });
 
+            public readonly Mock<IDialogCoordinator> DialogCoordinatorMock = new Mock<IDialogCoordinator>();
+
             private readonly bool _useRealEvents;
 
             public Host(bool useRealEvents)
             {
                 _useRealEvents = useRealEvents;
-                ViewModel = new ClientsPageViewModel(EventAggregatorMock.Object, DeadfileRepositoryMock.Object);
+                ViewModel = new ClientsPageViewModel(EventAggregatorMock.Object, DeadfileRepositoryMock.Object, DialogCoordinatorMock.Object);
             }
 
             public void NavigateTo(ClientModel model)

@@ -12,6 +12,7 @@ using Deadfile.Model.Billable;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Events;
 
 namespace Deadfile.Tab.Invoices
@@ -20,7 +21,9 @@ namespace Deadfile.Tab.Invoices
     {
         private readonly IDeadfileRepository _repository;
 
-        public InvoicesPageViewModel(IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator)
+        public InvoicesPageViewModel(IDeadfileRepository repository,
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator)
         {
             _repository = repository;
         }
