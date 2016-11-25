@@ -231,7 +231,8 @@ namespace Deadfile.Model
                                 : ", " + job.AddressThirdLine) +
                             ((job.AddressPostCode == null || job.AddressPostCode == "")
                                 ? ""
-                                : ", " + job.AddressPostCode)
+                                : ", " + job.AddressPostCode),
+                        Status = job.Status
                     }))
                 {
                     job.SetRepository(mode, includeInactiveEnabled, false, this);
@@ -277,6 +278,7 @@ namespace Deadfile.Model
                             InvoiceReference = invoiceEntity.InvoiceReference,
                             Id = invoiceEntity.InvoiceId,
                             ParentId = invoiceEntity.ClientId,
+                            Status = invoiceEntity.Status
                         };
                     invoice.SetRepository(mode, includeInactiveEnabled, true, this);
                     li.Add(invoice);
@@ -582,7 +584,8 @@ namespace Deadfile.Model
                         FullName =
                         ((client.FirstName == null || client.FirstName == "")
                             ? client.Title + " " + client.LastName
-                            : client.FirstName + " " + client.LastName)
+                            : client.FirstName + " " + client.LastName),
+                        Status = client.Status
                     };
                 model.SetRepository(mode, includeInactiveEnabled, true, this);
                 return model;
