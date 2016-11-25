@@ -32,11 +32,11 @@ namespace Deadfile.Model.Browser
             get { return BrowserModelType.Invoice; }
         }
 
-        private bool _isActive;
-        public bool IsActive
+        private InvoiceStatus _status = InvoiceStatus.Created;
+        public InvoiceStatus Status
         {
-            get { return _isActive; }
-            set { SetProperty(ref _isActive, value); }
+            get { return _status; }
+            set { SetProperty(ref _status, value); }
         }
 
         private Company _company;

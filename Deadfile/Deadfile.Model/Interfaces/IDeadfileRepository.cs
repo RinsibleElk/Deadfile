@@ -184,5 +184,32 @@ namespace Deadfile.Model.Interfaces
         /// <param name="invoiceModel"></param>
         /// <returns></returns>
         bool HasUniqueInvoiceReference(InvoiceModel invoiceModel);
+
+        /// <summary>
+        /// Delete the specified client.
+        /// </summary>
+        /// <remarks>
+        /// This will simply set the specified client to inactive.
+        /// </remarks>
+        /// <param name="clientModel"></param>
+        void DeleteClient(ClientModel clientModel);
+
+        /// <summary>
+        /// Delete the specified invoice.
+        /// </summary>
+        /// <remarks>
+        /// This will simply cancel the invoice.
+        /// </remarks>
+        /// <param name="invoiceModel"></param>
+        void DeleteInvoice(InvoiceModel invoiceModel);
+
+        /// <summary>
+        /// Delete the specified job.
+        /// </summary>
+        /// <remarks>
+        /// This will simply set the status to inactive.
+        /// </remarks>
+        /// <param name="jobModel"></param>
+        void DeleteJob(JobModel jobModel);
     }
 }

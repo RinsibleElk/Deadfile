@@ -13,5 +13,6 @@
         <Button x:Name="SaveItem" Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" IsDefault="True" Style="{StaticResource SaveButton}"/>
         <Button x:Name="DiscardItem" Visibility="{Binding CanDiscardItem, Converter={StaticResource BooleanToVisibility}}" IsCancel="True" Style="{StaticResource DiscardButton}"/>
         <Button x:Name="DeleteItem" Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource DeleteButton}"/>
+        <Button x:Name="PaidItem" Visibility="{Binding PaidItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource PaidButton}" />
     </StackPanel>
 </UserControl>

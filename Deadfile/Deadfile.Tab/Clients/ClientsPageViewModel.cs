@@ -116,6 +116,19 @@ namespace Deadfile.Tab.Clients
             }
         }
 
+        public override void PerformDelete()
+        {
+            try
+            {
+                _repository.DeleteClient(SelectedItem);
+            }
+            catch (Exception)
+            {
+                //TODO Do something. Like raise a dialog box or something. Then clean up.
+                throw;
+            }
+        }
+
         public Experience Experience
         {
             get { return Experience.Clients; }

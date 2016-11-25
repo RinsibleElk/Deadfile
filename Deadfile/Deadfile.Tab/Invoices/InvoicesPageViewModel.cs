@@ -148,6 +148,20 @@ namespace Deadfile.Tab.Invoices
             }
         }
 
+        public override void PerformDelete()
+        {
+            try
+            {
+                _repository.DeleteInvoice(SelectedItem);
+            }
+            catch (Exception)
+            {
+                //TODO Do something. Like raise a dialog box or something. Then clean up.
+                throw;
+            }
+        }
+
+
         public Experience Experience { get; } = Experience.Invoices;
         public bool ShowActionsPad { get; } = true;
 

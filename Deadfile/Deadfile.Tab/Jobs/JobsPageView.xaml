@@ -5,10 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Deadfile.Tab.Jobs"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:entity="clr-namespace:Deadfile.Entity;assembly=Deadfile.Entity"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:JobsPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
+        <ObjectDataProvider MethodName="GetValues"
+                ObjectType="{x:Type entity:JobStatus}"
+                x:Key="JobStatusValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="entity:JobStatus" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
         <Style x:Key="ErrorStyle" TargetType="FrameworkElement">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">
@@ -33,54 +41,62 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0">Description:</TextBlock>
-        <TextBlock Grid.Row="1" Grid.Column="0">Address Line 1:</TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="0">Address Line 2:</TextBlock>
-        <TextBlock Grid.Row="3" Grid.Column="0">Address Line 3:</TextBlock>
-        <TextBlock Grid.Row="4" Grid.Column="0">Post Code:</TextBlock>
-        <TextBlock Grid.Row="5" Grid.Column="0">Notes:</TextBlock>
-        <Label Grid.Row ="6" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <TextBox Grid.Row="0"
+        <TextBlock Grid.Row="0" Grid.Column="0">Status:</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0">Description:</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0">Address Line 1:</TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="0">Address Line 2:</TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="0">Address Line 3:</TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="0">Post Code:</TextBlock>
+        <TextBlock Grid.Row="6" Grid.Column="0">Notes:</TextBlock>
+        <Label Grid.Row ="7" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <ComboBox Grid.Row="0"
+                  Grid.Column="1"
+                  ItemsSource="{Binding Source={StaticResource JobStatusValues}}"
+                  IsEditable="False"
+                  SelectedItem="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Status}"
+                  IsEnabled="{Binding Editable}" />
+        <TextBox Grid.Row="1"
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
                  Style="{StaticResource ErrorStyle}"
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Description}"
                  controls:TextBoxHelper.Watermark="Description" />
-        <TextBox Grid.Row="1"
+        <TextBox Grid.Row="2"
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
                  Style="{StaticResource ErrorStyle}"
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressFirstLine}"
                  controls:TextBoxHelper.Watermark="Address First Line" />
-        <TextBox Grid.Row="2"
+        <TextBox Grid.Row="3"
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
                  Style="{StaticResource ErrorStyle}"
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressSecondLine}"
                  controls:TextBoxHelper.Watermark="Address Second Line" />
-        <TextBox Grid.Row="3"
+        <TextBox Grid.Row="4"
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
                  Style="{StaticResource ErrorStyle}"
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressThirdLine}"
                  controls:TextBoxHelper.Watermark="Address Third Line" />
-        <TextBox Grid.Row="4"
+        <TextBox Grid.Row="5"
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
                  Style="{StaticResource ErrorStyle}"
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressPostCode}"
                  controls:TextBoxHelper.Watermark="Post Code" />
-        <TextBox Grid.Row="5"
+        <TextBox Grid.Row="6"
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
                  Style="{StaticResource ErrorStyle}"
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Notes}"
                  controls:TextBoxHelper.Watermark="Notes" />
-        <ItemsControl Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" TextBlock.Foreground="Red" />
-        <ListBox Grid.Row="8" Grid.Column="0" ItemsSource="{Binding JobChildren}" SelectedItem="{Binding SelectedJobChild, Mode=TwoWay}" />
-        <ContentControl Grid.Row="9" Grid.Column="0"/>
-        <controls:TransitioningContentControl x:Name="JobChildViewModel" Grid.Row="8" Grid.RowSpan="2" Grid.Column="1" Transition="LeftReplace" />
+        <ItemsControl Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" TextBlock.Foreground="Red" />
+        <ListBox Grid.Row="9" Grid.Column="0" ItemsSource="{Binding JobChildren}" SelectedItem="{Binding SelectedJobChild, Mode=TwoWay}" />
+        <ContentControl Grid.Row="10" Grid.Column="0"/>
+        <controls:TransitioningContentControl x:Name="JobChildViewModel" Grid.Row="9" Grid.RowSpan="2" Grid.Column="1" Transition="LeftReplace" />
     </Grid>
 </UserControl>

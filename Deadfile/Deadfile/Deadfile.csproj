@@ -225,6 +225,22 @@
     <Resource Include="Resources\print-inactive.png" />
     <Resource Include="Resources\print.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\client-tab-dead.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\job-tab-cancelled.png" />
+    <Resource Include="Resources\job-tab-completed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\invoice-tab-cancelled.png" />
+    <Resource Include="Resources\invoice-tab-completed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\paid-hover.png" />
+    <Resource Include="Resources\paid-inactive.png" />
+    <Resource Include="Resources\paid.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

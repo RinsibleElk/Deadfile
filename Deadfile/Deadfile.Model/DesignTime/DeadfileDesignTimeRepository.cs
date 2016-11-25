@@ -118,6 +118,21 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
+        public void DeleteClient(ClientModel selectedItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteInvoice(InvoiceModel invoiceModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteJob(JobModel jobModel)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
             throw new NotImplementedException();

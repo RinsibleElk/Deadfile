@@ -22,20 +22,25 @@ namespace Deadfile.Tab.Test
             public readonly ClientsPageViewModel ViewModel;
 
             public readonly UndoEvent UndoEvent = new UndoEvent();
+            public readonly DeleteEvent DeleteEvent = new DeleteEvent();
             public readonly EditActionEvent EditActionEvent = new EditActionEvent();
             public readonly CanEditEvent CanEditEvent = new CanEditEvent();
+            public readonly CanDeleteEvent CanDeleteEvent = new CanDeleteEvent();
             public readonly CanSaveEvent CanSaveEvent = new CanSaveEvent();
             public readonly SaveEvent SaveEvent = new SaveEvent();
             public readonly DiscardChangesEvent DiscardChangesEvent = new DiscardChangesEvent();
 
             public readonly Mock<UndoEvent> UndoEventMock = new Mock<UndoEvent>();
+            public readonly Mock<DeleteEvent> DeleteEventMock = new Mock<DeleteEvent>();
             public readonly Mock<EditActionEvent> EditActionEventMock = new Mock<EditActionEvent>();
+            public readonly Mock<CanDeleteEvent> CanDeleteEventMock = new Mock<CanDeleteEvent>();
             public readonly Mock<CanEditEvent> CanEditEventMock = new Mock<CanEditEvent>();
             public readonly Mock<CanSaveEvent> CanSaveEventMock = new Mock<CanSaveEvent>();
             public readonly Mock<SaveEvent> SaveEventMock = new Mock<SaveEvent>();
 
             public readonly SubscriptionToken EditActionEventSubscriptionToken = new SubscriptionToken((a) => { });
-            public readonly SubscriptionToken UndoEventSubscriptionToken=new SubscriptionToken((a) => { });
+            public readonly SubscriptionToken UndoEventSubscriptionToken = new SubscriptionToken((a) => { });
+            public readonly SubscriptionToken DeleteEventSubscriptionToken = new SubscriptionToken((a) => { });
 
             private readonly bool _useRealEvents;
 
@@ -54,6 +59,10 @@ namespace Deadfile.Tab.Test
                         .Returns(UndoEvent)
                         .Verifiable();
                     EventAggregatorMock
+                        .Setup((ea) => ea.GetEvent<DeleteEvent>())
+                        .Returns(DeleteEvent)
+                        .Verifiable();
+                    EventAggregatorMock
                         .Setup((ea) => ea.GetEvent<EditActionEvent>())
                         .Returns(EditActionEvent)
                         .Verifiable();
@@ -63,6 +72,10 @@ namespace Deadfile.Tab.Test
                     EventAggregatorMock
                         .Setup((ea) => ea.GetEvent<UndoEvent>())
                         .Returns(UndoEventMock.Object)
+                        .Verifiable();
+                    EventAggregatorMock
+                        .Setup((ea) => ea.GetEvent<DeleteEvent>())
+                        .Returns(DeleteEventMock.Object)
                         .Verifiable();
                     EventAggregatorMock
                         .Setup((ea) => ea.GetEvent<EditActionEvent>())
@@ -77,12 +90,20 @@ namespace Deadfile.Tab.Test
                             .Setup((ea) => ea.GetEvent<CanEditEvent>())
                             .Returns(CanEditEvent)
                             .Verifiable();
+                        EventAggregatorMock
+                            .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
+                            .Returns(CanDeleteEvent)
+                            .Verifiable();
                     }
                     else
                     {
                         EventAggregatorMock
                             .Setup((ea) => ea.GetEvent<CanEditEvent>())
                             .Returns(CanEditEventMock.Object)
+                            .Verifiable();
+                        EventAggregatorMock
+                            .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
+                            .Returns(CanDeleteEventMock.Object)
                             .Verifiable();
                     }
                     DeadfileRepositoryMock
@@ -108,6 +129,10 @@ namespace Deadfile.Tab.Test
                     EventAggregatorMock
                         .Setup((ev) => ev.GetEvent<UndoEvent>())
                         .Returns(UndoEventMock.Object)
+                        .Verifiable();
+                    EventAggregatorMock
+                        .Setup((ev) => ev.GetEvent<DeleteEvent>())
+                        .Returns(DeleteEventMock.Object)
                         .Verifiable();
                     EventAggregatorMock
                         .Setup((ev) => ev.GetEvent<EditActionEvent>())
@@ -144,9 +169,17 @@ namespace Deadfile.Tab.Test
                         .Setup((ea) => ea.GetEvent<CanSaveEvent>())
                         .Returns(CanSaveEvent)
                         .Verifiable();
+                    EventAggregatorMock
+                        .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
+                        .Returns(CanDeleteEvent)
+                        .Verifiable();
                 }
                 else
                 {
+                    EventAggregatorMock
+                        .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
+                        .Returns(CanDeleteEventMock.Object)
+                        .Verifiable();
                     EventAggregatorMock
                         .Setup((ea) => ea.GetEvent<CanSaveEvent>())
                         .Returns(CanSaveEventMock.Object)
@@ -170,13 +203,17 @@ namespace Deadfile.Tab.Test
                 if (!_useRealEvents)
                 {
                     UndoEventMock.VerifyAll();
+                    DeleteEventMock.VerifyAll();
                     EditActionEventMock.VerifyAll();
                     CanEditEventMock.VerifyAll();
+                    CanDeleteEventMock.VerifyAll();
                     CanSaveEventMock.VerifyAll();
                     SaveEventMock.VerifyAll();
                     UndoEventMock.Reset();
+                    DeleteEventMock.Reset();
                     EditActionEventMock.Reset();
                     CanEditEventMock.Reset();
+                    CanDeleteEventMock.Reset();
                     CanSaveEventMock.Reset();
                     SaveEventMock.Reset();
                 }

@@ -519,6 +519,66 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="PaidButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border>
+                        <StackPanel Height="{StaticResource ActionsPadButtonHeight}"
+                                    Width="{StaticResource ActionsPadButtonSize}">
+                            <Image Width="{StaticResource ActionsPadButtonSize}"
+                                   Height="{StaticResource ActionsPadButtonSize}"
+                                   Source="../Resources/paid.png"/>
+                            <Label Width="{StaticResource ActionsPadButtonSize}"
+                                   Height="{StaticResource ActionsPadButtonLabelHeight}"
+                                   HorizontalContentAlignment="Center"
+                                   HorizontalAlignment="Center">Paid</Label>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <StackPanel Height="{StaticResource ActionsPadButtonHeight}"
+                                        Width="{StaticResource ActionsPadButtonSize}">
+                                <Image Width="{StaticResource ActionsPadButtonSize}"
+                                       Height="{StaticResource ActionsPadButtonSize}"
+                                       Source="../Resources/paid-hover.png"></Image>
+                                <Label Width="{StaticResource ActionsPadButtonSize}"
+                                       Height="{StaticResource ActionsPadButtonLabelHeight}"
+                                       FontWeight="Bold"
+                                       HorizontalContentAlignment="Center"
+                                       HorizontalAlignment="Center">Paid</Label>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <StackPanel Height="{StaticResource ActionsPadButtonHeight}"
+                                        Width="{StaticResource ActionsPadButtonSize}">
+                                <Image Width="{StaticResource ActionsPadButtonSize}"
+                                       Height="{StaticResource ActionsPadButtonSize}"
+                                       Source="../Resources/paid-inactive.png"></Image>
+                                <Label Width="{StaticResource ActionsPadButtonSize}"
+                                       Height="{StaticResource ActionsPadButtonLabelHeight}"
+                                       HorizontalContentAlignment="Center"
+                                       HorizontalAlignment="Center">Paid</Label>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="DeleteButton" TargetType="{x:Type Button}">
         <Setter Property="Template">
             <Setter.Value>

@@ -149,7 +149,8 @@ namespace Deadfile.Model
                                                         FullName =
                                                         ((client.FirstName == null || client.FirstName == "")
                                                             ? client.Title + " " + client.LastName
-                                                            : client.FirstName + " " + client.LastName)
+                                                            : client.FirstName + " " + client.LastName),
+                                                        Status = client.Status
                                                     }))
                         {
                             client.SetRepository(settings.Mode, settings.IncludeInactiveEnabled, false, this);
@@ -171,7 +172,8 @@ namespace Deadfile.Model
                                                 {
                                                     Id = job.JobId,
                                                     ParentId = job.ClientId,
-                                                    FullAddress = job.AddressFirstLine
+                                                    FullAddress = job.AddressFirstLine,
+                                                    Status = job.Status
                                                 }))
                         {
                             job.SetRepository(settings.Mode, settings.IncludeInactiveEnabled, false, this);
@@ -193,7 +195,8 @@ namespace Deadfile.Model
                                                     {
                                                         Id = invoice.InvoiceId,
                                                         ParentId = invoice.ClientId,
-                                                        InvoiceReference = invoice.InvoiceReference
+                                                        InvoiceReference = invoice.InvoiceReference,
+                                                        Status = invoice.Status
                                                     }))
                         {
                             invoice.SetRepository(settings.Mode, settings.IncludeInactiveEnabled, false, this);
@@ -456,6 +459,39 @@ namespace Deadfile.Model
                            (invoiceModel.InvoiceId == ModelBase.NewModelId ||
                             invoiceModel.InvoiceId != invoice.InvoiceId)
                            select invoice.InvoiceId).Any();
+            }
+        }
+
+        public void DeleteClient(ClientModel clientModel)
+        {
+            if (clientModel.ClientId == ModelBase.NewModelId) return;
+            using (var dbContext = new DeadfileContext())
+            {
+                var client = dbContext.Clients.Find(new object[] { clientModel.ClientId });
+                client.Status = ClientStatus.Inactive;
+                dbContext.SaveChanges();
+            }
+        }
+
+        public void DeleteInvoice(InvoiceModel invoiceModel)
+        {
+            if (invoiceModel.InvoiceId == ModelBase.NewModelId) return;
+            using (var dbContext = new DeadfileContext())
+            {
+                var invoice = dbContext.Invoices.Find(new object[] { invoiceModel.InvoiceId });
+                invoice.Status = InvoiceStatus.Cancelled;
+                dbContext.SaveChanges();
+            }
+        }
+
+        public void DeleteJob(JobModel jobModel)
+        {
+            if (jobModel.JobId == ModelBase.NewModelId) return;
+            using (var dbContext = new DeadfileContext())
+            {
+                var job = dbContext.Jobs.Find(new object[] { jobModel.JobId });
+                job.Status = JobStatus.Cancelled;
+                dbContext.SaveChanges();
             }
         }
 

@@ -26,6 +26,7 @@ namespace Deadfile.Tab.Common
         private IUndoTracker _activeUndoTracker = null;
 
         private SubscriptionToken _saveSubscriptionToken = null;
+        private SubscriptionToken _deleteSubscriptionToken = null;
         public EditableItemViewModel(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
@@ -74,6 +75,7 @@ namespace Deadfile.Tab.Common
                 Editable = false;
                 Errors = new List<string>();
                 CanEdit = _selectedItem.Id != ModelBase.NewModelId;
+                CanDelete = _selectedItem.Id != ModelBase.NewModelId;
             }
         }
 
@@ -116,6 +118,19 @@ namespace Deadfile.Tab.Common
             }
         }
 
+        private bool _canDelete = false;
+        public bool CanDelete
+        {
+            get { return _canDelete; }
+            set
+            {
+                if (_canDelete == value) return;
+                _canDelete = value;
+                NotifyOfPropertyChange(() => CanDelete);
+                EventAggregator.GetEvent<CanDeleteEvent>().Publish(_canDelete ? CanDeleteMessage.CanDelete : CanDeleteMessage.CannotDelete);
+            }
+        }
+
         private bool _editable = false;
         private SubscriptionToken _handleEditActionSubscriptionToken;
         private SubscriptionToken _handleUndoSubcriptionToken;
@@ -137,6 +152,7 @@ namespace Deadfile.Tab.Common
                         _saveSubscriptionToken = EventAggregator.GetEvent<SaveEvent>().Subscribe(PerformSave);
                         _discardChangesSubscriptionToken = EventAggregator.GetEvent<DiscardChangesEvent>().Subscribe(DiscardChangesAction);
                         _selectedItem.RefreshAllErrors();
+                        CanDelete = false;
                     }
                     else
                     {
@@ -148,6 +164,7 @@ namespace Deadfile.Tab.Common
                         _saveSubscriptionToken = null;
                         _selectedItem.ErrorsChanged -= SelectedItemErrorsChanged;
                         _selectedItem.ClearAllErrors();
+                        CanDelete = SelectedItem.Id != ModelBase.NewModelId;
                     }
 
                     EditingStatusChanged(_editable);
@@ -202,6 +219,15 @@ namespace Deadfile.Tab.Common
             EventAggregator.GetEvent<HaveSavedEvent>().Publish(HaveSavedMessage.Saved);
         }
 
+        public abstract void PerformDelete();
+        private void PerformDelete(DeleteMessage message)
+        {
+            PerformDelete();
+
+            // Notify the browser that something has changed.
+            EventAggregator.GetEvent<HaveSavedEvent>().Publish(HaveSavedMessage.Saved);
+        }
+
         private void DiscardChangesAction(DiscardChangesMessage discardChangesMessage)
         {
             if (discardChangesMessage == DiscardChangesMessage.Discard)
@@ -226,6 +252,7 @@ namespace Deadfile.Tab.Common
             SelectedItem = GetModel(parameters);
             _handleEditActionSubscriptionToken = EventAggregator.GetEvent<EditActionEvent>().Subscribe(HandleEditAction);
             _handleUndoSubcriptionToken = EventAggregator.GetEvent<UndoEvent>().Subscribe(HandleUndo);
+            _deleteSubscriptionToken = EventAggregator.GetEvent<DeleteEvent>().Subscribe(PerformDelete);
 
             // Important. We cannot just immediately start editing - this is because the actions pad will not be loaded yet.
             _pendingEdit = ShouldEditOnNavigate(parameters);
@@ -249,6 +276,7 @@ namespace Deadfile.Tab.Common
 
             EventAggregator.GetEvent<EditActionEvent>().Unsubscribe(_handleEditActionSubscriptionToken);
             EventAggregator.GetEvent<UndoEvent>().Unsubscribe(_handleUndoSubcriptionToken);
+            EventAggregator.GetEvent<DeleteEvent>().Unsubscribe(_deleteSubscriptionToken);
         }
 
         /// <summary>

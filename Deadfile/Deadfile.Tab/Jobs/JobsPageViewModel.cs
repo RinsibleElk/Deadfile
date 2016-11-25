@@ -77,6 +77,19 @@ namespace Deadfile.Tab.Jobs
             }
         }
 
+        public override void PerformDelete()
+        {
+            try
+            {
+                _repository.DeleteJob(SelectedItem);
+            }
+            catch (Exception)
+            {
+                //TODO Do something. Like raise a dialog box or something. Then clean up.
+                throw;
+            }
+        }
+
         public Experience Experience { get; } = Experience.Jobs;
         public bool ShowActionsPad { get; } = true;
 

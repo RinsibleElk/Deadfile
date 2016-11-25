@@ -16,6 +16,7 @@ namespace Deadfile.Tab.Test
             public readonly Mock<EditActionEvent> EditClientEventMock;
             public readonly ClientsActionsPadViewModel ViewModel;
             public readonly LockedForEditingEvent LockedForEditingEvent;
+            public readonly CanDeleteEvent CanDeleteEvent;
             public readonly CanSaveEvent CanSaveEvent;
             public readonly CanEditEvent CanEditEvent;
             public Host()
@@ -29,6 +30,7 @@ namespace Deadfile.Tab.Test
                 ViewModel = new ClientsActionsPadViewModel(EventAggregatorMock.Object);
                 LockedForEditingEvent = new LockedForEditingEvent();
                 CanSaveEvent = new CanSaveEvent();
+                CanDeleteEvent = new CanDeleteEvent();
                 CanEditEvent = new CanEditEvent();
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
@@ -37,6 +39,10 @@ namespace Deadfile.Tab.Test
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<CanSaveEvent>())
                     .Returns(CanSaveEvent)
+                    .Verifiable();
+                EventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
+                    .Returns(CanDeleteEvent)
                     .Verifiable();
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<CanEditEvent>())

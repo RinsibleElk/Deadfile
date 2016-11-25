@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Caliburn.Micro;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Tab.Events;
@@ -17,6 +18,7 @@ namespace Deadfile.Tab.Actions
         private SubscriptionToken _lockedForEditingEventSubscriptionToken;
         private SubscriptionToken _canEditEventSubscriptionToken;
         private SubscriptionToken _canSaveEventSubscriptionToken;
+        private SubscriptionToken _canDeleteEventSubscriptionToken;
         protected IEventAggregator EventAggregator { get; private set; }
 
         public ActionsPadViewModel(IEventAggregator eventAggregator)
@@ -33,7 +35,7 @@ namespace Deadfile.Tab.Actions
         private bool _editItemIsVisible = true;
         private bool _saveItemIsVisible = false;
         private bool _canSaveItem = false;
-        private bool _canDeleteItem = false;
+        private bool _canDeleteItem = true;
         private bool _deleteItemIsVisible = true;
         private bool _discardItemIsVisible = false;
 
@@ -93,7 +95,13 @@ namespace Deadfile.Tab.Actions
 
         public void DeleteItem()
         {
-            // Not done yet.
+            // Open a dialog to ask the user if they are sure.
+            MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                // Perform the deletion.
+                EventAggregator.GetEvent<DeleteEvent>().Publish(DeleteMessage.Delete);
+            }
         }
 
         public bool CanDeleteItem
@@ -145,6 +153,8 @@ namespace Deadfile.Tab.Actions
                 EventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(LockedForEditingAction);
             _canSaveEventSubscriptionToken =
                 EventAggregator.GetEvent<CanSaveEvent>().Subscribe(CanSaveAction);
+            _canDeleteEventSubscriptionToken =
+                EventAggregator.GetEvent<CanDeleteEvent>().Subscribe(CanDeleteAction);
             _canEditEventSubscriptionToken =
                 EventAggregator.GetEvent<CanEditEvent>().Subscribe(CanEditAction);
         }
@@ -157,6 +167,11 @@ namespace Deadfile.Tab.Actions
         private void CanSaveAction(CanSaveMessage canSaveMessage)
         {
             CanSaveItem = canSaveMessage == CanSaveMessage.CanSave;
+        }
+
+        private void CanDeleteAction(CanDeleteMessage canDeleteMessage)
+        {
+            CanDeleteItem = canDeleteMessage == CanDeleteMessage.CanDelete;
         }
 
         protected virtual void LockedForEditingAction(LockedForEditingMessage lockedForEditingMessage)
@@ -176,6 +191,8 @@ namespace Deadfile.Tab.Actions
             _canSaveEventSubscriptionToken = null;
             EventAggregator.GetEvent<CanEditEvent>().Unsubscribe(_canEditEventSubscriptionToken);
             _canEditEventSubscriptionToken = null;
+            EventAggregator.GetEvent<CanDeleteEvent>().Unsubscribe(_canDeleteEventSubscriptionToken);
+            _canDeleteEventSubscriptionToken = null;
         }
     }
 }

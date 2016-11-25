@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Entity;
 using Deadfile.Model.Interfaces;
 
 namespace Deadfile.Model.Browser
@@ -32,11 +33,11 @@ namespace Deadfile.Model.Browser
             get { return BrowserModelType.Client; }
         }
 
-        private bool _isActive;
-        public bool IsActive
+        private ClientStatus _clientStatus = ClientStatus.Active;
+        public ClientStatus Status
         {
-            get { return _isActive; }
-            set { SetProperty(ref _isActive, value); }
+            get { return _clientStatus; }
+            set { SetProperty(ref _clientStatus, value); }
         }
     }
 }

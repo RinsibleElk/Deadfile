@@ -109,9 +109,11 @@
     <Compile Include="DesignTime\PageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeViewModel.cs" />
     <Compile Include="Events\AddNewJobEvent.cs" />
+    <Compile Include="Events\CanDeleteEvent.cs" />
     <Compile Include="Events\CanEditMessage.cs" />
     <Compile Include="Events\CanSaveMessage.cs" />
     <Compile Include="Events\CanUndoMessage.cs" />
+    <Compile Include="Events\DeleteEvent.cs" />
     <Compile Include="Events\DiscardChangesEvent.cs" />
     <Compile Include="Events\DisplayNameEvent.cs" />
     <Compile Include="Events\EditActionMessage.cs" />
