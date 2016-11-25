@@ -7,13 +7,9 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Events
 {
-    public class DeleteMessage
+    public enum DeleteMessage
     {
-        public object Window { get; }
-        public DeleteMessage(object window)
-        {
-            Window = window;
-        }
+        Delete
     }
 
     public class DeleteEvent : PubSubEvent<DeleteMessage>

@@ -16,11 +16,10 @@ namespace Deadfile.Tab.Actions
         void SaveItem();
         bool CanSaveItem { get; }
         bool SaveItemIsVisible { get; }
-        void DeleteItem(object window);
+        void DeleteItem();
         bool CanDeleteItem { get; }
         bool DeleteItemIsVisible { get; }
         void DiscardItem();
         bool CanDiscardItem { get; }
-        ICommand DeleteItemCommand { get; }
     }
 }

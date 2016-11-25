@@ -25,7 +25,7 @@ namespace Deadfile.Tab.Actions
         public bool CanSaveItem { get; } = false;
         public bool SaveItemIsVisible { get; } = false;
 
-        public void DeleteItem(object window)
+        public void DeleteItem()
         {
             throw new NotImplementedException();
         }
@@ -39,6 +39,5 @@ namespace Deadfile.Tab.Actions
         }
 
         public bool CanDiscardItem { get; } = false;
-        public ICommand DeleteItemCommand { get; } = null;
     }
 }

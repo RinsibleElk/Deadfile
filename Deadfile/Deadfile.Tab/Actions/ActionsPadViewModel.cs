@@ -22,12 +22,10 @@ namespace Deadfile.Tab.Actions
         private SubscriptionToken _canSaveEventSubscriptionToken;
         private SubscriptionToken _canDeleteEventSubscriptionToken;
         protected IEventAggregator EventAggregator { get; private set; }
-        private readonly DelegateCommand<object> _deleteItemCommand;
 
         public ActionsPadViewModel(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
-            _deleteItemCommand = new DelegateCommand<object>(DeleteItem, CanDelete);
         }
 
         public void EditItem()
@@ -97,15 +95,10 @@ namespace Deadfile.Tab.Actions
             }
         }
 
-        public void DeleteItem(object window)
+        public void DeleteItem()
         {
             // Perform the deletion.
-            EventAggregator.GetEvent<DeleteEvent>().Publish(new DeleteMessage(window));
-        }
-
-        public bool CanDelete(object window)
-        {
-            return CanDeleteItem;
+            EventAggregator.GetEvent<DeleteEvent>().Publish(DeleteMessage.Delete);
         }
 
         public bool CanDeleteItem
@@ -116,7 +109,6 @@ namespace Deadfile.Tab.Actions
                 if (value == _canDeleteItem) return;
                 _canDeleteItem = value;
                 NotifyOfPropertyChange(() => CanDeleteItem);
-                _deleteItemCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -150,8 +142,6 @@ namespace Deadfile.Tab.Actions
                 NotifyOfPropertyChange(() => CanDiscardItem);
             }
         }
-
-        public ICommand DeleteItemCommand { get { return _deleteItemCommand; } }
 
         public void OnNavigatedTo(object parameters)
         {

@@ -13,9 +13,6 @@
         <Button x:Name="EditItem" Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource EditButton}"/>
         <Button x:Name="SaveItem" Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" IsDefault="True" Style="{StaticResource SaveButton}"/>
         <Button x:Name="DiscardItem" Visibility="{Binding CanDiscardItem, Converter={StaticResource BooleanToVisibility}}" IsCancel="True" Style="{StaticResource DiscardButton}"/>
-        <Button Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}"
-                Style="{StaticResource DeleteButton}"
-                Command="{Binding DeleteItemCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" />
+        <Button x:Name="DeleteItem" Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource DeleteButton}"/>
     </StackPanel>
 </UserControl>
