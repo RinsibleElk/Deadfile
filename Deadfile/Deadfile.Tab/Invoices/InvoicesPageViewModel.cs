@@ -86,6 +86,8 @@ namespace Deadfile.Tab.Invoices
 
         void INavigationAware.OnNavigatedFrom()
         {
+            base.OnNavigatedFrom();
+
             Jobs = new ObservableCollection<BillableModel>();
             SelectedItem.PropertyChanged -= SelectedItemOnPropertyChanged;
         }

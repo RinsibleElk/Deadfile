@@ -121,7 +121,7 @@ namespace Deadfile.Infrastructure.UndoRedo
 
         public void Undo()
         {
-            if (!_canUndo) throw new InvalidOperationException("Attempt to Undo for type " + typeof(T) + " when CanUndo is false");
+            if (!_canUndo) throw new InvalidOperationException("Attempt to Undo for type " + typeof(T) + " when " + nameof(CanUndo) + " is false");
             _disableTracking = true;
             if (_undoStack.Count == 0) throw new ApplicationException("Nothing to Undo for type " + typeof(T));
             var undoValue = _undoStack.Pop();
