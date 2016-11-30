@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Deadfile.Entity;
 using Deadfile.Model;
 using Deadfile.Model.Billable;
@@ -21,7 +22,6 @@ namespace Deadfile.Tab.Invoices
         bool CanSetBillableItems { get; }
         bool InvoiceEditable { get; }
         double NetAmount { get; set; }
-        double VatValue { get; set; }
-        double VatRate { get; set; }
+        ICommand AddItemCommand { get; }
     }
 }

@@ -93,6 +93,7 @@
     <Compile Include="Browser\BrowserModelType.cs" />
     <Compile Include="Browser\BrowserSettings.cs" />
     <Compile Include="Browser\BrowserSort.cs" />
+    <Compile Include="ChildModelBase.cs" />
     <Compile Include="ClientModel.cs" />
     <Compile Include="DeadfileRepository.cs" />
     <Compile Include="DesignTime\DeadfileDesignTimeRepository.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="LocalAuthorityModel.cs" />
     <Compile Include="ModelBase.cs" />
     <Compile Include="ModelEntityMapper.cs" />
+    <Compile Include="ParentModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuotationModel.cs" />
     <Compile Include="RandomNumberGenerator.cs" />

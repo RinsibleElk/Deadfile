@@ -326,7 +326,7 @@ namespace Deadfile.Model.DesignTime
                 AddressFirstLine = "1640 Riverside Drive",
                 AddressSecondLine = "Hill Valley",
                 AddressThirdLine = "California",
-                AddressPostCode = "EN9 5P[",
+                AddressPostCode = "EN9 5PZ",
                 PhoneNumber1 = "07488799489",
                 EmailAddress = "Emmett.Brown@yahoo.com"
             });
@@ -365,7 +365,7 @@ namespace Deadfile.Model.DesignTime
                 AddressFirstLine = "5 Morton Street Apt 14",
                 AddressSecondLine = "New York City",
                 AddressThirdLine = "New York",
-                AddressPostCode = "EN7 1J[",
+                AddressPostCode = "EN7 1JZ",
                 PhoneNumber1 = "07023122843",
                 EmailAddress = "Phoebe.Buffay@yahoo.com"
             });
@@ -508,7 +508,7 @@ namespace Deadfile.Model.DesignTime
                 AddressFirstLine = "485 Maple Street",
                 AddressSecondLine = "Mayfield",
                 AddressThirdLine = "USA",
-                AddressPostCode = "EN1 4[M",
+                AddressPostCode = "EN1 4ZM",
                 PhoneNumber1 = "07804415409",
                 EmailAddress = "Theodore.Cleaver@hotmail.com"
             });
@@ -846,7 +846,7 @@ namespace Deadfile.Model.DesignTime
                 AddressFirstLine = "Fosse Manor",
                 AddressSecondLine = "Oxfordshire",
                 AddressThirdLine = "",
-                AddressPostCode = "EN2 6H[",
+                AddressPostCode = "EN2 6HZ",
                 PhoneNumber1 = "07057853450",
                 EmailAddress = "Richard.Hannay@yahoo.com"
             });
@@ -1405,7 +1405,7 @@ namespace Deadfile.Model.DesignTime
                 AddressFirstLine = "88 Edgemont",
                 AddressSecondLine = "Palisades",
                 AddressThirdLine = "California",
-                AddressPostCode = "EN9 6[T",
+                AddressPostCode = "EN9 6ZT",
                 PhoneNumber1 = "07518973578",
                 EmailAddress = "Screech.Powers@gmail.com"
             });
@@ -1444,7 +1444,7 @@ namespace Deadfile.Model.DesignTime
                 AddressFirstLine = "2354 Pacific Coast Highway",
                 AddressSecondLine = "California",
                 AddressThirdLine = "USA",
-                AddressPostCode = "EN2 5[G",
+                AddressPostCode = "EN2 5ZG",
                 PhoneNumber1 = "07459505588",
                 EmailAddress = "Jim.Rockford@hotmail.com"
             });
@@ -1613,7 +1613,7 @@ namespace Deadfile.Model.DesignTime
                 AddressFirstLine = "633 Stag Trail Road",
                 AddressSecondLine = "North Caldwell",
                 AddressThirdLine = "New Jersey",
-                AddressPostCode = "EN8 1K[",
+                AddressPostCode = "EN8 1KZ",
                 PhoneNumber1 = "07123359041",
                 EmailAddress = "Tony.Soprano@yahoo.com"
             });
@@ -1639,7 +1639,7 @@ namespace Deadfile.Model.DesignTime
                 AddressFirstLine = "133 Collins Road",
                 AddressSecondLine = "Westbridge",
                 AddressThirdLine = "USA",
-                AddressPostCode = "EN2 6[W",
+                AddressPostCode = "EN2 6ZW",
                 PhoneNumber1 = "07683905062",
                 EmailAddress = "Sabrina.Spellman@hotmail.com"
             });
@@ -1678,7 +1678,7 @@ namespace Deadfile.Model.DesignTime
                 AddressFirstLine = "1164 Morning Glory Circle",
                 AddressSecondLine = "Westport",
                 AddressThirdLine = "CT",
-                AddressPostCode = "EN1 4[X",
+                AddressPostCode = "EN1 4ZX",
                 PhoneNumber1 = "07601140192",
                 EmailAddress = "Adam.Stephens@yahoo.com"
             });
@@ -1704,7 +1704,7 @@ namespace Deadfile.Model.DesignTime
                 AddressFirstLine = "4-3926 Hillsdale",
                 AddressSecondLine = "",
                 AddressThirdLine = "",
-                AddressPostCode = "EN7 8[N",
+                AddressPostCode = "EN7 8ZN",
                 PhoneNumber1 = "07730229741",
                 EmailAddress = "Donna.Stone@yahoo.com"
             });
@@ -1743,7 +1743,7 @@ namespace Deadfile.Model.DesignTime
                 AddressFirstLine = "1938 Sulivan Lane",
                 AddressSecondLine = "Metropolis",
                 AddressThirdLine = "USA",
-                AddressPostCode = "EN11 8[G",
+                AddressPostCode = "EN11 8ZG",
                 PhoneNumber1 = "07954206181",
                 EmailAddress = "Lois.Lane@hotmail.com"
             });
@@ -1886,7 +1886,7 @@ namespace Deadfile.Model.DesignTime
                 AddressFirstLine = "Nelson Mandela House",
                 AddressSecondLine = "Peckham",
                 AddressThirdLine = "London",
-                AddressPostCode = "EN11 8[V",
+                AddressPostCode = "EN11 8ZV",
                 PhoneNumber1 = "07675502138",
                 EmailAddress = "Rodney.Trotter@yahoo.com"
             });
@@ -2029,7 +2029,7 @@ namespace Deadfile.Model.DesignTime
                 AddressFirstLine = "Surfside 6",
                 AddressSecondLine = "Miami Beach",
                 AddressThirdLine = "",
-                AddressPostCode = "EN2 9[Z",
+                AddressPostCode = "EN2 9ZZ",
                 PhoneNumber1 = "07449285666",
                 EmailAddress = "Kenny.Madison@hotmail.com"
             });
@@ -2290,6 +2290,8 @@ namespace Deadfile.Model.DesignTime
                     InvoiceReference = reference,
                     GrossAmount = netAmount*(company == Company.PaulSamsonCharteredSurveyorLtd ? 1.2 : 1.0),
                     NetAmount = netAmount,
+                    VatRate = (company == Company.PaulSamsonCharteredSurveyorLtd ? 20 : 0),
+                    VatValue = (company == Company.PaulSamsonCharteredSurveyorLtd ? 0.2 * netAmount : 0.0),
                     ClientName = clientFullName,
                     ClientAddressFirstLine = clientAddressFirstLine,
                     ClientAddressSecondLine = clientAddressSecondLine,

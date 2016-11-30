@@ -17,5 +17,6 @@ namespace Deadfile.Model
         // Invalid value for the db.
         public const int NewModelId = Int32.MinValue;
         public abstract int Id { get; set; }
+        public bool DisableUndoTracking { get; set; }
     }
 }

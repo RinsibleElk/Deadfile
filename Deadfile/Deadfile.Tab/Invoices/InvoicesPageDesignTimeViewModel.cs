@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using Deadfile.Entity;
 using Deadfile.Model;
 using Deadfile.Model.Billable;
@@ -71,5 +72,6 @@ namespace Deadfile.Tab.Invoices
         public double NetAmount { get; set; } = 365.0;
         public double VatValue { get; set; } = 365*0.2;
         public double VatRate { get; set; } = 20;
+        public ICommand AddItemCommand { get; } = null;
     }
 }

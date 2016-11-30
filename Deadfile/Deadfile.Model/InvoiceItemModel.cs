@@ -4,11 +4,18 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Prism.Commands;
 
 namespace Deadfile.Model
 {
-    public class InvoiceItemModel : ModelBase
+    public class InvoiceItemModel : ChildModelBase
     {
+        public InvoiceItemModel()
+        {
+            DeleteCommand = new DelegateCommand(Delete);
+        }
+
         public override int Id
         {
             get { return InvoiceItemId; }
@@ -47,11 +54,18 @@ namespace Deadfile.Model
             set { SetProperty(ref _invoiceId, value); }
         }
 
-        private bool _markedForDeletion;
-        public bool MarkedForDeletion
+        private bool _deletePending;
+        public override bool DeletePending
         {
-            get { return _markedForDeletion; }
-            set { SetProperty(ref _markedForDeletion, value); }
+            get { return _deletePending; }
+            set { SetProperty(ref _deletePending, value); }
+        }
+
+        public ICommand DeleteCommand { get; }
+
+        private void Delete()
+        {
+            DeletePending = true;
         }
     }
 }

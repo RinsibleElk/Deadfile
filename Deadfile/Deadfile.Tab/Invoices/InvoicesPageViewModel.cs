@@ -5,14 +5,17 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Deadfile.Entity;
 using Deadfile.Infrastructure.Interfaces;
+using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
 using Deadfile.Model.Billable;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
 using MahApps.Metro.Controls.Dialogs;
+using Prism.Commands;
 using Prism.Events;
 
 namespace Deadfile.Tab.Invoices
@@ -23,9 +26,15 @@ namespace Deadfile.Tab.Invoices
 
         public InvoicesPageViewModel(IDeadfileRepository repository,
             IEventAggregator eventAggregator,
-            IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator)
+            IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator, new ParentUndoTracker<InvoiceModel, InvoiceItemModel>())
         {
             _repository = repository;
+            AddItemCommand = new DelegateCommand(AddItemAction);
+        }
+
+        private void AddItemAction()
+        {
+            UndoTracker.AddChild();
         }
 
         public override void OnNavigatedTo(ClientAndInvoice clientAndInvoice)
@@ -55,23 +64,6 @@ namespace Deadfile.Tab.Invoices
 
             // Hook up to changes in editing state.
             SelectedItem.PropertyChanged += SelectedItemOnPropertyChanged;
-
-            // Set up the vat values.
-            if ((SelectedItem.NetAmount > 0) && (SelectedItem.GrossAmount > 0))
-            {
-                VatValue = SelectedItem.GrossAmount - SelectedItem.NetAmount;
-                VatRate = 100 * VatValue/SelectedItem.NetAmount;
-            }
-            else if (SelectedItem.Company == Company.PaulSamsonCharteredSurveyorLtd)
-            {
-                VatRate = 20; // current default
-                VatValue = 0;
-            }
-            else
-            {
-                VatRate = 0;
-                VatValue = 0;
-            }
         }
 
         private void SelectedItemOnPropertyChanged(object sender, PropertyChangedEventArgs eventArgs)
@@ -223,27 +215,7 @@ namespace Deadfile.Tab.Invoices
             }
         }
 
-        public double VatValue
-        {
-            get { return _vatValue; }
-            set
-            {
-                if (value.Equals(_vatValue)) return;
-                _vatValue = value;
-                NotifyOfPropertyChange(() => VatValue);
-            }
-        }
-
-        public double VatRate
-        {
-            get { return _vatRate; }
-            set
-            {
-                if (value.Equals(_vatRate)) return;
-                _vatRate = value;
-                NotifyOfPropertyChange(() => VatRate);
-            }
-        }
+        public ICommand AddItemCommand { get; }
 
         public bool AutomaticEditingInProgress { get; set; } = false;
         public void StateChanged(int index)

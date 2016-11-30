@@ -18,6 +18,10 @@ namespace Deadfile.Entity
 
         public double NetAmount { get; set; }
 
+        public double VatRate { get; set; }
+
+        public double VatValue { get; set; }
+
         [Required(ErrorMessage = "The Invoice requires a Status.")]
         public InvoiceStatus Status { get; set; }
 

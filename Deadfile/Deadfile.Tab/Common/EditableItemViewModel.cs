@@ -23,17 +23,18 @@ namespace Deadfile.Tab.Common
         private readonly IDialogCoordinator _dialogCoordinator;
 
         // This is the main undo tracker for the object under management. However, it may not be the active one responding to undo events from the nav-bar.
-        private readonly UndoTracker<T> _undoTracker = new UndoTracker<T>();
+        protected readonly UndoTracker<T> UndoTracker;
 
         // This is the "active" undo tracker. For the Jobs page, this could represent a billable item.
         private IUndoTracker _activeUndoTracker = null;
 
         private SubscriptionToken _saveSubscriptionToken = null;
         private SubscriptionToken _deleteSubscriptionToken = null;
-        public EditableItemViewModel(IEventAggregator eventAggregator, IDialogCoordinator dialogCoordinator)
+        public EditableItemViewModel(IEventAggregator eventAggregator, IDialogCoordinator dialogCoordinator, UndoTracker<T> undoTracker)
         {
             EventAggregator = eventAggregator;
             _dialogCoordinator = dialogCoordinator;
+            UndoTracker = undoTracker;
         }
 
         /// <summary>
@@ -151,7 +152,7 @@ namespace Deadfile.Tab.Common
                     NotifyOfPropertyChange(() => Editable);
                     if (_editable)
                     {
-                        ActivateUndoTracker(_undoTracker, _selectedItem);
+                        ActivateUndoTracker(UndoTracker, _selectedItem);
                         _selectedItem.ErrorsChanged += SelectedItemErrorsChanged;
                         _saveSubscriptionToken = EventAggregator.GetEvent<SaveEvent>().Subscribe(PerformSave);
                         _discardChangesSubscriptionToken = EventAggregator.GetEvent<DiscardChangesEvent>().Subscribe(DiscardChangesAction);
@@ -205,10 +206,10 @@ namespace Deadfile.Tab.Common
             switch (e.PropertyName)
             {
                 // We use the name of the main undo tracker's properties here, however it may not be the one that is firing the event..
-                case nameof(_undoTracker.CanUndo):
+                case nameof(UndoTracker.CanUndo):
                     EventAggregator.GetEvent<CanUndoEvent>().Publish(_activeUndoTracker.CanUndo ? CanUndoMessage.CanUndo : CanUndoMessage.CannotUndo);
                     break;
-                case nameof(_undoTracker.CanRedo):
+                case nameof(UndoTracker.CanRedo):
                     EventAggregator.GetEvent<CanUndoEvent>().Publish(_activeUndoTracker.CanRedo ? CanUndoMessage.CanRedo : CanUndoMessage.CannotRedo);
                     break;
             }

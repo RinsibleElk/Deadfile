@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Deadfile.Infrastructure.Interfaces;
+using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
@@ -33,7 +34,7 @@ namespace Deadfile.Tab.Jobs
         public JobsPageViewModel(INavigationService navigationService,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator,
-            IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator)
+            IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator, new UndoTracker<JobModel>())
         {
             _navigationService = navigationService;
             _repository = repository;

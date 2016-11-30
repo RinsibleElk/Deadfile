@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
@@ -19,7 +20,7 @@ namespace Deadfile.Tab.Clients
 
         public ClientsPageViewModel(IEventAggregator eventAggregator,
             IDeadfileRepository repository,
-            IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator)
+            IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator, new UndoTracker<ClientModel>())
         {
             _repository = repository;
         }

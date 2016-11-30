@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Deadfile.Entity;
 using Deadfile.Model.Interfaces;
 
@@ -13,7 +15,7 @@ namespace Deadfile.Model
     /// <summary>
     /// UI model for an Invoice.
     /// </summary>
-    public class InvoiceModel : ModelBase
+    public class InvoiceModel : ParentModelBase<InvoiceItemModel>
     {
         public override int Id
         {
@@ -40,14 +42,28 @@ namespace Deadfile.Model
         public double GrossAmount
         {
             get { return _grossAmount; }
-            set { SetProperty(ref _grossAmount, value); }
+            set
+            {
+                // Undo and validation not supported
+                if (object.Equals((object)_grossAmount, (object)value)) return;
+                _grossAmount = value;
+                OnPropertyChanged(nameof(GrossAmount));
+            }
         }
 
         private double _netAmount = 0;
         public double NetAmount
         {
             get { return _netAmount; }
-            set { SetProperty(ref _netAmount, value); }
+            set
+            {
+                // Undo and validation not supported
+                if (object.Equals((object)_netAmount, (object)value)) return;
+                _netAmount = value;
+                OnPropertyChanged(nameof(NetAmount));
+                VatValue = VatRate * NetAmount / 100;
+                GrossAmount = NetAmount + VatValue;
+            }
         }
 
         private InvoiceStatus _status;
@@ -98,7 +114,22 @@ namespace Deadfile.Model
         public InvoiceCreationState CreationState
         {
             get { return _creationState; }
-            set { SetProperty(ref _creationState, value); }
+            set
+            {
+                var oldCreationState = _creationState;
+                if (SetProperty(ref _creationState, value))
+                {
+                    // Set the default VAT rate.
+                    if (oldCreationState == InvoiceCreationState.DefineCompany &&
+                        _creationState == InvoiceCreationState.DefineBillables &&
+                        InvoiceId == ModelBase.NewModelId)
+                    {
+                        DisableUndoTracking = true;
+                        VatRate = (Company == Company.PaulSamsonCharteredSurveyorLtd) ? 20 : 0;
+                        DisableUndoTracking = false;
+                    }
+                }
+            }
         }
 
         private string _clientName;
@@ -174,11 +205,68 @@ namespace Deadfile.Model
             set { SetProperty(ref _description, value); }
         }
 
-        private ObservableCollection<InvoiceItemModel> _invoiceItemModels = new ObservableCollection<InvoiceItemModel>();
-        public ObservableCollection<InvoiceItemModel> InvoiceItemModels
+        private double _vatRate;
+        public double VatRate
         {
-            get { return _invoiceItemModels; }
-            set { SetProperty(ref _invoiceItemModels, value); }
+            get { return _vatRate; }
+            set
+            {
+                if (SetProperty(ref _vatRate, value))
+                {
+                    VatValue = VatRate*NetAmount/100;
+                    GrossAmount = NetAmount + VatValue;
+                }
+            }
+        }
+
+        private double _vatValue;
+        public double VatValue
+        {
+            get { return _vatValue; }
+            set
+            {
+                // Undo and validation not supported
+                if (object.Equals((object)_vatValue, (object)value)) return;
+                _vatValue = value;
+                OnPropertyChanged(nameof(VatValue));
+                SetProperty(ref _vatValue, value);
+            }
+        }
+
+        public override List<InvoiceItemModel> ChildrenList { get; set; } = new List<InvoiceItemModel>();
+
+        public override void ChildrenUpdated()
+        {
+            base.ChildrenUpdated();
+
+            foreach (var child in ChildrenList)
+            {
+                child.PropertyChanged -= ChildPropertyChanged;
+                child.PropertyChanged += ChildPropertyChanged;
+            }
+
+            RecalculateNetAmount();
+        }
+
+        private void RecalculateNetAmount()
+        {
+            var netAmount = 0.0;
+            foreach (var invoiceItemModel in ChildrenList)
+            {
+                if (!invoiceItemModel.DeletePending)
+                {
+                    netAmount += invoiceItemModel.NetAmount;
+                }
+            }
+            NetAmount = netAmount;
+        }
+
+        private void ChildPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(InvoiceItemModel.NetAmount))
+            {
+                RecalculateNetAmount();
+            }
         }
     }
 }

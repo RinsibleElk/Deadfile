@@ -362,10 +362,10 @@ namespace Deadfile.Model
                                              where invoiceItem.InvoiceId == invoiceId
                                              select invoiceItem))
                 {
-                    invoiceModel.InvoiceItemModels.Add(_modelEntityMapper.Mapper.Map<InvoiceItemModel>(invoiceItem));
+                    invoiceModel.ChildrenList.Add(_modelEntityMapper.Mapper.Map<InvoiceItemModel>(invoiceItem));
                 }
             }
-
+            invoiceModel.ChildrenUpdated();
             return invoiceModel;
         }
 
@@ -423,19 +423,19 @@ namespace Deadfile.Model
             }
 
             // Finally add/edit the active invoice items.
-            foreach (var invoiceItemModel in invoiceModel.InvoiceItemModels)
+            foreach (var invoiceItemModel in invoiceModel.ChildrenList)
             {
                 using (var dbContext = new DeadfileContext())
                 {
                     if (invoiceItemModel.InvoiceItemId == ModelBase.NewModelId)
                     {
-                        if (!invoiceItemModel.MarkedForDeletion)
+                        if (!invoiceItemModel.DeletePending)
                             dbContext.InvoiceItems.Add(_modelEntityMapper.Mapper.Map<InvoiceItemModel, InvoiceItem>(invoiceItemModel));
                     }
                     else
                     {
                         var invoiceItem = dbContext.InvoiceItems.Find(new object[1] {invoiceItemModel.InvoiceItemId});
-                        if (invoiceItemModel.MarkedForDeletion)
+                        if (invoiceItemModel.DeletePending)
                         {
                             dbContext.InvoiceItems.Remove(invoiceItem);
                         }
