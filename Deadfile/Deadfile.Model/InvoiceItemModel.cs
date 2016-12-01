@@ -22,7 +22,7 @@ namespace Deadfile.Model
             set { InvoiceId = value; }
         }
 
-        private int _invoiceItemId;
+        private int _invoiceItemId = ModelBase.NewModelId;
         public int InvoiceItemId
         {
             get { return _invoiceItemId; }
