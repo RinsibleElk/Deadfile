@@ -33,14 +33,14 @@ namespace Deadfile.Tab.Test
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var deadfileRepositoryMock = new Mock<IDeadfileRepository>();
             var lockedForEditingEvent = new LockedForEditingEvent();
-            var haveSavedEvent = new HaveSavedEvent();
+            var refreshBrowserEvent = new RefreshBrowserEvent();
             eventAggregatorMock
                 .Setup((eventAggregator) => eventAggregator.GetEvent<LockedForEditingEvent>())
                 .Returns(lockedForEditingEvent)
                 .Verifiable();
             eventAggregatorMock
-                .Setup((eventAggregator) => eventAggregator.GetEvent<HaveSavedEvent>())
-                .Returns(haveSavedEvent)
+                .Setup((eventAggregator) => eventAggregator.GetEvent<RefreshBrowserEvent>())
+                .Returns(refreshBrowserEvent)
                 .Verifiable();
             var viewModel = new BrowserPaneViewModel(eventAggregatorMock.Object, deadfileRepositoryMock.Object);
 
@@ -61,14 +61,14 @@ namespace Deadfile.Tab.Test
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var deadfileRepositoryMock = new Mock<IDeadfileRepository>();
             var lockedForEditingEvent = new LockedForEditingEvent();
-            var haveSavedEvent = new HaveSavedEvent();
+            var refreshBrowserEvent = new RefreshBrowserEvent();
             eventAggregatorMock
                 .Setup((eventAggregator) => eventAggregator.GetEvent<LockedForEditingEvent>())
                 .Returns(lockedForEditingEvent)
                 .Verifiable();
             eventAggregatorMock
-                .Setup((eventAggregator) => eventAggregator.GetEvent<HaveSavedEvent>())
-                .Returns(haveSavedEvent)
+                .Setup((eventAggregator) => eventAggregator.GetEvent<RefreshBrowserEvent>())
+                .Returns(refreshBrowserEvent)
                 .Verifiable();
             var viewModel = new BrowserPaneViewModel(eventAggregatorMock.Object, deadfileRepositoryMock.Object);
 
@@ -76,7 +76,7 @@ namespace Deadfile.Tab.Test
             viewModel.OnNavigatedTo(null);
 
             // Fire in
-            lockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+            lockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = true});
 
             // Checks.
             eventAggregatorMock.VerifyAll();

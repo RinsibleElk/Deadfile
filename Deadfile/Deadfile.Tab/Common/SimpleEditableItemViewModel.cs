@@ -85,7 +85,8 @@ namespace Deadfile.Tab.Common
                 }
 
                 // Only fire when it changes.
-                _eventAggregator.GetEvent<LockedForEditingEvent>().Publish(_editable ? LockedForEditingMessage.Locked : LockedForEditingMessage.Unlocked);
+                _eventAggregator.GetEvent<LockedForEditingEvent>()
+                    .Publish(new LockedForEditingMessage() {IsLocked = _editable});
             }
         }
 

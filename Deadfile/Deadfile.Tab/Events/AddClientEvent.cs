@@ -7,13 +7,11 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Events
 {
-    public enum EditActionMessage
+    public struct AddClientMessage
     {
-        StartEditing,
-        EndEditing
     }
 
-    public class EditActionEvent : PubSubEvent<EditActionMessage>
+    public class AddClientEvent : PubSubEvent<AddClientMessage>
     {
     }
 }

@@ -27,10 +27,16 @@ namespace Deadfile.Tab.Tab
             _eventAggregator = eventAggregator;
             eventAggregator.GetEvent<NavigateEvent>().Subscribe(NavigateAction);
             eventAggregator.GetEvent<DisplayNameEvent>().Subscribe(DisplayNameChanged);
+            eventAggregator.GetEvent<AddClientEvent>().Subscribe(AddClientAction);
             navigationService.RequestNavigate(this, nameof(NavigationBar), "NavigationBar", null);
             navigationService.RequestNavigate(this, nameof(ContentArea), "HomePage", null);
             navigationService.RequestNavigate(this, nameof(BrowserPane), "BrowserPane", null);
             navigationService.RequestNavigate(this, nameof(QuotesBar), "QuotesBar", null);
+        }
+
+        private void AddClientAction(AddClientMessage addClientAction)
+        {
+            _navigationService.RequestNavigate(this, nameof(ContentArea), Experience.Clients + "Page", new ClientNavigationKey(ModelBase.NewModelId));
         }
 
         private void DisplayNameChanged(string displayName)
@@ -54,7 +60,11 @@ namespace Deadfile.Tab.Tab
             get { return _contentArea; }
             set
             {
-                if (Equals(value, _contentArea)) return;
+                if (Equals(value, _contentArea))
+                {
+                    ContentArea?.CompleteNavigation();
+                    return;
+                }
                 _contentArea = value;
                 NotifyOfPropertyChange(() => ContentArea);
                 if (_contentArea != null && _contentArea.ShowActionsPad)
@@ -117,7 +127,7 @@ namespace Deadfile.Tab.Tab
 
         public void NavigateAction(NavigateMessage message)
         {
-            _navigationService.RequestNavigate(this, nameof(ContentArea), message.Experience + "Page", ModelBase.NewModelId);
+            _navigationService.RequestNavigate(this, nameof(ContentArea), message.Experience + "Page", null);
         }
 
         protected override void OnActivate()
@@ -137,13 +147,13 @@ namespace Deadfile.Tab.Tab
         private void AddNewJobAction(int clientId)
         {
             //TODO Sort out magic strings.
-            _navigationService.RequestNavigate(this, nameof(ContentArea), "JobsPage", new ClientAndJob(clientId, ModelBase.NewModelId));
+            _navigationService.RequestNavigate(this, nameof(ContentArea), "JobsPage", new ClientAndJobNavigationKey(clientId, ModelBase.NewModelId));
         }
 
         private void InvoiceClientAction(int clientId)
         {
             //TODO Sort out magic strings.
-            _navigationService.RequestNavigate(this, nameof(ContentArea), "InvoicesPage", new ClientAndInvoice(clientId, ModelBase.NewModelId));
+            _navigationService.RequestNavigate(this, nameof(ContentArea), "InvoicesPage", new ClientAndInvoiceNavigationKey(clientId, ModelBase.NewModelId));
         }
 
         protected override void OnDeactivate(bool close)
@@ -184,13 +194,13 @@ namespace Deadfile.Tab.Tab
             switch (packet.Type)
             {
                 case BrowserModelType.Client:
-                    _navigationService.RequestNavigate(this, nameof(ContentArea), Experience.Clients + RegionNames.Page, packet.Id);
+                    _navigationService.RequestNavigate(this, nameof(ContentArea), Experience.Clients + RegionNames.Page, new ClientNavigationKey(packet.Id));
                     break;
                 case BrowserModelType.Job:
-                    _navigationService.RequestNavigate(this, nameof(ContentArea), Experience.Jobs + RegionNames.Page, new ClientAndJob(packet.ParentId, packet.Id));
+                    _navigationService.RequestNavigate(this, nameof(ContentArea), Experience.Jobs + RegionNames.Page, new ClientAndJobNavigationKey(packet.ParentId, packet.Id));
                     break;
                 case BrowserModelType.Invoice:
-                    _navigationService.RequestNavigate(this, nameof(ContentArea), Experience.Invoices + RegionNames.Page, new ClientAndInvoice(packet.ParentId, packet.Id));
+                    _navigationService.RequestNavigate(this, nameof(ContentArea), Experience.Invoices + RegionNames.Page, new ClientAndInvoiceNavigationKey(packet.ParentId, packet.Id));
                     break;
             }
         }

@@ -73,5 +73,7 @@ namespace Deadfile.Tab.Invoices
         public double VatValue { get; set; } = 365*0.2;
         public double VatRate { get; set; } = 20;
         public ICommand AddItemCommand { get; } = null;
+
+        public ObservableCollection<int> SuggestedInvoiceReferences { get; set; } = new ObservableCollection<int>(new int[] {57, 65});
     }
 }

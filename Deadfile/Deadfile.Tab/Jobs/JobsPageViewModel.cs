@@ -16,7 +16,7 @@ using IEventAggregator = Prism.Events.IEventAggregator;
 
 namespace Deadfile.Tab.Jobs
 {
-    class JobsPageViewModel : EditableItemViewModel<ClientAndJob, JobModel>, IJobsPageViewModel
+    class JobsPageViewModel : EditableItemViewModel<ClientAndJobNavigationKey, JobModel>, IJobsPageViewModel
     {
         private readonly INavigationService _navigationService;
         private readonly IDeadfileRepository _repository;
@@ -40,17 +40,17 @@ namespace Deadfile.Tab.Jobs
             _repository = repository;
         }
 
-        protected override JobModel GetModel(ClientAndJob clientAndJob)
+        protected override JobModel GetModel(ClientAndJobNavigationKey clientAndJobNavigationKey)
         {
             JobModel jobModel;
-            if (clientAndJob.Equals(default(ClientAndJob)) || clientAndJob.JobId == 0 || clientAndJob.JobId == ModelBase.NewModelId)
+            if (clientAndJobNavigationKey.Equals(default(ClientAndJobNavigationKey)) || clientAndJobNavigationKey.JobId == 0 || clientAndJobNavigationKey.JobId == ModelBase.NewModelId)
             {
                 jobModel = new JobModel();
                 DisplayName = "New Job";
             }
             else
             {
-                jobModel = _repository.GetJobById(clientAndJob.JobId);
+                jobModel = _repository.GetJobById(clientAndJobNavigationKey.JobId);
                 if (jobModel.JobId == ModelBase.NewModelId)
                     DisplayName = "New Job";
                 else
@@ -60,9 +60,14 @@ namespace Deadfile.Tab.Jobs
             return jobModel;
         }
 
-        protected override bool ShouldEditOnNavigate(ClientAndJob clientAndJob)
+        protected override bool ShouldEditOnNavigate(ClientAndJobNavigationKey clientAndJobNavigationKey)
         {
-            return clientAndJob.JobId == ModelBase.NewModelId;
+            return clientAndJobNavigationKey.JobId == ModelBase.NewModelId;
+        }
+
+        protected override ClientAndJobNavigationKey GetLookupParameters()
+        {
+            return new ClientAndJobNavigationKey(SelectedItem.ClientId, SelectedItem.JobId);
         }
 
         public override void EditingStatusChanged(bool editable)
@@ -129,11 +134,11 @@ namespace Deadfile.Tab.Jobs
             }
         }
 
-        public override void OnNavigatedTo(ClientAndJob clientAndJob)
+        public override void OnNavigatedTo(ClientAndJobNavigationKey clientAndJobNavigationKey)
         {
-            ClientId = clientAndJob.ClientId;
+            ClientId = clientAndJobNavigationKey.ClientId;
 
-            base.OnNavigatedTo(clientAndJob);
+            base.OnNavigatedTo(clientAndJobNavigationKey);
 
             // Select Applications - this should take care of setting up the view model for the JobChildViewModel control.
             SelectedJobChild = JobChildExperience.Applications;

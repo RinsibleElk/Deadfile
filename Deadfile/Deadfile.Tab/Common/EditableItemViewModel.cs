@@ -74,7 +74,12 @@ namespace Deadfile.Tab.Common
             set
             {
                 var valueToSet = value ?? new T() {Id = ModelBase.NewModelId};
-                if (valueToSet.Id == _selectedItem.Id) return;
+                if (valueToSet.Id == _selectedItem.Id)
+                {
+                    _selectedItem = valueToSet;
+                    NotifyOfPropertyChange(() => SelectedItem);
+                    return;
+                }
                 _selectedItem = valueToSet;
                 NotifyOfPropertyChange(() => SelectedItem);
                 Editable = false;
@@ -175,10 +180,21 @@ namespace Deadfile.Tab.Common
                     EditingStatusChanged(_editable);
 
                     // Only fire when it changes.
-                    EventAggregator.GetEvent<LockedForEditingEvent>().Publish(_editable ? LockedForEditingMessage.Locked : LockedForEditingMessage.Unlocked);
+                    if (_editable)
+                    {
+                        EventAggregator.GetEvent<LockedForEditingEvent>()
+                            .Publish(new LockedForEditingMessage() {IsLocked = _editable});
+                    }
+                    else
+                    {
+                        EventAggregator.GetEvent<LockedForEditingEvent>()
+                            .Publish(new LockedForEditingMessage() { IsLocked = _editable, NewParameters = GetLookupParameters() });
+                    }
                 }
             }
         }
+
+        protected abstract K GetLookupParameters();
 
         public abstract void EditingStatusChanged(bool editable);
 
@@ -219,9 +235,6 @@ namespace Deadfile.Tab.Common
         private void PerformSave(SaveMessage message)
         {
             PerformSave();
-
-            // Notify the browser that something has changed.
-            EventAggregator.GetEvent<HaveSavedEvent>().Publish(HaveSavedMessage.Saved);
         }
 
         public abstract void PerformDelete();
@@ -234,7 +247,7 @@ namespace Deadfile.Tab.Common
                 PerformDelete();
 
                 // Notify the browser that something has changed.
-                EventAggregator.GetEvent<HaveSavedEvent>().Publish(HaveSavedMessage.Saved);
+                EventAggregator.GetEvent<RefreshBrowserEvent>().Publish(RefreshBrowserMessage.Refresh);
             }
         }
 
@@ -246,9 +259,6 @@ namespace Deadfile.Tab.Common
 
         private void HandleEditAction(EditActionMessage editAction)
         {
-            if (editAction == EditActionMessage.Add)
-                SelectedItem = new T();
-
             // This fires an event to lock down navigation.
             Editable = editAction != EditActionMessage.EndEditing;
         }

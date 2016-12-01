@@ -25,7 +25,14 @@ namespace Deadfile.Model.Billable
 
         public override string Text { get { return _localAuthorityReference + " (" + NetAmount + ")"; } }
 
+        public override int Id
+        {
+            get { return ApplicationId; }
+            set { ApplicationId = value; }
+        }
+
         private string _localAuthorityReference;
+
         public string LocalAuthorityReference
         {
             get { return _localAuthorityReference; }

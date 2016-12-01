@@ -36,7 +36,10 @@
                 <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding BrowserSettings.Sorts}" IsEnabled="{Binding BrowsingEnabled}" IsEditable="False" SelectedItem="{Binding BrowserSettings.Sort}" />
                 <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" controls:TextBoxHelper.Watermark="Filter" IsEnabled="{Binding BrowsingEnabled}" Text="{Binding BrowserSettings.FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </Grid>
-            <TreeView Grid.Row="1" IsEnabled="{Binding BrowsingEnabled}" ItemsSource="{Binding Items}" Style="{StaticResource TreeViewTransparentBackground}">
+            <TreeView Grid.Row="1"
+                      IsEnabled="{Binding BrowsingEnabled}"
+                      ItemsSource="{Binding Items}"
+                      Style="{StaticResource TreeViewTransparentBackground}">
                 <i:Interaction.Behaviors>
                     <behaviors:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
                 </i:Interaction.Behaviors>

@@ -14,7 +14,7 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Clients
 {
-    public class ClientsPageViewModel : EditableItemViewModel<int, ClientModel>, IClientsPageViewModel
+    class ClientsPageViewModel : EditableItemViewModel<ClientNavigationKey, ClientModel>, IClientsPageViewModel
     {
         private readonly IDeadfileRepository _repository;
 
@@ -67,26 +67,26 @@ namespace Deadfile.Tab.Clients
             }
         }
 
-        public override void OnNavigatedTo(int selectedId)
+        public override void OnNavigatedTo(ClientNavigationKey selectedClient)
         {
-            var idToSelect = selectedId == 0 ? ModelBase.NewModelId : selectedId;
-            base.OnNavigatedTo(idToSelect);
+            var idToSelect = selectedClient.ClientId == 0 ? ModelBase.NewModelId : selectedClient.ClientId;
+            base.OnNavigatedTo(new ClientNavigationKey(idToSelect));
 
             CanAddNewJob = (!Editable) && (idToSelect != ModelBase.NewModelId);
             CanInvoiceClient = (!Editable) && (idToSelect != ModelBase.NewModelId);
         }
 
-        protected override ClientModel GetModel(int id)
+        protected override ClientModel GetModel(ClientNavigationKey key)
         {
             ClientModel clientModel;
-            if (id == 0 || id == ModelBase.NewModelId)
+            if (key.ClientId == 0 || key.ClientId == ModelBase.NewModelId)
             {
                 clientModel = new ClientModel();
                 DisplayName = "Clients";
             }
             else
             {
-                clientModel = _repository.GetClientById(id);
+                clientModel = _repository.GetClientById(key.ClientId);
                 if (clientModel.ClientId == ModelBase.NewModelId)
                     DisplayName = "Clients";
                 else
@@ -96,9 +96,14 @@ namespace Deadfile.Tab.Clients
             return clientModel;
         }
 
-        protected override bool ShouldEditOnNavigate(int key)
+        protected override bool ShouldEditOnNavigate(ClientNavigationKey key)
         {
-            return false;
+            return key.ClientId == ModelBase.NewModelId;
+        }
+
+        protected override ClientNavigationKey GetLookupParameters()
+        {
+            return new ClientNavigationKey(SelectedItem.ClientId);
         }
 
         public override void EditingStatusChanged(bool editable)
@@ -111,6 +116,7 @@ namespace Deadfile.Tab.Clients
         {
             try
             {
+                // For a new client this will also set the ClientId.
                 _repository.SaveClient(SelectedItem);
             }
             catch (Exception)

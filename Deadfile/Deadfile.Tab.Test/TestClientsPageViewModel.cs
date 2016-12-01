@@ -3,6 +3,7 @@ using System.Linq;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Clients;
+using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
 using MahApps.Metro.Controls.Dialogs;
 using Moq;
@@ -121,7 +122,7 @@ namespace Deadfile.Tab.Test
                 DisplayNameEventMock
                     .Setup((ev) => ev.Publish(""))
                     .Verifiable();
-                ViewModel.OnNavigatedTo(model.Id);
+                ViewModel.OnNavigatedTo(new ClientNavigationKey(model.Id));
                 VerifyAll();
             }
 
@@ -163,7 +164,7 @@ namespace Deadfile.Tab.Test
                     .Returns(LockedForEditingMock.Object)
                     .Verifiable();
                 LockedForEditingMock
-                    .Setup((ev) => ev.Publish(LockedForEditingMessage.Locked))
+                    .Setup((ev) => ev.Publish(new LockedForEditingMessage() { IsLocked = true }))
                     .Verifiable();
                 // And he'll publish that it is allowed to save.
                 if (_useRealEvents)

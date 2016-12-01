@@ -101,7 +101,7 @@ namespace Deadfile.Tab.Test
                     .Setup((ev) => ev.Publish(EditActionMessage.StartEditing))
                     .Verifiable();
                 host.ViewModel.EditItem();
-                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = true});
 
                 // Checks.
                 Assert.False(host.ViewModel.AddItemIsVisible);
@@ -124,8 +124,8 @@ namespace Deadfile.Tab.Test
                     .Setup((ev) => ev.Publish(EditActionMessage.StartEditing))
                     .Verifiable();
                 host.ViewModel.EditItem();
-                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
-                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Unlocked);
+                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = true});
+                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = false});
 
                 // Checks.
                 Assert.True(host.ViewModel.AddItemIsVisible);
@@ -148,7 +148,7 @@ namespace Deadfile.Tab.Test
                     .Setup((ev) => ev.Publish(EditActionMessage.StartEditing))
                     .Verifiable();
                 host.ViewModel.EditItem();
-                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = true});
                 host.CanSaveEvent.Publish(CanSaveMessage.CannotSave);
 
                 // Checks.

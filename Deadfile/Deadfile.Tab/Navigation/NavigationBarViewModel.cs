@@ -126,9 +126,10 @@ namespace Deadfile.Tab.Navigation
 
         private void UpdateLockedForEditing(LockedForEditingMessage lockedForEditingMessage)
         {
-            _lockedForEditing = (lockedForEditingMessage == LockedForEditingMessage.Locked);
+            _lockedForEditing = lockedForEditingMessage.IsLocked;
             if (!_lockedForEditing)
             {
+                _navigationService.SetCurrentNavigationParameters(lockedForEditingMessage.NewParameters);
                 CanUndo = false;
                 CanRedo = false;
             }

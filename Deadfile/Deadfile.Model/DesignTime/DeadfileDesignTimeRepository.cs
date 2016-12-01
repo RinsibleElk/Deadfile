@@ -108,7 +108,7 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
-        public void SaveInvoice(InvoiceModel invoiceModel)
+        public void SaveInvoice(InvoiceModel invoiceModel, IEnumerable<BillableJob> billableJobs)
         {
             throw new NotImplementedException();
         }
@@ -129,6 +129,11 @@ namespace Deadfile.Model.DesignTime
         }
 
         public void DeleteJob(JobModel jobModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int[] GetSuggestedInvoiceReferenceIdsForCompany(Company company)
         {
             throw new NotImplementedException();
         }

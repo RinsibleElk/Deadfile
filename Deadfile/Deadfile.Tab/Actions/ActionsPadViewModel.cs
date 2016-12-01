@@ -173,10 +173,10 @@ namespace Deadfile.Tab.Actions
 
         protected virtual void LockedForEditingAction(LockedForEditingMessage lockedForEditingMessage)
         {
-            SaveItemIsVisible = lockedForEditingMessage == LockedForEditingMessage.Locked;
-            CanDiscardItem = lockedForEditingMessage == LockedForEditingMessage.Locked;
-            EditItemIsVisible = lockedForEditingMessage == LockedForEditingMessage.Unlocked;
-            DeleteItemIsVisible = lockedForEditingMessage == LockedForEditingMessage.Unlocked;
+            SaveItemIsVisible = lockedForEditingMessage.IsLocked;
+            CanDiscardItem = lockedForEditingMessage.IsLocked;
+            EditItemIsVisible = !lockedForEditingMessage.IsLocked;
+            DeleteItemIsVisible = !lockedForEditingMessage.IsLocked;
         }
 
         public void OnNavigatedFrom()

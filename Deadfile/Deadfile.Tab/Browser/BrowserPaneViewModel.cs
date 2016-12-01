@@ -20,7 +20,7 @@ namespace Deadfile.Tab.Browser
         private readonly IEventAggregator _eventAggregator;
         private readonly IDeadfileRepository _repository;
         private SubscriptionToken _lockedForEditingActionSubscriptionToken = null;
-        private SubscriptionToken _haveSavedSubscriptionToken = null;
+        private SubscriptionToken _refreshBrowserSubscriptionToken = null;
         public BrowserPaneViewModel(IEventAggregator eventAggregator, IDeadfileRepository repository)
         {
             _repository = repository;
@@ -41,10 +41,16 @@ namespace Deadfile.Tab.Browser
 
         private void LockedForEditingAction(LockedForEditingMessage message)
         {
-            BrowsingEnabled = (message == LockedForEditingMessage.Unlocked);
+            BrowsingEnabled = (!message.IsLocked);
+
+            // if browsing is enabled, then we have to
+            // - deselect
+            // - refresh the entire browser (or preferably just this bit but hey)
+            // - reselect if possible
+
         }
 
-        private void HaveSavedAction(HaveSavedMessage message)
+        private void RefreshBrowserAction(RefreshBrowserMessage message)
         {
             RefreshBrowser();
         }
@@ -103,13 +109,13 @@ namespace Deadfile.Tab.Browser
         public void OnNavigatedTo(object parameters)
         {
             _lockedForEditingActionSubscriptionToken = _eventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(LockedForEditingAction);
-            _haveSavedSubscriptionToken = _eventAggregator.GetEvent<HaveSavedEvent>().Subscribe(HaveSavedAction);
+            _refreshBrowserSubscriptionToken = _eventAggregator.GetEvent<RefreshBrowserEvent>().Subscribe(RefreshBrowserAction);
         }
 
         public void OnNavigatedFrom()
         {
             _eventAggregator.GetEvent<LockedForEditingEvent>().Unsubscribe(_lockedForEditingActionSubscriptionToken);
-            _eventAggregator.GetEvent<HaveSavedEvent>().Unsubscribe(_haveSavedSubscriptionToken);
+            _eventAggregator.GetEvent<RefreshBrowserEvent>().Unsubscribe(_refreshBrowserSubscriptionToken);
         }
     }
 }

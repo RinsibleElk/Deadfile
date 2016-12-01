@@ -11,7 +11,7 @@ namespace Deadfile.Tab.Common
     /// <summary>
     /// Navigation parameters for the <see cref="JobsPageViewModel"/>.
     /// </summary>
-    struct ClientAndJob
+    struct ClientAndJobNavigationKey
     {
         /// <summary>
         /// Navigate to the <see cref="JobsPageViewModel"/> for the specified client and job. The job may not exist, this will be specified by the
@@ -19,7 +19,7 @@ namespace Deadfile.Tab.Common
         /// </summary>
         /// <param name="clientId"></param>
         /// <param name="jobId"></param>
-        public ClientAndJob(int clientId, int jobId)
+        public ClientAndJobNavigationKey(int clientId, int jobId)
         {
             ClientId = clientId;
             JobId = jobId;

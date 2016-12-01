@@ -22,12 +22,12 @@ namespace Deadfile.Tab.Clients
         {
             base.LockedForEditingAction(lockedForEditingMessage);
 
-            AddItemIsVisible = CanAddItem = lockedForEditingMessage == LockedForEditingMessage.Unlocked;
+            AddItemIsVisible = CanAddItem = !lockedForEditingMessage.IsLocked;
         }
 
         public void AddItem()
         {
-            EventAggregator.GetEvent<EditActionEvent>().Publish(EditActionMessage.Add);
+            EventAggregator.GetEvent<AddClientEvent>().Publish(new AddClientMessage());
         }
 
         public bool CanAddItem

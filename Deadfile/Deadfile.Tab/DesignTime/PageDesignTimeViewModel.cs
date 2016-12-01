@@ -23,7 +23,7 @@ namespace Deadfile.Tab.DesignTime
         }
 
         public virtual Experience Experience { get; }
-        public bool ShowActionsPad { get; } = false;
+        public virtual bool ShowActionsPad { get; } = false;
         public void CompleteNavigation()
         {
             throw new NotImplementedException();

@@ -11,6 +11,13 @@ namespace Deadfile.Model.Billable
     /// </summary>
     public class BillableExpense : BillableModel
     {
+        private int _expenseId;
+        public int ExpenseId
+        {
+            get { return _expenseId; }
+            set { SetProperty(ref _expenseId, value); }
+        }
+
         public override BillableModelType ModelType
         {
             get { return BillableModelType.Expense; }
@@ -28,5 +35,11 @@ namespace Deadfile.Model.Billable
         }
 
         public override string Text { get { return Description + " (" + NetAmount + ")"; } }
+
+        public override int Id
+        {
+            get { return ExpenseId; }
+            set { ExpenseId = value; }
+        }
     }
 }

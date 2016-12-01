@@ -74,5 +74,14 @@ namespace Deadfile.Model.Billable
                 SetProperty(ref _isExpanded, value);
             }
         }
+
+        public abstract int Id { get; set; }
+
+        private int? _invoiceId;
+        public int? InvoiceId
+        {
+            get { return _invoiceId; }
+            set { SetProperty(ref _invoiceId, value); }
+        }
     }
 }

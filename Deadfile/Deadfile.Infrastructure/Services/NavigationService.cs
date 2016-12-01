@@ -123,5 +123,11 @@ namespace Deadfile.Infrastructure.Services
             _backStack.Clear();
             _forwardStack.Clear();
         }
+
+        public void SetCurrentNavigationParameters(object newParameters)
+        {
+            var contextToEdit = _backStack.Pop();
+            _backStack.Push(new NavigationContext(contextToEdit.Host, contextToEdit.HostKey, contextToEdit.TargetObject, newParameters));
+        }
     }
 }

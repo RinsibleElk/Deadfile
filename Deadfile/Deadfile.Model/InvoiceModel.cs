@@ -233,7 +233,15 @@ namespace Deadfile.Model
             }
         }
 
+        private int _clientId;
+        public int ClientId
+        {
+            get { return _clientId; }
+            set { SetProperty(ref _clientId, value); }
+        }
+
         public override List<InvoiceItemModel> ChildrenList { get; set; } = new List<InvoiceItemModel>();
+        public bool IsNewInvoice { get; set; }
 
         public override void ChildrenUpdated()
         {

@@ -7,13 +7,12 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Events
 {
-    public enum HaveSavedMessage
+    public enum RefreshBrowserMessage
     {
-        Saved
+        Refresh
     }
 
-    public class HaveSavedEvent : PubSubEvent<HaveSavedMessage>
+    public class RefreshBrowserEvent : PubSubEvent<RefreshBrowserMessage>
     {
-        
     }
 }

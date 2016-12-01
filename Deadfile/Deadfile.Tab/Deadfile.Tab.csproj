@@ -95,8 +95,9 @@
     <Compile Include="Clients\ClientsPageViewModel.cs" />
     <Compile Include="Clients\IClientsActionsPadViewModel.cs" />
     <Compile Include="Clients\IClientsPageViewModel.cs" />
-    <Compile Include="Common\ClientAndInvoice.cs" />
-    <Compile Include="Common\ClientAndJob.cs" />
+    <Compile Include="Common\ClientAndInvoiceNavigationKey.cs" />
+    <Compile Include="Common\ClientAndJobNavigationKey.cs" />
+    <Compile Include="Common\ClientNavigationKey.cs" />
     <Compile Include="Common\DisplayNameBroadcaster.cs" />
     <Compile Include="Common\EditableItemViewModel.cs" />
     <Compile Include="Common\IEditableItemViewModel.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="DesignTime\ManagementPageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\PageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeViewModel.cs" />
+    <Compile Include="Events\AddClientEvent.cs" />
     <Compile Include="Events\AddNewJobEvent.cs" />
     <Compile Include="Events\CanDeleteEvent.cs" />
     <Compile Include="Events\CanEditMessage.cs" />
@@ -122,7 +124,7 @@
     <Compile Include="Events\InvoiceClientEvent.cs" />
     <Compile Include="Events\LockedForEditingMessage.cs" />
     <Compile Include="Events\NavigateMessage.cs" />
-    <Compile Include="Events\HaveSavedEvent.cs" />
+    <Compile Include="Events\RefreshBrowserEvent.cs" />
     <Compile Include="Events\SaveMessage.cs" />
     <Compile Include="Events\SelectedItemEvent.cs" />
     <Compile Include="Events\UndoMessage.cs" />

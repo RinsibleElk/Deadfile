@@ -44,6 +44,12 @@ namespace Deadfile.Model.Billable
 
         public override string Text { get { return FullAddress + " (" + NetAmount + "/" + TotalPossibleNetAmount + ")"; } }
 
+        public override int Id
+        {
+            get { return JobId; }
+            set { JobId = value; }
+        }
+
         public bool AutomaticEditingInProgress { get; set; } = false;
         public void StateChanged(int index)
         {

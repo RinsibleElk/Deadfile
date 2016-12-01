@@ -11,7 +11,7 @@ namespace Deadfile.Tab.Common
     /// <summary>
     /// Navigation parameters for the <see cref="InvoicesPageViewModel"/>.
     /// </summary>
-    struct ClientAndInvoice
+    struct ClientAndInvoiceNavigationKey
     {
         /// <summary>
         /// Navigate to the <see cref="InvoicesPageViewModel"/> for the specified client and invoice. The invoice may not exist, this will be specified by the
@@ -19,7 +19,7 @@ namespace Deadfile.Tab.Common
         /// </summary>
         /// <param name="clientId"></param>
         /// <param name="invoiceId"></param>
-        public ClientAndInvoice(int clientId, int invoiceId)
+        public ClientAndInvoiceNavigationKey(int clientId, int invoiceId)
         {
             ClientId = clientId;
             InvoiceId = invoiceId;

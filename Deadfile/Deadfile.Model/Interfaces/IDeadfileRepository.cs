@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Entity;
 using Deadfile.Model.Billable;
 using Deadfile.Model.Browser;
 
@@ -176,7 +177,8 @@ namespace Deadfile.Model.Interfaces
         /// Save changes to an invoice (or create a new one).
         /// </summary>
         /// <param name="invoiceModel"></param>
-        void SaveInvoice(InvoiceModel invoiceModel);
+        /// <param name="billableJobs"></param>
+        void SaveInvoice(InvoiceModel invoiceModel, IEnumerable<BillableJob> billableJobs);
 
         /// <summary>
         /// Validate that the invoice reference is unique (for the specified company).
@@ -211,5 +213,16 @@ namespace Deadfile.Model.Interfaces
         /// </remarks>
         /// <param name="jobModel"></param>
         void DeleteJob(JobModel jobModel);
+
+        /// <summary>
+        /// Get the set of suggested invoice reference ids for a given company.
+        /// </summary>
+        /// <remarks>
+        /// It is allowed, on cancellation of an <see cref="Invoice"/>, to vacate a used invoice reference. Therefore, the invoice reference ids are a sparse collection
+        /// of integers. In general, we should aim to offer the lowest (up to) 2 unused values and the next available value.
+        /// </remarks>
+        /// <param name="company"></param>
+        /// <returns></returns>
+        int[] GetSuggestedInvoiceReferenceIdsForCompany(Company company);
     }
 }

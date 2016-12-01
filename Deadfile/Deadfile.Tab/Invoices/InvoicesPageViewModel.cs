@@ -20,7 +20,7 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Invoices
 {
-    class InvoicesPageViewModel : EditableItemViewModel<ClientAndInvoice, InvoiceModel>, IInvoicesPageViewModel, IBillableModelContainer
+    class InvoicesPageViewModel : EditableItemViewModel<ClientAndInvoiceNavigationKey, InvoiceModel>, IInvoicesPageViewModel, IBillableModelContainer
     {
         private readonly IDeadfileRepository _repository;
 
@@ -37,13 +37,15 @@ namespace Deadfile.Tab.Invoices
             UndoTracker.AddChild();
         }
 
-        public override void OnNavigatedTo(ClientAndInvoice clientAndInvoice)
+        public override void OnNavigatedTo(ClientAndInvoiceNavigationKey clientAndInvoiceNavigationKey)
         {
-            base.OnNavigatedTo(clientAndInvoice);
+            base.OnNavigatedTo(clientAndInvoiceNavigationKey);
+
+            SuggestedInvoiceReferences = new ObservableCollection<int>(new int[] {SelectedItem.InvoiceReference});
 
             // Find all the billable items for this client, attributing them by whether they are included in this invoice
             // or any other invoice.
-            var jobs = new ObservableCollection<BillableModel>(_repository.GetBillableModelsForClientAndInvoice(clientAndInvoice.ClientId, clientAndInvoice.InvoiceId));
+            var jobs = new ObservableCollection<BillableModel>(_repository.GetBillableModelsForClientAndInvoice(clientAndInvoiceNavigationKey.ClientId, clientAndInvoiceNavigationKey.InvoiceId));
 
             // Listen for changes to job state (whether selected as a billed item in this invoice).
             int index = 0;
@@ -66,6 +68,18 @@ namespace Deadfile.Tab.Invoices
             SelectedItem.PropertyChanged += SelectedItemOnPropertyChanged;
         }
 
+        private ObservableCollection<int> _suggestedInvoiceReferences = new ObservableCollection<int>();
+        public ObservableCollection<int> SuggestedInvoiceReferences
+        {
+            get { return _suggestedInvoiceReferences; }
+            set
+            {
+                if (Equals(value, _suggestedInvoiceReferences)) return;
+                _suggestedInvoiceReferences = value;
+                NotifyOfPropertyChange(() => SuggestedInvoiceReferences);
+            }
+        }
+
         private void SelectedItemOnPropertyChanged(object sender, PropertyChangedEventArgs eventArgs)
         {
             if (eventArgs.PropertyName == nameof(InvoiceModel.CreationState))
@@ -73,30 +87,62 @@ namespace Deadfile.Tab.Invoices
                 NotifyOfPropertyChange(nameof(CanSetCompany));
                 NotifyOfPropertyChange(nameof(CanSetBillableItems));
                 NotifyOfPropertyChange(nameof(InvoiceEditable));
+
+                // Set up some of the defaults from what's been selected.
+                if (SelectedItem.IsNewInvoice && SelectedItem.CreationState == InvoiceCreationState.DefineInvoice)
+                {
+                    // VAT rate is handled by the invoice model already.
+
+                    // Offer the user some help in deciding a new invoice reference.
+                    SelectedItem.DisableUndoTracking = true;
+                    var suggestedInvoiceReferences = _repository.GetSuggestedInvoiceReferenceIdsForCompany(SelectedItem.Company);
+                    SuggestedInvoiceReferences = new ObservableCollection<int>(suggestedInvoiceReferences);
+                    SelectedItem.InvoiceReference = suggestedInvoiceReferences[suggestedInvoiceReferences.Length - 1];
+                    SelectedItem.DisableUndoTracking = false;
+                }
             }
         }
 
-        void INavigationAware.OnNavigatedFrom()
+        public override void OnNavigatedFrom()
         {
             base.OnNavigatedFrom();
 
+            SuggestedInvoiceReferences = new ObservableCollection<int>();
             Jobs = new ObservableCollection<BillableModel>();
             SelectedItem.PropertyChanged -= SelectedItemOnPropertyChanged;
         }
 
-        protected override InvoiceModel GetModel(ClientAndInvoice clientAndInvoice)
+        private InvoiceModel MakeNewModel(int clientId)
+        {
+            var clientModel = _repository.GetClientById(clientId);
+            return new InvoiceModel()
+            {
+                ClientId = clientId,
+                ClientName = clientModel.FullName,
+                ClientAddressFirstLine = clientModel.AddressFirstLine,
+                ClientAddressSecondLine = clientModel.AddressSecondLine,
+                ClientAddressThirdLine = clientModel.AddressThirdLine,
+                ClientAddressPostCode = clientModel.AddressPostCode,
+                IsNewInvoice = true
+            };
+        }
+
+        protected override InvoiceModel GetModel(ClientAndInvoiceNavigationKey clientAndInvoiceNavigationKey)
         {
             InvoiceModel invoiceModel;
-            if (clientAndInvoice.Equals(default(ClientAndInvoice)) || clientAndInvoice.InvoiceId == 0 || clientAndInvoice.InvoiceId == ModelBase.NewModelId)
+            if (clientAndInvoiceNavigationKey.Equals(default(ClientAndInvoiceNavigationKey)) || clientAndInvoiceNavigationKey.InvoiceId == 0 || clientAndInvoiceNavigationKey.InvoiceId == ModelBase.NewModelId)
             {
-                invoiceModel = new InvoiceModel();
+                invoiceModel = MakeNewModel(clientAndInvoiceNavigationKey.ClientId);
                 DisplayName = "New Invoice";
             }
             else
             {
-                invoiceModel = _repository.GetInvoiceById(clientAndInvoice.InvoiceId);
+                invoiceModel = _repository.GetInvoiceById(clientAndInvoiceNavigationKey.InvoiceId);
                 if (invoiceModel.InvoiceId == ModelBase.NewModelId)
+                {
+                    invoiceModel = MakeNewModel(clientAndInvoiceNavigationKey.ClientId);
                     DisplayName = "New Invoice";
+                }
                 else
                     DisplayName = CompanyUtils.GetShortName(invoiceModel.Company) + " " + invoiceModel.InvoiceReference;
             }
@@ -105,9 +151,14 @@ namespace Deadfile.Tab.Invoices
             return invoiceModel;
         }
 
-        protected override bool ShouldEditOnNavigate(ClientAndInvoice clientAndInvoice)
+        protected override bool ShouldEditOnNavigate(ClientAndInvoiceNavigationKey clientAndInvoiceNavigationKey)
         {
-            return clientAndInvoice.InvoiceId == ModelBase.NewModelId;
+            return clientAndInvoiceNavigationKey.InvoiceId == ModelBase.NewModelId;
+        }
+
+        protected override ClientAndInvoiceNavigationKey GetLookupParameters()
+        {
+            return new ClientAndInvoiceNavigationKey(SelectedItem.ClientId, SelectedItem.InvoiceId);
         }
 
         public override void EditingStatusChanged(bool editable)
@@ -136,7 +187,7 @@ namespace Deadfile.Tab.Invoices
         {
             try
             {
-                _repository.SaveInvoice(SelectedItem);
+                _repository.SaveInvoice(SelectedItem, Jobs.Cast<BillableJob>());
             }
             catch (Exception)
             {
@@ -175,10 +226,6 @@ namespace Deadfile.Tab.Invoices
         }
 
         private ObservableCollection<BillableModel> _jobs;
-        private double _netAmount;
-        private double _vatValue;
-        private double _vatRate;
-
         public ObservableCollection<BillableModel> Jobs
         {
             get { return _jobs; }
@@ -204,6 +251,7 @@ namespace Deadfile.Tab.Invoices
             NotifyOfPropertyChange(nameof(InvoiceEditable));
         }
 
+        private double _netAmount;
         public double NetAmount
         {
             get { return _netAmount; }

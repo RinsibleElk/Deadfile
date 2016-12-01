@@ -158,7 +158,7 @@ namespace Deadfile.Tab.Test
                     .Verifiable();
                 host.NavigationServiceMock.Raise(((n) => n.PropertyChanged += null),
                     new PropertyChangedEventArgs("CanGoBack"));
-                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = true});
 
                 // Verify.
                 Assert.False(host.ViewModel.CanBack);
@@ -186,7 +186,7 @@ namespace Deadfile.Tab.Test
                     .Verifiable();
                 host.NavigationServiceMock.Raise(((n) => n.PropertyChanged += null),
                     new PropertyChangedEventArgs("CanGoForward"));
-                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = true});
 
                 // Verify.
                 Assert.False(host.ViewModel.CanForward);
@@ -212,8 +212,8 @@ namespace Deadfile.Tab.Test
                     .Verifiable();
                 host.NavigationServiceMock.Raise(((n) => n.PropertyChanged += null),
                     new PropertyChangedEventArgs("CanGoBack"));
-                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
-                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Unlocked);
+                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() { IsLocked = true });
+                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() { IsLocked = false });
 
                 // Verify.
                 Assert.True(host.ViewModel.CanBack);
@@ -241,8 +241,8 @@ namespace Deadfile.Tab.Test
                     .Verifiable();
                 host.NavigationServiceMock.Raise(((n) => n.PropertyChanged += null),
                     new PropertyChangedEventArgs("CanGoForward"));
-                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
-                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Unlocked);
+                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() { IsLocked = true });
+                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() { IsLocked = false });
 
                 // Verify.
                 Assert.True(host.ViewModel.CanForward);
@@ -258,7 +258,7 @@ namespace Deadfile.Tab.Test
             // Setup.
             using (var host = new RealEventsHost())
             {
-                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() { IsLocked = true });
 
                 // Verify.
                 Assert.False(host.ViewModel.CanUndo);
@@ -272,7 +272,7 @@ namespace Deadfile.Tab.Test
             // Setup.
             using (var host = new RealEventsHost())
             {
-                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() { IsLocked = true });
                 host.CanUndoEvent.Publish(CanUndoMessage.CanUndo);
 
                 // Verify.
@@ -294,7 +294,7 @@ namespace Deadfile.Tab.Test
                     if (m == UndoMessage.Undo) ++numUndos;
                     else ++numRedos;
                 });
-                host.LockedForEditingEvent.Publish(LockedForEditingMessage.Locked);
+                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() { IsLocked = true });
                 host.CanUndoEvent.Publish(CanUndoMessage.CanUndo);
                 host.Undo();
 

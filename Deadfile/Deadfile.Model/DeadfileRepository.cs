@@ -373,18 +373,21 @@ namespace Deadfile.Model
         {
             using (var dbContext = new DeadfileContext())
             {
+                Client client;
                 if (clientModel.ClientId == ModelBase.NewModelId)
                 {
                     // Add
-                    dbContext.Clients.Add(_modelEntityMapper.Mapper.Map<ClientModel, Client>(clientModel));
+                    client = _modelEntityMapper.Mapper.Map<ClientModel, Client>(clientModel);
+                    dbContext.Clients.Add(client);
                 }
                 else
                 {
                     // Edit
-                    var client = dbContext.Clients.Find(clientModel.ClientId);
+                    client = dbContext.Clients.Find(clientModel.ClientId);
                     _modelEntityMapper.Mapper.Map<ClientModel, Client>(clientModel, client);
                 }
                 dbContext.SaveChanges();
+                clientModel.ClientId = client.ClientId;
             }
         }
 
@@ -392,12 +395,13 @@ namespace Deadfile.Model
         /// Save changes to an invoice (or add a new one).
         /// </summary>
         /// <param name="invoiceModel"></param>
-        public void SaveInvoice(InvoiceModel invoiceModel)
+        /// <param name="billableJobs"></param>
+        public void SaveInvoice(InvoiceModel invoiceModel, IEnumerable<BillableJob> billableJobs)
         {
+            int invoiceId;
             if (invoiceModel.InvoiceId == ModelBase.NewModelId)
             {
                 // Add
-                int invoiceId;
                 using (var dbContext = new DeadfileContext())
                 {
                     var invoice = _modelEntityMapper.Mapper.Map<InvoiceModel, Invoice>(invoiceModel);
@@ -413,12 +417,29 @@ namespace Deadfile.Model
             }
             else
             {
+                invoiceId = invoiceModel.InvoiceId;
                 // Edit
                 using (var dbContext = new DeadfileContext())
                 {
                     var invoice = dbContext.Invoices.Find(new object[1] {invoiceModel.InvoiceId});
                     _modelEntityMapper.Mapper.Map<InvoiceModel, Invoice>(invoiceModel, invoice);
                     dbContext.SaveChanges();
+                }
+            }
+
+            // Save or add each of the billable items under the billable jobs, setting the InvoiceId where needed.
+            foreach (var billableJob in billableJobs)
+            {
+                foreach (var billable in billableJob.Children)
+                {
+                    if (billable.State == BillableModelState.FullyIncluded)
+                    {
+                        SetInvoiceForBillable(billable, invoiceId);
+                    }
+                    else if (billable.State == BillableModelState.Excluded)
+                    {
+                        SetInvoiceForBillable(billable, null);
+                    }
                 }
             }
 
@@ -444,6 +465,37 @@ namespace Deadfile.Model
                             _modelEntityMapper.Mapper.Map<InvoiceItemModel, InvoiceItem>(invoiceItemModel, invoiceItem);
                         }
                     }
+                    dbContext.SaveChanges();
+                }
+            }
+        }
+
+        private void SetInvoiceForBillable(BillableModel billableModel, int? invoiceId)
+        {
+            if (billableModel.ModelType == BillableModelType.Application)
+            {
+                using (var dbContext = new DeadfileContext())
+                {
+                    var billable = dbContext.Applications.Find(new object[] { billableModel.Id });
+                    billable.InvoiceId = invoiceId;
+                    dbContext.SaveChanges();
+                }
+            }
+            else if (billableModel.ModelType == BillableModelType.Expense)
+            {
+                using (var dbContext = new DeadfileContext())
+                {
+                    var billable = dbContext.Expenses.Find(new object[] { billableModel.Id });
+                    billable.InvoiceId = invoiceId;
+                    dbContext.SaveChanges();
+                }
+            }
+            else if (billableModel.ModelType == BillableModelType.BillableHour)
+            {
+                using (var dbContext = new DeadfileContext())
+                {
+                    var billable = dbContext.BillableHours.Find(new object[] { billableModel.Id });
+                    billable.InvoiceId = invoiceId;
                     dbContext.SaveChanges();
                 }
             }
@@ -495,6 +547,42 @@ namespace Deadfile.Model
                 job.Status = JobStatus.Cancelled;
                 dbContext.SaveChanges();
             }
+        }
+
+        public int[] GetSuggestedInvoiceReferenceIdsForCompany(Company company)
+        {
+            List<int> usedInvoiceIds;
+            using (var dbContext = new DeadfileContext())
+            {
+                usedInvoiceIds = new List<int>(from invoice in dbContext.Invoices
+                    where invoice.Company == company
+                    where invoice.InvoiceReference != 0
+                    orderby invoice.InvoiceReference
+                    select invoice.InvoiceReference);
+            }
+            if (usedInvoiceIds.Count == 0)
+                return new int[] {1};
+            var lastInvoiceId = 0;
+            var highest = usedInvoiceIds[usedInvoiceIds.Count - 1];
+            var highestPlus1 = highest + 1;
+            var unusedInvoiceIds = new List<int>();
+            foreach (var usedInvoiceId in usedInvoiceIds)
+            {
+                if (lastInvoiceId != 0)
+                {
+                    if (usedInvoiceId - lastInvoiceId > 1)
+                    {
+                        for (int i = lastInvoiceId + 1; i < usedInvoiceId; i++)
+                        {
+                            unusedInvoiceIds.Add(i);
+                            if (unusedInvoiceIds.Count >= 2) break;
+                        }
+                    }
+                }
+                lastInvoiceId = usedInvoiceId;
+                if (unusedInvoiceIds.Count >= 2) break;
+            }
+            return unusedInvoiceIds.Concat(new int[] {highestPlus1}).ToArray();
         }
 
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
@@ -676,18 +764,21 @@ namespace Deadfile.Model
         {
             using (var dbContext = new DeadfileContext())
             {
+                Job job;
                 if (jobModel.JobId == ModelBase.NewModelId)
                 {
                     // Add
-                    dbContext.Jobs.Add(_modelEntityMapper.Mapper.Map<JobModel, Job>(jobModel));
+                    job = _modelEntityMapper.Mapper.Map<JobModel, Job>(jobModel);
+                    dbContext.Jobs.Add(job);
                 }
                 else
                 {
                     // Edit
-                    var job = dbContext.Jobs.Find(jobModel.JobId);
+                    job = dbContext.Jobs.Find(jobModel.JobId);
                     _modelEntityMapper.Mapper.Map<JobModel, Job>(jobModel, job);
                 }
                 dbContext.SaveChanges();
+                jobModel.JobId = job.JobId;
             }
         }
 
@@ -777,7 +868,8 @@ namespace Deadfile.Model
                                     ? BillableModelState.Excluded
                                     : (billableHour.InvoiceId.Value == invoiceId
                                         ? BillableModelState.FullyIncluded
-                                        : BillableModelState.Claimed))
+                                        : BillableModelState.Claimed)),
+                        BillableHourId = billableHour.BillableHourId
                     }))
                 {
                     AddBillableToJob(job, billableHour, ref hasClaimed, ref hasExcluded, ref hasIncluded,
@@ -805,7 +897,8 @@ namespace Deadfile.Model
                                     ? BillableModelState.Excluded
                                     : (expense.InvoiceId.Value == invoiceId
                                         ? BillableModelState.FullyIncluded
-                                        : BillableModelState.Claimed))
+                                        : BillableModelState.Claimed)),
+                        ExpenseId = expense.ExpenseId
                     }))
                 {
                     AddBillableToJob(job, expense, ref hasClaimed, ref hasExcluded, ref hasIncluded, ref totalAmount,

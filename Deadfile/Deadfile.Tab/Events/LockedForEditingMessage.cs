@@ -7,10 +7,10 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Events
 {
-    public enum LockedForEditingMessage
+    public struct LockedForEditingMessage
     {
-        Locked,
-        Unlocked
+        public bool IsLocked { get; set; }
+        public object NewParameters { get; set; }
     }
 
     public class LockedForEditingEvent : PubSubEvent<LockedForEditingMessage>

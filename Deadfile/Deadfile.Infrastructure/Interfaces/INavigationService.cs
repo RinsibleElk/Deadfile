@@ -52,5 +52,15 @@ namespace Deadfile.Infrastructure.Interfaces
         /// Called to end the life of the navigation service.
         /// </summary>
         void Teardown();
+
+        /// <summary>
+        /// Called after editing to update the lookup key for the navigation.
+        /// </summary>
+        /// <remarks>
+        /// This is a bespoke mechanism to ensure that after a new model is created, the navigation will browse through the newly
+        /// created model rather than go to create a new one.
+        /// </remarks>
+        /// <param name="newParameters"></param>
+        void SetCurrentNavigationParameters(object newParameters);
     }
 }

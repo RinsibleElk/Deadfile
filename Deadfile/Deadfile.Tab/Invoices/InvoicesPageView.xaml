@@ -110,12 +110,16 @@
                                        Grid.Column="0"
                                        Style="{StaticResource PksTextBlock}"
                                        Text="Invoice Number:"/>
-                            <TextBox Grid.Row="0"
-                                     Grid.Column="1"
-                                     Style="{StaticResource PksTextBox}"
-                                     IsEnabled="{Binding InvoiceEditable}"
-                                     Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.InvoiceReference}"
-                                     controls:TextBoxHelper.Watermark="Reference" />
+                            <ComboBox Grid.Row="0"
+                                      Grid.Column="1"
+                                      Margin="0,20,0,20"
+                                      Width="150"
+                                      HorizontalAlignment="Left"
+                                      IsEditable="{Binding InvoiceEditable}"
+                                      IsEnabled="{Binding InvoiceEditable}"
+                                      Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.InvoiceReference}"
+                                      SelectedValue="{Binding Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.InvoiceReference}"
+                                      ItemsSource="{Binding SuggestedInvoiceReferences}" />
                             <TextBlock Grid.Row="1"
                                        Grid.Column="0"
                                        Style="{StaticResource PksTextBlock}"

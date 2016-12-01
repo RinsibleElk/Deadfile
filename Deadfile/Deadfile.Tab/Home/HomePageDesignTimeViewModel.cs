@@ -9,12 +9,7 @@ namespace Deadfile.Tab.Home
 {
     class HomePageDesignTimeViewModel : PageDesignTimeViewModel, IHomePageViewModel
     {
-        public void Clients()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Jobs()
+        public void AddClient()
         {
             throw new NotImplementedException();
         }
@@ -24,11 +19,11 @@ namespace Deadfile.Tab.Home
             throw new NotImplementedException();
         }
 
-        public Experience Experience
+        public override Experience Experience
         {
             get { return Experience.Home; }
         }
 
-        public bool ShowActionsPad { get; } = true;
+        public override bool ShowActionsPad { get; } = true;
     }
 }
