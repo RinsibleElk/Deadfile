@@ -26,7 +26,7 @@ namespace Deadfile.Infrastructure.UndoRedo
         private readonly IReadOnlyDictionary<string, PropertyInfo> _settableProperties;
         private readonly Dictionary<string, object> _changing = new Dictionary<string, object>();
         protected T Model = null;
-        private bool _disableTracking = false;
+        protected bool TrackingDisabled = false;
         private readonly Stack<UndoValue> _undoStack = new Stack<UndoValue>();
         private readonly Stack<UndoValue> _redoStack = new Stack<UndoValue>();
 
@@ -60,7 +60,7 @@ namespace Deadfile.Infrastructure.UndoRedo
 
         private void OnPropertyChanging(object sender, PropertyChangingEventArgs e)
         {
-            if (_disableTracking) return;
+            if (TrackingDisabled) return;
             if (Model.DisableUndoTracking) return;
             if (!_settableProperties.ContainsKey(e.PropertyName)) return;
             if (_changing.ContainsKey(e.PropertyName))
@@ -83,7 +83,7 @@ namespace Deadfile.Infrastructure.UndoRedo
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (_disableTracking) return;
+            if (TrackingDisabled) return;
             if (Model.DisableUndoTracking) return;
             if (!_settableProperties.ContainsKey(e.PropertyName)) return;
             if (!_changing.ContainsKey(e.PropertyName)) return;
@@ -174,14 +174,19 @@ namespace Deadfile.Infrastructure.UndoRedo
             throw new NotImplementedException();
         }
 
+        public virtual void ResetChildren()
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual void DisableTracking()
         {
-            _disableTracking = true;
+            TrackingDisabled = true;
         }
 
         public virtual void EnableTracking()
         {
-            _disableTracking = false;
+            TrackingDisabled = false;
         }
     }
 }

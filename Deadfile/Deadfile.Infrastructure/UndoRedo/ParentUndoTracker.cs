@@ -44,20 +44,34 @@ namespace Deadfile.Infrastructure.UndoRedo
         /// </summary>
         public override void AddChild()
         {
-            Change(new UndoValue()
+            if (!TrackingDisabled && !Model.DisableUndoTracking)
             {
-                Context = null,
-                NewValue = null,
-                PreviousValue = null,
-                Property = null,
-                Type = UndoType.Add
-            });
+                Change(new UndoValue()
+                {
+                    Context = null,
+                    NewValue = null,
+                    PreviousValue = null,
+                    Property = null,
+                    Type = UndoType.Add
+                });
+            }
             var newK = new K() {Context = Model.Children.Count, ParentId = Model.Id};
             Model.ChildrenList.Add(newK);
             Model.ChildrenUpdated();
             var newChildTracker = new ChildUndoTracker<K>(this);
             newChildTracker.Activate(newK);
             _childTrackers.Add(newChildTracker);
+        }
+
+        public override void ResetChildren()
+        {
+            Model.ChildrenList.Clear();
+            Model.ChildrenUpdated();
+            foreach (var childTracker in _childTrackers)
+            {
+                childTracker.Deactivate();
+            }
+            _childTrackers.Clear();
         }
 
         public override void DeleteChild(int context)

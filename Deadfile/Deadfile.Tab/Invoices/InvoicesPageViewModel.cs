@@ -80,6 +80,10 @@ namespace Deadfile.Tab.Invoices
             }
         }
 
+        private const string VariousPropertyName = "Various";
+        private const string ProfessionalFeesDescription = "Professional Fees";
+        private const string InspectionAndPreparationOfPlansForAlterations = "Inspection And Preparation Of Plans For Alterations";
+
         private void SelectedItemOnPropertyChanged(object sender, PropertyChangedEventArgs eventArgs)
         {
             if (eventArgs.PropertyName == nameof(InvoiceModel.CreationState))
@@ -91,13 +95,40 @@ namespace Deadfile.Tab.Invoices
                 // Set up some of the defaults from what's been selected.
                 if (SelectedItem.IsNewInvoice && SelectedItem.CreationState == InvoiceCreationState.DefineInvoice)
                 {
+                    // Disable undo tracking while we handle automated changes.
+                    SelectedItem.DisableUndoTracking = true;
+
                     // VAT rate is handled by the invoice model already.
 
                     // Offer the user some help in deciding a new invoice reference.
-                    SelectedItem.DisableUndoTracking = true;
                     var suggestedInvoiceReferences = _repository.GetSuggestedInvoiceReferenceIdsForCompany(SelectedItem.Company);
                     SuggestedInvoiceReferences = new ObservableCollection<int>(suggestedInvoiceReferences);
                     SelectedItem.InvoiceReference = suggestedInvoiceReferences[suggestedInvoiceReferences.Length - 1];
+
+                    // Set the property.
+                    var selectedJobs =
+                        Jobs.Where((m) => m.State != BillableModelState.Claimed && m.State != BillableModelState.Excluded)
+                            .Cast<BillableJob>()
+                            .ToArray();
+                    if (selectedJobs.Length == 1)
+                    {
+                        SelectedItem.Project = selectedJobs[0].FullAddress;
+                    }
+                    else
+                    {
+                        SelectedItem.Project = VariousPropertyName;
+                    }
+
+                    // Set the description.
+                    SelectedItem.Description = ProfessionalFeesDescription;
+
+                    // Create a single invoice item.
+                    UndoTracker.ResetChildren();
+                    UndoTracker.AddChild();
+                    SelectedItem.ChildrenList[0].NetAmount = NetAmount;
+                    SelectedItem.ChildrenList[0].Description = InspectionAndPreparationOfPlansForAlterations;
+
+                    // Re-enable undo tracking.
                     SelectedItem.DisableUndoTracking = false;
                 }
             }
