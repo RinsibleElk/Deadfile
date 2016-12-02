@@ -10,6 +10,8 @@ namespace Deadfile.Model
     {
         public int Context { get; set; }
 
+        public abstract int ParentId { get; set; }
+
         public abstract bool DeletePending { get; set; }
     }
 }

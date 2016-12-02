@@ -52,7 +52,7 @@ namespace Deadfile.Infrastructure.UndoRedo
                 Property = null,
                 Type = UndoType.Add
             });
-            var newK = new K() {Context = Model.Children.Count};
+            var newK = new K() {Context = Model.Children.Count, ParentId = Model.Id};
             Model.ChildrenList.Add(newK);
             Model.ChildrenUpdated();
             var newChildTracker = new ChildUndoTracker<K>(this);
@@ -94,7 +94,7 @@ namespace Deadfile.Infrastructure.UndoRedo
         {
             if (undoValue.Type == UndoType.Add)
             {
-                var newK = new K() { Context = Model.ChildrenList.Count };
+                var newK = new K() { Context = Model.ChildrenList.Count, ParentId = Model.Id };
                 Model.ChildrenList.Add(newK);
                 Model.ChildrenUpdated();
                 var newChildTracker = new ChildUndoTracker<K>(this);

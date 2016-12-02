@@ -189,7 +189,7 @@ namespace Deadfile.Tab.Invoices
             {
                 _repository.SaveInvoice(SelectedItem, Jobs.Cast<BillableJob>());
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 //TODO Do something. Like raise a dialog box or something. Then clean up.
                 throw;

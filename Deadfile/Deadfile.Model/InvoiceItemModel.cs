@@ -19,6 +19,12 @@ namespace Deadfile.Model
         public override int Id
         {
             get { return InvoiceItemId; }
+            set { InvoiceItemId = value; }
+        }
+
+        public override int ParentId
+        {
+            get { return InvoiceId; }
             set { InvoiceId = value; }
         }
 
@@ -47,7 +53,7 @@ namespace Deadfile.Model
             set { SetProperty(ref _netAmount, value); }
         }
 
-        private int _invoiceId;
+        private int _invoiceId = ModelBase.NewModelId;
         public int InvoiceId
         {
             get { return _invoiceId; }

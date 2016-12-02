@@ -446,6 +446,7 @@ namespace Deadfile.Model
             // Finally add/edit the active invoice items.
             foreach (var invoiceItemModel in invoiceModel.ChildrenList)
             {
+                invoiceItemModel.InvoiceId = invoiceId;
                 using (var dbContext = new DeadfileContext())
                 {
                     if (invoiceItemModel.InvoiceItemId == ModelBase.NewModelId)
