@@ -265,6 +265,7 @@
                                         <TextBox Style="{StaticResource InvoiceTextBoxFullWidth}"
                                                  Margin="0"
                                                  controls:TextBoxHelper.Watermark="Item Description"
+                                                 HorizontalAlignment="Stretch"
                                                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=Description}" />
                                     </DockPanel>
                                 </DataTemplate>
@@ -537,10 +538,10 @@
         <Style TargetType="{x:Type ContentControl}" x:Key="InvoiceDisplay">
             <Setter Property="ContentTemplate" Value="{StaticResource I3DTemplate}" />
             <Style.Triggers>
-<!--                <DataTrigger Binding="{Binding SelectedItem.Company}" 
+                <DataTrigger Binding="{Binding SelectedItem.Company}" 
                              Value="{x:Static entity:Company.PaulSamsonCharteredSurveyorLtd}">
                     <Setter Property="ContentTemplate" Value="{StaticResource PksTemplate}" />
-                </DataTrigger>-->
+                </DataTrigger>
                 <DataTrigger Binding="{Binding SelectedItem.Company}" 
                              Value="{x:Static entity:Company.Imagine3DLtd}">
                     <Setter Property="ContentTemplate" Value="{StaticResource I3DTemplate}" />
