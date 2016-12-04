@@ -64,8 +64,11 @@ namespace Deadfile.Entity
          MinLength(1, ErrorMessage = "A Project must be at least 1 character long."),
          MaxLength(200, ErrorMessage = "A Project must be at most 200 characters long.")]
         public string Project { get; set; }
-        [MaxLength(200, ErrorMessage = "A Description must be at most 200 characters long.")]
+
+        [Required(ErrorMessage = "An Invoice must have a Description."),
+         MaxLength(200, ErrorMessage = "A Description must be at most 200 characters long.")]
         public string Description { get; set; }
+
         public int ClientId { get; set; }
         public virtual ICollection<InvoiceItem> InvoiceItems { get; set; }
     }

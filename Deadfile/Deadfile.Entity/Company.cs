@@ -26,7 +26,7 @@ namespace Deadfile.Entity
         /// </summary>
         public static Company[] AllCompanies
         {
-            get { return new Company[] {Company.PaulSamsonCharteredSurveyorLtd, Company.Imagine3DLtd}; }
+            get { return new Company[] {Company.Imagine3DLtd, Company.PaulSamsonCharteredSurveyorLtd }; }
         }
 
         /// <summary>

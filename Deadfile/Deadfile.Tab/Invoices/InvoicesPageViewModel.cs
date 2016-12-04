@@ -81,8 +81,6 @@ namespace Deadfile.Tab.Invoices
         }
 
         private const string VariousPropertyName = "Various";
-        private const string ProfessionalFeesDescription = "Professional Fees";
-        private const string InspectionAndPreparationOfPlansForAlterations = "Inspection And Preparation Of Plans For Alterations";
 
         private void SelectedItemOnPropertyChanged(object sender, PropertyChangedEventArgs eventArgs)
         {
@@ -119,14 +117,14 @@ namespace Deadfile.Tab.Invoices
                         SelectedItem.Project = VariousPropertyName;
                     }
 
-                    // Set the description.
-                    SelectedItem.Description = ProfessionalFeesDescription;
+                    // Set the description. This is not displayed for Imagine3D invoices.
+                    SelectedItem.Description = null;
 
                     // Create a single invoice item.
                     UndoTracker.ResetChildren();
                     UndoTracker.AddChild();
                     SelectedItem.ChildrenList[0].NetAmount = NetAmount;
-                    SelectedItem.ChildrenList[0].Description = InspectionAndPreparationOfPlansForAlterations;
+                    SelectedItem.ChildrenList[0].Description = null;
 
                     // Re-enable undo tracking.
                     SelectedItem.DisableUndoTracking = false;

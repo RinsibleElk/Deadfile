@@ -36,6 +36,11 @@
             <Setter Property="FontFamily" Value="Calibri" />
             <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
+        <Style x:Key="InvoiceTextBoxFullWidth" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="Calibri" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
         <Style x:Key="PksTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
             <Setter Property="Width" Value="150" />
             <Setter Property="Margin" Value="0,15,0,15" />
@@ -56,6 +61,240 @@
             <Setter Property="FontFamily" Value="Calibri" />
             <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
+        <DataTemplate x:Key="I3DTemplate" DataType="local:IInvoicesPageViewModel">
+            <ScrollViewer>
+                <Grid Margin="50,0,50,50">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="220"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <DockPanel Grid.Row="0"
+                               Grid.Column="0"
+                               LastChildFill="True">
+                        <Image DockPanel.Dock="Left"
+                               Source="Resources/I3D/i3d-logo.png"
+                               Height="220"
+                               Width="150"
+                               Stretch="UniformToFill" />
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <DockPanel Grid.Row="0"
+                                        Margin="0,30,0,0"
+                                        LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Right"
+                                            HorizontalAlignment="Right"
+                                            Background="#FFFFDDCC"
+                                            Text="INVOICE "
+                                            FontSize="54"
+                                            FontWeight="Bold"/>
+                                <TextBlock Background="#FFFFDDCC" />
+                            </DockPanel>
+                            <ComboBox Grid.Row="1"
+                                      ItemsSource="{Binding Source={StaticResource InvoiceStatusValues}}"
+                                      IsEditable="False"
+                                      SelectedItem="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Status}"
+                                      IsEnabled="{Binding InvoiceEditable}" />
+                            <TextBlock Grid.Row="2"
+                                       Text="Imagine3D Ltd."
+                                       FontFamily="Lucida Handwriting"
+                                       Foreground="DarkOrange"
+                                       TextDecorations="Underline"
+                                       FontSize="32"
+                                       Margin="25"
+                                       FontStyle="Italic"/>
+                        </Grid>
+                    </DockPanel>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock FontSize="14" FontFamily="Calibri" Text="The Glasgow Stud,"/>
+                            <TextBlock FontSize="14" FontFamily="Calibri" Text="Burnt Farm Ride,"/>
+                            <TextBlock FontSize="14" FontFamily="Calibri" Text="Crews Hill,"/>
+                            <TextBlock FontSize="14" FontFamily="Calibri" Text="Enfield, EN2 9DY"/>
+                        </StackPanel>
+                        <Grid Grid.Column="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" FontSize="12" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Invoice Number:"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" FontSize="12" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Date:"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" />
+                            <TextBlock Grid.Row="3" Grid.Column="0" FontSize="12" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="To:"/>
+                            <TextBlock Grid.Row="4" Grid.Column="0" />
+                            <TextBlock Grid.Row="5" Grid.Column="0" FontSize="12" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Of:"/>
+                            <ComboBox Grid.Row="0"
+                                      Grid.Column="1"
+                                      Margin="0,20,0,20"
+                                      Width="150"
+                                      HorizontalAlignment="Left"
+                                      IsEditable="{Binding InvoiceEditable}"
+                                      IsEnabled="{Binding InvoiceEditable}"
+                                      Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.InvoiceReference}"
+                                      SelectedValue="{Binding Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.InvoiceReference}"
+                                      ItemsSource="{Binding SuggestedInvoiceReferences}" />
+                            <DatePicker Grid.Row="1"
+                                        Grid.Column="1"
+                                        Style="{StaticResource InvoiceDatePicker}"
+                                        IsEnabled="{Binding InvoiceEditable}"
+                                        SelectedDate="{Binding SelectedItem.CreatedDate, Mode=TwoWay}" />
+                            <TextBox    Grid.Row="3"
+                                        Grid.Column="1"
+                                        Style="{StaticResource InvoiceTextBox}"
+                                        IsEnabled="{Binding InvoiceEditable}"
+                                        Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientName}"
+                                        controls:TextBoxHelper.Watermark="Client Name"/>
+                            <StackPanel Grid.Row="5"
+                                        Grid.Column="1">
+                                <TextBox Style="{StaticResource InvoiceTextBox}"
+                                         Margin="0,20,0,0"
+                                         IsEnabled="{Binding InvoiceEditable}"
+                                         Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressFirstLine}"
+                                         controls:TextBoxHelper.Watermark="Client Address First Line" />
+                                <TextBox Style="{StaticResource InvoiceTextBox}"
+                                         Margin="0,0,0,0"
+                                         IsEnabled="{Binding InvoiceEditable}"
+                                         Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressSecondLine}"
+                                         controls:TextBoxHelper.Watermark="Client Address Second Line" />
+                                <TextBox Style="{StaticResource InvoiceTextBox}"
+                                         Margin="0,0,0,0"
+                                         IsEnabled="{Binding InvoiceEditable}"
+                                         Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressThirdLine}"
+                                         controls:TextBoxHelper.Watermark="Client Address Third Line" />
+                                <TextBox Style="{StaticResource InvoiceTextBox}"
+                                         Margin="0,0,0,0"
+                                         IsEnabled="{Binding InvoiceEditable}"
+                                         Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressPostCode}"
+                                         controls:TextBoxHelper.Watermark="Client Post Code" />
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="2" Margin="0,50,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" FontSize="16" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Address:"/>
+                            <TextBox Grid.Row="0" Grid.Column="1"
+                                     Width="275"
+                                     FontSize="12"
+                                     FontFamily="Calibri"
+                                     Margin="10"
+                                     controls:TextBoxHelper.Watermark="Project"
+                                     IsEnabled="{Binding InvoiceEditable}"
+                                     Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Project}"
+                                     HorizontalAlignment="Left"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Description:"/>
+                            <TextBox Grid.Row="1"
+                                     Grid.Column="1"
+                                     Margin="10"
+                                     Width="275"
+                                     FontSize="12"
+                                     FontFamily="Calibri"
+                                     controls:TextBoxHelper.Watermark="Description"
+                                     IsEnabled="{Binding InvoiceEditable}"
+                                     Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Description}"
+                                     HorizontalAlignment="Left"/>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="3"
+                          Margin="0,50,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="200" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Background="DarkOrange" Grid.Row="0" Grid.Column="0" Foreground="White" Text="DESCRIPTION" />
+                        <TextBlock Background="DarkOrange" Grid.Row="0" Grid.Column="1" Foreground="White" />
+                        <TextBlock Background="DarkOrange" Grid.Row="0" Grid.Column="2" Foreground="White" Text="TOTAL" />
+                        <TextBlock Foreground="DarkOrange" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Text="TOTAL DUE" />
+                        <ItemsControl Grid.Row="1"
+                                      Grid.Column="0"
+                                      Grid.ColumnSpan="3"
+                                      Margin="0,20,0,20"
+                                      HorizontalContentAlignment="Stretch"
+                                      IsEnabled="{Binding InvoiceEditable}"
+                                      ItemsSource="{Binding SelectedItem.Children}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="model:InvoiceItemModel">
+                                    <DockPanel LastChildFill="True">
+                                        <Button DockPanel.Dock="Right"
+                                                Style="{StaticResource DeleteMiniButton}"
+                                                Command="{Binding DeleteCommand}"/>
+                                        <controls:NumericUpDown DockPanel.Dock="Right"
+                                                                Height="20"
+                                                                Width="80"
+                                                                Value="{Binding NetAmount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                        <TextBox Style="{StaticResource InvoiceTextBoxFullWidth}"
+                                                 Margin="0"
+                                                 controls:TextBoxHelper.Watermark="Item Description"
+                                                 Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=Description}" />
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button Grid.Row="2"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
+                                Visibility="{Binding InvoiceEditable, Converter={StaticResource BooleanToVisibility}}"
+                                Command="{Binding AddItemCommand}">
+                            Add Invoice Item
+                        </Button>
+                        <Border Grid.Row="4"
+                                Grid.Column="2"
+                                Width="100"
+                                BorderThickness="0,2,0,2"
+                                Background="#FFFFDDCC"
+                                BorderBrush="DarkOrange">
+                            <TextBlock Text="{Binding SelectedItem.GrossAmount}" />
+                        </Border>
+                    </Grid>
+                    <StackPanel Grid.Row="4" Margin="0,20,0,0">
+                        <TextBlock HorizontalAlignment="Center">Payment terms are 14 days from the date of invoice. Late payments will be charged at a rate of 2% per month.</TextBlock>
+                        <TextBlock HorizontalAlignment="Center">Payment can be made via cheque, made payable to Imagine3D Ltd. or via bank transfer to Account Number:</TextBlock>
+                        <TextBlock HorizontalAlignment="Center">92563142 Sort Code 40‐01‐06</TextBlock>
+                        <TextBlock HorizontalAlignment="Center">Company Registration No: 7595218</TextBlock>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </DataTemplate>
         <DataTemplate x:Key="PksTemplate" DataType="local:IInvoicesPageViewModel">
             <ScrollViewer>
                 <Grid Margin="50,50,50,50">
@@ -295,163 +534,13 @@
                 </Grid>
             </ScrollViewer>
         </DataTemplate>
-        <DataTemplate x:Key="I3DTemplate" DataType="local:IInvoicesPageViewModel">
-            <ScrollViewer>
-                <Grid Margin="50,0,50,50">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="6*"/>
-                        </Grid.ColumnDefinitions>
-                        <Image Grid.Row="0"
-                               Grid.RowSpan="2"
-                               Grid.Column="0"
-                               Source="Resources/I3D/i3d-logo.png"
-                               Stretch="UniformToFill" />
-                        <DockPanel Margin="0,30,0,0"
-                                   Grid.Row="0"
-                                   Grid.Column="1"
-                                   LastChildFill="True">
-                            <TextBlock DockPanel.Dock="Right"
-                                       HorizontalAlignment="Right"
-                                       Background="#FFFFDDCC"
-                                       Text="INVOICE "
-                                       FontSize="54"
-                                       FontWeight="Bold"/>
-                            <TextBlock Background="#FFFFDDCC" />
-                        </DockPanel>
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="1"
-                                   Text="Imagine3D Ltd."
-                                   FontFamily="Lucida Handwriting"
-                                   Foreground="DarkOrange"
-                                   TextDecorations="Underline"
-                                   FontSize="32"
-                                   Margin="25"
-                                   FontStyle="Italic"/>
-                    </Grid>
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0">
-                            <TextBlock FontSize="14" FontFamily="Calibri" Text="The Glasgow Stud,"/>
-                            <TextBlock FontSize="14" FontFamily="Calibri" Text="Burnt Farm Ride,"/>
-                            <TextBlock FontSize="14" FontFamily="Calibri" Text="Crews Hill,"/>
-                            <TextBlock FontSize="14" FontFamily="Calibri" Text="Enfield, EN2 9DY"/>
-                        </StackPanel>
-                        <Grid Grid.Column="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" FontSize="12" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Invoice Number:"/>
-                            <TextBlock Grid.Row="1" Grid.Column="0" FontSize="12" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Date:"/>
-                            <TextBlock Grid.Row="2" Grid.Column="0" />
-                            <TextBlock Grid.Row="3" Grid.Column="0" FontSize="12" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="To:"/>
-                            <TextBlock Grid.Row="4" Grid.Column="0" />
-                            <TextBlock Grid.Row="5" Grid.Column="0" FontSize="12" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Of:"/>
-                            <TextBox    Grid.Row="0"
-                                        Grid.Column="1"
-                                        Style="{StaticResource InvoiceTextBox}"
-                                        IsEnabled="{Binding InvoiceEditable}"
-                                        Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.InvoiceReference}"
-                                        controls:TextBoxHelper.Watermark="Reference" />
-                            <DatePicker Grid.Row="1"
-                                        Grid.Column="1"
-                                        Style="{StaticResource InvoiceDatePicker}"
-                                        IsEnabled="{Binding InvoiceEditable}"
-                                        SelectedDate="{Binding SelectedItem.CreatedDate, Mode=TwoWay}" />
-                            <TextBox    Grid.Row="3"
-                                        Grid.Column="1"
-                                        Style="{StaticResource InvoiceTextBox}"
-                                        IsEnabled="{Binding InvoiceEditable}"
-                                        Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientName}"
-                                        controls:TextBoxHelper.Watermark="Client Name"/>
-                            <TextBox    Grid.Row="5"
-                                        Grid.Column="1"
-                                        IsEnabled="{Binding InvoiceEditable}"
-                                        Style="{StaticResource InvoiceTextBox}"
-                                        Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressFirstLine}"
-                                        controls:TextBoxHelper.Watermark="Client Address"/>
-                        </Grid>
-                    </Grid>
-                    <Grid Grid.Row="2" Margin="0,50,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <TextBlock FontSize="14" FontFamily="Calibri" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Project:"/>
-                            <TextBox Width="275"
-                                     FontSize="12"
-                                     FontFamily="Calibri"
-                                     controls:TextBoxHelper.Watermark="Project"
-                                     IsEnabled="{Binding InvoiceEditable}"
-                                     Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Project}"
-                                     HorizontalAlignment="Left"/>
-                        </StackPanel>
-                    </Grid>
-                    <Grid Grid.Row="3"
-                          Margin="0,50,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="200" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <TextBlock Background="DarkOrange" Grid.Row="0" Grid.Column="0" Foreground="White" Text="DESCRIPTION" />
-                        <TextBlock Background="DarkOrange" Grid.Row="0" Grid.Column="1" Foreground="White" />
-                        <TextBlock Background="DarkOrange" Grid.Row="0" Grid.Column="2" Foreground="White" Text="TOTAL" />
-                        <TextBlock Foreground="DarkOrange" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"  Text="TOTAL DUE" />
-                        <Border MinWidth="150" Grid.Row="3" Grid.Column="2" Background="#FFFFDDCC" BorderThickness="0,2,0,2" BorderBrush="DarkOrange">
-                            <controls:NumericUpDown Value="{Binding SelectedItem.GrossAmount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-                                                    IsEnabled="{Binding InvoiceEditable}" />
-                        </Border>
-                    </Grid>
-                    <StackPanel Grid.Row="4" Margin="0,20,0,0">
-                        <TextBlock HorizontalAlignment="Center">Payment terms are 14 days from the date of invoice. Late payments will be charged at a rate of 2% per month.</TextBlock>
-                        <TextBlock HorizontalAlignment="Center">Payment can be made via cheque, made payable to Imagine3D Ltd. or via bank transfer to Account Number:</TextBlock>
-                        <TextBlock HorizontalAlignment="Center">92563142 Sort Code 40‐01‐06</TextBlock>
-                        <TextBlock HorizontalAlignment="Center">Company Registration No: 7595218</TextBlock>
-                    </StackPanel>
-                </Grid>
-            </ScrollViewer>
-        </DataTemplate>
         <Style TargetType="{x:Type ContentControl}" x:Key="InvoiceDisplay">
             <Setter Property="ContentTemplate" Value="{StaticResource I3DTemplate}" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding SelectedItem.Company}" 
+<!--                <DataTrigger Binding="{Binding SelectedItem.Company}" 
                              Value="{x:Static entity:Company.PaulSamsonCharteredSurveyorLtd}">
                     <Setter Property="ContentTemplate" Value="{StaticResource PksTemplate}" />
-                </DataTrigger>
+                </DataTrigger>-->
                 <DataTrigger Binding="{Binding SelectedItem.Company}" 
                              Value="{x:Static entity:Company.Imagine3DLtd}">
                     <Setter Property="ContentTemplate" Value="{StaticResource I3DTemplate}" />
@@ -516,4 +605,6 @@
                         Style="{StaticResource InvoiceDisplay}" />
     </Grid>
 </UserControl>
+
+
 

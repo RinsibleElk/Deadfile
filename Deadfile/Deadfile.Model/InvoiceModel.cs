@@ -97,7 +97,7 @@ namespace Deadfile.Model
             return Repository.HasUniqueInvoiceReference(this);
         }
 
-        private Company _company = Company.PaulSamsonCharteredSurveyorLtd;
+        private Company _company = Company.Imagine3DLtd;
         [Required(ErrorMessage = "An Invoice requires a Company that it has been issued for.")]
         public Company Company
         {
@@ -198,7 +198,8 @@ namespace Deadfile.Model
         }
 
         private string _description;
-        [MaxLength(200, ErrorMessage = "A Description must be at most 200 characters long.")]
+        [Required(ErrorMessage = "An Invoice must have a Description."),
+         MaxLength(200, ErrorMessage = "A Description must be at most 200 characters long.")]
         public string Description
         {
             get { return _description; }

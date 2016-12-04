@@ -102,6 +102,7 @@
     <Compile Include="TestBrowserPaneViewModel.cs" />
     <Compile Include="TestClientActionsPadViewModel.cs" />
     <Compile Include="TestClientsPageViewModel.cs" />
+    <Compile Include="TestInvoicesPageViewModel.cs" />
     <Compile Include="TestNavigationBarViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
