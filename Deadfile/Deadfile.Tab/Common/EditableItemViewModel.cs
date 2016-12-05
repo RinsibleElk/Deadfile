@@ -28,8 +28,13 @@ namespace Deadfile.Tab.Common
         // This is the "active" undo tracker. For the Jobs page, this could represent a billable item.
         private IUndoTracker _activeUndoTracker = null;
 
+        // Subscription tokens.
         private SubscriptionToken _saveSubscriptionToken = null;
         private SubscriptionToken _deleteSubscriptionToken = null;
+        private SubscriptionToken _handleEditActionSubscriptionToken;
+        private SubscriptionToken _handleUndoSubcriptionToken;
+        private SubscriptionToken _discardChangesSubscriptionToken;
+
         public EditableItemViewModel(IEventAggregator eventAggregator, IDialogCoordinator dialogCoordinator, UndoTracker<T> undoTracker)
         {
             EventAggregator = eventAggregator;
@@ -142,10 +147,6 @@ namespace Deadfile.Tab.Common
         }
 
         private bool _editable = false;
-        private SubscriptionToken _handleEditActionSubscriptionToken;
-        private SubscriptionToken _handleUndoSubcriptionToken;
-        private SubscriptionToken _discardChangesSubscriptionToken;
-
         public bool Editable
         {
             get { return _editable; }
