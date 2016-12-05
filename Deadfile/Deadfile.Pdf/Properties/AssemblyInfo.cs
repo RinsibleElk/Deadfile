@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Deadfile.Text")]
+[assembly: AssemblyTitle("Deadfile.Pdf")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Deadfile.Text")]
+[assembly: AssemblyProduct("Deadfile.Pdf")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("73683134-8fe2-41f4-b3f6-a653ec58aff7")]
+[assembly: Guid("678021de-2632-4ea3-bfe1-c837e1b60702")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -25,9 +25,9 @@ namespace Deadfile.Tab.Tab
         {
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
-            eventAggregator.GetEvent<NavigateEvent>().Subscribe(NavigateAction);
-            eventAggregator.GetEvent<DisplayNameEvent>().Subscribe(DisplayNameChanged);
-            eventAggregator.GetEvent<AddClientEvent>().Subscribe(AddClientAction);
+            _navigateEventSubscriptionToken = eventAggregator.GetEvent<NavigateEvent>().Subscribe(NavigateAction);
+            _displayNameEventSubscriptionToken = eventAggregator.GetEvent<DisplayNameEvent>().Subscribe(DisplayNameChanged);
+            _addClientEventSubscriptionToken = eventAggregator.GetEvent<AddClientEvent>().Subscribe(AddClientAction);
             navigationService.RequestNavigate(this, nameof(NavigationBar), "NavigationBar", null);
             navigationService.RequestNavigate(this, nameof(ContentArea), "HomePage", null);
             navigationService.RequestNavigate(this, nameof(BrowserPane), "BrowserPane", null);
@@ -134,6 +134,13 @@ namespace Deadfile.Tab.Tab
         {
             base.OnActivate();
 
+            if (_navigateEventSubscriptionToken == null)
+                _navigateEventSubscriptionToken = _eventAggregator.GetEvent<NavigateEvent>().Subscribe(NavigateAction);
+            if (_displayNameEventSubscriptionToken == null)
+                _displayNameEventSubscriptionToken = _eventAggregator.GetEvent<DisplayNameEvent>().Subscribe(DisplayNameChanged);
+            if (_addClientEventSubscriptionToken == null)
+                _addClientEventSubscriptionToken = _eventAggregator.GetEvent<AddClientEvent>().Subscribe(AddClientAction);
+
             // Subscribe to selection changes.
             _navigateToSelectedClientSubscriptionToken = _eventAggregator.GetEvent<SelectedItemEvent>().Subscribe(NavigateToExperience);
 
@@ -159,7 +166,14 @@ namespace Deadfile.Tab.Tab
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
-            
+
+            _eventAggregator.GetEvent<NavigateEvent>().Unsubscribe(_navigateEventSubscriptionToken);
+            _navigateEventSubscriptionToken = null;
+            _eventAggregator.GetEvent<DisplayNameEvent>().Unsubscribe(_displayNameEventSubscriptionToken);
+            _displayNameEventSubscriptionToken = null;
+            _eventAggregator.GetEvent<AddClientEvent>().Unsubscribe(_addClientEventSubscriptionToken);
+            _addClientEventSubscriptionToken = null;
+
             // Unsubscribe from selection changes.
             _eventAggregator.GetEvent<SelectedItemEvent>().Unsubscribe(_navigateToSelectedClientSubscriptionToken);
             _navigateToSelectedClientSubscriptionToken = null;
@@ -188,6 +202,9 @@ namespace Deadfile.Tab.Tab
         private bool _browserAndActionsAreVisible;
         private SubscriptionToken _addNewJobSubscriptionToken = null;
         private SubscriptionToken _invoiceClientSubscriptionToken = null;
+        private SubscriptionToken _navigateEventSubscriptionToken = null;
+        private SubscriptionToken _displayNameEventSubscriptionToken;
+        private SubscriptionToken _addClientEventSubscriptionToken;
 
         private void NavigateToExperience(SelectedItemPacket packet)
         {
