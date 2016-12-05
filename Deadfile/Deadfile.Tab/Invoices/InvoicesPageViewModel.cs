@@ -13,6 +13,7 @@ using Deadfile.Model;
 using Deadfile.Model.Billable;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
+using Deadfile.Tab.Dialogs;
 using Deadfile.Tab.Events;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
@@ -40,6 +41,8 @@ namespace Deadfile.Tab.Invoices
         public override void OnNavigatedTo(ClientAndInvoiceNavigationKey clientAndInvoiceNavigationKey)
         {
             base.OnNavigatedTo(clientAndInvoiceNavigationKey);
+
+            _printEventSubscriptionToken = EventAggregator.GetEvent<PrintEvent>().Subscribe(PerformPrint);
 
             SuggestedInvoiceReferences = new ObservableCollection<int>(new int[] {SelectedItem.InvoiceReference});
 
@@ -136,6 +139,8 @@ namespace Deadfile.Tab.Invoices
         {
             base.OnNavigatedFrom();
 
+            EventAggregator.GetEvent<PrintEvent>().Unsubscribe(_printEventSubscriptionToken);
+            _printEventSubscriptionToken = null;
             SuggestedInvoiceReferences = new ObservableCollection<int>();
             Jobs = new ObservableCollection<BillableModel>();
             SelectedItem.PropertyChanged -= SelectedItemOnPropertyChanged;
@@ -212,17 +217,28 @@ namespace Deadfile.Tab.Invoices
             get { return Editable && SelectedItem.CreationState == InvoiceCreationState.DefineInvoice; }
         }
 
-        public override void PerformSave()
+        public override void PerformSave(SaveMessage message)
         {
             try
             {
                 _repository.SaveInvoice(SelectedItem, Jobs.Cast<BillableJob>());
+                if (message == SaveMessage.SaveAndPrint)
+                {
+                    PerformPrint(PrintMessage.Print);
+                }
             }
             catch (Exception e)
             {
                 //TODO Do something. Like raise a dialog box or something. Then clean up.
                 throw;
             }
+        }
+
+        private async void PerformPrint(PrintMessage print)
+        {
+            var dialog = new PrintDialogView();
+            dialog.DataContext = new PrintDialogViewModel(this, DialogCoordinator);
+            await DialogCoordinator.ShowMetroDialogAsync(this, dialog);
         }
 
         public override void PerformDelete()
@@ -281,6 +297,8 @@ namespace Deadfile.Tab.Invoices
         }
 
         private double _netAmount;
+        private SubscriptionToken _printEventSubscriptionToken = null;
+
         public double NetAmount
         {
             get { return _netAmount; }

@@ -112,7 +112,7 @@ namespace Deadfile.Tab.Clients
             CanInvoiceClient = (!Editable) && (SelectedItem.ClientId != ModelBase.NewModelId);
         }
 
-        public override void PerformSave()
+        public override void PerformSave(SaveMessage message)
         {
             try
             {

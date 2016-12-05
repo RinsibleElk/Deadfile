@@ -7,14 +7,13 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Events
 {
-    public enum SaveMessage
+    public enum PrintMessage
     {
-        Save,
-        SaveAndPrint
+        Print
     }
 
-    public class SaveEvent : PubSubEvent<SaveMessage>
+    public class PrintEvent : PubSubEvent<PrintMessage>
     {
-        
+
     }
 }

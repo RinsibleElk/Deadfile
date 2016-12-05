@@ -49,6 +49,7 @@ namespace Deadfile.Tab.Actions
                 if (value == _canEditItem) return;
                 _canEditItem = value;
                 NotifyOfPropertyChange(() => CanEditItem);
+                CanEditItemChanged(_canEditItem);
             }
         }
 
@@ -81,7 +82,16 @@ namespace Deadfile.Tab.Actions
                 if (value == _canSaveItem) return;
                 _canSaveItem = value;
                 NotifyOfPropertyChange(() => CanSaveItem);
+                CanSaveItemChanged(_canSaveItem);
             }
+        }
+
+        protected virtual void CanSaveItemChanged(bool canSave)
+        {
+        }
+
+        protected virtual void CanEditItemChanged(bool canEdit)
+        {
         }
 
         public bool SaveItemIsVisible

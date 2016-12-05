@@ -74,7 +74,7 @@ namespace Deadfile.Tab.Jobs
         {
         }
 
-        public override void PerformSave()
+        public override void PerformSave(SaveMessage message)
         {
             try
             {

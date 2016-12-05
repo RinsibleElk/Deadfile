@@ -20,7 +20,7 @@ namespace Deadfile.Tab.Common
     public abstract class EditableItemViewModel<K, T> : ParameterisedViewModel<K>, IEditableItemViewModel<T> where T : ModelBase, new()
     {
         protected readonly IEventAggregator EventAggregator;
-        private readonly IDialogCoordinator _dialogCoordinator;
+        protected readonly IDialogCoordinator DialogCoordinator;
 
         // This is the main undo tracker for the object under management. However, it may not be the active one responding to undo events from the nav-bar.
         protected readonly UndoTracker<T> UndoTracker;
@@ -33,7 +33,7 @@ namespace Deadfile.Tab.Common
         public EditableItemViewModel(IEventAggregator eventAggregator, IDialogCoordinator dialogCoordinator, UndoTracker<T> undoTracker)
         {
             EventAggregator = eventAggregator;
-            _dialogCoordinator = dialogCoordinator;
+            DialogCoordinator = dialogCoordinator;
             UndoTracker = undoTracker;
         }
 
@@ -231,16 +231,12 @@ namespace Deadfile.Tab.Common
             }
         }
 
-        public abstract void PerformSave();
-        private void PerformSave(SaveMessage message)
-        {
-            PerformSave();
-        }
+        public abstract void PerformSave(SaveMessage message);
 
         public abstract void PerformDelete();
         private async void PerformDelete(DeleteMessage message)
         {
-            var result = await _dialogCoordinator.ShowMessageAsync(this, "Confirm Deletion", "Are you sure?", MessageDialogStyle.AffirmativeAndNegative);
+            var result = await DialogCoordinator.ShowMessageAsync(this, "Confirm Deletion", "Are you sure?", MessageDialogStyle.AffirmativeAndNegative);
             // Open a dialog to ask the user if they are sure.
             if (result == MessageDialogResult.Affirmative)
             {
