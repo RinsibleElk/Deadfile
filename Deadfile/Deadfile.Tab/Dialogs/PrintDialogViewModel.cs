@@ -6,6 +6,7 @@ using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Deadfile.Tab.Invoices;
@@ -120,8 +121,10 @@ namespace Deadfile.Tab.Dialogs
                 // Close Acrobat regardless of version
                 if (process != null)
                 {
+                    // yeeeah, this doesn't work.
                     process.WaitForInputIdle();
                     process.CloseMainWindow();
+                    process.Kill();
                 }
             }
         }
