@@ -55,7 +55,7 @@ namespace Deadfile.Tab.Dialogs
             _dialogCoordinator.HideMetroDialogAsync(_context, dialog);
             try
             {
-                Pdf.PrintPdfToPrinter(_tempFile, SelectedPrinter);
+                Pdf.SumatraPrint(_tempFile, SelectedPrinter);
                 File.Delete(_tempFile);
             }
             catch (Exception)
@@ -126,6 +126,21 @@ namespace Deadfile.Tab.Dialogs
                     process.CloseMainWindow();
                     process.Kill();
                 }
+            }
+
+            public static bool SumatraPrint(string pdfFile, string printer)
+            {
+                var exePath = Registry.LocalMachine.OpenSubKey(
+                    @"SOFTWARE\Microsoft\Windows\CurrentVersion" +
+                    @"\App Paths\SumatraPDF.exe")?.GetValue("")?.ToString();
+                if (exePath != null)
+                {
+                    var args = $"-print-to \"{printer}\" {pdfFile}";
+                    var process = Process.Start(exePath, args);
+                    process?.WaitForExit();
+                    return true;
+                }
+                return false;
             }
         }
     }
