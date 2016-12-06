@@ -76,7 +76,6 @@ namespace Deadfile.Pdf
                 double grossAmountY = 688;
                 var grossAmountFont = new XFont(fontName, 14, XFontStyle.Bold);
                 gfx.DrawString(invoiceModel.GrossAmount.ToString("C", CultureInfo.CurrentCulture), grossAmountFont, XBrushes.Black, grossAmountX, grossAmountY);
-
                 outputDocument.Save(outputFile);
             }
         }

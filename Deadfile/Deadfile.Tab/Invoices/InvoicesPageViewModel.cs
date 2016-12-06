@@ -2,8 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Printing;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Deadfile.Entity;
@@ -12,10 +18,13 @@ using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
 using Deadfile.Model.Billable;
 using Deadfile.Model.Interfaces;
+using Deadfile.Pdf;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Dialogs;
 using Deadfile.Tab.Events;
 using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Win32;
+using PdfSharp.Drawing;
 using Prism.Commands;
 using Prism.Events;
 
@@ -236,8 +245,13 @@ namespace Deadfile.Tab.Invoices
 
         private async void PerformPrint(PrintMessage print)
         {
+            var invoiceGenerator = new CompanySwitchingInvoiceGenerator();
+            var tempDirectory = Path.GetTempPath();
+            var tempFile = Path.Combine(tempDirectory, Path.GetFileNameWithoutExtension(Path.GetRandomFileName()) + ".pdf");
+            invoiceGenerator.Generate(SelectedItem, tempFile);
             var dialog = new PrintDialogView();
-            dialog.DataContext = new PrintDialogViewModel(this, DialogCoordinator);
+            var dialogViewModel = new PrintDialogViewModel(this, DialogCoordinator, tempFile);
+            dialog.DataContext = dialogViewModel;
             await DialogCoordinator.ShowMetroDialogAsync(this, dialog);
         }
 

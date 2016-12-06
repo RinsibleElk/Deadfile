@@ -8,11 +8,12 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:PrintDialogDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <StackPanel>
+        <ListBox ItemsSource="{Binding Printers}" SelectedItem="{Binding SelectedPrinter, Mode=TwoWay}"></ListBox>
         <Button Command="{Binding CloseCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:PrintDialogView}}}">
             Close
         </Button>
-    </Grid>
+    </StackPanel>
 </dialogs:BaseMetroDialog>
 
