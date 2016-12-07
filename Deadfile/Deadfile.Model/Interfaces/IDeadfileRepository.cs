@@ -224,5 +224,11 @@ namespace Deadfile.Model.Interfaces
         /// <param name="company"></param>
         /// <returns></returns>
         int[] GetSuggestedInvoiceReferenceIdsForCompany(Company company);
+
+        /// <summary>
+        /// Get the next available job number.
+        /// </summary>
+        /// <returns></returns>
+        int GetNextSuggestedJobNumber();
     }
 }

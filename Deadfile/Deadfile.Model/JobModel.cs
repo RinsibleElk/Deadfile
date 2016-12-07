@@ -29,6 +29,14 @@ namespace Deadfile.Model
             set { SetProperty(ref _jobId, value); }
         }
 
+        private int _jobNumber = 1;
+        [Required(ErrorMessage = "You must provide a job number.")]
+        public int JobNumber
+        {
+            get { return _jobNumber; }
+            set { SetProperty(ref _jobNumber, value); }
+        }
+
         private string _addressFirstLine;
         [Required(ErrorMessage = "You must provide an address for this Job."),
          MaxLength(200, ErrorMessage = "A line of an address must be less than 200 characters long.")]

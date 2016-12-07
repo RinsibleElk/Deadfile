@@ -11,6 +11,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using Deadfile.Entity;
 using Deadfile.Infrastructure.Interfaces;
@@ -243,16 +245,22 @@ namespace Deadfile.Tab.Invoices
             }
         }
 
-        private async void PerformPrint(PrintMessage print)
+        private void PerformPrint(PrintMessage print)
         {
+//            var invoiceGenerator = new CompanySwitchingInvoiceGenerator();
+//            var tempDirectory = Path.GetTempPath();
+//            var tempFile = Path.Combine(tempDirectory, Path.GetFileNameWithoutExtension(Path.GetRandomFileName()) + ".pdf");
+//            invoiceGenerator.Generate(SelectedItem, tempFile);
+//            var dialog = new PrintDialogView();
+//            var dialogViewModel = new PrintDialogViewModel(this, DialogCoordinator, tempFile);
+//            dialog.DataContext = dialogViewModel;
+//            await DialogCoordinator.ShowMetroDialogAsync(this, dialog);
+            var printDlg = new PrintDialog();
             var invoiceGenerator = new CompanySwitchingInvoiceGenerator();
-            var tempDirectory = Path.GetTempPath();
-            var tempFile = Path.Combine(tempDirectory, Path.GetFileNameWithoutExtension(Path.GetRandomFileName()) + ".pdf");
-            invoiceGenerator.Generate(SelectedItem, tempFile);
-            var dialog = new PrintDialogView();
-            var dialogViewModel = new PrintDialogViewModel(this, DialogCoordinator, tempFile);
-            dialog.DataContext = dialogViewModel;
-            await DialogCoordinator.ShowMetroDialogAsync(this, dialog);
+            var fixedDocument = invoiceGenerator.GenerateDocument(SelectedItem);
+            var result = printDlg.ShowDialog();
+            if (result.Value)
+                printDlg.PrintDocument(((IDocumentPaginatorSource)fixedDocument).DocumentPaginator, "Invoice");
         }
 
         public override void PerformDelete()

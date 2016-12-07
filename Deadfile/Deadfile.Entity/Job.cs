@@ -11,6 +11,9 @@ namespace Deadfile.Entity
     {
         public int JobId { get; set; }
 
+        [Required(ErrorMessage = "You must provide a job number.")]
+        public int JobNumber { get; set; }
+
         [Required(ErrorMessage = "You must provide an address for this Job."),
          MaxLength(200, ErrorMessage = "A line of an address must be less than 200 characters long.")]
         public string AddressFirstLine { get; set; }

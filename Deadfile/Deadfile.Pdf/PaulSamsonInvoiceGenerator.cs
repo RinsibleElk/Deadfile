@@ -6,6 +6,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Media;
 using Deadfile.Entity;
 using Deadfile.Model;
 using PdfSharp.Drawing;
@@ -93,6 +97,12 @@ namespace Deadfile.Pdf
                 outputDocument.Save(outputFile);
             }
         }
+
+        public FixedDocument GenerateDocument(InvoiceModel invoiceModel)
+        {
+            throw new NotImplementedException();
+        }
+
         private static Stream GetPaulSamsonInvoiceStream()
         {
             var assembly = Assembly.GetExecutingAssembly();

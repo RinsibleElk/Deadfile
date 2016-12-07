@@ -17,7 +17,7 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Common
 {
-    public abstract class EditableItemViewModel<K, T> : ParameterisedViewModel<K>, IEditableItemViewModel<T> where T : ModelBase, new()
+    public abstract class EditableItemViewModel<K, T> : ParameterisedViewModel<K>, IEditableItemViewModel<T> where T : ModelBase
     {
         protected readonly IEventAggregator EventAggregator;
         protected readonly IDialogCoordinator DialogCoordinator;
@@ -69,7 +69,7 @@ namespace Deadfile.Tab.Common
                 _activeUndoTracker.Redo();
         }
 
-        private T _selectedItem = new T() {Id = ModelBase.NewModelId};
+        private T _selectedItem = null;
         /// <summary>
         /// The item selected in the <see cref="BrowserPaneViewModel"/>.
         /// </summary>
@@ -78,19 +78,17 @@ namespace Deadfile.Tab.Common
             get { return _selectedItem; }
             set
             {
-                var valueToSet = value ?? new T() {Id = ModelBase.NewModelId};
-                if (valueToSet.Id == _selectedItem.Id)
+                if (_selectedItem != null && value != null && value.Id == _selectedItem.Id)
                 {
-                    _selectedItem = valueToSet;
+                    _selectedItem = value;
                     NotifyOfPropertyChange(() => SelectedItem);
                     return;
                 }
-                _selectedItem = valueToSet;
+                _selectedItem = value;
                 NotifyOfPropertyChange(() => SelectedItem);
                 Editable = false;
                 Errors = new List<string>();
-                CanEdit = _selectedItem.Id != ModelBase.NewModelId;
-                CanDelete = _selectedItem.Id != ModelBase.NewModelId;
+                CanDelete = CanEdit = _selectedItem != null && _selectedItem.Id != ModelBase.NewModelId;
             }
         }
 

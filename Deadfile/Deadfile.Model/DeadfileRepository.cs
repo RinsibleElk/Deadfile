@@ -586,6 +586,15 @@ namespace Deadfile.Model
             return unusedInvoiceIds.Concat(new int[] {highestPlus1}).ToArray();
         }
 
+        public int GetNextSuggestedJobNumber()
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var jobNumber = dbContext.Jobs.OrderByDescending((j) => j.JobNumber).FirstOrDefault()?.JobNumber;
+                return jobNumber + 1 ?? 1;
+            }
+        }
+
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
             using (var dbContext = new DeadfileContext())

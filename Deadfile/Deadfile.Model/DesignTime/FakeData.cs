@@ -2152,6 +2152,7 @@ namespace Deadfile.Model.DesignTime
                 "EN11",
             };
 
+        private static int _nextJobNumber = 1;
         private static Job MakeFakeJob(int clientId, Random random)
         {
             var firstLine = (random.Next(500) + 1) + " " + roadNames[random.Next(roadNames.Length)];
@@ -2161,6 +2162,7 @@ namespace Deadfile.Model.DesignTime
             return new Job()
             {
                 ClientId = clientId,
+                JobNumber = _nextJobNumber++,
                 AddressFirstLine = firstLine,
                 AddressSecondLine = secondLine,
                 AddressPostCode = postCode,
