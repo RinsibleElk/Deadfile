@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -45,8 +44,8 @@ namespace Deadfile.Pdf
                 var fontName = "Calibri";
                 var addressFont = new XFont(fontName, 11, XFontStyle.Regular);
                 double addressX = 403;
-                gfx.DrawString(string.Format("{0:0000}", invoiceModel.InvoiceReference), addressFont, XBrushes.Black, addressX, 230);
-                gfx.DrawString(string.Format("{0:dd/MM/yyyy}", invoiceModel.CreatedDate), addressFont, XBrushes.Black, addressX, 244.5);
+                gfx.DrawString($"{invoiceModel.InvoiceReference:0000}", addressFont, XBrushes.Black, addressX, 230);
+                gfx.DrawString($"{invoiceModel.CreatedDate:dd/MM/yyyy}", addressFont, XBrushes.Black, addressX, 244.5);
                 gfx.DrawString(invoiceModel.ClientName, addressFont, XBrushes.Black, addressX, 275);
                 gfx.DrawString(invoiceModel.ClientAddressFirstLine, addressFont, XBrushes.Black, addressX, 304);
 
@@ -93,6 +92,8 @@ namespace Deadfile.Pdf
 
         private static readonly Color PrimaryColor = Color.FromRgb(226, 107, 10);
         private static readonly Color SecondaryColor = Color.FromRgb(253, 233, 217);
+        private static readonly Brush PrimaryColorBrush = new SolidColorBrush(PrimaryColor);
+        private static readonly Brush SecondaryColorBrush = new SolidColorBrush(SecondaryColor);
         private static readonly FontFamily Calibri = new FontFamily("Calibri");
 
         private Stream GetImageStreamFromResource(string imageName)
@@ -114,9 +115,10 @@ namespace Deadfile.Pdf
             page.Height = doc.DocumentPaginator.PageSize.Height;
             var sideMargin = 45.0;
             page.Margin = new Thickness(sideMargin, 100, sideMargin, 100);
+            var pageStackPanel = new StackPanel();
 
             // At the top, there's a stack panel.
-            var stackPanel = new StackPanel() {Orientation = Orientation.Horizontal};
+            var headerStackPanel = new StackPanel() {Orientation = Orientation.Horizontal};
 
             // Start with image at the top left.
             var bi = new BitmapImage();
@@ -128,7 +130,7 @@ namespace Deadfile.Pdf
             var imageWidth = 145.0;
             i.Width = imageWidth;
             i.Stretch = Stretch.Uniform;
-            stackPanel.Children.Add(i);
+            headerStackPanel.Children.Add(i);
 
             // Then there's a vertical stack panel.
             var header = new StackPanel() {Orientation = Orientation.Vertical};
@@ -151,10 +153,184 @@ namespace Deadfile.Pdf
                 Text = "Imagine3D Ltd",
                 FontSize = 16
             });
-            stackPanel.Children.Add(header);
+            headerStackPanel.Children.Add(header);
 
-            page.Children.Add(stackPanel);
+            var addressesSectionHeight = 300.0;
+            var addressesStackPanel = new StackPanel
+            {
+                Height = addressesSectionHeight,
+                Width = pageWidth - sideMargin - sideMargin,
+                Orientation = Orientation.Horizontal
+            };
+            var addressesColumn1Width = 300.0;
+            var glasgowStudStackPanel = new StackPanel
+            {
+                Width = addressesColumn1Width,
+                Orientation = Orientation.Vertical
+            };
+            glasgowStudStackPanel.Children.Add(new TextBlock
+            {
+                Text = "The Glasgow Stud,",
+                FontWeight = FontWeights.Bold,
+                FontSize = 12
+            });
+            glasgowStudStackPanel.Children.Add(new TextBlock
+            {
+                Text = "Burnt Farm Ride,",
+                FontWeight = FontWeights.Bold,
+                FontSize = 12
+            });
+            glasgowStudStackPanel.Children.Add(new TextBlock
+            {
+                Text = "Crews Hill,",
+                FontWeight = FontWeights.Bold,
+                FontSize = 12
+            });
+            glasgowStudStackPanel.Children.Add(new TextBlock
+            {
+                Text = "Enfield, EN2 9DY",
+                FontWeight = FontWeights.Bold,
+                FontSize = 12
+            });
+            addressesStackPanel.Children.Add(glasgowStudStackPanel);
 
+            var detailsPaddingHeight = 25.0;
+            var detailsPaddingWidth = 5.0;
+            var detailsTitlesWidth = 240.0;
+            var detailsTitlesStackPanel = new StackPanel
+            {
+                Width = detailsTitlesWidth,
+                Margin = new Thickness(0, 0, detailsPaddingWidth, 0)
+            };
+            detailsTitlesStackPanel.Children.Add(new TextBlock
+            {
+                Text = "Invoice Number:",
+                Foreground = PrimaryColorBrush,
+                FontWeight = FontWeights.Bold,
+                FontSize = 11,
+                HorizontalAlignment = HorizontalAlignment.Right
+            });
+            detailsTitlesStackPanel.Children.Add(new TextBlock
+            {
+                Text = "Date:",
+                Foreground = PrimaryColorBrush,
+                FontWeight = FontWeights.Bold,
+                FontSize = 11,
+                HorizontalAlignment = HorizontalAlignment.Right
+            });
+            detailsTitlesStackPanel.Children.Add(new TextBlock { Height = detailsPaddingHeight });
+            detailsTitlesStackPanel.Children.Add(new TextBlock
+            {
+                Text = "To:",
+                Foreground = PrimaryColorBrush,
+                FontWeight = FontWeights.Bold,
+                FontSize = 11,
+                HorizontalAlignment = HorizontalAlignment.Right
+            });
+            detailsTitlesStackPanel.Children.Add(new TextBlock { Height = detailsPaddingHeight });
+            detailsTitlesStackPanel.Children.Add(new TextBlock
+            {
+                Text = "Of:",
+                Foreground = PrimaryColorBrush,
+                FontWeight = FontWeights.Bold,
+                FontSize = 11,
+                HorizontalAlignment = HorizontalAlignment.Right
+            });
+            addressesStackPanel.Children.Add(detailsTitlesStackPanel);
+
+            var detailsWidth = pageWidth - sideMargin - sideMargin - addressesColumn1Width - detailsTitlesWidth;
+            var detailsStackPanel = new StackPanel
+            {
+                Width = detailsWidth
+            };
+            detailsStackPanel.Children.Add(new TextBlock
+            {
+                Text = $"{invoiceModel.InvoiceReference:0000}",
+                FontSize = 11
+            });
+            detailsStackPanel.Children.Add(new TextBlock
+            {
+                Text = $"{invoiceModel.CreatedDate:dd/MM/yyyy}",
+                FontSize = 11
+            });
+            detailsStackPanel.Children.Add(new TextBlock { Height = detailsPaddingHeight });
+            detailsStackPanel.Children.Add(new TextBlock
+            {
+                Text = $"{invoiceModel.ClientName}",
+                FontSize = 11
+            });
+            detailsStackPanel.Children.Add(new TextBlock { Height = detailsPaddingHeight });
+            foreach (
+                var addressLine in
+                new string[]
+                {
+                    invoiceModel.ClientAddressFirstLine, invoiceModel.ClientAddressSecondLine,
+                    invoiceModel.ClientAddressThirdLine, invoiceModel.ClientAddressPostCode
+                }.Where(
+                    (s) => !String.IsNullOrWhiteSpace(s)))
+            {
+                detailsStackPanel.Children.Add(new TextBlock
+                {
+                    Text = $"{addressLine}",
+                    FontSize = 12
+                });
+            }
+            addressesStackPanel.Children.Add(detailsStackPanel);
+
+            var projectHeight = 100.0;
+            var projectStackPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Width = pageWidth - sideMargin - sideMargin,
+                Height = projectHeight
+            };
+            var projectTitlesWidth = (pageWidth - sideMargin - sideMargin)/2;
+            var projectTitlesStackPanel = new StackPanel
+            {
+                Width = projectTitlesWidth
+            };
+            var projectPaddingWidth = 5.0;
+            projectTitlesStackPanel.Children.Add(new TextBlock
+            {
+                Text = "Project:",
+                FontSize = 15,
+                FontWeight = FontWeights.Bold,
+                Foreground = PrimaryColorBrush,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Margin = new Thickness(0, 0, projectPaddingWidth, 0)
+            });
+            projectTitlesStackPanel.Children.Add(new TextBlock
+            {
+                Text = "Description:",
+                FontSize = 15,
+                FontWeight = FontWeights.Bold,
+                Foreground = PrimaryColorBrush,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Margin = new Thickness(0, 0, projectPaddingWidth, 0)
+            });
+            projectStackPanel.Children.Add(projectTitlesStackPanel);
+            var projectDetailsStackPanel = new StackPanel
+            {
+                Width = pageWidth - sideMargin - sideMargin - projectTitlesWidth - projectPaddingWidth
+            };
+            projectDetailsStackPanel.Children.Add(new TextBlock
+            {
+                Text = $"{invoiceModel.Project}",
+                FontWeight = FontWeights.Bold,
+                FontSize = 12
+            });
+            projectDetailsStackPanel.Children.Add(new TextBlock
+            {
+                Text = $"{invoiceModel.Description}",
+                FontWeight = FontWeights.Bold,
+                FontSize = 12
+            });
+            projectStackPanel.Children.Add(projectDetailsStackPanel);
+
+            pageStackPanel.Children.Add(headerStackPanel);
+            pageStackPanel.Children.Add(addressesStackPanel);
+            pageStackPanel.Children.Add(projectStackPanel);
+            page.Children.Add(pageStackPanel);
             var pageContent = new PageContent();
             ((IAddChild)pageContent).AddChild(page);
             doc.Pages.Add(pageContent);

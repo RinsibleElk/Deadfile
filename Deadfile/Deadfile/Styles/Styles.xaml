@@ -219,7 +219,7 @@
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Image Height="{StaticResource TabButtonSize}"
                            Width="{StaticResource TabButtonSize}"
-                           Source="../Resources/add.png"/>
+                           Source="../Resources/add-tab.png"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

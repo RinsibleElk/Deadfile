@@ -73,9 +73,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\daniel.ttf" />
-    <None Include="Resources\danielbd.ttf" />
-    <None Include="Resources\danielbk.ttf" />
+    <EmbeddedResource Include="Resources\daniel.ttf" />
+    <EmbeddedResource Include="Resources\danielbd.ttf" />
+    <EmbeddedResource Include="Resources\danielbk.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Deadfile.Core\Deadfile.Core.csproj">
