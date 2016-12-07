@@ -230,5 +230,19 @@ namespace Deadfile.Model.Interfaces
         /// </summary>
         /// <returns></returns>
         int GetNextSuggestedJobNumber();
+
+        /// <summary>
+        /// Get the tasks for a job.
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        IEnumerable<JobTaskModel> GetJobTasksForJob(int jobId, string filter);
+
+        /// <summary>
+        /// Save a task for a job.
+        /// </summary>
+        /// <param name="jobTaskModel"></param>
+        void SaveJobTask(JobTaskModel jobTaskModel);
     }
 }

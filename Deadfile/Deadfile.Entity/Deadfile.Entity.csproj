@@ -62,6 +62,7 @@
     <Compile Include="DeadfileContext.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="EmployeeStatus.cs" />
+    <Compile Include="JobTask.cs" />
     <Compile Include="Expense.cs" />
     <Compile Include="Invoice.cs" />
     <Compile Include="InvoiceItem.cs" />

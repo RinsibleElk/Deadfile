@@ -11,6 +11,7 @@ namespace Deadfile.Tab.JobChildren
         Empty, // placeholder to mean that the view should be deactivated
         Applications,
         BillableHours,
-        Expenses
+        Expenses,
+        JobTasks
     }
 }

@@ -31,6 +31,8 @@ namespace Deadfile.Model
                 cfg.CreateMap<BillableHourModel, BillableHour>();
                 cfg.CreateMap<Expense, ExpenseModel>();
                 cfg.CreateMap<ExpenseModel, Expense>();
+                cfg.CreateMap<JobTask, JobTaskModel>();
+                cfg.CreateMap<JobTaskModel, JobTask>();
                 cfg.CreateMap<LocalAuthority, LocalAuthorityModel>();
                 cfg.CreateMap<LocalAuthorityModel, LocalAuthority>();
             });

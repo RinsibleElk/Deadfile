@@ -26,6 +26,7 @@ namespace Deadfile.Tab.Jobs
 
         public static readonly List<JobChildExperience> AllJobChildExperiences = new List<JobChildExperience>(new[]
         {
+            JobChildExperience.JobTasks,
             JobChildExperience.Applications,
             JobChildExperience.Expenses,
             JobChildExperience.BillableHours
@@ -141,8 +142,8 @@ namespace Deadfile.Tab.Jobs
 
             base.OnNavigatedTo(clientAndJobNavigationKey);
 
-            // Select Applications - this should take care of setting up the view model for the JobChildViewModel control.
-            SelectedJobChild = JobChildExperience.Applications;
+            // Select JobTasks - this should take care of setting up the view model for the JobChildViewModel control.
+            SelectedJobChild = JobChildExperience.JobTasks;
         }
 
         public override void OnNavigatedFrom()

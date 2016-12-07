@@ -595,6 +595,42 @@ namespace Deadfile.Model
             }
         }
 
+        public IEnumerable<JobTaskModel> GetJobTasksForJob(int jobId, string filter)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var li = new List<JobTaskModel>();
+                foreach (var jobTask in (from jobTask in dbContext.JobTasks
+                                         where jobTask.JobId == jobId
+                                         where (jobTask.Description == null || filter == null || jobTask.Description.Contains(filter))
+                                         orderby jobTask.DueDate descending
+                                         select jobTask))
+                {
+                    li.Add(_modelEntityMapper.Mapper.Map<JobTaskModel>(jobTask));
+                }
+                return li;
+            }
+        }
+
+        public void SaveJobTask(JobTaskModel jobTaskModel)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                if (jobTaskModel.JobTaskId == ModelBase.NewModelId)
+                {
+                    // Add
+                    dbContext.JobTasks.Add(_modelEntityMapper.Mapper.Map<JobTaskModel, JobTask>(jobTaskModel));
+                }
+                else
+                {
+                    // Edit
+                    var jobTask = dbContext.JobTasks.Find(jobTaskModel.JobTaskId);
+                    _modelEntityMapper.Mapper.Map<JobTaskModel, JobTask>(jobTaskModel, jobTask);
+                }
+                dbContext.SaveChanges();
+            }
+        }
+
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
             using (var dbContext = new DeadfileContext())

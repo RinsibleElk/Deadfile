@@ -21,6 +21,7 @@ namespace Deadfile.Entity
         public virtual DbSet<Application> Applications { get; set; }
         public virtual DbSet<BillableHour> BillableHours { get; set; }
         public virtual DbSet<Expense> Expenses { get; set; }
+        public virtual DbSet<JobTask> JobTasks { get; set; }
         public virtual DbSet<Quotation> Quotations { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<LocalAuthority> LocalAuthorities { get; set; }

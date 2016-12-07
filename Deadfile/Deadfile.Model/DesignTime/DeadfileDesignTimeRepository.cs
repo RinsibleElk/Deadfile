@@ -143,6 +143,16 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
+        public IEnumerable<JobTaskModel> GetJobTasksForJob(int jobId, string filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveJobTask(JobTaskModel jobTaskModel)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
             throw new NotImplementedException();

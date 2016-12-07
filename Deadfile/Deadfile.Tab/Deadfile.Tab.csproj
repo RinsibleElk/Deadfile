@@ -192,6 +192,12 @@
     <Compile Include="JobChildren\Expenses\IExpensesJobChildViewModel.cs" />
     <Compile Include="JobChildren\JobChildExperience.cs" />
     <Compile Include="JobChildren\JobChildKeys.cs" />
+    <Compile Include="JobChildren\JobTasks\JobTasksJobChildDesignTimeViewModel.cs" />
+    <Compile Include="JobChildren\JobTasks\JobTasksJobChildView.xaml.cs">
+      <DependentUpon>JobTasksJobChildView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="JobChildren\JobTasks\JobTasksJobChildViewModel.cs" />
+    <Compile Include="JobChildren\JobTasks\IJobTasksJobChildViewModel.cs" />
     <Compile Include="Jobs\IJobsActionsPadViewModel.cs" />
     <Compile Include="Jobs\IJobsPageViewModel.cs" />
     <Compile Include="Jobs\JobsActionsPadDesignTimeViewModel.cs" />
@@ -298,6 +304,10 @@
     <Page Include="JobChildren\Expenses\ExpensesJobChildView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="JobChildren\JobTasks\JobTasksJobChildView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Jobs\JobsActionsPadView.xaml">
       <SubType>Designer</SubType>
