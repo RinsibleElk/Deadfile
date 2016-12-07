@@ -67,7 +67,7 @@
                  IsEnabled="{Binding Editable}"
                  Style="{StaticResource ErrorStyle}"
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.JobNumber}"
-                 controls:TextBoxHelper.Watermark="Description" />
+                 controls:TextBoxHelper.Watermark="Job Number" />
         <TextBox Grid.Row="2"
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
