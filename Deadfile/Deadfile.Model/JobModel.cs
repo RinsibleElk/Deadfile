@@ -30,11 +30,26 @@ namespace Deadfile.Model
         }
 
         private int _jobNumber = 1;
-        [Required(ErrorMessage = "You must provide a job number.")]
         public int JobNumber
         {
             get { return _jobNumber; }
-            set { SetProperty(ref _jobNumber, value); }
+            set
+            {
+                _jobNumber =  value;
+                _jobNumberString = value.ToString();
+            }
+        }
+
+        [Required(ErrorMessage = "You must provide a job number."),
+         RegularExpression("[0-9]+", ErrorMessage = "Not a valid job number.")]
+        public string JobNumberString
+        {
+            get { return _jobNumberString; }
+            set
+            {
+                if (SetProperty(ref _jobNumberString, value))
+                    int.TryParse(value, out _jobNumber);
+            }
         }
 
         private string _addressFirstLine;
@@ -96,6 +111,8 @@ namespace Deadfile.Model
         }
 
         private int _clientId;
+        private string _jobNumberString;
+
         public int ClientId
         {
             get { return _clientId; }

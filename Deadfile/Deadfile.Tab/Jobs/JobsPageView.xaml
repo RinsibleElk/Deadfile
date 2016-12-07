@@ -66,7 +66,7 @@
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
                  Style="{StaticResource ErrorStyle}"
-                 Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.JobNumber}"
+                 Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.JobNumberString}"
                  controls:TextBoxHelper.Watermark="Job Number" />
         <TextBox Grid.Row="2"
                  Grid.Column="1"
