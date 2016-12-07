@@ -155,7 +155,7 @@ namespace Deadfile.Pdf
             });
             headerStackPanel.Children.Add(header);
 
-            var addressesSectionHeight = 300.0;
+            var addressesSectionHeight = 200.0;
             var addressesStackPanel = new StackPanel
             {
                 Height = addressesSectionHeight,
@@ -194,7 +194,7 @@ namespace Deadfile.Pdf
             });
             addressesStackPanel.Children.Add(glasgowStudStackPanel);
 
-            var detailsPaddingHeight = 25.0;
+            var detailsPaddingHeight = 20.0;
             var detailsPaddingWidth = 5.0;
             var detailsTitlesWidth = 240.0;
             var detailsTitlesStackPanel = new StackPanel
@@ -234,6 +234,7 @@ namespace Deadfile.Pdf
                 Foreground = PrimaryColorBrush,
                 FontWeight = FontWeights.Bold,
                 FontSize = 11,
+                Margin = new Thickness(0, 1, 0, 0),
                 HorizontalAlignment = HorizontalAlignment.Right
             });
             addressesStackPanel.Children.Add(detailsTitlesStackPanel);
@@ -277,7 +278,7 @@ namespace Deadfile.Pdf
             }
             addressesStackPanel.Children.Add(detailsStackPanel);
 
-            var projectHeight = 100.0;
+            var projectHeight = 75.0;
             var projectStackPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
@@ -317,19 +318,81 @@ namespace Deadfile.Pdf
             {
                 Text = $"{invoiceModel.Project}",
                 FontWeight = FontWeights.Bold,
+                Margin = new Thickness(0, 4, 0, 0),
                 FontSize = 12
             });
             projectDetailsStackPanel.Children.Add(new TextBlock
             {
                 Text = $"{invoiceModel.Description}",
                 FontWeight = FontWeights.Bold,
+                Margin = new Thickness(0, 4, 0, 0),
                 FontSize = 12
             });
             projectStackPanel.Children.Add(projectDetailsStackPanel);
 
+            var itemListWidth = pageWidth - sideMargin - sideMargin;
+            var itemListTitlesStackPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Background = PrimaryColorBrush,
+                Width = itemListWidth
+            };
+            var itemListTitlesWidth = pageWidth - sideMargin - sideMargin - detailsWidth;
+            var descriptionLeftPadding = 5.0;
+            itemListTitlesStackPanel.Children.Add(new TextBlock
+            {
+                Text = "DESCRIPTION",
+                Foreground = Brushes.White,
+                FontSize = 15,
+                Width = itemListTitlesWidth,
+                Margin = new Thickness(descriptionLeftPadding, 0, 0, 0)
+            });
+            itemListTitlesStackPanel.Children.Add(new TextBlock
+            {
+                Text = "TOTAL",
+                Foreground = Brushes.White,
+                FontSize = 15,
+                Width = detailsWidth
+            });
+
+            var itemListHeight = 250.0;
+            var itemListStackPanel = new StackPanel
+            {
+                Width = itemListWidth,
+                Height = itemListHeight
+            };
+            var invoiceItemPadding = 10.0;
+            foreach (var invoiceItemModel in invoiceModel.ChildrenList)
+            {
+                var itemListItemStackPanel = new StackPanel
+                {
+                    Width = itemListWidth,
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, invoiceItemPadding, 0, invoiceItemPadding)
+                };
+                itemListItemStackPanel.Children.Add(new TextBlock
+                {
+                    Text = invoiceItemModel.Description,
+                    TextWrapping = TextWrapping.Wrap,
+                    FontSize = 11,
+                    Margin = new Thickness(descriptionLeftPadding, 0, 0, 0),
+                    Width = itemListTitlesWidth
+                });
+                itemListItemStackPanel.Children.Add(new TextBlock
+                {
+                    Text = invoiceItemModel.NetAmount.ToString("C", CultureInfo.CurrentCulture),
+                    FontSize = 11,
+                    FontWeight = FontWeights.Bold,
+                    VerticalAlignment = VerticalAlignment.Bottom
+                });
+                itemListStackPanel.Children.Add(itemListItemStackPanel);
+            }
+
             pageStackPanel.Children.Add(headerStackPanel);
             pageStackPanel.Children.Add(addressesStackPanel);
             pageStackPanel.Children.Add(projectStackPanel);
+            pageStackPanel.Children.Add(itemListTitlesStackPanel);
+            pageStackPanel.Children.Add(itemListStackPanel);
             page.Children.Add(pageStackPanel);
             var pageContent = new PageContent();
             ((IAddChild)pageContent).AddChild(page);
