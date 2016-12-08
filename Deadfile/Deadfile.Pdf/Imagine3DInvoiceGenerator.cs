@@ -345,13 +345,14 @@ namespace Deadfile.Pdf
                 Foreground = Brushes.White,
                 FontSize = 15,
                 Width = itemListTitlesWidth,
-                Margin = new Thickness(descriptionLeftPadding, 0, 0, 0)
+                Margin = new Thickness(descriptionLeftPadding, 2, 0, 2)
             });
             itemListTitlesStackPanel.Children.Add(new TextBlock
             {
                 Text = "TOTAL",
                 Foreground = Brushes.White,
                 FontSize = 15,
+                Margin = new Thickness(0, 2, 0, 2),
                 Width = detailsWidth
             });
 
@@ -361,14 +362,14 @@ namespace Deadfile.Pdf
                 Width = itemListWidth,
                 Height = itemListHeight
             };
-            var invoiceItemPadding = 10.0;
+            var invoiceItemPadding = 20.0;
             foreach (var invoiceItemModel in invoiceModel.ChildrenList)
             {
                 var itemListItemStackPanel = new StackPanel
                 {
                     Width = itemListWidth,
                     Orientation = Orientation.Horizontal,
-                    Margin = new Thickness(0, invoiceItemPadding, 0, invoiceItemPadding)
+                    Margin = new Thickness(0, invoiceItemPadding, 0, 0)
                 };
                 itemListItemStackPanel.Children.Add(new TextBlock
                 {
@@ -388,11 +389,73 @@ namespace Deadfile.Pdf
                 itemListStackPanel.Children.Add(itemListItemStackPanel);
             }
 
+            var totalDueStackPanel = new StackPanel
+            {
+                Width = pageWidth - sideMargin - sideMargin,
+                Orientation = Orientation.Horizontal
+            };
+            totalDueStackPanel.Children.Add(new TextBlock
+            {
+                Text = "TOTAL DUE",
+                Margin = new Thickness(0, 2, 2, 2),
+                FontWeight = FontWeights.Bold,
+                Foreground = PrimaryColorBrush,
+                Width = itemListTitlesWidth,
+                TextAlignment = TextAlignment.Right,
+                FontSize = 17
+            });
+            var totalBorder = new Border
+            {
+                BorderThickness = new Thickness(0, 2, 0, 2),
+                BorderBrush = PrimaryColorBrush,
+                Background = SecondaryColorBrush,
+                Width = itemListWidth - itemListTitlesWidth,
+                Child = new TextBlock
+                {
+                    Text = invoiceModel.GrossAmount.ToString("C", CultureInfo.CurrentCulture),
+                    Margin = new Thickness(2, 0, 0, 0),
+                    FontSize = 17,
+                    FontWeight = FontWeights.Bold
+                }
+            };
+            totalDueStackPanel.Children.Add(totalBorder);
+
+            var footerStackPanel = new StackPanel
+            {
+                Margin = new Thickness(0, 20, 0, 0)
+            };
+            footerStackPanel.Children.Add(new TextBlock
+            {
+                Text = "Payment terms are 14 days from the date of invoice. Late payments will be charged at a rate of 2% per month.",
+                TextAlignment = TextAlignment.Center,
+                FontSize = 11
+            });
+            footerStackPanel.Children.Add(new TextBlock
+            {
+                Text = "Payment can be made via cheque, made payable to Imagine3D Ltd. or via bank transfer to",
+                TextAlignment = TextAlignment.Center,
+                FontSize = 11
+            });
+            footerStackPanel.Children.Add(new TextBlock
+            {
+                Text = "Acccount Number: 92563142, Sort Code 40-01-06",
+                TextAlignment = TextAlignment.Center,
+                FontSize = 11
+            });
+            footerStackPanel.Children.Add(new TextBlock
+            {
+                Text = "Company Registration No: 7595218",
+                TextAlignment = TextAlignment.Center,
+                FontSize = 11
+            });
+
             pageStackPanel.Children.Add(headerStackPanel);
             pageStackPanel.Children.Add(addressesStackPanel);
             pageStackPanel.Children.Add(projectStackPanel);
             pageStackPanel.Children.Add(itemListTitlesStackPanel);
             pageStackPanel.Children.Add(itemListStackPanel);
+            pageStackPanel.Children.Add(totalDueStackPanel);
+            pageStackPanel.Children.Add(footerStackPanel);
             page.Children.Add(pageStackPanel);
             var pageContent = new PageContent();
             ((IAddChild)pageContent).AddChild(page);
