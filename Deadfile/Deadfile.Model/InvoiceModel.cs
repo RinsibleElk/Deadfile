@@ -106,30 +106,20 @@ namespace Deadfile.Model
             {
                 // revalidate the invoice reference
                 if (SetProperty(ref _company, value))
+                {
                     ValidateProperty(nameof(InvoiceReference), _invoiceReference);
+                    DisableUndoTracking = true;
+                    VatRate = (_company == Company.PaulSamsonCharteredSurveyorLtd) ? 20 : 0;
+                    DisableUndoTracking = false;
+                }
             }
         }
 
-        private InvoiceCreationState _creationState = InvoiceCreationState.DefineCompany;
+        private InvoiceCreationState _creationState = InvoiceCreationState.DefineBillables;
         public InvoiceCreationState CreationState
         {
             get { return _creationState; }
-            set
-            {
-                var oldCreationState = _creationState;
-                if (SetProperty(ref _creationState, value))
-                {
-                    // Set the default VAT rate.
-                    if (oldCreationState == InvoiceCreationState.DefineCompany &&
-                        _creationState == InvoiceCreationState.DefineBillables &&
-                        InvoiceId == ModelBase.NewModelId)
-                    {
-                        DisableUndoTracking = true;
-                        VatRate = (Company == Company.PaulSamsonCharteredSurveyorLtd) ? 20 : 0;
-                        DisableUndoTracking = false;
-                    }
-                }
-            }
+            set { SetProperty(ref _creationState, value); }
         }
 
         private string _clientName;

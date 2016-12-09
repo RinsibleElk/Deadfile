@@ -17,7 +17,6 @@ namespace Deadfile.Tab.Invoices
         string FilterText { get; set; }
         ObservableCollection<BillableModel> Jobs { get; set; }
         void SetCompany();
-        bool CanSetCompany { get; }
         void SetBillableItems();
         bool CanSetBillableItems { get; }
         bool InvoiceEditable { get; }

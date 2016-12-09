@@ -61,7 +61,6 @@ namespace Deadfile.Tab.Invoices
         {
             throw new NotImplementedException();
         }
-        public bool CanSetCompany { get; } = true;
         public void SetBillableItems()
         {
             throw new NotImplementedException();

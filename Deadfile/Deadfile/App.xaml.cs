@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Markup;
 using MahApps.Metro;
 
 namespace Deadfile
@@ -27,6 +29,13 @@ namespace Deadfile
             ThemeManager.ChangeAppStyle(Application.Current,
                                         ThemeManager.GetAccent(DeadfileAccent),
                                         ThemeManager.GetAppTheme(DeadfileTheme));
+
+
+            FrameworkElement.LanguageProperty.OverrideMetadata(
+                typeof(FrameworkElement),
+                new FrameworkPropertyMetadata(
+                    XmlLanguage.GetLanguage(
+                    CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             base.OnStartup(e);
         }

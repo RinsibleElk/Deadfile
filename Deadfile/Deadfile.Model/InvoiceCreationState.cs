@@ -15,7 +15,6 @@ namespace Deadfile.Model
     /// </summary>
     public enum InvoiceCreationState
     {
-        DefineCompany,
         DefineBillables,
         DefineInvoice
     }

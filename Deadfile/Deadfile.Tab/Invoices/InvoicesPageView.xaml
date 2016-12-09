@@ -98,11 +98,6 @@
                                             FontWeight="Bold"/>
                                 <TextBlock Background="#FFFFDDCC" />
                             </DockPanel>
-                            <ComboBox Grid.Row="1"
-                                      ItemsSource="{Binding Source={StaticResource InvoiceStatusValues}}"
-                                      IsEditable="False"
-                                      SelectedItem="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Status}"
-                                      IsEnabled="{Binding InvoiceEditable}" />
                             <TextBlock Grid.Row="2"
                                        Text="Imagine3D Ltd."
                                        FontFamily="Lucida Handwriting"
@@ -261,7 +256,7 @@
                                         <controls:NumericUpDown DockPanel.Dock="Right"
                                                                 Height="20"
                                                                 Width="80"
-                                                                Value="{Binding NetAmount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                                                Value="{Binding NetAmount, StringFormat=C, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
                                         <TextBox Style="{StaticResource InvoiceTextBoxFullWidth}"
                                                  Margin="0"
                                                  controls:TextBoxHelper.Watermark="Item Description"
@@ -284,7 +279,7 @@
                                 BorderThickness="0,2,0,2"
                                 Background="#FFFFDDCC"
                                 BorderBrush="DarkOrange">
-                            <TextBlock Text="{Binding SelectedItem.GrossAmount}" />
+                            <TextBlock Text="{Binding SelectedItem.GrossAmount, StringFormat=C}" />
                         </Border>
                     </Grid>
                     <StackPanel Grid.Row="4" Margin="0,20,0,0">
@@ -324,10 +319,6 @@
                     <Grid Grid.Row="1">
                         <StackPanel Margin="20,20,20,20" Background="LightSteelBlue">
                             <TextBlock Text="INVOICE" HorizontalAlignment="Center" Foreground="DarkBlue" FontWeight="Bold" FontSize="16" />
-                            <ComboBox ItemsSource="{Binding Source={StaticResource InvoiceStatusValues}}"
-                                      IsEditable="False"
-                                      SelectedItem="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Status}"
-                                      IsEnabled="{Binding InvoiceEditable}" />
                         </StackPanel>
                     </Grid>
                     <Border Grid.Row="2"
@@ -459,7 +450,7 @@
                                                  controls:TextBoxHelper.Watermark="Item Description"
                                                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=Description}" />
                                         <controls:NumericUpDown Height="20"
-                                                                Value="{Binding NetAmount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                                                Value="{Binding NetAmount, StringFormat=C, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
                                         <Button Style="{StaticResource DeleteMiniButton}"
                                                 Command="{Binding DeleteCommand}"/>
                                     </StackPanel>
@@ -492,7 +483,7 @@
                         <TextBlock Grid.Row="0"
                                    Grid.Column="2"
                                    Height="20"
-                                   Text="{Binding SelectedItem.NetAmount}" />
+                                   Text="{Binding SelectedItem.NetAmount, StringFormat=C}" />
                         <StackPanel Grid.Row="1"
                                     Grid.Column="1"
                                     Orientation="Horizontal">
@@ -507,7 +498,7 @@
                         <TextBlock Grid.Row="1"
                                    Grid.Column="2"
                                    Style="{StaticResource PksTextBlock}"
-                                   Text="{Binding SelectedItem.VatValue}"/>
+                                   Text="{Binding SelectedItem.VatValue, StringFormat=C}"/>
                         <TextBlock Grid.Row="2"
                                    Grid.Column="1"
                                    Style="{StaticResource PksTextBlock}"
@@ -521,7 +512,7 @@
                                 BorderBrush="DarkBlue">
                             <TextBlock Style="{StaticResource PksTextBlock}"
                                        Margin="0"
-                                       Text="{Binding SelectedItem.GrossAmount}" />
+                                       Text="{Binding SelectedItem.GrossAmount, StringFormat=C}" />
                         </Border>
                     </Grid>
                     <StackPanel Grid.Row="5">
@@ -557,25 +548,17 @@
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ComboBox Grid.Row="0"
-                      IsEditable="False"
-                      IsEnabled="{Binding CanSetCompany}"
-                      ItemsSource="{x:Static entity:CompanyUtils.AllCompanies}"
-                      SelectedItem="{Binding SelectedItem.Company, Mode=TwoWay}" />
-            <Button Grid.Row="1" x:Name="SetCompany">
-                Set Company
-            </Button>
-            <TextBox Grid.Row="2"
+            <TextBox Grid.Row="0"
                      IsEnabled="{Binding CanSetBillableItems}"
                      controls:TextBoxHelper.Watermark="Filter"
                      Text="{Binding FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TreeView Grid.Row="3"
+            <TreeView Grid.Row="1"
                       IsEnabled="{Binding CanSetBillableItems}"
                       ItemsSource="{Binding Jobs}"
                       Style="{StaticResource TreeViewTransparentBackground}">
@@ -593,12 +576,22 @@
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
             </TreeView>
-            <Button Grid.Row="4" x:Name="SetBillableItems">
+            <Button Grid.Row="2" x:Name="SetBillableItems">
                 Set Billable Items
             </Button>
+            <ComboBox Grid.Row="3"
+                      IsEditable="False"
+                      IsEnabled="{Binding InvoiceEditable}"
+                      ItemsSource="{x:Static entity:CompanyUtils.AllCompanies}"
+                      SelectedItem="{Binding SelectedItem.Company, Mode=TwoWay}" />
+            <ComboBox Grid.Row="4"
+                      ItemsSource="{Binding Source={StaticResource InvoiceStatusValues}}"
+                      IsEditable="False"
+                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedItem.Status}"
+                      IsEnabled="{Binding InvoiceEditable}" />
             <StackPanel Grid.Row="5" Orientation="Horizontal">
                 <TextBlock Text="Total: "/>
-                <TextBlock Text="{Binding NetAmount}"/>
+                <TextBlock Text="{Binding NetAmount, StringFormat=C}"/>
             </StackPanel>
         </Grid>
         <ContentControl Grid.Column="1"
