@@ -42,8 +42,9 @@ namespace Deadfile.Pdf
             var page = new FixedPage();
             page.Width = doc.DocumentPaginator.PageSize.Width;
             page.Height = doc.DocumentPaginator.PageSize.Height;
-            var sideMargin = 45.0;
-            page.Margin = new Thickness(sideMargin, 100, sideMargin, 100);
+            var sideMargin = 30;
+            var verticalMargin = 50;
+            page.Margin = new Thickness(sideMargin, verticalMargin, sideMargin, verticalMargin);
             var pageStackPanel = new StackPanel();
 
             // At the top, there's a stack panel.
