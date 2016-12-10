@@ -16,18 +16,10 @@ namespace Deadfile.Pdf
     public sealed class CompanySwitchingInvoiceGenerator : IInvoiceGenerator
     {
         /// <summary>
-        /// Generate the invoice.
+        /// Generate the document.
         /// </summary>
         /// <param name="invoiceModel"></param>
-        /// <param name="outputFile"></param>
-        public void Generate(InvoiceModel invoiceModel, string outputFile)
-        {
-            var invoiceGenerator = (invoiceModel.Company == Company.Imagine3DLtd)
-                ? (IInvoiceGenerator) (new Imagine3DInvoiceGenerator())
-                : (IInvoiceGenerator) (new PaulSamsonInvoiceGenerator());
-            invoiceGenerator.Generate(invoiceModel, outputFile);
-        }
-
+        /// <returns></returns>
         public FixedDocument GenerateDocument(InvoiceModel invoiceModel)
         {
             var invoiceGenerator = (invoiceModel.Company == Company.Imagine3DLtd)
