@@ -7,8 +7,54 @@
              d:DataContext="{d:DesignInstance Type=local:HomePageDesignTimeViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Margin="5" Background="{StaticResource ContentBackgroundBrush}">
-        <Button x:Name="AddClient">Add Client</Button>
-        <Button x:Name="LocalAuthorities">Local Authorities</Button>
-    </StackPanel>
+    <ScrollViewer HorizontalScrollBarVisibility="Visible">
+        <Grid Margin="5"
+              Background="{StaticResource ContentBackgroundBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0"
+                        Orientation="Horizontal">
+                <Button x:Name="AddClient"
+                        Margin="10,20,0,10">
+                    Add Client
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal">
+                <Button x:Name="LocalAuthorities"
+                        Margin="10,20,0,10">
+                    Local Authorities
+                </Button>
+                <Button Margin="10,20,0,10">
+                    Local Authorities
+                </Button>
+                <Button Margin="10,20,0,10">
+                    Local Authorities
+                </Button>
+                <Button Margin="10,20,0,10">
+                    Local Authorities
+                </Button>
+                <Button Margin="10,20,0,10">
+                    Local Authorities
+                </Button>
+                <Button Margin="10,20,0,10">
+                    Local Authorities
+                </Button>
+                <Button Margin="10,20,0,10">
+                    Local Authorities
+                </Button>
+                <Button Margin="10,20,0,10">
+                    Local Authorities
+                </Button>
+                <Button Margin="10,20,0,10">
+                    Local Authorities
+                </Button>
+                <Button Margin="10,20,0,10">
+                    Local Authorities
+                </Button>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
