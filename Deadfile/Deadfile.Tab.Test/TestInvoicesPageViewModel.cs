@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Model;
+using Deadfile.Model.Billable;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
@@ -161,6 +162,14 @@ namespace Deadfile.Tab.Test
             {
                 VerifyAll();
             }
+
+            public void SetBillablesForClient(int clientId, int invoiceId, IEnumerable<BillableJob> billables)
+            {
+                DeadfileRepositoryMock
+                    .Setup((r) => r.GetBillableModelsForClientAndInvoice(clientId, invoiceId))
+                    .Returns(billables)
+                    .Verifiable();
+            }
         }
 
         [Fact]
@@ -176,8 +185,70 @@ namespace Deadfile.Tab.Test
         {
             using (var host = new Host(true))
             {
-                host.NavigateTo(new InvoiceModel() {ClientId = 0});
+                host.SetBillablesForClient(0, ModelBase.NewModelId, new BillableJob[0]);
+                host.NavigateTo(new InvoiceModel() { ClientId = 0 });
             }
+        }
+
+        [Fact]
+        public void TestNavigateToNewInvoice_SetBillables()
+        {
+            using (var host = new Host(true))
+            {
+                var billables = new List<BillableJob>();
+                billables.Add(MakeBillableJob1());
+                host.SetBillablesForClient(0, ModelBase.NewModelId, billables);
+                host.NavigateTo(new InvoiceModel() {ClientId = 0});
+                host.ViewModel.Jobs[0].State = BillableModelState.FullyIncluded;
+                Assert.Equal(190.0, host.ViewModel.NetAmount);
+            }
+        }
+
+        private BillableJob MakeBillableJob1()
+        {
+            var billableJob = new BillableJob
+            {
+                FullAddress = "1 Some Address Road",
+                JobId = 0,
+                InvoiceId = ModelBase.NewModelId
+            };
+            var billableItem1 = new BillableApplication
+            {
+                InvoiceId = null,
+                ApplicationId = 0,
+                LocalAuthorityReference = "INVOICEREF0",
+                NetAmount = 100.0,
+                State = BillableModelState.Excluded
+            };
+            billableJob.Children.Add(billableItem1);
+            var billableItem2 = new BillableExpense
+            {
+                InvoiceId = null,
+                ExpenseId = 0,
+                Description = "Expense Description",
+                NetAmount = 50.0,
+                State = BillableModelState.Excluded
+            };
+            billableJob.Children.Add(billableItem2);
+            var billableItem3 = new BillableBillableHour
+            {
+                InvoiceId = null,
+                BillableHourId = 0,
+                Description = "Billable Hour Description",
+                NetAmount = 40.0,
+                State = BillableModelState.Excluded
+            };
+            billableJob.Children.Add(billableItem3);
+            var billableItem4 = new BillableBillableHour
+            {
+                InvoiceId = 27,
+                BillableHourId = 0,
+                Description = "Billable Hour Description",
+                NetAmount = 35.0,
+                State = BillableModelState.Claimed
+            };
+            billableJob.Children.Add(billableItem4);
+            return billableJob;
         }
     }
 }
