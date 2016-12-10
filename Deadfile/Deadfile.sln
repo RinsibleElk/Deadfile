@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deadfile.Tab.Test", "Deadfi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deadfile.Pdf", "Deadfile.Pdf\Deadfile.Pdf.csproj", "{678021DE-2632-4EA3-BFE1-C837E1B60702}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Deadfile.DataImporter", "Deadfile.DataImporter\Deadfile.DataImporter.fsproj", "{59D2CBD0-C74C-47E9-8BCE-421901DC8D2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{678021DE-2632-4EA3-BFE1-C837E1B60702}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{678021DE-2632-4EA3-BFE1-C837E1B60702}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{678021DE-2632-4EA3-BFE1-C837E1B60702}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59D2CBD0-C74C-47E9-8BCE-421901DC8D2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59D2CBD0-C74C-47E9-8BCE-421901DC8D2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59D2CBD0-C74C-47E9-8BCE-421901DC8D2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59D2CBD0-C74C-47E9-8BCE-421901DC8D2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

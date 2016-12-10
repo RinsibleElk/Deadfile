@@ -27,33 +27,6 @@
                         Margin="10,20,0,10">
                     Local Authorities
                 </Button>
-                <Button Margin="10,20,0,10">
-                    Local Authorities
-                </Button>
-                <Button Margin="10,20,0,10">
-                    Local Authorities
-                </Button>
-                <Button Margin="10,20,0,10">
-                    Local Authorities
-                </Button>
-                <Button Margin="10,20,0,10">
-                    Local Authorities
-                </Button>
-                <Button Margin="10,20,0,10">
-                    Local Authorities
-                </Button>
-                <Button Margin="10,20,0,10">
-                    Local Authorities
-                </Button>
-                <Button Margin="10,20,0,10">
-                    Local Authorities
-                </Button>
-                <Button Margin="10,20,0,10">
-                    Local Authorities
-                </Button>
-                <Button Margin="10,20,0,10">
-                    Local Authorities
-                </Button>
             </StackPanel>
         </Grid>
     </ScrollViewer>
