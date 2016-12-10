@@ -62,7 +62,7 @@ type Importer(args) =
                 |> Array.map (fun a -> a.Split([|'\t'|]))
                 |> Array.filter (fun a -> a.Length = 7)
                 |> Array.map JobConverter.convert
-                |> Array.iter (printfn "%A")
+
             0
         else
             1

@@ -1,5 +1,6 @@
 ﻿namespace Deadfile.DataImporter
 
+open Deadfile.Model
 open System
 
 type JobState =
@@ -27,12 +28,14 @@ module JobConverter =
             | "Dead" -> Dead
             | "Current" -> Current
             | _ -> failwithf "Unrecognised job state %s" a.[2]
-        {
-            Property = property
-            State = state
-            JobNumber = if ok then jobNumber else Int32.MinValue
-            ClientFullName = a.[3]
-            ClientAddressFirstLine = a.[4]
-            ClientAddressSecondLine = a.[5]
-            ClientAddressThirdLine = a.[6]
-        }
+        let csvJob =
+            {
+                Property = property
+                State = state
+                JobNumber = if ok then jobNumber else Int32.MinValue
+                ClientFullName = a.[3]
+                ClientAddressFirstLine = a.[4]
+                ClientAddressSecondLine = a.[5]
+                ClientAddressThirdLine = a.[6]
+            }
+        csvJob
