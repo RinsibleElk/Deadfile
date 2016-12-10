@@ -37,6 +37,7 @@ namespace Deadfile.Tab.Test
             public readonly CanDeleteEvent CanDeleteEvent = new CanDeleteEvent();
             public readonly CanSaveEvent CanSaveEvent = new CanSaveEvent();
             public readonly SaveEvent SaveEvent = new SaveEvent();
+            public readonly PrintEvent PrintEvent = new PrintEvent();
             public readonly DiscardChangesEvent DiscardChangesEvent = new DiscardChangesEvent();
 
             public readonly Mock<UndoEvent> UndoEventMock = new Mock<UndoEvent>();
@@ -46,6 +47,7 @@ namespace Deadfile.Tab.Test
             public readonly Mock<CanEditEvent> CanEditEventMock = new Mock<CanEditEvent>();
             public readonly Mock<CanSaveEvent> CanSaveEventMock = new Mock<CanSaveEvent>();
             public readonly Mock<SaveEvent> SaveEventMock = new Mock<SaveEvent>();
+            public readonly Mock<PrintEvent> PrintEventMock = new Mock<PrintEvent>();
 
             public Host(bool useRealEvents)
             {
@@ -83,6 +85,10 @@ namespace Deadfile.Tab.Test
                         .Setup((ea) => ea.GetEvent<EditActionEvent>())
                         .Returns(EditActionEvent)
                         .Verifiable();
+                    EventAggregatorMock
+                        .Setup((ea) => ea.GetEvent<PrintEvent>())
+                        .Returns(PrintEvent)
+                        .Verifiable();
                 }
                 else
                 {
@@ -97,6 +103,10 @@ namespace Deadfile.Tab.Test
                     EventAggregatorMock
                         .Setup((ea) => ea.GetEvent<EditActionEvent>())
                         .Returns(EditActionEventMock.Object)
+                        .Verifiable();
+                    EventAggregatorMock
+                        .Setup((ea) => ea.GetEvent<PrintEvent>())
+                        .Returns(PrintEventMock.Object)
                         .Verifiable();
                 }
                 if (model.Id != ModelBase.NewModelId)

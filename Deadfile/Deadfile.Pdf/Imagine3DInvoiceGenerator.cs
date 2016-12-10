@@ -80,11 +80,12 @@ namespace Deadfile.Pdf
             var paddingAboveHeader = 45.0;
             header.Children.Add(new Imagine3DTextBlock() {Height = paddingAboveHeader});
             header.Children.Add(title);
-            header.Children.Add(new Imagine3DTextBlock()
+            header.Children.Add(new Imagine3DDanielTextBlock()
             {
                 Foreground = new SolidColorBrush(PrimaryColor),
                 Text = "Imagine3D Ltd",
-                FontSize = 16
+                FontSize = 16,
+
             });
             headerStackPanel.Children.Add(header);
 
@@ -408,6 +409,13 @@ namespace Deadfile.Pdf
             public Imagine3DTextBlock() : base()
             {
                 FontFamily = Calibri;
+            }
+        }
+        private class Imagine3DDanielTextBlock : TextBlock
+        {
+            public Imagine3DDanielTextBlock() : base()
+            {
+                FontFamily = new FontFamily(new Uri("pack://application:,,,/Deadfile.Pdf/Resources/"), "./#Daniel");
             }
         }
     }

@@ -16,7 +16,6 @@ namespace Deadfile.Tab.Invoices
     {
         private bool _canPrintItem = true;
         private bool _canPaidItem = true;
-        private bool _printItemIsVisible = true;
         private bool _paidItemIsVisible = true;
 
         public InvoicesActionsPadViewModel(IEventAggregator eventAggregator) : base(eventAggregator)
@@ -83,17 +82,6 @@ namespace Deadfile.Tab.Invoices
                 if (value == _canPaidItem) return;
                 _canPaidItem = value;
                 NotifyOfPropertyChange(() => CanPaidItem);
-            }
-        }
-
-        public bool PrintItemIsVisible
-        {
-            get { return _printItemIsVisible; }
-            set
-            {
-                if (value == _printItemIsVisible) return;
-                _printItemIsVisible = value;
-                NotifyOfPropertyChange(() => PrintItemIsVisible);
             }
         }
 
