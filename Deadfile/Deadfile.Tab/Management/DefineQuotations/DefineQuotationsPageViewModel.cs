@@ -21,26 +21,16 @@ namespace Deadfile.Tab.Management.DefineQuotations
     /// </summary>
     class DefineQuotationsPageViewModel : ManagementPageViewModel<QuotationModel>, IDefineQuotationsPageViewModel
     {
-        private readonly IUrlNavigationService _urlNavigationService;
         private readonly IDeadfileRepository _repository;
-        private readonly DelegateCommand<string> _navigateCommand;
 
         /// <summary>
         /// Create a new <see cref="DefineQuotationsPageViewModel"/>.
         /// </summary>
-        /// <param name="urlNavigationService"></param>
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
-        public DefineQuotationsPageViewModel(IUrlNavigationService urlNavigationService, IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator)
+        public DefineQuotationsPageViewModel(IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator, true)
         {
-            _urlNavigationService = urlNavigationService;
             _repository = repository;
-            _navigateCommand = new DelegateCommand<string>(NavigateToUrl);
-        }
-
-        private void NavigateToUrl(string url)
-        {
-            _urlNavigationService.Navigate(url);
         }
 
         /// <summary>
@@ -61,10 +51,6 @@ namespace Deadfile.Tab.Management.DefineQuotations
         public override Experience Experience { get; } = Experience.DefineQuotations;
         public override void EditingStatusChanged(bool editable)
         {
-        }
-
-        public ICommand NavigateCommand {
-            get { return _navigateCommand; }
         }
     }
 }

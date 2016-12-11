@@ -110,12 +110,12 @@ namespace Deadfile.Model
 
         public IDeadfileRepository Repository { get; set; } = null;
 
-        internal bool InvoiceReferenceIsUniqueForCompany()
+        internal bool InvoiceReferenceIsUniqueForCompany(int invoiceReference)
         {
             // Just creating.
             if (Repository == null)
                 return true;
-            return Repository.HasUniqueInvoiceReference(this);
+            return Repository.HasUniqueInvoiceReference(this, invoiceReference);
         }
 
         private Company _company = Company.Imagine3DLtd;

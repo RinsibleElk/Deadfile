@@ -10,6 +10,7 @@ using Deadfile.Model.Billable;
 using Deadfile.Model.Browser;
 using Deadfile.Model.DesignTime;
 using Deadfile.Model.Interfaces;
+using Deadfile.Model.Reporting;
 
 namespace Deadfile.Model
 {
@@ -137,10 +138,10 @@ namespace Deadfile.Model
                     {
                         foreach (var client in (from client in dbContext.Clients
                             where
-                            ((settings.FilterText == null || settings.FilterText == "" || client.FirstName == null ||
-                              client.FirstName == "")
-                                ? client.Title + " " + client.LastName
-                                : client.FirstName + " " + client.LastName).Contains(settings.FilterText)
+                            ((settings.FilterText == null || settings.FilterText == "") ||
+                                ((client.FirstName == null || client.FirstName == "")
+                                        ? client.Title + " " + client.LastName
+                                        : client.FirstName + " " + client.LastName).Contains(settings.FilterText))
                             where
                             ((settings.IncludeInactiveEnabled) || client.Status == ClientStatus.Active)
                             orderby
@@ -551,17 +552,17 @@ namespace Deadfile.Model
             }
         }
 
-        public bool HasUniqueInvoiceReference(InvoiceModel invoiceModel)
+        public bool HasUniqueInvoiceReference(InvoiceModel invoiceModel, int invoiceReference)
         {
-            if (invoiceModel.InvoiceReference == 0) return invoiceModel.Status == InvoiceStatus.Cancelled;
+            if (invoiceReference == 0) return invoiceModel.Status == InvoiceStatus.Cancelled;
             using (var dbContext = new DeadfileContext())
             {
                 return !(from invoice in dbContext.Invoices
                            where invoice.Company == invoiceModel.Company
-                           where invoice.InvoiceReference == invoiceModel.InvoiceReference
+                           where invoice.InvoiceReference == invoiceReference
                            where
-                           (invoiceModel.InvoiceId == ModelBase.NewModelId ||
-                            invoiceModel.InvoiceId != invoice.InvoiceId)
+                               (invoiceModel.InvoiceId == ModelBase.NewModelId ||
+                                invoiceModel.InvoiceId != invoice.InvoiceId)
                            select invoice.InvoiceId).Any();
             }
         }
@@ -700,6 +701,36 @@ namespace Deadfile.Model
                 dbContext.SaveChanges();
                 quotationModel.QuotationId = quotation.QuotationId;
             }
+        }
+
+        public IEnumerable<UnbilledClientModel> GetUnbilledClients(string filterText)
+        {
+            var li = new List<UnbilledClientModel>();
+            var browserClients =
+                GetBrowserItems(new BrowserSettings
+                {
+                    FilterText = filterText,
+                    IncludeInactiveEnabled = false,
+                    Mode = BrowserMode.Client,
+                    Sort = BrowserSort.ClientLastName
+                });
+            foreach (var client in browserClients.Cast<BrowserClient>())
+            {
+                var unbilledAmount =
+                    GetBillableModelsForClientAndInvoice(client.Id, ModelBase.NewModelId)
+                        .SelectMany((a) => a.Children)
+                        .Where((a) => a.InvoiceId == null)
+                        .Where((a) => a.NetAmount > 0.0)
+                        .Select((a) => a.NetAmount)
+                        .Sum();
+                li.Add(new UnbilledClientModel
+                {
+                    ClientId = client.Id,
+                    FullName = client.FullName,
+                    UnbilledAmount = unbilledAmount
+                });
+            }
+            return li.Where((s) => s.UnbilledAmount > 0.0).OrderByDescending((s) => s.UnbilledAmount).ToArray();
         }
 
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)

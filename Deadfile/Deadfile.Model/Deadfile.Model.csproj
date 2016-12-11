@@ -118,6 +118,7 @@
     <Compile Include="QuotationModel.cs" />
     <Compile Include="RandomNumberGenerator.cs" />
     <Compile Include="JobTaskModel.cs" />
+    <Compile Include="Reporting\UnbilledClientModel.cs" />
     <Compile Include="Titles.cs" />
   </ItemGroup>
   <ItemGroup>

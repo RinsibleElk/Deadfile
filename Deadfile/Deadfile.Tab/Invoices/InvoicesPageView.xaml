@@ -147,7 +147,6 @@
                                       IsEditable="{Binding InvoiceEditable}"
                                       IsEnabled="{Binding InvoiceEditable}"
                                       Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.InvoiceReferenceString}"
-                                      SelectedValue="{Binding Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.InvoiceReferenceString}"
                                       ItemsSource="{Binding SuggestedInvoiceReferences}" />
                             <DatePicker Grid.Row="1"
                                         Grid.Column="1"
@@ -349,9 +348,8 @@
                                       IsEditable="{Binding InvoiceEditable}"
                                       IsEnabled="{Binding InvoiceEditable}"
                                       Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.InvoiceReferenceString}"
-                                      SelectedValue="{Binding Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.InvoiceReferenceString}"
                                       ItemsSource="{Binding SuggestedInvoiceReferences}" />
-                            <TextBlock Grid.Row="1"
+                                <TextBlock Grid.Row="1"
                                        Grid.Column="0"
                                        Style="{StaticResource PksTextBlock}"
                                        Text="Invoice Date:" />

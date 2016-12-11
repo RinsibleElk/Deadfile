@@ -33,6 +33,11 @@ namespace Deadfile.Tab.Home
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.DefineQuotations));
         }
 
+        public void UnbilledClients()
+        {
+            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.UnbilledClients));
+        }
+
         public Experience Experience
         {
             get { return Experience.Home; }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Deadfile.Entity;
 using Deadfile.Model.Billable;
 using Deadfile.Model.Browser;
+using Deadfile.Model.Reporting;
 
 namespace Deadfile.Model.Interfaces
 {
@@ -191,8 +192,9 @@ namespace Deadfile.Model.Interfaces
         /// Validate that the invoice reference is unique (for the specified company).
         /// </summary>
         /// <param name="invoiceModel"></param>
+        /// <param name="invoiceReference"></param>
         /// <returns></returns>
-        bool HasUniqueInvoiceReference(InvoiceModel invoiceModel);
+        bool HasUniqueInvoiceReference(InvoiceModel invoiceModel, int invoiceReference);
 
         /// <summary>
         /// Delete the specified client.
@@ -257,5 +259,12 @@ namespace Deadfile.Model.Interfaces
         /// </summary>
         /// <param name="quotationModel"></param>
         void SaveQuotation(QuotationModel quotationModel);
+
+        /// <summary>
+        /// Get the unbilled clients.
+        /// </summary>
+        /// <param name="filterText"></param>
+        /// <returns></returns>
+        IEnumerable<UnbilledClientModel> GetUnbilledClients(string filterText);
     }
 }

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Deadfile.Tab.Management.LocalAuthorities
+namespace Deadfile.Tab.Management.UnbilledClients
 {
     /// <summary>
-    /// Interaction logic for LocalAuthoritiesPageView.xaml
+    /// Interaction logic for UnbilledClientsPageView.xaml
     /// </summary>
-    public partial class LocalAuthoritiesPageView : UserControl
+    public partial class UnbilledClientsPageView : UserControl
     {
-        public LocalAuthoritiesPageView()
+        public UnbilledClientsPageView()
         {
             InitializeComponent();
         }

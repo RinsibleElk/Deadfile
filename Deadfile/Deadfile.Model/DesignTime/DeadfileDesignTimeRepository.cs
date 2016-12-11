@@ -7,6 +7,7 @@ using Deadfile.Entity;
 using Deadfile.Model.Billable;
 using Deadfile.Model.Browser;
 using Deadfile.Model.Interfaces;
+using Deadfile.Model.Reporting;
 
 namespace Deadfile.Model.DesignTime
 {
@@ -113,7 +114,7 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
-        public bool HasUniqueInvoiceReference(InvoiceModel invoiceModel)
+        public bool HasUniqueInvoiceReference(InvoiceModel invoiceModel, int invoiceReference)
         {
             throw new NotImplementedException();
         }
@@ -154,6 +155,11 @@ namespace Deadfile.Model.DesignTime
         }
 
         public void SaveQuotation(QuotationModel quotationModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<UnbilledClientModel> GetUnbilledClients(string filterText)
         {
             throw new NotImplementedException();
         }

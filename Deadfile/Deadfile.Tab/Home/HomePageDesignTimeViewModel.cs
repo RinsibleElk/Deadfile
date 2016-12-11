@@ -24,6 +24,11 @@ namespace Deadfile.Tab.Home
             throw new NotImplementedException();
         }
 
+        public void UnbilledClients()
+        {
+            throw new NotImplementedException();
+        }
+
         public override Experience Experience
         {
             get { return Experience.Home; }

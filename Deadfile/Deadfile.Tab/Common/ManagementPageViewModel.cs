@@ -23,7 +23,8 @@ namespace Deadfile.Tab.Common
     /// </summary>
     public abstract class ManagementPageViewModel<T> : Screen, IManagementViewModel<T> where T : ModelBase, new()
     {
-        private readonly IEventAggregator _eventAggregator;
+        protected readonly IEventAggregator EventAggregator;
+        private readonly bool _allowAdds;
         private ObservableCollection<T> _items;
         private bool _editable;
         private T _selectedItem = new T();
@@ -39,9 +40,11 @@ namespace Deadfile.Tab.Common
         /// Requires an event aggregator to communicate the display name to the tab.
         /// </summary>
         /// <param name="eventAggregator"></param>
-        protected ManagementPageViewModel(IEventAggregator eventAggregator)
+        /// <param name="allowAdds"></param>
+        protected ManagementPageViewModel(IEventAggregator eventAggregator, bool allowAdds)
         {
-            _eventAggregator = eventAggregator;
+            EventAggregator = eventAggregator;
+            _allowAdds = allowAdds;
             _editCommand = new DelegateCommand(StartEditing);
             _discardCommand = new DelegateCommand(DiscardEdits);
             _saveCommand = new DelegateCommand(PerformSaveAction);
@@ -86,15 +89,26 @@ namespace Deadfile.Tab.Common
         public virtual void OnNavigatedTo(object parameters)
         {
             // convert camel case to spaces
-            DisplayNameBroadcaster.BroadcastDisplayName(_eventAggregator, Experience);
+            DisplayNameBroadcaster.BroadcastDisplayName(EventAggregator, Experience);
 
             // Observe UndoMessages received from the NavigationBarViewModel.
-            _undoEventSubscriptionToken = _eventAggregator.GetEvent<UndoEvent>().Subscribe(HandleUndo);
+            _undoEventSubscriptionToken = EventAggregator.GetEvent<UndoEvent>().Subscribe(HandleUndo);
 
             // add a placeholder for an added item
-            SelectedItem = new T();
-            Items = new ObservableCollection<T>(GetModels(Filter));
-            Items.Add(SelectedItem);
+            if (_allowAdds)
+            {
+                SelectedItem = new T();
+                Items = new ObservableCollection<T>(GetModels(Filter));
+                Items.Add(SelectedItem);
+            }
+            else
+            {
+                Items = new ObservableCollection<T>(GetModels(Filter));
+                if (Items.Count == 0)
+                    SelectedItem = null;
+                else
+                    SelectedItem = Items[0];
+            }
         }
 
         /// <summary>
@@ -106,7 +120,7 @@ namespace Deadfile.Tab.Common
             Items = new ObservableCollection<T>();
 
             // Stop observing UndoMessages received from the NavigationBarViewModel.
-            _eventAggregator.GetEvent<UndoEvent>().Unsubscribe(_undoEventSubscriptionToken);
+            EventAggregator.GetEvent<UndoEvent>().Unsubscribe(_undoEventSubscriptionToken);
         }
 
         public abstract Experience Experience { get; }
@@ -144,7 +158,7 @@ namespace Deadfile.Tab.Common
                     EditingStatusChanged(_editable);
 
                     // Only fire when it changes.
-                    _eventAggregator.GetEvent<LockedForEditingEvent>()
+                    EventAggregator.GetEvent<LockedForEditingEvent>()
                         .Publish(new LockedForEditingMessage() {IsLocked = _editable});
                 }
             }
@@ -155,10 +169,10 @@ namespace Deadfile.Tab.Common
             switch (e.PropertyName)
             {
                 case nameof(_undoTracker.CanUndo):
-                    _eventAggregator.GetEvent<CanUndoEvent>().Publish(_undoTracker.CanUndo ? CanUndoMessage.CanUndo : CanUndoMessage.CannotUndo);
+                    EventAggregator.GetEvent<CanUndoEvent>().Publish(_undoTracker.CanUndo ? CanUndoMessage.CanUndo : CanUndoMessage.CannotUndo);
                     break;
                 case nameof(_undoTracker.CanRedo):
-                    _eventAggregator.GetEvent<CanUndoEvent>().Publish(_undoTracker.CanRedo ? CanUndoMessage.CanRedo : CanUndoMessage.CannotRedo);
+                    EventAggregator.GetEvent<CanUndoEvent>().Publish(_undoTracker.CanRedo ? CanUndoMessage.CanRedo : CanUndoMessage.CannotRedo);
                     break;
             }
         }

@@ -57,7 +57,7 @@ namespace Deadfile.Entity
                 case Company.PaulSamsonCharteredSurveyorLtd:
                     return "Paul Samson Chartered Surveyor Ltd";
                 default:
-                    return "Imagine 3D Ltd";
+                    return "Imagine3D Ltd";
             }
         }
     }

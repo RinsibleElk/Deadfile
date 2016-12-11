@@ -26,6 +26,5 @@ namespace Deadfile.Tab.Management.DefineQuotations
 
         // Stuff that every page has.
         public override Experience Experience { get; } = Experience.DefineQuotations;
-        public ICommand NavigateCommand { get; } = null;
     }
 }

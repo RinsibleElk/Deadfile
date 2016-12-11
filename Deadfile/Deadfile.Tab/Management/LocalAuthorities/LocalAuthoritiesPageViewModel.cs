@@ -32,7 +32,7 @@ namespace Deadfile.Tab.Management.LocalAuthorities
         /// <param name="urlNavigationService"></param>
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
-        public LocalAuthoritiesPageViewModel(IUrlNavigationService urlNavigationService, IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator)
+        public LocalAuthoritiesPageViewModel(IUrlNavigationService urlNavigationService, IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator, true)
         {
             _urlNavigationService = urlNavigationService;
             _repository = repository;

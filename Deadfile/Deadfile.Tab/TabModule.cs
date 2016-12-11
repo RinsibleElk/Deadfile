@@ -18,6 +18,7 @@ using Deadfile.Tab.JobChildren.JobTasks;
 using Deadfile.Tab.Jobs;
 using Deadfile.Tab.Management.DefineQuotations;
 using Deadfile.Tab.Management.LocalAuthorities;
+using Deadfile.Tab.Management.UnbilledClients;
 using Deadfile.Tab.Navigation;
 using Deadfile.Tab.Quotes;
 using Deadfile.Tab.Tab;
@@ -57,6 +58,7 @@ namespace Deadfile.Tab
             _container.RegisterSingleton(typeof(ClientsPageViewModel), Experience.Clients + RegionNames.Page, typeof(ClientsPageViewModel));
             _container.RegisterSingleton(typeof(JobsPageViewModel), Experience.Jobs + RegionNames.Page, typeof(JobsPageViewModel));
             _container.RegisterSingleton(typeof(LocalAuthoritiesPageViewModel), Experience.LocalAuthorities + RegionNames.Page, typeof(LocalAuthoritiesPageViewModel));
+            _container.RegisterSingleton(typeof(UnbilledClientsPageViewModel), Experience.UnbilledClients + RegionNames.Page, typeof(UnbilledClientsPageViewModel));
             _container.RegisterSingleton(typeof(DefineQuotationsPageViewModel), Experience.DefineQuotations + RegionNames.Page, typeof(DefineQuotationsPageViewModel));
             _container.RegisterSingleton(typeof(InvoicesPageViewModel), Experience.Invoices + RegionNames.Page, typeof(InvoicesPageViewModel));
 
