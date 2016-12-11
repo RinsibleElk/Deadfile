@@ -33,12 +33,15 @@ namespace Deadfile.Tab.Invoices
 {
     class InvoicesPageViewModel : EditableItemViewModel<ClientAndInvoiceNavigationKey, InvoiceModel>, IInvoicesPageViewModel, IBillableModelContainer
     {
+        private readonly IPrintService _printService;
         private readonly IDeadfileRepository _repository;
 
-        public InvoicesPageViewModel(IDeadfileRepository repository,
+        public InvoicesPageViewModel(IPrintService printService,
+            IDeadfileRepository repository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator, new ParentUndoTracker<InvoiceModel, InvoiceItemModel>())
         {
+            _printService = printService;
             _repository = repository;
             AddItemCommand = new DelegateCommand(AddItemAction);
         }
@@ -239,20 +242,9 @@ namespace Deadfile.Tab.Invoices
 
         private void PerformPrint(PrintMessage print)
         {
-//            var invoiceGenerator = new CompanySwitchingInvoiceGenerator();
-//            var tempDirectory = Path.GetTempPath();
-//            var tempFile = Path.Combine(tempDirectory, Path.GetFileNameWithoutExtension(Path.GetRandomFileName()) + ".pdf");
-//            invoiceGenerator.Generate(SelectedItem, tempFile);
-//            var dialog = new PrintDialogView();
-//            var dialogViewModel = new PrintDialogViewModel(this, DialogCoordinator, tempFile);
-//            dialog.DataContext = dialogViewModel;
-//            await DialogCoordinator.ShowMetroDialogAsync(this, dialog);
-            var printDlg = new PrintDialog();
             var invoiceGenerator = new CompanySwitchingInvoiceGenerator();
             var fixedDocument = invoiceGenerator.GenerateDocument(SelectedItem);
-            var result = printDlg.ShowDialog();
-            if (result.Value)
-                printDlg.PrintDocument(((IDocumentPaginatorSource)fixedDocument).DocumentPaginator, "Invoice");
+            _printService.PrintDocument(fixedDocument);
         }
 
         public override void PerformDelete()

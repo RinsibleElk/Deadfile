@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using Deadfile.Model.Billable;
 using Deadfile.Model.Interfaces;
@@ -23,6 +24,7 @@ namespace Deadfile.Tab.Test
             public readonly ClientModel[] Clients;
 
             private readonly bool _useRealEvents;
+            public readonly Mock<IPrintService> PrintServiceMock = new Mock<IPrintService>();
             public readonly Mock<IEventAggregator> EventAggregatorMock = new Mock<IEventAggregator>();
             public readonly Mock<IDeadfileRepository> DeadfileRepositoryMock = new Mock<IDeadfileRepository>();
             public readonly Mock<IDialogCoordinator> DialogCoordinatorMock = new Mock<IDialogCoordinator>();
@@ -67,7 +69,7 @@ namespace Deadfile.Tab.Test
                 Clients = clients.ToArray();
 
                 _useRealEvents = useRealEvents;
-                ViewModel = new InvoicesPageViewModel(DeadfileRepositoryMock.Object, EventAggregatorMock.Object, DialogCoordinatorMock.Object);
+                ViewModel = new InvoicesPageViewModel(PrintServiceMock.Object, DeadfileRepositoryMock.Object, EventAggregatorMock.Object, DialogCoordinatorMock.Object);
             }
 
             public void NavigateTo(InvoiceModel model)

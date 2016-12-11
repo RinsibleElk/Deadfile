@@ -76,6 +76,9 @@ namespace Deadfile
 
             // Dialog coordinator
             ContainerInstance.RegisterInstance(typeof(IDialogCoordinator), nameof(DialogCoordinator), DialogCoordinator.Instance);
+
+            // Print service
+            ContainerInstance.RegisterSingleton(typeof(IPrintService), nameof(PrintService), typeof(PrintService));
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)
