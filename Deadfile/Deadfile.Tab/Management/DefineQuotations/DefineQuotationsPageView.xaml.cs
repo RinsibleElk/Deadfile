@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Deadfile.Tab.Management.LocalAuthorities
+namespace Deadfile.Tab.Management.DefineQuotations
 {
     /// <summary>
     /// Interaction logic for DefineQuotationsPageView.xaml
     /// </summary>
-    public partial class LocalAuthoritiesPageView : UserControl
+    public partial class DefineQuotationsPageView : UserControl
     {
-        public LocalAuthoritiesPageView()
+        public DefineQuotationsPageView()
         {
             InitializeComponent();
         }

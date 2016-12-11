@@ -28,6 +28,11 @@ namespace Deadfile.Tab.Home
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.LocalAuthorities));
         }
 
+        public void DefineQuotations()
+        {
+            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.DefineQuotations));
+        }
+
         public Experience Experience
         {
             get { return Experience.Home; }

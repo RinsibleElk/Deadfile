@@ -19,6 +19,11 @@ namespace Deadfile.Tab.Home
             throw new NotImplementedException();
         }
 
+        public void DefineQuotations()
+        {
+            throw new NotImplementedException();
+        }
+
         public override Experience Experience
         {
             get { return Experience.Home; }

@@ -20,6 +20,10 @@
                         Margin="10,20,0,10">
                     Add Client
                 </Button>
+                <Button x:Name="DefineQuotations"
+                        Margin="10,20,0,10">
+                    Define Quotes
+                </Button>
             </StackPanel>
             <StackPanel Grid.Row="1"
                         Orientation="Horizontal">

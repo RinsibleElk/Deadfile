@@ -207,8 +207,7 @@ namespace Deadfile.Model
         }
 
         private string _phoneNumber1;
-        [Phone(ErrorMessage = "Not a valid phone number for Client."),
-         Required(ErrorMessage = "Client requires a phone number.")]
+        [Phone(ErrorMessage = "Not a valid phone number for Client.")]
         public string PhoneNumber1
         {
             get { return _phoneNumber1; }

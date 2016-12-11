@@ -11,8 +11,15 @@ namespace Deadfile.Model
     /// <summary>
     /// UI model for a Quotation.
     /// </summary>
-    public sealed class QuotationModel : BindableBase
+    public sealed class QuotationModel : ModelBase
     {
+        private int _quotationId = ModelBase.NewModelId;
+        public int QuotationId
+        {
+            get { return _quotationId; }
+            set { SetProperty(ref _quotationId, value); }
+        }
+
         private string _phrase;
         public string Phrase
         {
@@ -25,6 +32,12 @@ namespace Deadfile.Model
         {
             get { return _author; }
             set { SetProperty(ref _author, value); }
+        }
+
+        public override int Id
+        {
+            get { return QuotationId; }
+            set { QuotationId = value; }
         }
     }
 }

@@ -211,6 +211,12 @@
       <DependentUpon>JobsPageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Jobs\JobsPageViewModel.cs" />
+    <Compile Include="Management\DefineQuotations\IDefineQuotationsPageViewModel.cs" />
+    <Compile Include="Management\DefineQuotations\DefineQuotationsPageDesignTimeViewModel.cs" />
+    <Compile Include="Management\DefineQuotations\DefineQuotationsPageView.xaml.cs">
+      <DependentUpon>DefineQuotationsPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Management\DefineQuotations\DefineQuotationsPageViewModel.cs" />
     <Compile Include="Management\LocalAuthorities\ILocalAuthoritiesPageViewModel.cs" />
     <Compile Include="Management\LocalAuthorities\LocalAuthoritiesPageDesignTimeViewModel.cs" />
     <Compile Include="Management\LocalAuthorities\LocalAuthoritiesPageView.xaml.cs">
@@ -317,6 +323,10 @@
     <Page Include="Jobs\JobsPageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Management\DefineQuotations\DefineQuotationsPageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Management\LocalAuthorities\LocalAuthoritiesPageView.xaml">
       <SubType>Designer</SubType>

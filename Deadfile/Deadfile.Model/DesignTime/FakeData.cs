@@ -2454,37 +2454,10 @@ namespace Deadfile.Model.DesignTime
 
         public static void AddFakeQuotations(DeadfileContext dbContext)
         {
-            var homerSimpsonQuotations = new string[]
+            var repository = new DeadfileDesignTimeRepository();
+            foreach (var quotationModel in repository.GetQuotations(null))
             {
-                "Weaseling out of things is important to learn. It's what separates us from the animals... Except the weasel.",
-                "Books are useless! I only ever read one book, To Kill A Mockingbird, and it gave me absolutely no insight on how to kill mockingbirds!",
-                "Fame was like a drug. But what was even more like a drug were the drugs.",
-                "Son, when you participate in sporting events, it’s not whether you win or lose: it’s how drunk you get.",
-                "You don’t like your job, you don’t strike. You go in every day and do it really half-assed. That’s the American way.",
-                "Facts are meaningless. You could use facts to prove anything that’s even remotely true!"
-            };
-            foreach (var homerSimpsonQuotation in homerSimpsonQuotations)
-            {
-                dbContext.Quotations.Add(new Quotation()
-                {
-                    Author = "Homer Simpson",
-                    Phrase = homerSimpsonQuotation
-                });
-            }
-            var ericCartmanQuotations = new string[]
-            {
-                "It's a man's obligation to stick his boneration in a woman's separation, this sort of penetration will increase the population of the younger generation.",
-                "I'm not just sure. I'm HIV positive.",
-                "Don't you know the first rule of physics? Anything that's fun costs at least eight dollars.",
-                "Stan, your dog is a gay homosexual!"
-            };
-            foreach (var ericCartmanQuotation in ericCartmanQuotations)
-            {
-                dbContext.Quotations.Add(new Quotation()
-                {
-                    Author = "Eric Cartman",
-                    Phrase = ericCartmanQuotation
-                });
+                dbContext.Quotations.Add(new Quotation {Phrase = quotationModel.Phrase, Author = quotationModel.Author});
             }
         }
 

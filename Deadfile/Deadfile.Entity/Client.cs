@@ -69,8 +69,7 @@ namespace Deadfile.Entity
         [MaxLength(20, ErrorMessage = "A postcode must be less than 20 characters long.")]
         public string AddressPostCode { get; set; }
 
-        [Phone(ErrorMessage = "Not a valid phone number for Client."),
-         Required(ErrorMessage = "Client requires a phone number.")]
+        [Phone(ErrorMessage = "Not a valid phone number for Client.")]
         public string PhoneNumber1 { get; set; }
 
         [Phone(ErrorMessage = "Not a valid phone number for Client.")]

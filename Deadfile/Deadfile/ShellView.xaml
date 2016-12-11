@@ -66,6 +66,7 @@
                 <converters:SwitchConverterCase When="Invoices" Then="Resources/invoice-tab.png" />
                 <converters:SwitchConverterCase When="Home" Then="Resources/home-tab.png" />
                 <converters:SwitchConverterCase When="LocalAuthorities" Then="Resources/localauthority-tab.png" />
+                <converters:SwitchConverterCase When="DefineQuotations" Then="Resources/definequotations-tab.png" />
             </converters:SwitchConverter>
         </DockPanel.Resources>
         <dragablz:TabablzControl

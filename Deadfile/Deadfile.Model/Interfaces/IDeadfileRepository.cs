@@ -60,6 +60,13 @@ namespace Deadfile.Model.Interfaces
         void SetUpFakeData();
 
         /// <summary>
+        /// Get all quotations that satisfy a filter (which may be null).
+        /// </summary>
+        /// <param name="filterText"></param>
+        /// <returns></returns>
+        IEnumerable<QuotationModel> GetQuotations(string filterText);
+
+        /// <summary>
         /// Run on a 30 second timer, used to retrieve a random quotation and display it to the user for a bit of fun.
         /// </summary>
         /// <returns></returns>
@@ -244,5 +251,11 @@ namespace Deadfile.Model.Interfaces
         /// </summary>
         /// <param name="jobTaskModel"></param>
         void SaveJobTask(JobTaskModel jobTaskModel);
+
+        /// <summary>
+        /// Save a quotation.
+        /// </summary>
+        /// <param name="quotationModel"></param>
+        void SaveQuotation(QuotationModel quotationModel);
     }
 }

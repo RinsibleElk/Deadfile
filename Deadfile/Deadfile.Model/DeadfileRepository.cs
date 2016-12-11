@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,12 @@ namespace Deadfile.Model
         private readonly IRandomNumberGenerator _rng;
         private readonly IModelEntityMapper _modelEntityMapper;
 
+        private static readonly QuotationModel _emptyQuotationModel = new QuotationModel
+        {
+            Author = "Oliver Samson",
+            Phrase = "No Quotations defined. Soz."
+        };
+
         public DeadfileRepository(IModelEntityMapper modelEntityMapper, IRandomNumberGenerator rng)
         {
             _modelEntityMapper = modelEntityMapper;
@@ -29,7 +36,7 @@ namespace Deadfile.Model
             {
                 var li = new List<ClientModel>();
                 foreach (var client in (from client in dbContext.Clients
-                                        select client))
+                    select client))
                 {
                     li.Add(_modelEntityMapper.Mapper.Map<ClientModel>(client));
                 }
@@ -43,10 +50,10 @@ namespace Deadfile.Model
             {
                 var li = new List<ApplicationModel>();
                 foreach (var application in (from application in dbContext.Applications
-                                             where application.JobId == jobId
-                                             where (filter == null || filter == "" || application.LocalAuthorityReference.Contains(filter))
-                                             orderby application.CreationDate
-                                             select application))
+                    where application.JobId == jobId
+                    where (filter == null || filter == "" || application.LocalAuthorityReference.Contains(filter))
+                    orderby application.CreationDate
+                    select application))
                 {
                     li.Add(_modelEntityMapper.Mapper.Map<ApplicationModel>(application));
                 }
@@ -60,8 +67,8 @@ namespace Deadfile.Model
             {
                 var li = new List<BillableHourModel>();
                 foreach (var billableHour in (from billableHour in dbContext.BillableHours
-                                              where billableHour.JobId == jobId
-                                              select billableHour))
+                    where billableHour.JobId == jobId
+                    select billableHour))
                 {
                     li.Add(_modelEntityMapper.Mapper.Map<BillableHourModel>(billableHour));
                 }
@@ -75,8 +82,8 @@ namespace Deadfile.Model
             {
                 var li = new List<ExpenseModel>();
                 foreach (var expense in (from expense in dbContext.Expenses
-                                         where expense.JobId == jobId
-                                         select expense))
+                    where expense.JobId == jobId
+                    select expense))
                 {
                     li.Add(_modelEntityMapper.Mapper.Map<ExpenseModel>(expense));
                 }
@@ -90,9 +97,9 @@ namespace Deadfile.Model
             {
                 var li = new List<LocalAuthorityModel>();
                 foreach (var localAuthority in (from localAuthority in dbContext.LocalAuthorities
-                                                where (filter == null || filter == "" || localAuthority.Name.Contains(filter))
-                                                orderby localAuthority.Name
-                                                select localAuthority))
+                    where (filter == null || filter == "" || localAuthority.Name.Contains(filter))
+                    orderby localAuthority.Name
+                    select localAuthority))
                 {
                     li.Add(_modelEntityMapper.Mapper.Map<LocalAuthorityModel>(localAuthority));
                 }
@@ -106,8 +113,8 @@ namespace Deadfile.Model
             {
                 var li = new List<ClientModel>();
                 foreach (var client in (from client in dbContext.Clients
-                                        where (client.FirstName + " " + client.LastName).Contains(filter)
-                                        select client))
+                    where (client.FirstName + " " + client.LastName).Contains(filter)
+                    select client))
                 {
                     li.Add(_modelEntityMapper.Mapper.Map<ClientModel>(client));
                 }
@@ -129,29 +136,29 @@ namespace Deadfile.Model
                     using (var dbContext = new DeadfileContext())
                     {
                         foreach (var client in (from client in dbContext.Clients
-                                                where
-                                                    ((settings.FilterText == null || settings.FilterText == "" || client.FirstName == null ||
-                                                      client.FirstName == "")
-                                                        ? client.Title + " " + client.LastName
-                                                        : client.FirstName + " " + client.LastName).Contains(settings.FilterText)
-                                                where
-                                                    ((settings.IncludeInactiveEnabled) || client.Status==ClientStatus.Active)
-                                                orderby
-                                                    ((settings.Sort == BrowserSort.ClientFirstName)
-                                                        ? ((client.FirstName == null || client.FirstName == "")
-                                                            ? client.Title
-                                                            : client.FirstName)
-                                                        : client.LastName)
-                                                select
-                                                    new BrowserClient()
-                                                    {
-                                                        Id = client.ClientId,
-                                                        FullName =
-                                                        ((client.FirstName == null || client.FirstName == "")
-                                                            ? client.Title + " " + client.LastName
-                                                            : client.FirstName + " " + client.LastName),
-                                                        Status = client.Status
-                                                    }))
+                            where
+                            ((settings.FilterText == null || settings.FilterText == "" || client.FirstName == null ||
+                              client.FirstName == "")
+                                ? client.Title + " " + client.LastName
+                                : client.FirstName + " " + client.LastName).Contains(settings.FilterText)
+                            where
+                            ((settings.IncludeInactiveEnabled) || client.Status == ClientStatus.Active)
+                            orderby
+                            ((settings.Sort == BrowserSort.ClientFirstName)
+                                ? ((client.FirstName == null || client.FirstName == "")
+                                    ? client.Title
+                                    : client.FirstName)
+                                : client.LastName)
+                            select
+                            new BrowserClient()
+                            {
+                                Id = client.ClientId,
+                                FullName =
+                                ((client.FirstName == null || client.FirstName == "")
+                                    ? client.Title + " " + client.LastName
+                                    : client.FirstName + " " + client.LastName),
+                                Status = client.Status
+                            }))
                         {
                             client.SetRepository(settings.Mode, settings.IncludeInactiveEnabled, false, this);
                             clients.Add(client);
@@ -163,18 +170,20 @@ namespace Deadfile.Model
                     using (var dbContext = new DeadfileContext())
                     {
                         foreach (var job in (from job in dbContext.Jobs
-                                             where ((settings.FilterText == null || settings.FilterText == "") || job.AddressFirstLine.Contains(settings.FilterText))
-                                             where
-                                                 ((settings.IncludeInactiveEnabled) || job.Status == JobStatus.Active)
-                                             orderby job.AddressFirstLine
-                                             select
-                                                new BrowserJob()
-                                                {
-                                                    Id = job.JobId,
-                                                    ParentId = job.ClientId,
-                                                    FullAddress = job.AddressFirstLine,
-                                                    Status = job.Status
-                                                }))
+                            where
+                            ((settings.FilterText == null || settings.FilterText == "") ||
+                             job.AddressFirstLine.Contains(settings.FilterText))
+                            where
+                            ((settings.IncludeInactiveEnabled) || job.Status == JobStatus.Active)
+                            orderby job.AddressFirstLine
+                            select
+                            new BrowserJob()
+                            {
+                                Id = job.JobId,
+                                ParentId = job.ClientId,
+                                FullAddress = job.AddressFirstLine,
+                                Status = job.Status
+                            }))
                         {
                             job.SetRepository(settings.Mode, settings.IncludeInactiveEnabled, false, this);
                             jobs.Add(job);
@@ -186,18 +195,24 @@ namespace Deadfile.Model
                     using (var dbContext = new DeadfileContext())
                     {
                         foreach (var invoice in (from invoice in dbContext.Invoices
-                                                 where ((settings.FilterText == null || settings.FilterText == "") || invoice.InvoiceReference.ToString().StartsWith(settings.FilterText))
-                                                 where
-                                                     ((settings.IncludeInactiveEnabled) || invoice.Status == InvoiceStatus.Created)
-                                                 orderby (settings.Sort == BrowserSort.InvoiceCreationDate ? -(invoice.CreatedDate.Year * 10000 + invoice.CreatedDate.Month * 100 + invoice.CreatedDate.Day) : invoice.InvoiceReference)
-                                                 select
-                                                    new BrowserInvoice()
-                                                    {
-                                                        Id = invoice.InvoiceId,
-                                                        ParentId = invoice.ClientId,
-                                                        InvoiceReference = invoice.InvoiceReference,
-                                                        Status = invoice.Status
-                                                    }))
+                            where
+                            ((settings.FilterText == null || settings.FilterText == "") ||
+                             invoice.InvoiceReference.ToString().StartsWith(settings.FilterText))
+                            where
+                            ((settings.IncludeInactiveEnabled) || invoice.Status == InvoiceStatus.Created)
+                            orderby
+                            (settings.Sort == BrowserSort.InvoiceCreationDate
+                                ? -(invoice.CreatedDate.Year*10000 + invoice.CreatedDate.Month*100 +
+                                    invoice.CreatedDate.Day)
+                                : invoice.InvoiceReference)
+                            select
+                            new BrowserInvoice()
+                            {
+                                Id = invoice.InvoiceId,
+                                ParentId = invoice.ClientId,
+                                InvoiceReference = invoice.InvoiceReference,
+                                Status = invoice.Status
+                            }))
                         {
                             invoice.SetRepository(settings.Mode, settings.IncludeInactiveEnabled, false, this);
                             invoices.Add(invoice);
@@ -209,7 +224,8 @@ namespace Deadfile.Model
             }
         }
 
-        public IEnumerable<BrowserJob> GetBrowserJobsForClient(BrowserMode mode, bool includeInactiveEnabled, int clientId)
+        public IEnumerable<BrowserJob> GetBrowserJobsForClient(BrowserMode mode, bool includeInactiveEnabled,
+            int clientId)
         {
             var li = new List<BrowserJob>();
             using (var dbContext = new DeadfileContext())
@@ -242,30 +258,31 @@ namespace Deadfile.Model
             return li;
         }
 
-        public IEnumerable<BrowserInvoice> GetBrowserInvoicesForJob(BrowserMode mode, bool includeInactiveEnabled, int jobId)
+        public IEnumerable<BrowserInvoice> GetBrowserInvoicesForJob(BrowserMode mode, bool includeInactiveEnabled,
+            int jobId)
         {
             var invoiceIdSet = new HashSet<int>();
             var li = new List<BrowserInvoice>();
             using (var dbContext = new DeadfileContext())
             {
                 foreach (var invoiceId in (from billable in dbContext.Applications
-                                           where billable.InvoiceId.HasValue
-                                           where billable.JobId == jobId
-                                           select billable.InvoiceId.Value))
+                    where billable.InvoiceId.HasValue
+                    where billable.JobId == jobId
+                    select billable.InvoiceId.Value))
                 {
                     invoiceIdSet.Add(invoiceId);
                 }
                 foreach (var invoiceId in (from billable in dbContext.Expenses
-                                           where billable.InvoiceId.HasValue
-                                           where billable.JobId == jobId
-                                           select billable.InvoiceId.Value))
+                    where billable.InvoiceId.HasValue
+                    where billable.JobId == jobId
+                    select billable.InvoiceId.Value))
                 {
                     invoiceIdSet.Add(invoiceId);
                 }
                 foreach (var invoiceId in (from billable in dbContext.BillableHours
-                                           where billable.InvoiceId.HasValue
-                                           where billable.JobId == jobId
-                                           select billable.InvoiceId.Value))
+                    where billable.InvoiceId.HasValue
+                    where billable.JobId == jobId
+                    select billable.InvoiceId.Value))
                 {
                     invoiceIdSet.Add(invoiceId);
                 }
@@ -317,11 +334,29 @@ namespace Deadfile.Model
                 FakeData.AddFakeInvoices();
         }
 
+        public IEnumerable<QuotationModel> GetQuotations(string filterText)
+        {
+            var li = new List<QuotationModel>();
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var quotation in (from quotation in dbContext.Quotations
+                                           where (filterText == null || quotation.Author.Contains(filterText) || quotation.Phrase.Contains(filterText))
+                                           select quotation))
+                {
+                    var quotationModel = _modelEntityMapper.Mapper.Map<QuotationModel>(quotation);
+                    li.Add(quotationModel);
+                }
+            }
+            return li;
+        }
+
         public QuotationModel GetRandomQuotation()
         {
             using (var dbContext = new DeadfileContext())
             {
                 var quotations = (from quotation in dbContext.Quotations select quotation).ToArray();
+                if (quotations.Length == 0)
+                    return _emptyQuotationModel;
                 var index = _rng.Next(quotations.Length);
                 return _modelEntityMapper.Mapper.Map<QuotationModel>(quotations[index]);
             }
@@ -331,7 +366,7 @@ namespace Deadfile.Model
         {
             using (var dbContext = new DeadfileContext())
             {
-                var client = dbContext.Clients.Find(new object[1] { clientId });
+                var client = dbContext.Clients.Find(new object[1] {clientId});
                 return _modelEntityMapper.Mapper.Map<ClientModel>(client);
             }
         }
@@ -340,7 +375,7 @@ namespace Deadfile.Model
         {
             using (var dbContext = new DeadfileContext())
             {
-                var job = dbContext.Jobs.Find(new object[1] { jobId });
+                var job = dbContext.Jobs.Find(new object[1] {jobId});
                 return _modelEntityMapper.Mapper.Map<JobModel>(job);
             }
         }
@@ -359,8 +394,8 @@ namespace Deadfile.Model
             using (var dbContext = new DeadfileContext())
             {
                 foreach (var invoiceItem in (from invoiceItem in dbContext.InvoiceItems
-                                             where invoiceItem.InvoiceId == invoiceId
-                                             select invoiceItem))
+                    where invoiceItem.InvoiceId == invoiceId
+                    select invoiceItem))
                 {
                     invoiceModel.ChildrenList.Add(_modelEntityMapper.Mapper.Map<InvoiceItemModel>(invoiceItem));
                 }
@@ -371,23 +406,37 @@ namespace Deadfile.Model
 
         public void SaveClient(ClientModel clientModel)
         {
-            using (var dbContext = new DeadfileContext())
+            try
             {
-                Client client;
-                if (clientModel.ClientId == ModelBase.NewModelId)
+                using (var dbContext = new DeadfileContext())
                 {
-                    // Add
-                    client = _modelEntityMapper.Mapper.Map<ClientModel, Client>(clientModel);
-                    dbContext.Clients.Add(client);
+                    Client client;
+                    if (clientModel.ClientId == ModelBase.NewModelId)
+                    {
+                        // Add
+                        client = _modelEntityMapper.Mapper.Map<ClientModel, Client>(clientModel);
+                        dbContext.Clients.Add(client);
+                    }
+                    else
+                    {
+                        // Edit
+                        client = dbContext.Clients.Find(clientModel.ClientId);
+                        _modelEntityMapper.Mapper.Map<ClientModel, Client>(clientModel, client);
+                    }
+                    dbContext.SaveChanges();
+                    clientModel.ClientId = client.ClientId;
                 }
-                else
+            }
+            catch (DbEntityValidationException e)
+            {
+                foreach (var dbEntityValidationResult in e.EntityValidationErrors)
                 {
-                    // Edit
-                    client = dbContext.Clients.Find(clientModel.ClientId);
-                    _modelEntityMapper.Mapper.Map<ClientModel, Client>(clientModel, client);
+                    foreach (DbValidationError dbValidationError in dbEntityValidationResult.ValidationErrors)
+                    {
+                        
+                    }
                 }
-                dbContext.SaveChanges();
-                clientModel.ClientId = client.ClientId;
+                throw;
             }
         }
 
@@ -628,6 +677,28 @@ namespace Deadfile.Model
                     _modelEntityMapper.Mapper.Map<JobTaskModel, JobTask>(jobTaskModel, jobTask);
                 }
                 dbContext.SaveChanges();
+            }
+        }
+
+        public void SaveQuotation(QuotationModel quotationModel)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                Quotation quotation;
+                if (quotationModel.QuotationId == ModelBase.NewModelId)
+                {
+                    // Add
+                    quotation = _modelEntityMapper.Mapper.Map<QuotationModel, Quotation>(quotationModel);
+                    dbContext.Quotations.Add(quotation);
+                }
+                else
+                {
+                    // Edit
+                    quotation = dbContext.Quotations.Find(quotationModel.QuotationId);
+                    _modelEntityMapper.Mapper.Map<QuotationModel, Quotation>(quotationModel, quotation);
+                }
+                dbContext.SaveChanges();
+                quotationModel.QuotationId = quotation.QuotationId;
             }
         }
 

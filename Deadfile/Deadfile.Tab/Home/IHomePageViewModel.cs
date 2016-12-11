@@ -12,5 +12,6 @@ namespace Deadfile.Tab.Home
     {
         void AddClient();
         void LocalAuthorities();
+        void DefineQuotations();
     }
 }

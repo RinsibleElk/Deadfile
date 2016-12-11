@@ -12,6 +12,7 @@ namespace Deadfile.Tab
         Clients,
         Jobs,
         LocalAuthorities,
-        Invoices
+        Invoices,
+        DefineQuotations
     }
 }

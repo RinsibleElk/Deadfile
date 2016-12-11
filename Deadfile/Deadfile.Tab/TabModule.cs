@@ -16,6 +16,7 @@ using Deadfile.Tab.JobChildren.BillableHours;
 using Deadfile.Tab.JobChildren.Expenses;
 using Deadfile.Tab.JobChildren.JobTasks;
 using Deadfile.Tab.Jobs;
+using Deadfile.Tab.Management.DefineQuotations;
 using Deadfile.Tab.Management.LocalAuthorities;
 using Deadfile.Tab.Navigation;
 using Deadfile.Tab.Quotes;
@@ -56,6 +57,7 @@ namespace Deadfile.Tab
             _container.RegisterSingleton(typeof(ClientsPageViewModel), Experience.Clients + RegionNames.Page, typeof(ClientsPageViewModel));
             _container.RegisterSingleton(typeof(JobsPageViewModel), Experience.Jobs + RegionNames.Page, typeof(JobsPageViewModel));
             _container.RegisterSingleton(typeof(LocalAuthoritiesPageViewModel), Experience.LocalAuthorities + RegionNames.Page, typeof(LocalAuthoritiesPageViewModel));
+            _container.RegisterSingleton(typeof(DefineQuotationsPageViewModel), Experience.DefineQuotations + RegionNames.Page, typeof(DefineQuotationsPageViewModel));
             _container.RegisterSingleton(typeof(InvoicesPageViewModel), Experience.Invoices + RegionNames.Page, typeof(InvoicesPageViewModel));
 
             // Job Children - referenced by key
