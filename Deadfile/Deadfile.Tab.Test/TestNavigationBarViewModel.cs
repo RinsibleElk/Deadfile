@@ -21,6 +21,7 @@ namespace Deadfile.Tab.Test
             public readonly Mock<INavigationService> NavigationServiceMock = new Mock<INavigationService>();
             public readonly UndoEvent UndoEvent = new UndoEvent();
             public readonly CanUndoEvent CanUndoEvent = new CanUndoEvent();
+            public readonly NavigateFallBackEvent NavigateFallBackEvent = new NavigateFallBackEvent();
             public readonly LockedForEditingEvent LockedForEditingEvent = new LockedForEditingEvent();
             public readonly NavigationBarViewModel ViewModel;
             public int NumberOfTimesBackCanExecuteChangedFired = 0;
@@ -32,6 +33,10 @@ namespace Deadfile.Tab.Test
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<CanUndoEvent>())
                     .Returns(CanUndoEvent)
+                    .Verifiable();
+                EventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<NavigateFallBackEvent>())
+                    .Returns(NavigateFallBackEvent)
                     .Verifiable();
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
