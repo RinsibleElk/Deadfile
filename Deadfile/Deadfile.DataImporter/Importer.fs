@@ -123,6 +123,21 @@ type Importer(args) =
                         repository.SaveClient(clientModel)
                         (clientFullName, clientModel.ClientId))
                 |> Map.ofArray
+            let jobIds =
+                jobsFromFile
+                |> Array.map
+                    (fun job ->
+                        let clientId = clientIndexes |> Map.find job.ClientFullName
+                        let clientModel = repository.GetClientById(clientId)
+                        let jobModel = new JobModel()
+                        jobModel.AddressFirstLine <- job.Property
+                        jobModel.Description <- "No description."
+                        jobModel.ClientId <- clientId
+                        jobModel.JobNumber <- job.JobNumber
+                        jobModel.Status <- (if job.State = Current then JobStatus.Active else JobStatus.Completed)
+                        repository.SaveJob(jobModel)
+                        (job.JobNumber, jobModel.JobId))
+                |> Map.ofArray
             0
         else
             1
