@@ -11,11 +11,9 @@ open Deadfile.Entity
 [<Sealed>]
 type ImporterArgs() =
     let mutable jobs = ""
-    let mutable applicationFees = ""
     let mutable quotations = ""
     let mutable localAuthorities = ""
     member __.Jobs with get() = jobs and set v = jobs <- v
-    member __.ApplicationFees with get() = applicationFees and set v = applicationFees <- v
     member __.Quotations with get() = quotations and set v = quotations <- v
     member __.LocalAuthorities with get() = localAuthorities and set v = localAuthorities <- v
 
@@ -26,7 +24,6 @@ type Importer(args) =
     let optionSet =
         let os = new OptionSet()
         os.Add("jobs=", "Full path to a tab separated file specifying the jobs", (fun a -> arguments.Jobs <- a)) |> ignore
-        os.Add("application-fees=", "Full path to a tab separated file specifying the application fees", (fun a -> arguments.ApplicationFees <- a)) |> ignore
         os.Add("quotations=", "Full path to a tab separated file specifying the quotations", (fun a -> arguments.Quotations <- a)) |> ignore
         os.Add("local-authorities=", "Full path to a file specifying the local authorities", (fun a -> arguments.LocalAuthorities <- a)) |> ignore
         os
@@ -43,7 +40,6 @@ type Importer(args) =
     do
         [
             ("Jobs", arguments.Jobs)
-            ("Application Fees", arguments.ApplicationFees)
             ("Quotations", arguments.Quotations)
             ("Local Authorities", arguments.LocalAuthorities)
         ]

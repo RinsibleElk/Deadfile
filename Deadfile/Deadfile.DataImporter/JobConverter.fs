@@ -32,7 +32,7 @@ module JobConverter =
             {
                 Property = property
                 State = state
-                JobNumber = if ok then jobNumber else Int32.MinValue
+                JobNumber = if ok then jobNumber else 0
                 ClientFullName = a.[3]
                 ClientAddressFirstLine = a.[4]
                 ClientAddressSecondLine = a.[5]
