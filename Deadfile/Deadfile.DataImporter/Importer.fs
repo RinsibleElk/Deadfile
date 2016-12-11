@@ -6,6 +6,7 @@ open NDesk.Options
 open System
 open System.IO
 open System.Text.RegularExpressions
+open Deadfile.Entity
 
 [<Sealed>]
 type ImporterArgs() =
@@ -65,12 +66,17 @@ type Importer(args) =
                 |> Array.map JobConverter.convert
             let allClients =
                 jobsFromFile
-                |> Array.map (fun job -> job.ClientFullName)
+                |> Array.map (fun job -> job.ClientFullName, job.State)
                 |> Array.countBy id
+                |> Seq.groupBy (fst >> fst)
+                |> Seq.map
+                    (fun (clientFullName, s) ->
+                        (clientFullName, (s |> Seq.map (fst >> snd) |> Seq.fold (fun state clientState -> if clientState = Dead then state else clientState) Dead)))
+                |> Seq.toArray
             let clientIndexes =
                 allClients
                 |> Array.map
-                    (fun (clientFullName,_) ->
+                    (fun (clientFullName,state) ->
                         let clientModel = new ClientModel()
                         let (fl,sl,tl) = jobsFromFile |> Array.find (fun job -> job.ClientFullName = clientFullName) |> fun job -> job.ClientAddressFirstLine, job.ClientAddressSecondLine, job.ClientAddressThirdLine
                         let clientNameSplit = clientFullName.Split([|' '|], StringSplitOptions.RemoveEmptyEntries)
@@ -113,6 +119,7 @@ type Importer(args) =
                             clientModel.AddressPostCode <- m.Groups.[2].Value
                         else
                             clientModel.AddressThirdLine <- tl
+                        clientModel.Status <- (if state = Dead then ClientStatus.Inactive else ClientStatus.Active)
                         repository.SaveClient(clientModel)
                         (clientFullName, clientModel.ClientId))
                 |> Map.ofArray

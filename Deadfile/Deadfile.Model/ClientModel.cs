@@ -107,7 +107,8 @@ namespace Deadfile.Model
             get
             {
                 if (String.IsNullOrWhiteSpace(FirstName))
-                    return $"{Title} {LastName}";
+                    if (String.IsNullOrWhiteSpace(Title)) return LastName;
+                    else return $"{Title} {LastName}";
                 return $"{FirstName} {LastName}";
             }
         }

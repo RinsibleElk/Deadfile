@@ -155,7 +155,7 @@ namespace Deadfile.Model
                                 Id = client.ClientId,
                                 FullName =
                                 ((client.FirstName == null || client.FirstName == "")
-                                    ? client.Title + " " + client.LastName
+                                    ? ((client.Title == null || client.Title == "") ? client.LastName : (client.Title + " " + client.LastName))
                                     : client.FirstName + " " + client.LastName),
                                 Status = client.Status
                             }))
@@ -787,9 +787,9 @@ namespace Deadfile.Model
                     {
                         Id = client.ClientId,
                         FullName =
-                        ((client.FirstName == null || client.FirstName == "")
-                            ? client.Title + " " + client.LastName
-                            : client.FirstName + " " + client.LastName),
+                                ((client.FirstName == null || client.FirstName == "")
+                                    ? ((client.Title == null || client.Title == "") ? client.LastName : (client.Title + " " + client.LastName))
+                                    : client.FirstName + " " + client.LastName),
                         Status = client.Status
                     };
                 model.SetRepository(mode, includeInactiveEnabled, true, this);
