@@ -13,9 +13,11 @@ type ImporterArgs() =
     let mutable jobs = ""
     let mutable applicationFees = ""
     let mutable quotations = ""
+    let mutable localAuthorities = ""
     member __.Jobs with get() = jobs and set v = jobs <- v
     member __.ApplicationFees with get() = applicationFees and set v = applicationFees <- v
     member __.Quotations with get() = quotations and set v = quotations <- v
+    member __.LocalAuthorities with get() = localAuthorities and set v = localAuthorities <- v
 
 [<Sealed>]
 type Importer(args) =
@@ -26,6 +28,7 @@ type Importer(args) =
         os.Add("jobs=", "Full path to a tab separated file specifying the jobs", (fun a -> arguments.Jobs <- a)) |> ignore
         os.Add("application-fees=", "Full path to a tab separated file specifying the application fees", (fun a -> arguments.ApplicationFees <- a)) |> ignore
         os.Add("quotations=", "Full path to a tab separated file specifying the quotations", (fun a -> arguments.Quotations <- a)) |> ignore
+        os.Add("local-authorities=", "Full path to a file specifying the local authorities", (fun a -> arguments.LocalAuthorities <- a)) |> ignore
         os
     do
         optionSet.Parse(args)
@@ -42,6 +45,7 @@ type Importer(args) =
             ("Jobs", arguments.Jobs)
             ("Application Fees", arguments.ApplicationFees)
             ("Quotations", arguments.Quotations)
+            ("Local Authorities", arguments.LocalAuthorities)
         ]
         |> Seq.filter (snd >> String.IsNullOrWhiteSpace)
         |> Seq.filter (snd >> File.Exists >> not)
@@ -138,6 +142,27 @@ type Importer(args) =
                         repository.SaveJob(jobModel)
                         (job.JobNumber, jobModel.JobId))
                 |> Map.ofArray
+            let quotations =
+                arguments.Quotations
+                |> File.ReadAllLines
+                |> Array.map
+                    (fun line ->
+                        line.Split([|'\t'|], StringSplitOptions.RemoveEmptyEntries))
+                |> Array.filter (fun a -> a.Length = 2)
+                |> Array.map
+                    (fun a->
+                        let author = a.[0]
+                        let phrase = a.[1]
+                        repository.SaveQuotation(new QuotationModel(Phrase=phrase, Author=author))
+                        (author, phrase))
+            let localAuthorities =
+                arguments.LocalAuthorities
+                |> File.ReadAllLines
+                |> Array.filter (String.IsNullOrWhiteSpace >> not)
+                |> Array.map
+                    (fun a ->
+                        repository.SaveLocalAuthority(new LocalAuthorityModel(Name = a))
+                        a)
             0
         else
             1

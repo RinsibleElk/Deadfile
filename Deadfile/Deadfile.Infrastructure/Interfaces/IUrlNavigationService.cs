@@ -16,5 +16,11 @@ namespace Deadfile.Infrastructure.Interfaces
         /// </summary>
         /// <param name="url"></param>
         void Navigate(string url);
+
+        /// <summary>
+        /// Send an e-mail address using the default client.
+        /// </summary>
+        /// <param name="emailAddress"></param>
+        void SendEmail(string emailAddress);
     }
 }

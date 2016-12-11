@@ -22,5 +22,15 @@ namespace Deadfile.Infrastructure.Services
             var uri = new Uri(url);
             Process.Start(new ProcessStartInfo(uri.AbsoluteUri));
         }
+
+        /// <summary>
+        /// Send an e-mail.
+        /// </summary>
+        /// <param name="emailAddress"></param>
+        public void SendEmail(string emailAddress)
+        {
+            var uri = new Uri("mailto:" + emailAddress);
+            Process.Start(new ProcessStartInfo(uri.AbsoluteUri));
+        }
     }
 }
