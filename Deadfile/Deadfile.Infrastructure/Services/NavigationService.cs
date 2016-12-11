@@ -79,6 +79,24 @@ namespace Deadfile.Infrastructure.Services
             CanGoForward = true;
         }
 
+        public void FallBack()
+        {
+            var leavingContext = _backStack.Pop();
+            _forwardStack.Clear();
+            var context = _backStack.Peek();
+            var targetValue = context.TargetObject;
+            var parameters = context.Parameters;
+            (leavingContext.TargetObject as INavigationAware)?.OnNavigatedFrom();
+            (targetValue as INavigationAware)?.OnNavigatedTo(parameters);
+            var host = context.Host;
+            var property = host.GetType().GetProperty(context.HostKey, BindingFlags.Instance | BindingFlags.Public);
+            property
+                .SetMethod
+                .Invoke(host, new object[] { targetValue });
+            CanGoBack = _backStack.Count > 1;
+            CanGoForward = false;
+        }
+
         public bool CanGoBack
         {
             get { return _canGoBack; }

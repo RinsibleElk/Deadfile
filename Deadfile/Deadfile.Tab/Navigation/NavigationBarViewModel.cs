@@ -23,6 +23,7 @@ namespace Deadfile.Tab.Navigation
         private bool _lockedForEditing = false;
         private SubscriptionToken _canUndoEventSubscriptionToken;
         private SubscriptionToken _lockedForEditingEventSubscriptionToken;
+        private SubscriptionToken _navigateFallBackEventSubscriptionToken;
 
         public NavigationBarViewModel(INavigationService navigationService, Prism.Events.IEventAggregator eventAggregator)
         {
@@ -122,6 +123,12 @@ namespace Deadfile.Tab.Navigation
         {
             _canUndoEventSubscriptionToken = _eventAggregator.GetEvent<CanUndoEvent>().Subscribe(UpdateCanUndo);
             _lockedForEditingEventSubscriptionToken = _eventAggregator.GetEvent<LockedForEditingEvent>().Subscribe(UpdateLockedForEditing);
+            _navigateFallBackEventSubscriptionToken = _eventAggregator.GetEvent<NavigateFallBackEvent>().Subscribe(NavigateFallBack);
+        }
+
+        private void NavigateFallBack(NavigateFallBackMessage message)
+        {
+            _navigationService.FallBack();
         }
 
         private void UpdateLockedForEditing(LockedForEditingMessage lockedForEditingMessage)
@@ -161,6 +168,7 @@ namespace Deadfile.Tab.Navigation
         {
             _eventAggregator.GetEvent<CanUndoEvent>().Unsubscribe(_canUndoEventSubscriptionToken);
             _eventAggregator.GetEvent<LockedForEditingEvent>().Unsubscribe(_lockedForEditingEventSubscriptionToken);
+            _eventAggregator.GetEvent<NavigateFallBackEvent>().Unsubscribe(_navigateFallBackEventSubscriptionToken);
             _canUndoEventSubscriptionToken = null;
             _lockedForEditingEventSubscriptionToken = null;
         }

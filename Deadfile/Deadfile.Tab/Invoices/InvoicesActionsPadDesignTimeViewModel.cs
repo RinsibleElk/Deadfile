@@ -9,7 +9,7 @@ namespace Deadfile.Tab.Invoices
 {
     class InvoicesActionsPadDesignTimeViewModel : ActionsPadDesignTimeViewModel, IInvoicesActionsPadViewModel
     {
-        public bool CanPrintItem { get; set; } = true;
+        public bool CanPrintItem { get; } = true;
         public bool CanPaidItem { get; set; } = true;
         public bool PaidItemIsVisible { get; set; } = true;
     }

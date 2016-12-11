@@ -188,6 +188,12 @@ namespace Deadfile.Tab.Common
                     {
                         EventAggregator.GetEvent<LockedForEditingEvent>()
                             .Publish(new LockedForEditingMessage() { IsLocked = _editable, NewParameters = GetLookupParameters() });
+
+                        // This implies that changes for a new model have been discarded. Best behaviour is to move back off the page and drop the resulting "Forward" action.
+                        if (SelectedItem.Id == ModelBase.NewModelId)
+                        {
+                            EventAggregator.GetEvent<NavigateFallBackEvent>().Publish(NavigateFallBackMessage.FallBack);
+                        }
                     }
                 }
             }

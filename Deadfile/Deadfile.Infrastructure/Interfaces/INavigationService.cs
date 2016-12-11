@@ -62,5 +62,10 @@ namespace Deadfile.Infrastructure.Interfaces
         /// </remarks>
         /// <param name="newParameters"></param>
         void SetCurrentNavigationParameters(object newParameters);
+
+        /// <summary>
+        /// Post a discard, fall back (and pop the resulting forward off the stack - you won't need it).
+        /// </summary>
+        void FallBack();
     }
 }

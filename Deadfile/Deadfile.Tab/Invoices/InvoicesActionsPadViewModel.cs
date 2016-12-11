@@ -14,7 +14,6 @@ namespace Deadfile.Tab.Invoices
     /// </summary>
     class InvoicesActionsPadViewModel : ActionsPadViewModel, IInvoicesActionsPadViewModel
     {
-        private bool _canPrintItem = true;
         private bool _canPaidItem = true;
         private bool _paidItemIsVisible = true;
 
@@ -46,24 +45,18 @@ namespace Deadfile.Tab.Invoices
         protected override void CanSaveItemChanged(bool canSave)
         {
             base.CanSaveItemChanged(canSave);
-            CanPrintItem = CanSaveItem || !CanEditItem;
+            NotifyOfPropertyChange(() => CanPrintItem);
         }
 
         protected override void CanEditItemChanged(bool canEdit)
         {
             base.CanSaveItemChanged(canEdit);
-            CanPrintItem = CanSaveItem || !CanEditItem;
+            NotifyOfPropertyChange(() => CanPrintItem);
         }
 
         public bool CanPrintItem
         {
-            get { return _canPrintItem; }
-            set
-            {
-                if (value == _canPrintItem) return;
-                _canPrintItem = value;
-                NotifyOfPropertyChange(() => CanPrintItem);
-            }
+            get { return CanSaveItem || !CanEditItem; }
         }
 
         public void PaidItem()

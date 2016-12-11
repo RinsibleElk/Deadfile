@@ -9,7 +9,7 @@ namespace Deadfile.Tab.Invoices
 {
     interface IInvoicesActionsPadViewModel : IActionsPadViewModel
     {
-        bool CanPrintItem { get; set; }
+        bool CanPrintItem { get; }
         bool CanPaidItem { get; set; }
         bool PaidItemIsVisible { get; set; }
     }
