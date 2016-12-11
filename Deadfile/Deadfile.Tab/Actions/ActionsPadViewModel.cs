@@ -17,19 +17,24 @@ namespace Deadfile.Tab.Actions
 {
     class ActionsPadViewModel : PropertyChangedBase, IActionsPadViewModel, INavigationAware
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        protected readonly TabIdentity TabIdentity;
         private SubscriptionToken _lockedForEditingEventSubscriptionToken;
         private SubscriptionToken _canEditEventSubscriptionToken;
         private SubscriptionToken _canSaveEventSubscriptionToken;
         private SubscriptionToken _canDeleteEventSubscriptionToken;
         protected IEventAggregator EventAggregator { get; private set; }
 
-        public ActionsPadViewModel(IEventAggregator eventAggregator)
+        public ActionsPadViewModel(TabIdentity tabIdentity,
+            IEventAggregator eventAggregator)
         {
+            TabIdentity = tabIdentity;
             EventAggregator = eventAggregator;
         }
 
         public void EditItem()
         {
+            Logger.Info("Event,EditActionEvent,Send,{0},{1}", TabIdentity.TabIndex, EditActionMessage.StartEditing);
             EventAggregator.GetEvent<EditActionEvent>().Publish(EditActionMessage.StartEditing);
         }
 
@@ -68,9 +73,11 @@ namespace Deadfile.Tab.Actions
         {
             // Perform the save, and lock the item again.
             //TODO If this fails at the moment I'm pretty boned.
+            Logger.Info("Event,SaveEvent,Send,{0},{1}", TabIdentity.TabIndex, SaveMessage.Save);
             EventAggregator.GetEvent<SaveEvent>().Publish(SaveMessage.Save);
 
             // Notify the other pages for the end of editing.
+            Logger.Info("Event,EditActionEvent,Send,{0},{1}", TabIdentity.TabIndex, EditActionMessage.EndEditing);
             EventAggregator.GetEvent<EditActionEvent>().Publish(EditActionMessage.EndEditing);
         }
 
@@ -108,6 +115,7 @@ namespace Deadfile.Tab.Actions
         public void DeleteItem()
         {
             // Perform the deletion.
+            Logger.Info("Event,DeleteEvent,Send,{0},{1}", TabIdentity.TabIndex, DeleteMessage.Delete);
             EventAggregator.GetEvent<DeleteEvent>().Publish(DeleteMessage.Delete);
         }
 
@@ -136,9 +144,11 @@ namespace Deadfile.Tab.Actions
         public void DiscardItem()
         {
             // Notify of the Discard. This leads to en masse Undo-ing.
+            Logger.Info("Event,DiscardChangesEvent,Send,{0},{1}", TabIdentity.TabIndex, DiscardChangesMessage.Discard);
             EventAggregator.GetEvent<DiscardChangesEvent>().Publish(DiscardChangesMessage.Discard);
 
             // Notify the other pages for the end of editing.
+            Logger.Info("Event,EditActionEvent,Send,{0},{1}", TabIdentity.TabIndex, EditActionMessage.EndEditing);
             EventAggregator.GetEvent<EditActionEvent>().Publish(EditActionMessage.EndEditing);
         }
 
@@ -168,21 +178,25 @@ namespace Deadfile.Tab.Actions
 
         private void CanEditAction(CanEditMessage canEditMessage)
         {
+            Logger.Info("Event,CanEditEvent,Receive,{0},{1}", TabIdentity.TabIndex, canEditMessage);
             CanEditItem = canEditMessage == CanEditMessage.CanEdit;
         }
 
         private void CanSaveAction(CanSaveMessage canSaveMessage)
         {
+            Logger.Info("Event,CanSaveEvent,Receive,{0},{1}", TabIdentity.TabIndex, canSaveMessage);
             CanSaveItem = canSaveMessage == CanSaveMessage.CanSave;
         }
 
         private void CanDeleteAction(CanDeleteMessage canDeleteMessage)
         {
+            Logger.Info("Event,CanDeleteEvent,Receive,{0},{1}", TabIdentity.TabIndex, canDeleteMessage);
             CanDeleteItem = canDeleteMessage == CanDeleteMessage.CanDelete;
         }
 
         protected virtual void LockedForEditingAction(LockedForEditingMessage lockedForEditingMessage)
         {
+            Logger.Info("Event,LockedForEditingEvent,Receive,{0},{1}", TabIdentity.TabIndex, lockedForEditingMessage);
             SaveItemIsVisible = lockedForEditingMessage.IsLocked;
             CanDiscardItem = lockedForEditingMessage.IsLocked;
             EditItemIsVisible = !lockedForEditingMessage.IsLocked;

@@ -10,6 +10,7 @@ namespace Deadfile.Tab.Test
 {
     public class TestClientsActionsPadViewModel
     {
+        private static readonly TabIdentity TabIdentity = new TabIdentity(1);
         private class Host : IDisposable
         {
             public readonly Mock<IEventAggregator> EventAggregatorMock;
@@ -27,7 +28,7 @@ namespace Deadfile.Tab.Test
                     .Setup((eventAggregator) => eventAggregator.GetEvent<EditActionEvent>())
                     .Returns(EditClientEventMock.Object)
                     .Verifiable();
-                ViewModel = new ClientsActionsPadViewModel(EventAggregatorMock.Object);
+                ViewModel = new ClientsActionsPadViewModel(TabIdentity, EventAggregatorMock.Object);
                 LockedForEditingEvent = new LockedForEditingEvent();
                 CanSaveEvent = new CanSaveEvent();
                 CanDeleteEvent = new CanDeleteEvent();
@@ -79,7 +80,7 @@ namespace Deadfile.Tab.Test
         {
             // Setup.
             var eventAggregatorMock = new Mock<IEventAggregator>();
-            var viewModel = new ClientsActionsPadViewModel(eventAggregatorMock.Object);
+            var viewModel = new ClientsActionsPadViewModel(TabIdentity, eventAggregatorMock.Object);
 
             // Checks.
             Assert.True(viewModel.AddItemIsVisible);

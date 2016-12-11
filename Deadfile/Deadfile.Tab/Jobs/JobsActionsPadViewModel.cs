@@ -10,9 +10,9 @@ namespace Deadfile.Tab.Jobs
 {
     class JobsActionsPadViewModel : ActionsPadViewModel, IJobsActionsPadViewModel
     {
-        public JobsActionsPadViewModel(IEventAggregator eventAggregator) : base(eventAggregator)
+        public JobsActionsPadViewModel(TabIdentity tabIdentity,
+            IEventAggregator eventAggregator) : base(tabIdentity, eventAggregator)
         {
-            
         }
     }
 }

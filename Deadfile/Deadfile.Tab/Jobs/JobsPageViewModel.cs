@@ -18,6 +18,8 @@ namespace Deadfile.Tab.Jobs
 {
     class JobsPageViewModel : EditableItemViewModel<ClientAndJobNavigationKey, JobModel>, IJobsPageViewModel
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly TabIdentity _tabIdentity;
         private readonly INavigationService _navigationService;
         private readonly IDeadfileRepository _repository;
         private JobChildExperience _selectedJobChild = JobChildExperience.Empty;
@@ -32,11 +34,13 @@ namespace Deadfile.Tab.Jobs
             JobChildExperience.BillableHours
         });
 
-        public JobsPageViewModel(INavigationService navigationService,
+        public JobsPageViewModel(TabIdentity tabIdentity,
+            INavigationService navigationService,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator, new UndoTracker<JobModel>())
         {
+            _tabIdentity = tabIdentity;
             _navigationService = navigationService;
             _repository = repository;
         }
@@ -58,6 +62,7 @@ namespace Deadfile.Tab.Jobs
                 else
                     DisplayName = jobModel.AddressFirstLine;
             }
+            Logger.Info("Event,DisplayNameEvent,Send,{0},{1}", _tabIdentity.TabIndex, DisplayName);
             EventAggregator.GetEvent<DisplayNameEvent>().Publish(DisplayName);
             return jobModel;
         }

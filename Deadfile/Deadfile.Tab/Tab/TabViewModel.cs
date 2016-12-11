@@ -10,19 +10,25 @@ using Deadfile.Model.Browser;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
 using Prism.Events;
+using LogManager = NLog.LogManager;
 
 namespace Deadfile.Tab.Tab
 {
     public class TabViewModel : Screen, ITabViewModel
     {
+        private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly TabIdentity _tabIdentity;
         private readonly INavigationService _navigationService;
         private object _navigationBar;
         private IPageViewModel _contentArea;
         private object _browserPane;
         private readonly Prism.Events.IEventAggregator _eventAggregator;
 
-        public TabViewModel(Prism.Events.IEventAggregator eventAggregator, INavigationService navigationService)
+        public TabViewModel(TabIdentity tabIdentity,
+            Prism.Events.IEventAggregator eventAggregator,
+            INavigationService navigationService)
         {
+            _tabIdentity = tabIdentity;
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
             _navigateEventSubscriptionToken = eventAggregator.GetEvent<NavigateEvent>().Subscribe(NavigateAction);
@@ -132,6 +138,8 @@ namespace Deadfile.Tab.Tab
 
         protected override void OnActivate()
         {
+            Logger.Info("Activated tab {0}", _tabIdentity.TabIndex);
+
             base.OnActivate();
 
             if (_navigateEventSubscriptionToken == null)

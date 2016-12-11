@@ -7,8 +7,9 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Events
 {
-    public struct AddClientMessage
+    public enum AddClientMessage
     {
+        AddClient
     }
 
     public class AddClientEvent : PubSubEvent<AddClientMessage>

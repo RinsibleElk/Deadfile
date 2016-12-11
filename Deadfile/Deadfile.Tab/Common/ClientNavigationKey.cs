@@ -27,5 +27,10 @@ namespace Deadfile.Tab.Common
         /// The client for this job.
         /// </summary>
         public int ClientId { get; }
+
+        public override string ToString()
+        {
+            return $"{ClientId}";
+        }
     }
 }

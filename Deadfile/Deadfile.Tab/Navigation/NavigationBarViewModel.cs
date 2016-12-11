@@ -13,6 +13,8 @@ namespace Deadfile.Tab.Navigation
 {
     public class NavigationBarViewModel : PropertyChangedBase, INavigationBarViewModel, INavigationAware
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly TabIdentity _tabIdentity;
         private readonly INavigationService _navigationService;
         private readonly Prism.Events.IEventAggregator _eventAggregator;
         private bool _canHome;
@@ -25,8 +27,11 @@ namespace Deadfile.Tab.Navigation
         private SubscriptionToken _lockedForEditingEventSubscriptionToken;
         private SubscriptionToken _navigateFallBackEventSubscriptionToken;
 
-        public NavigationBarViewModel(INavigationService navigationService, Prism.Events.IEventAggregator eventAggregator)
+        public NavigationBarViewModel(TabIdentity tabIdentity,
+            INavigationService navigationService,
+            Prism.Events.IEventAggregator eventAggregator)
         {
+            _tabIdentity = tabIdentity;
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
             _navigationService.PropertyChanged += NavigationPropertyChanged;
@@ -89,6 +94,7 @@ namespace Deadfile.Tab.Navigation
 
         public void Undo()
         {
+            Logger.Info("Event,UndoEvent,Send,{0},{1}", _tabIdentity.TabIndex, UndoMessage.Undo);
             _eventAggregator.GetEvent<UndoEvent>().Publish(UndoMessage.Undo);
         }
 

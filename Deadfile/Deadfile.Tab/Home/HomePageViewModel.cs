@@ -12,29 +12,37 @@ namespace Deadfile.Tab.Home
 {
     class HomePageViewModel : Screen, IHomePageViewModel
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly TabIdentity _tabIdentity;
         private readonly IEventAggregator _eventAggregator;
-        public HomePageViewModel(IEventAggregator eventAggregator)
+        public HomePageViewModel(TabIdentity tabIdentity,
+            IEventAggregator eventAggregator)
         {
+            _tabIdentity = tabIdentity;
             _eventAggregator = eventAggregator;
         }
 
         public void AddClient()
         {
+            Logger.Info("Event,AddClientEvent,Send,{0}", _tabIdentity.TabIndex);
             _eventAggregator.GetEvent<AddClientEvent>().Publish(new AddClientMessage());
         }
 
         public void LocalAuthorities()
         {
+            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.LocalAuthorities);
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.LocalAuthorities));
         }
 
         public void DefineQuotations()
         {
+            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.DefineQuotations);
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.DefineQuotations));
         }
 
         public void UnbilledClients()
         {
+            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.UnbilledClients);
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.UnbilledClients));
         }
 
@@ -50,11 +58,14 @@ namespace Deadfile.Tab.Home
 
         public void OnNavigatedTo(object parameters)
         {
+            Logger.Info("Navigated to Home {0}", _tabIdentity.TabIndex);
+            Logger.Info("Event,DisplayNameEvent,Send,{0},{1}", _tabIdentity.TabIndex, "Home");
             _eventAggregator.GetEvent<DisplayNameEvent>().Publish("Home");
         }
 
         public void OnNavigatedFrom()
         {
+            Logger.Info("Navigated from Home {0}", _tabIdentity.TabIndex);
         }
     }
 }

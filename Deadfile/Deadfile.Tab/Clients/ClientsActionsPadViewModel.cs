@@ -11,10 +11,12 @@ namespace Deadfile.Tab.Clients
 {
     class ClientsActionsPadViewModel : ActionsPadViewModel, IClientsActionsPadViewModel
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private bool _canAddItem = true;
         private bool _addItemIsVisible = true;
 
-        public ClientsActionsPadViewModel(IEventAggregator eventAggregator) : base(eventAggregator)
+        public ClientsActionsPadViewModel(TabIdentity tabIdentity,
+            IEventAggregator eventAggregator) : base(tabIdentity, eventAggregator)
         {
         }
 
@@ -27,7 +29,8 @@ namespace Deadfile.Tab.Clients
 
         public void AddItem()
         {
-            EventAggregator.GetEvent<AddClientEvent>().Publish(new AddClientMessage());
+            Logger.Info("Event,AddClientEvent,Send,{0},{1}", TabIdentity.TabIndex, AddClientMessage.AddClient);
+            EventAggregator.GetEvent<AddClientEvent>().Publish(AddClientMessage.AddClient);
         }
 
         public bool CanAddItem

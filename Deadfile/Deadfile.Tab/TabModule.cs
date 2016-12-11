@@ -79,6 +79,9 @@ namespace Deadfile.Tab
 
             // Quotes
             _container.RegisterSingleton(typeof(QuotesBarViewModel), RegionNames.QuotesBar, typeof(QuotesBarViewModel));
+
+            // Tab identity
+            _container.RegisterSingleton(typeof(TabIdentity), nameof(TabIdentity), typeof(TabIdentity));
         }
 
         public IScreen GetFirstViewModel()

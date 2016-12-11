@@ -13,6 +13,7 @@ namespace Deadfile.Tab.Test
 {
     public class TestNavigationBarViewModel
     {
+        private static readonly TabIdentity TabIdentity = new TabIdentity(1);
         private NavigationBarViewModel _viewModel = null;
 
         private class RealEventsHost : IDisposable
@@ -42,7 +43,7 @@ namespace Deadfile.Tab.Test
                     .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
                     .Returns(LockedForEditingEvent)
                     .Verifiable();
-                ViewModel = new NavigationBarViewModel(NavigationServiceMock.Object, EventAggregatorMock.Object);
+                ViewModel = new NavigationBarViewModel(TabIdentity, NavigationServiceMock.Object, EventAggregatorMock.Object);
                 ViewModel.PropertyChanged += (s, e) =>
                 {
                     switch (e.PropertyName)

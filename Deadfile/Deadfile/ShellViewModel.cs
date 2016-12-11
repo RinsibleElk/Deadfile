@@ -9,6 +9,7 @@ using Deadfile.Infrastructure;
 using Deadfile.Tab;
 using Dragablz;
 using Prism.Commands;
+using LogManager = NLog.LogManager;
 
 namespace Deadfile
 {

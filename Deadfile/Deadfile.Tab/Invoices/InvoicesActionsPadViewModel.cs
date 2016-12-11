@@ -14,10 +14,12 @@ namespace Deadfile.Tab.Invoices
     /// </summary>
     class InvoicesActionsPadViewModel : ActionsPadViewModel, IInvoicesActionsPadViewModel
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private bool _canPaidItem = true;
         private bool _paidItemIsVisible = true;
 
-        public InvoicesActionsPadViewModel(IEventAggregator eventAggregator) : base(eventAggregator)
+        public InvoicesActionsPadViewModel(TabIdentity tabIdentity,
+            IEventAggregator eventAggregator) : base(tabIdentity, eventAggregator)
         {
         }
 
@@ -31,13 +33,16 @@ namespace Deadfile.Tab.Invoices
             {
                 // Perform the save, and lock the item again.
                 //TODO If this fails at the moment I'm pretty boned.
+                Logger.Info("Event,SaveEvent,Send,{0},{1}", TabIdentity.TabIndex, SaveMessage.SaveAndPrint);
                 EventAggregator.GetEvent<SaveEvent>().Publish(SaveMessage.SaveAndPrint);
 
                 // Notify the other pages for the end of editing.
+                Logger.Info("Event,EditActionEvent,Send,{0},{1}", TabIdentity.TabIndex, EditActionMessage.EndEditing);
                 EventAggregator.GetEvent<EditActionEvent>().Publish(EditActionMessage.EndEditing);
             }
             else
             {
+                Logger.Info("Event,PrintEvent,Send,{0},{1}", TabIdentity.TabIndex, PrintMessage.Print);
                 EventAggregator.GetEvent<PrintEvent>().Publish(PrintMessage.Print);
             }
         }

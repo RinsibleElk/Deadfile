@@ -14,6 +14,8 @@ namespace Deadfile.Tab.Test
 {
     public class TestClientsPageViewModel
     {
+        private static readonly TabIdentity TabIdentity = new TabIdentity(1);
+
         private class Host : IDisposable
         {
             public readonly Mock<IEventAggregator> EventAggregatorMock = new Mock<IEventAggregator>();
@@ -51,7 +53,7 @@ namespace Deadfile.Tab.Test
             public Host(bool useRealEvents)
             {
                 _useRealEvents = useRealEvents;
-                ViewModel = new ClientsPageViewModel(EventAggregatorMock.Object, DeadfileRepositoryMock.Object, DialogCoordinatorMock.Object);
+                ViewModel = new ClientsPageViewModel(TabIdentity, EventAggregatorMock.Object, DeadfileRepositoryMock.Object, DialogCoordinatorMock.Object);
             }
 
             public void NavigateTo(ClientModel model)

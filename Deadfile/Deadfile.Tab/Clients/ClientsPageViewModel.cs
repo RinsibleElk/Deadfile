@@ -16,12 +16,16 @@ namespace Deadfile.Tab.Clients
 {
     class ClientsPageViewModel : EditableItemViewModel<ClientNavigationKey, ClientModel>, IClientsPageViewModel
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly TabIdentity _tabIdentity;
         private readonly IDeadfileRepository _repository;
 
-        public ClientsPageViewModel(IEventAggregator eventAggregator,
+        public ClientsPageViewModel(TabIdentity tabIdentity,
+            IEventAggregator eventAggregator,
             IDeadfileRepository repository,
             IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator, new UndoTracker<ClientModel>())
         {
+            _tabIdentity = tabIdentity;
             _repository = repository;
         }
 
@@ -31,6 +35,7 @@ namespace Deadfile.Tab.Clients
         public void AddNewJob()
         {
             // Navigate to the Jobs page with the specified Client and no job given.
+            Logger.Info("Event,AddNewJobEvent,Send,{0},{1}", _tabIdentity.TabIndex, SelectedItem.ClientId);
             EventAggregator.GetEvent<AddNewJobEvent>().Publish(SelectedItem.ClientId);
         }
 
@@ -40,6 +45,7 @@ namespace Deadfile.Tab.Clients
         public void InvoiceClient()
         {
             // Navigate to the Invoices page with the specified Client and no invoice given.
+            Logger.Info("Event,InvoiceClientEvent,Send,{0},{1}", _tabIdentity.TabIndex, SelectedItem.ClientId);
             EventAggregator.GetEvent<InvoiceClientEvent>().Publish(SelectedItem.ClientId);
         }
 
@@ -69,11 +75,18 @@ namespace Deadfile.Tab.Clients
 
         public override void OnNavigatedTo(ClientNavigationKey selectedClient)
         {
+            Logger.Info("Navigated to Clients {0}, for client {1}", _tabIdentity.TabIndex, selectedClient);
             var idToSelect = selectedClient.ClientId == 0 ? ModelBase.NewModelId : selectedClient.ClientId;
             base.OnNavigatedTo(new ClientNavigationKey(idToSelect));
 
             CanAddNewJob = (!Editable) && (idToSelect != ModelBase.NewModelId);
             CanInvoiceClient = (!Editable) && (idToSelect != ModelBase.NewModelId);
+        }
+
+        public override void OnNavigatedFrom()
+        {
+            Logger.Info("Navigated to Clients {0}, for client {1}", _tabIdentity.TabIndex, SelectedItem.ClientId);
+            base.OnNavigatedFrom();
         }
 
         protected override ClientModel GetModel(ClientNavigationKey key)
@@ -92,6 +105,7 @@ namespace Deadfile.Tab.Clients
                 else
                     DisplayName = clientModel.FullName;
             }
+            Logger.Info("Event,DisplayNameEvent,Send,{0},{1}", _tabIdentity.TabIndex, DisplayName);
             EventAggregator.GetEvent<DisplayNameEvent>().Publish(DisplayName);
             return clientModel;
         }
