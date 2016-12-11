@@ -22,7 +22,6 @@ using Deadfile.Model.Billable;
 using Deadfile.Model.Interfaces;
 using Deadfile.Pdf;
 using Deadfile.Tab.Common;
-using Deadfile.Tab.Dialogs;
 using Deadfile.Tab.Events;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;

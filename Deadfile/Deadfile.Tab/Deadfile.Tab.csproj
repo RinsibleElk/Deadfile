@@ -124,12 +124,6 @@
     <Compile Include="DesignTime\ManagementPageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\PageDesignTimeViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeViewModel.cs" />
-    <Compile Include="Dialogs\IPrintDialogViewModel.cs" />
-    <Compile Include="Dialogs\PrintDialogDesignTimeViewModel.cs" />
-    <Compile Include="Dialogs\PrintDialogView.xaml.cs">
-      <DependentUpon>PrintDialogView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\PrintDialogViewModel.cs" />
     <Compile Include="Events\AddClientEvent.cs" />
     <Compile Include="Events\AddNewJobEvent.cs" />
     <Compile Include="Events\CanDeleteEvent.cs" />
@@ -277,10 +271,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Clients\ClientsPageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Dialogs\PrintDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
