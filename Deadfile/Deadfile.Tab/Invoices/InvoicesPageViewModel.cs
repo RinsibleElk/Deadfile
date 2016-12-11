@@ -57,7 +57,7 @@ namespace Deadfile.Tab.Invoices
 
             _printEventSubscriptionToken = EventAggregator.GetEvent<PrintEvent>().Subscribe(PerformPrint);
 
-            SuggestedInvoiceReferences = new ObservableCollection<int>(new int[] {SelectedItem.InvoiceReference});
+            SuggestedInvoiceReferences = new ObservableCollection<string>(new string[] {SelectedItem.InvoiceReferenceString});
 
             // Find all the billable items for this client, attributing them by whether they are included in this invoice
             // or any other invoice.
@@ -84,8 +84,8 @@ namespace Deadfile.Tab.Invoices
             SelectedItem.PropertyChanged += SelectedItemOnPropertyChanged;
         }
 
-        private ObservableCollection<int> _suggestedInvoiceReferences = new ObservableCollection<int>();
-        public ObservableCollection<int> SuggestedInvoiceReferences
+        private ObservableCollection<string> _suggestedInvoiceReferences = new ObservableCollection<string>();
+        public ObservableCollection<string> SuggestedInvoiceReferences
         {
             get { return _suggestedInvoiceReferences; }
             set
@@ -114,9 +114,12 @@ namespace Deadfile.Tab.Invoices
                     // VAT rate is handled by the invoice model already.
 
                     // Offer the user some help in deciding a new invoice reference.
-                    var suggestedInvoiceReferences = _repository.GetSuggestedInvoiceReferenceIdsForCompany(SelectedItem.Company);
-                    SuggestedInvoiceReferences = new ObservableCollection<int>(suggestedInvoiceReferences);
-                    SelectedItem.InvoiceReference = suggestedInvoiceReferences[suggestedInvoiceReferences.Length - 1];
+                    var suggestedInvoiceReferences =
+                        _repository.GetSuggestedInvoiceReferenceIdsForCompany(SelectedItem.Company)
+                            .Select((s) => s.ToString())
+                            .ToArray();
+                    SuggestedInvoiceReferences = new ObservableCollection<string>(suggestedInvoiceReferences);
+                    SelectedItem.InvoiceReferenceString = suggestedInvoiceReferences[suggestedInvoiceReferences.Length - 1];
 
                     // Set the property.
                     var selectedJobs =
@@ -153,7 +156,7 @@ namespace Deadfile.Tab.Invoices
 
             EventAggregator.GetEvent<PrintEvent>().Unsubscribe(_printEventSubscriptionToken);
             _printEventSubscriptionToken = null;
-            SuggestedInvoiceReferences = new ObservableCollection<int>();
+            SuggestedInvoiceReferences = new ObservableCollection<string>();
             Jobs = new ObservableCollection<BillableModel>();
             SelectedItem.PropertyChanged -= SelectedItemOnPropertyChanged;
         }

@@ -5,7 +5,7 @@ namespace Deadfile.Model
 {
     public static class InvoiceModelInvoiceReferenceValidator
     {
-        public static ValidationResult InvoiceReferenceIsValid(int invoiceReference, ValidationContext context)
+        public static ValidationResult InvoiceReferenceIsValid(string invoiceReferenceString, ValidationContext context)
         {
             var invoiceModel = context.ObjectInstance as InvoiceModel;
             if (invoiceModel == null)

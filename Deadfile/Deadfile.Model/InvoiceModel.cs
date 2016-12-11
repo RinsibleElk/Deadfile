@@ -80,11 +80,34 @@ namespace Deadfile.Model
         }
 
         private int _invoiceReference = 0;
-        [CustomValidation(typeof(InvoiceModelInvoiceReferenceValidator), nameof(InvoiceModelInvoiceReferenceValidator.InvoiceReferenceIsValid))]
         public int InvoiceReference
         {
             get { return _invoiceReference; }
-            set { SetProperty(ref _invoiceReference, value); }
+            set
+            {
+                if (SetProperty(ref _invoiceReference, value))
+                {
+                    _invoiceReferenceString = value.ToString();
+                }
+            }
+        }
+
+        private string _invoiceReferenceString = "0";
+        [CustomValidation(typeof(InvoiceModelInvoiceReferenceValidator), nameof(InvoiceModelInvoiceReferenceValidator.InvoiceReferenceIsValid)),
+         RegularExpression("[1-9][0-9]*", ErrorMessage = "The invoice reference should be a number")]
+        public string InvoiceReferenceString
+        {
+            get { return _invoiceReferenceString; }
+            set
+            {
+                int intValue;
+                if (SetProperty(ref _invoiceReferenceString, value) && Int32.TryParse(value, out intValue))
+                {
+                    DisableUndoTracking = true;
+                    InvoiceReference = intValue;
+                    DisableUndoTracking = false;
+                }
+            }
         }
 
         public IDeadfileRepository Repository { get; set; } = null;

@@ -71,6 +71,7 @@ namespace Deadfile.Tab.Invoices
         public double NetAmount { get; set; } = 365.0;
         public ICommand AddItemCommand { get; } = null;
 
-        public ObservableCollection<int> SuggestedInvoiceReferences { get; set; } = new ObservableCollection<int>(new int[] {57, 65});
+        public ObservableCollection<string> SuggestedInvoiceReferences { get; set; } =
+            new ObservableCollection<string>(new string[] {"57", "65"});
     }
 }
