@@ -86,9 +86,7 @@ namespace Deadfile.Model
             set
             {
                 if (SetProperty(ref _invoiceReference, value))
-                {
                     _invoiceReferenceString = value.ToString();
-                }
             }
         }
 
