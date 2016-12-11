@@ -13,24 +13,25 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0"
                         Orientation="Horizontal">
                 <Button x:Name="AddClient"
-                        Margin="10,20,0,10">
-                    Add Client
-                </Button>
-                <Button x:Name="DefineQuotations"
-                        Margin="10,20,0,10">
-                    Define Quotes
-                </Button>
+                        Style="{StaticResource AddClientButton}"
+                        Margin="10,20,0,10"/>
             </StackPanel>
             <StackPanel Grid.Row="1"
                         Orientation="Horizontal">
                 <Button x:Name="LocalAuthorities"
-                        Margin="10,20,0,10">
-                    Local Authorities
-                </Button>
+                        Style="{StaticResource LocalAuthoritiesButton}"
+                        Margin="10,20,0,10"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal">
+                <Button x:Name="DefineQuotations"
+                        Style="{StaticResource DefineQuotationsButton}"
+                        Margin="10,20,0,10" />
             </StackPanel>
         </Grid>
     </ScrollViewer>
