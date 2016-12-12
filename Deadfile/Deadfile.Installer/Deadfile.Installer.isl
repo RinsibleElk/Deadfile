@@ -340,6 +340,7 @@
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
 		<row><td>Deadfile.Primary_output</td><td>{C8098480-E221-4794-A62D-B011C3A3D355}</td><td>INSTALLDIR</td><td>2</td><td/><td>deadfile.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{6BE9DEE6-F4DA-414F-BD59-EA4D9118B7E7}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1049,6 +1050,7 @@
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
 		<row><td>INSTALLDIR</td><td>Deadfile.Primary_output</td></row>
+		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 	</table>
 
 	<table name="CustomAction">
@@ -1170,6 +1172,7 @@
 		<row><td>USERPROFILE</td><td>TARGETDIR</td><td>.:USERPR~1|UserProfile</td><td/><td>0</td><td/></row>
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
 		<row><td>WindowsVolume</td><td>TARGETDIR</td><td>.:WinRoot</td><td/><td>0</td><td/></row>
+		<row><td>newfolder1</td><td>ProgramMenuFolder</td><td>##ID_STRING5##</td><td>Deadfile</td><td>1</td><td/></row>
 	</table>
 
 	<table name="DrLocator">
@@ -1862,6 +1865,7 @@
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
 		<row><td>AlwaysInstall</td><td>Deadfile.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 	</table>
 
 	<table name="File">
@@ -2019,6 +2023,7 @@
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
 		<row><td>Deadfile.Primary_output</td><td/><td/><td>_BABBAF59_755A_4528_B68F_F36D64AD4279_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_263BAE96_1572_475E_A6AE_B96612B89D29_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -3712,6 +3717,9 @@
 		<row><td>ID_STRING2</td><td>1033</td><td/><td>0</td><td/><td>1579449302</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>https://github.com/RinsibleElk/Deadfile</td><td>0</td><td/><td>1579431382</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>Deadfile</td><td>0</td><td/><td>1579476406</td></row>
+		<row><td>ID_STRING5</td><td>1033</td><td>Deadfile</td><td>0</td><td/><td>1713663456</td></row>
+		<row><td>ID_STRING6</td><td>1033</td><td>Deadfile</td><td>0</td><td/><td>1713690080</td></row>
+		<row><td>ID_STRING7</td><td>1033</td><td>Deadfile</td><td>0</td><td/><td>1713661440</td></row>
 		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>1033</td><td>This feature will remain uninstalled.</td><td>0</td><td/><td>1579477814</td></row>
 	</table>
 
@@ -3826,6 +3834,7 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>D:\Pictures\Deadfile\Deadfile.ico</td><td>0</td></row>
+		<row><td>NewShortcut1_A2CF0BDDF4A04337A1B84D314F0A544F.exe</td><td/><td>D:\Pictures\Deadfile\Deadfile.ico</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -3958,7 +3967,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{3E218DFC-D55D-42AA-AA5B-C47E046B19F9}</td></row>
 		<row><td>ISUSSignature</td><td>{A9732655-DB9E-430D-A374-58A829060800}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewLearnMore,viewProject,viewUpgradePaths,viewUpdateService,viewAppFiles,viewObjects,viewShortcuts,viewUI,viewTextMessages,viewSystemSearch,viewCustomActions,viewRelease</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewLearnMore,viewProject,viewUpgradePaths,viewUpdateService,viewAppFiles,viewObjects,viewShortcuts,viewUI,viewTextMessages,viewSystemSearch,viewCustomActions,viewRelease,viewRegistry,viewIniFiles,viewFileExtensions,viewEnvironmentVariables,viewVRoots,viewServices</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4331,7 +4340,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{AD7361C6-0D67-4D9C-BAC6-8135723F12C4}</td><td/></row>
 		<row><td>ProductName</td><td>Deadfile</td><td/></row>
-		<row><td>ProductVersion</td><td>1.00.0000</td><td/></row>
+		<row><td>ProductVersion</td><td>1.00.0001</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4407,6 +4416,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="L255">FileName</col>
 		<col def="s72">DirProperty</col>
 		<col def="i2">InstallMode</col>
+		<row><td>NewShortcut1</td><td>Deadfile.Primary_output</td><td/><td>newfolder1</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4492,6 +4502,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
+		<row><td>NewShortcut1</td><td>newfolder1</td><td>##ID_STRING6##</td><td>Deadfile.Primary_output</td><td>AlwaysInstall</td><td/><td>##ID_STRING7##</td><td/><td>NewShortcut1_A2CF0BDDF4A04337A1B84D314F0A544F.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">
