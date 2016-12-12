@@ -1139,6 +1139,8 @@
 		<row><td>DEADFILE</td><td>ProgramFilesFolder</td><td>Deadfile</td><td/><td>0</td><td/></row>
 		<row><td>DEADFILE1</td><td>DEADFILE</td><td>Deadfile</td><td/><td>0</td><td/></row>
 		<row><td>DEADFILE2</td><td>RINSIBLEELK</td><td>Deadfile</td><td/><td>0</td><td/></row>
+		<row><td>DEADFILE3</td><td>ProgramFiles64Folder</td><td>Deadfile</td><td/><td>0</td><td/></row>
+		<row><td>DEADFILE4</td><td>DEADFILE3</td><td>Deadfile</td><td/><td>0</td><td/></row>
 		<row><td>DesktopFolder</td><td>TARGETDIR</td><td>.:Desktop</td><td/><td>3</td><td/></row>
 		<row><td>FavoritesFolder</td><td>TARGETDIR</td><td>.:FAVORI~1|Favorites</td><td/><td>0</td><td/></row>
 		<row><td>FontsFolder</td><td>TARGETDIR</td><td>.:Fonts</td><td/><td>0</td><td/></row>
@@ -2612,7 +2614,7 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>Deadfile</td><td>0</td><td/><td>1579476406</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>Deadfile</td><td>0</td><td/><td>1713648642</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>1579477814</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>1579477814</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION45FULL</td><td>1033</td><td>Microsoft .NET Framework 4.5 Full package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>1579464086</td></row>
@@ -3715,8 +3717,8 @@
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>1579477814</td></row>
 		<row><td>ID_STRING1</td><td>1033</td><td/><td>0</td><td/><td>1579477814</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td/><td>0</td><td/><td>1579449302</td></row>
-		<row><td>ID_STRING3</td><td>1033</td><td>https://github.com/RinsibleElk/Deadfile</td><td>0</td><td/><td>1579431382</td></row>
-		<row><td>ID_STRING4</td><td>1033</td><td>Deadfile</td><td>0</td><td/><td>1579476406</td></row>
+		<row><td>ID_STRING3</td><td>1033</td><td>http://www.Deadfile.com</td><td>0</td><td/><td>1713648642</td></row>
+		<row><td>ID_STRING4</td><td>1033</td><td>Deadfile</td><td>0</td><td/><td>1713648642</td></row>
 		<row><td>ID_STRING5</td><td>1033</td><td>Deadfile</td><td>0</td><td/><td>1713663456</td></row>
 		<row><td>ID_STRING6</td><td>1033</td><td>Deadfile</td><td>0</td><td/><td>1713690080</td></row>
 		<row><td>ID_STRING7</td><td>1033</td><td>Deadfile</td><td>0</td><td/><td>1713661440</td></row>
@@ -4340,7 +4342,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{AD7361C6-0D67-4D9C-BAC6-8135723F12C4}</td><td/></row>
 		<row><td>ProductName</td><td>Deadfile</td><td/></row>
-		<row><td>ProductVersion</td><td>1.00.0001</td><td/></row>
+		<row><td>ProductVersion</td><td>1.00.0004</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
