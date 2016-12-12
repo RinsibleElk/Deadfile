@@ -46,6 +46,12 @@ namespace Deadfile.Tab.Home
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.UnbilledClients));
         }
 
+        public void Import()
+        {
+            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.Import);
+            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.Import));
+        }
+
         public Experience Experience
         {
             get { return Experience.Home; }

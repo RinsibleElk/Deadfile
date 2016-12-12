@@ -14,6 +14,7 @@ namespace Deadfile.Tab
         LocalAuthorities,
         Invoices,
         DefineQuotations,
-        UnbilledClients
+        UnbilledClients,
+        Import
     }
 }

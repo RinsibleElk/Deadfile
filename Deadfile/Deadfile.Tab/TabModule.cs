@@ -9,6 +9,7 @@ using Deadfile.Infrastructure.Services;
 using Deadfile.Tab.Browser;
 using Deadfile.Tab.Clients;
 using Deadfile.Tab.Home;
+using Deadfile.Tab.Import;
 using Deadfile.Tab.Invoices;
 using Deadfile.Tab.JobChildren;
 using Deadfile.Tab.JobChildren.Applications;
@@ -59,6 +60,7 @@ namespace Deadfile.Tab
             _container.RegisterSingleton(typeof(JobsPageViewModel), Experience.Jobs + RegionNames.Page, typeof(JobsPageViewModel));
             _container.RegisterSingleton(typeof(LocalAuthoritiesPageViewModel), Experience.LocalAuthorities + RegionNames.Page, typeof(LocalAuthoritiesPageViewModel));
             _container.RegisterSingleton(typeof(UnbilledClientsPageViewModel), Experience.UnbilledClients + RegionNames.Page, typeof(UnbilledClientsPageViewModel));
+            _container.RegisterSingleton(typeof(ImportPageViewModel), Experience.Import + RegionNames.Page, typeof(ImportPageViewModel));
             _container.RegisterSingleton(typeof(DefineQuotationsPageViewModel), Experience.DefineQuotations + RegionNames.Page, typeof(DefineQuotationsPageViewModel));
             _container.RegisterSingleton(typeof(InvoicesPageViewModel), Experience.Invoices + RegionNames.Page, typeof(InvoicesPageViewModel));
 
