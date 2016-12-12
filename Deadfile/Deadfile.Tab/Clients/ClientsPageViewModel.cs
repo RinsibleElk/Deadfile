@@ -133,9 +133,9 @@ namespace Deadfile.Tab.Clients
                 // For a new client this will also set the ClientId.
                 _repository.SaveClient(SelectedItem);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //TODO Do something. Like raise a dialog box or something. Then clean up.
+                Logger.Fatal(e, "Exception while saving {0}, {1}", _tabIdentity, SelectedItem);
                 throw;
             }
         }
@@ -146,9 +146,9 @@ namespace Deadfile.Tab.Clients
             {
                 _repository.DeleteClient(SelectedItem);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //TODO Do something. Like raise a dialog box or something. Then clean up.
+                Logger.Fatal(e, "Exception while deleting {0}, {1}", _tabIdentity, SelectedItem);
                 throw;
             }
         }

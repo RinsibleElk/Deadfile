@@ -161,14 +161,12 @@ namespace Deadfile.Tab.Tab
 
         private void AddNewJobAction(int clientId)
         {
-            //TODO Sort out magic strings.
-            _navigationService.RequestNavigate(this, nameof(ContentArea), "JobsPage", new ClientAndJobNavigationKey(clientId, ModelBase.NewModelId));
+            _navigationService.RequestNavigate(this, nameof(ContentArea), Experience.Jobs + RegionNames.Page, new ClientAndJobNavigationKey(clientId, ModelBase.NewModelId));
         }
 
         private void InvoiceClientAction(int clientId)
         {
-            //TODO Sort out magic strings.
-            _navigationService.RequestNavigate(this, nameof(ContentArea), "InvoicesPage", new ClientAndInvoiceNavigationKey(clientId, ModelBase.NewModelId));
+            _navigationService.RequestNavigate(this, nameof(ContentArea), Experience.Invoices + RegionNames.Page, new ClientAndInvoiceNavigationKey(clientId, ModelBase.NewModelId));
         }
 
         protected override void OnDeactivate(bool close)

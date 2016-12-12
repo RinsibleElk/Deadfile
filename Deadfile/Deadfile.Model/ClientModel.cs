@@ -228,7 +228,7 @@ namespace Deadfile.Model
             set
             {
                 OnPropertyChanging(nameof(PhoneNumbers));
-                // Hack to get cleared phone numbers to be free of validation.
+                // This is to get cleared phone numbers to be free of validation.
                 var valueToSet = (value == "") ? null : value;
                 SetProperty(ref _phoneNumber2, valueToSet);
                 OnPropertyChanged(nameof(PhoneNumbers));
@@ -243,7 +243,7 @@ namespace Deadfile.Model
             set
             {
                 OnPropertyChanging(nameof(PhoneNumbers));
-                // Hack to get cleared phone numbers to be free of validation.
+                // This is to get cleared phone numbers to be free of validation.
                 var valueToSet = (value == "") ? null : value;
                 SetProperty(ref _phoneNumber3, valueToSet);
                 OnPropertyChanged(nameof(PhoneNumbers));
@@ -257,7 +257,7 @@ namespace Deadfile.Model
             get { return _emailAddress; }
             set
             {
-                // Hack to get cleared e-mails to be free of validation.
+                // This is to get cleared e-mails to be free of validation.
                 var valueToSet = (value == "") ? null : value;
                 SetProperty(ref _emailAddress, valueToSet);
             }

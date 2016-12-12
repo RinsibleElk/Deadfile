@@ -71,14 +71,21 @@ namespace Deadfile.Tab.Actions
 
         public void SaveItem()
         {
-            // Perform the save, and lock the item again.
-            //TODO If this fails at the moment I'm pretty boned.
-            Logger.Info("Event,SaveEvent,Send,{0},{1}", TabIdentity.TabIndex, SaveMessage.Save);
-            EventAggregator.GetEvent<SaveEvent>().Publish(SaveMessage.Save);
+            try
+            {
+                // Perform the save, and lock the item again.
+                Logger.Info("Event,SaveEvent,Send,{0},{1}", TabIdentity.TabIndex, SaveMessage.Save);
+                EventAggregator.GetEvent<SaveEvent>().Publish(SaveMessage.Save);
 
-            // Notify the other pages for the end of editing.
-            Logger.Info("Event,EditActionEvent,Send,{0},{1}", TabIdentity.TabIndex, EditActionMessage.EndEditing);
-            EventAggregator.GetEvent<EditActionEvent>().Publish(EditActionMessage.EndEditing);
+                // Notify the other pages for the end of editing.
+                Logger.Info("Event,EditActionEvent,Send,{0},{1}", TabIdentity.TabIndex, EditActionMessage.EndEditing);
+                EventAggregator.GetEvent<EditActionEvent>().Publish(EditActionMessage.EndEditing);
+            }
+            catch (Exception e)
+            {
+                Logger.Fatal(e, "Exception thrown during Save");
+                throw;
+            }
         }
 
         public bool CanSaveItem
@@ -143,13 +150,22 @@ namespace Deadfile.Tab.Actions
 
         public void DiscardItem()
         {
-            // Notify of the Discard. This leads to en masse Undo-ing.
-            Logger.Info("Event,DiscardChangesEvent,Send,{0},{1}", TabIdentity.TabIndex, DiscardChangesMessage.Discard);
-            EventAggregator.GetEvent<DiscardChangesEvent>().Publish(DiscardChangesMessage.Discard);
+            try
+            {
+                // Notify of the Discard. This leads to en masse Undo-ing.
+                Logger.Info("Event,DiscardChangesEvent,Send,{0},{1}", TabIdentity.TabIndex,
+                    DiscardChangesMessage.Discard);
+                EventAggregator.GetEvent<DiscardChangesEvent>().Publish(DiscardChangesMessage.Discard);
 
-            // Notify the other pages for the end of editing.
-            Logger.Info("Event,EditActionEvent,Send,{0},{1}", TabIdentity.TabIndex, EditActionMessage.EndEditing);
-            EventAggregator.GetEvent<EditActionEvent>().Publish(EditActionMessage.EndEditing);
+                // Notify the other pages for the end of editing.
+                Logger.Info("Event,EditActionEvent,Send,{0},{1}", TabIdentity.TabIndex, EditActionMessage.EndEditing);
+                EventAggregator.GetEvent<EditActionEvent>().Publish(EditActionMessage.EndEditing);
+            }
+            catch (Exception e)
+            {
+                Logger.Fatal(e, "Exception thrown during Discard");
+                throw;
+            }
         }
 
         public bool CanDiscardItem

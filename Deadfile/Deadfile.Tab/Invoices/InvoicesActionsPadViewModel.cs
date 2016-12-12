@@ -32,7 +32,6 @@ namespace Deadfile.Tab.Invoices
             if (CanSaveItem)
             {
                 // Perform the save, and lock the item again.
-                //TODO If this fails at the moment I'm pretty boned.
                 Logger.Info("Event,SaveEvent,Send,{0},{1}", TabIdentity.TabIndex, SaveMessage.SaveAndPrint);
                 EventAggregator.GetEvent<SaveEvent>().Publish(SaveMessage.SaveAndPrint);
 

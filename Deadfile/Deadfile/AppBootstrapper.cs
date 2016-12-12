@@ -104,7 +104,6 @@ namespace Deadfile
         {
             return new[] {
                 Assembly.GetExecutingAssembly(),
-                //TODO this is lame.
                 Assembly.Load("Deadfile.Tab")
             };
         }

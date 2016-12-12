@@ -33,14 +33,18 @@ namespace Deadfile.Tab.Invoices
 {
     class InvoicesPageViewModel : EditableItemViewModel<ClientAndInvoiceNavigationKey, InvoiceModel>, IInvoicesPageViewModel, IBillableModelContainer
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly TabIdentity _tabIdentity;
         private readonly IPrintService _printService;
         private readonly IDeadfileRepository _repository;
 
-        public InvoicesPageViewModel(IPrintService printService,
+        public InvoicesPageViewModel(TabIdentity tabIdentity,
+            IPrintService printService,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator, new ParentUndoTracker<InvoiceModel, InvoiceItemModel>())
         {
+            _tabIdentity = tabIdentity;
             _printService = printService;
             _repository = repository;
             AddItemCommand = new DelegateCommand(AddItemAction);
@@ -238,7 +242,7 @@ namespace Deadfile.Tab.Invoices
             }
             catch (Exception e)
             {
-                //TODO Do something. Like raise a dialog box or something. Then clean up.
+                Logger.Fatal(e, "Exception while saving {0}, {1}, {2}", _tabIdentity, SelectedItem, message);
                 throw;
             }
         }
@@ -256,9 +260,9 @@ namespace Deadfile.Tab.Invoices
             {
                 _repository.DeleteInvoice(SelectedItem);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //TODO Do something. Like raise a dialog box or something. Then clean up.
+                Logger.Fatal(e, "Exception while deleting {0}, {1}", _tabIdentity, SelectedItem);
                 throw;
             }
         }

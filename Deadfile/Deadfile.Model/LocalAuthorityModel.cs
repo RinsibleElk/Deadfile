@@ -43,7 +43,7 @@ namespace Deadfile.Model
             get { return _url; }
             set
             {
-                // Hack to get cleared urls to be free of validation.
+                // This is to get cleared urls to be free of validation.
                 var valueToSet = (value == "") ? null : value;
                 if (SetProperty(ref _url, valueToSet))
                 {
