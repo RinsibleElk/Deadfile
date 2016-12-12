@@ -27,6 +27,8 @@ namespace Deadfile.Tab.DesignTime
             throw new NotImplementedException();
         }
 
+        public int SelectedIndex { get; set; }
+
         IUndoTracker ISimpleEditableItemViewModel.UndoTracker
         {
             get { return UndoTracker; }

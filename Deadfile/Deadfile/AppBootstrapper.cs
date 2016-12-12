@@ -61,8 +61,9 @@ namespace Deadfile
             ContainerInstance.RegisterSingleton(typeof(IDeadfileRepository), nameof(DeadfileRepository), typeof(DeadfileRepository));
             ContainerInstance.RegisterSingleton(typeof(IModelEntityMapper), nameof(ModelEntityMapper), typeof(ModelEntityMapper));
 
-            // Timer.
+            // Timers.
             ContainerInstance.RegisterSingleton(typeof(IQuotationsTimerService), nameof(QuotationsTimerService), typeof(QuotationsTimerService));
+            ContainerInstance.RegisterSingleton(typeof(IDeadfileDispatcherTimerService), nameof(DeadfileDeadfileDispatcherTimerService), typeof(DeadfileDeadfileDispatcherTimerService));
 
             // Navigation to external browser.
             ContainerInstance.RegisterSingleton(typeof(IUrlNavigationService), nameof(UrlNavigationService), typeof(UrlNavigationService));

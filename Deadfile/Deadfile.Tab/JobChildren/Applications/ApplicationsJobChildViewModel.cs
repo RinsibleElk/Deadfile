@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using Caliburn.Micro;
+using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
@@ -19,7 +21,7 @@ namespace Deadfile.Tab.JobChildren.Applications
     {
         private readonly IDeadfileRepository _repository;
 
-        public ApplicationsJobChildViewModel(IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator)
+        public ApplicationsJobChildViewModel(IDeadfileDispatcherTimerService timerService, IDeadfileRepository repository, IEventAggregator eventAggregator) : base(timerService, eventAggregator)
         {
             _repository = repository;
         }

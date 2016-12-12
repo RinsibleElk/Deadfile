@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
 using Deadfile.Tab.Events;
@@ -26,10 +27,13 @@ namespace Deadfile.Tab.Common
         private readonly DelegateCommand _editCommand;
         private readonly DelegateCommand _discardCommand;
         private readonly DelegateCommand _saveCommand;
+        private readonly IDeadfileDispatcherTimer _maintainSelectionTimer;
         private List<string> _errors;
 
-        public SimpleEditableItemViewModel(IEventAggregator eventAggregator)
+        public SimpleEditableItemViewModel(IDeadfileDispatcherTimerService timerService,
+            IEventAggregator eventAggregator)
         {
+            _maintainSelectionTimer = timerService.CreateTimer(TimeSpan.FromMilliseconds(10), SetSelectedIndex);
             _eventAggregator = eventAggregator;
             _editCommand = new DelegateCommand(StartEditing);
             _discardCommand = new DelegateCommand(DiscardEdits);
@@ -83,6 +87,10 @@ namespace Deadfile.Tab.Common
                     // Reload the data.
                     Populate();
                 }
+
+                // Maintain the selection.
+                if (value) _editingSelectedIndex = _selectedIndex;
+                else _editingSelectedIndex = null;
 
                 // Only fire when it changes.
                 _eventAggregator.GetEvent<LockedForEditingEvent>()
@@ -251,6 +259,33 @@ namespace Deadfile.Tab.Common
         public void RegisterUndoTrackerActivatable(IUndoTrackerActivatable undoTrackerActivatable)
         {
             UndoTrackerActivatable = undoTrackerActivatable;
+        }
+
+        private int? _editingSelectedIndex = null;
+        private int _selectedIndex;
+        public int SelectedIndex
+        {
+            get { return _selectedIndex; }
+            set
+            {
+                if (value == _selectedIndex) return;
+                _selectedIndex = value;
+                NotifyOfPropertyChange(() => SelectedIndex);
+
+                if ((_editingSelectedIndex != null) && (_selectedIndex != _editingSelectedIndex.Value))
+                {
+                    _maintainSelectionTimer.Start();
+                }
+            }
+        }
+
+        private void SetSelectedIndex()
+        {
+            if (_editingSelectedIndex != null)
+            {
+                SelectedIndex = _editingSelectedIndex.Value;
+            }
+            _maintainSelectionTimer.Stop();
         }
     }
 }

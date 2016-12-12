@@ -270,6 +270,8 @@ namespace Deadfile.Tab.Common
             UndoTrackerActivatable = undoTrackerActivatable;
         }
 
+        public int SelectedIndex { get; set; }
+
         IUndoTracker ISimpleEditableItemViewModel.UndoTracker
         {
             get { return UndoTracker; }

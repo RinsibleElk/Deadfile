@@ -78,5 +78,10 @@ namespace Deadfile.Tab.Common
         /// </summary>
         /// <param name="undoTrackerActivatable"></param>
         void RegisterUndoTrackerActivatable(IUndoTrackerActivatable undoTrackerActivatable);
+
+        /// <summary>
+        /// The selected index.
+        /// </summary>
+        int SelectedIndex { get; set; }
     }
 }

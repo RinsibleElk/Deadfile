@@ -52,6 +52,7 @@
         <TextBox DockPanel.Dock="Top" controls:TextBoxHelper.Watermark="Filter" Text="{Binding Filter, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
         <ListBox SelectionMode="Single"
                  ItemsSource="{Binding Items}"
+                 SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
                  SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">

@@ -86,6 +86,8 @@
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\SwitchConverter.cs" />
+    <Compile Include="Interfaces\IDeadfileDispatcherTimer.cs" />
+    <Compile Include="Interfaces\IDeadfileDispatcherTimerService.cs" />
     <Compile Include="Interfaces\IJournaled.cs" />
     <Compile Include="Interfaces\INavigationAware.cs" />
     <Compile Include="Interfaces\INavigationContainer.cs" />
@@ -94,6 +96,8 @@
     <Compile Include="Interfaces\IQuotationsTimerService.cs" />
     <Compile Include="Interfaces\IUrlNavigationService.cs" />
     <Compile Include="Interfaces\NavigationContext.cs" />
+    <Compile Include="Services\DeadfileDeadfileDispatcherTimer.cs" />
+    <Compile Include="Services\DeadfileDeadfileDispatcherTimerService.cs" />
     <Compile Include="Services\NavigationContainer.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
