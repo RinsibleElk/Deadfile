@@ -24,6 +24,7 @@ namespace Deadfile.Tab.Test
             public readonly ClientModel[] Clients;
 
             private readonly bool _useRealEvents;
+            public readonly TabIdentity TabIdentity = new TabIdentity(1);
             public readonly Mock<IPrintService> PrintServiceMock = new Mock<IPrintService>();
             public readonly Mock<IEventAggregator> EventAggregatorMock = new Mock<IEventAggregator>();
             public readonly Mock<IDeadfileRepository> DeadfileRepositoryMock = new Mock<IDeadfileRepository>();
@@ -69,7 +70,7 @@ namespace Deadfile.Tab.Test
                 Clients = clients.ToArray();
 
                 _useRealEvents = useRealEvents;
-                ViewModel = new InvoicesPageViewModel(PrintServiceMock.Object, DeadfileRepositoryMock.Object, EventAggregatorMock.Object, DialogCoordinatorMock.Object);
+                ViewModel = new InvoicesPageViewModel(TabIdentity, PrintServiceMock.Object, DeadfileRepositoryMock.Object, EventAggregatorMock.Object, DialogCoordinatorMock.Object);
             }
 
             public void NavigateTo(InvoiceModel model)

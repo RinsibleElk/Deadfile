@@ -21,5 +21,6 @@ namespace Deadfile.Tab.Actions
         bool DeleteItemIsVisible { get; }
         void DiscardItem();
         bool CanDiscardItem { get; }
+        bool DiscardItemIsVisible { get; }
     }
 }

@@ -45,6 +45,8 @@ namespace Deadfile.Tab.Actions
         private bool _canDeleteItem = true;
         private bool _deleteItemIsVisible = true;
         private bool _discardItemIsVisible = false;
+        private bool _canDiscardItem = true;
+        private SubscriptionToken _canDiscardEventSubscriptionToken = null;
 
         public bool CanEditItem
         {
@@ -170,12 +172,23 @@ namespace Deadfile.Tab.Actions
 
         public bool CanDiscardItem
         {
+            get { return _canDiscardItem; }
+            set
+            {
+                if (value == _canDiscardItem) return;
+                _canDiscardItem = value;
+                NotifyOfPropertyChange(() => CanDiscardItem);
+            }
+        }
+
+        public bool DiscardItemIsVisible
+        {
             get { return _discardItemIsVisible; }
             set
             {
                 if (value == _discardItemIsVisible) return;
                 _discardItemIsVisible = value;
-                NotifyOfPropertyChange(() => CanDiscardItem);
+                NotifyOfPropertyChange(() => DiscardItemIsVisible);
             }
         }
 
@@ -188,8 +201,15 @@ namespace Deadfile.Tab.Actions
                 EventAggregator.GetEvent<CanSaveEvent>().Subscribe(CanSaveAction);
             _canDeleteEventSubscriptionToken =
                 EventAggregator.GetEvent<CanDeleteEvent>().Subscribe(CanDeleteAction);
+            _canDiscardEventSubscriptionToken =
+                EventAggregator.GetEvent<CanDiscardEvent>().Subscribe(CanDiscardAction);
             _canEditEventSubscriptionToken =
                 EventAggregator.GetEvent<CanEditEvent>().Subscribe(CanEditAction);
+        }
+
+        private void CanDiscardAction(CanDiscardMessage message)
+        {
+            CanDiscardItem = message == CanDiscardMessage.CanDiscard;
         }
 
         private void CanEditAction(CanEditMessage canEditMessage)
@@ -214,7 +234,7 @@ namespace Deadfile.Tab.Actions
         {
             Logger.Info("Event,LockedForEditingEvent,Receive,{0},{1}", TabIdentity.TabIndex, lockedForEditingMessage);
             SaveItemIsVisible = lockedForEditingMessage.IsLocked;
-            CanDiscardItem = lockedForEditingMessage.IsLocked;
+            DiscardItemIsVisible = lockedForEditingMessage.IsLocked;
             EditItemIsVisible = !lockedForEditingMessage.IsLocked;
             DeleteItemIsVisible = !lockedForEditingMessage.IsLocked;
         }
@@ -230,6 +250,8 @@ namespace Deadfile.Tab.Actions
             _canEditEventSubscriptionToken = null;
             EventAggregator.GetEvent<CanDeleteEvent>().Unsubscribe(_canDeleteEventSubscriptionToken);
             _canDeleteEventSubscriptionToken = null;
+            EventAggregator.GetEvent<CanDiscardEvent>().Unsubscribe(_canDiscardEventSubscriptionToken);
+            _canDiscardEventSubscriptionToken = null;
         }
     }
 }

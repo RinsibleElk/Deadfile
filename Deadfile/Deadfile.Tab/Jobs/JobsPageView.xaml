@@ -105,7 +105,7 @@
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Notes}"
                  controls:TextBoxHelper.Watermark="Notes" />
         <ItemsControl Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" TextBlock.Foreground="Red" />
-        <ListBox Grid.Row="10" Grid.Column="0" ItemsSource="{Binding JobChildren}" SelectedItem="{Binding SelectedJobChild, Mode=TwoWay}" />
+        <ListBox Grid.Row="10" Grid.Column="0" IsEnabled="{Binding JobChildIsEditable, Converter={StaticResource InverseBoolean}}"  ItemsSource="{Binding JobChildren}" SelectedItem="{Binding SelectedJobChild, Mode=TwoWay}" />
         <ContentControl Grid.Row="11" Grid.Column="0"/>
         <controls:TransitioningContentControl x:Name="JobChildViewModel" Grid.Row="10" Grid.RowSpan="2" Grid.Column="1" Transition="LeftReplace" />
     </Grid>

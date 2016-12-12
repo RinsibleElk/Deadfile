@@ -310,7 +310,7 @@ namespace Deadfile.Tab.Common
         /// <typeparam name="TObjectUnderEdit"></typeparam>
         /// <param name="newActiveUndoTracker"></param>
         /// <param name="objectUnderEdit"></param>
-        public void ActivateUndoTracker<TObjectUnderEdit>(UndoTracker<TObjectUnderEdit> newActiveUndoTracker, TObjectUnderEdit objectUnderEdit) where TObjectUnderEdit : ModelBase
+        public virtual void ActivateUndoTracker<TObjectUnderEdit>(UndoTracker<TObjectUnderEdit> newActiveUndoTracker, TObjectUnderEdit objectUnderEdit) where TObjectUnderEdit : ModelBase
         {
             if (_activeUndoTracker != null)
                 throw new ApplicationException("There is already an active object handling undo and redo events");
@@ -326,7 +326,7 @@ namespace Deadfile.Tab.Common
         /// <remarks>
         /// The motivation is for the Jobs page, where there are related editable items that might be managed on the same page.
         /// </remarks>
-        public void DeactivateUndoTracker()
+        public virtual void DeactivateUndoTracker()
         {
             if (_activeUndoTracker == null)
                 throw new ApplicationException("There is no active object handling undo and redo events to deactivate");

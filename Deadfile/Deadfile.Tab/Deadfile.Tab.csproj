@@ -131,6 +131,7 @@
     <Compile Include="Events\AddClientEvent.cs" />
     <Compile Include="Events\AddNewJobEvent.cs" />
     <Compile Include="Events\CanDeleteEvent.cs" />
+    <Compile Include="Events\CanDiscardEvent.cs" />
     <Compile Include="Events\CanEditEvent.cs" />
     <Compile Include="Events\CanSaveEvent.cs" />
     <Compile Include="Events\CanUndoEvent.cs" />

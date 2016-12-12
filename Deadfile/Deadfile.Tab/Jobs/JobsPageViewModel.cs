@@ -24,7 +24,6 @@ namespace Deadfile.Tab.Jobs
         private readonly IDeadfileRepository _repository;
         private JobChildExperience _selectedJobChild = JobChildExperience.Empty;
         private ISimpleEditableItemViewModel _jobChildViewModel;
-        private int _clientId;
 
         public static readonly List<JobChildExperience> AllJobChildExperiences = new List<JobChildExperience>(new[]
         {
@@ -130,6 +129,38 @@ namespace Deadfile.Tab.Jobs
             }
         }
 
+        private bool _jobChildIsEditable = false;
+        public bool JobChildIsEditable
+        {
+            get { return _jobChildIsEditable; }
+            set
+            {
+                if (value == _jobChildIsEditable) return;
+                _jobChildIsEditable = value;
+                NotifyOfPropertyChange(() => JobChildIsEditable);
+
+                var message = _jobChildIsEditable ? CanDiscardMessage.CannotDiscard : CanDiscardMessage.CanDiscard;
+                Logger.Info("Event,CanDiscardEvent,Send,{0},{1}", _tabIdentity, message);
+                EventAggregator.GetEvent<CanDiscardEvent>().Publish(message);
+            }
+        }
+
+        public override void ActivateUndoTracker<TObjectUnderEdit>(UndoTracker<TObjectUnderEdit> newActiveUndoTracker, TObjectUnderEdit objectUnderEdit)
+        {
+            base.ActivateUndoTracker(newActiveUndoTracker, objectUnderEdit);
+
+            if (!object.ReferenceEquals(newActiveUndoTracker, UndoTracker))
+                JobChildIsEditable = true;
+        }
+
+        public override void DeactivateUndoTracker()
+        {
+            base.DeactivateUndoTracker();
+
+            JobChildIsEditable = false;
+        }
+
+        private int _clientId;
         public int ClientId
         {
             get { return _clientId; }
