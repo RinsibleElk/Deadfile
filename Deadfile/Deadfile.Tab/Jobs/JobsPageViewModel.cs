@@ -49,8 +49,11 @@ namespace Deadfile.Tab.Jobs
             JobModel jobModel;
             if (clientAndJobNavigationKey.Equals(default(ClientAndJobNavigationKey)) || clientAndJobNavigationKey.JobId == 0 || clientAndJobNavigationKey.JobId == ModelBase.NewModelId)
             {
-                jobModel = new JobModel();
-                jobModel.JobNumber = _repository.GetNextSuggestedJobNumber();
+                jobModel = new JobModel
+                {
+                    ClientId = clientAndJobNavigationKey.ClientId,
+                    JobNumber = _repository.GetNextSuggestedJobNumber()
+                };
                 DisplayName = "New Job";
             }
             else

@@ -17,6 +17,7 @@ namespace Deadfile.Tab.Test
             public readonly Mock<EditActionEvent> EditClientEventMock;
             public readonly InvoicesActionsPadViewModel ViewModel;
             public readonly LockedForEditingEvent LockedForEditingEvent;
+            public readonly CanDiscardEvent CanDiscardEvent;
             public readonly CanDeleteEvent CanDeleteEvent;
             public readonly CanSaveEvent CanSaveEvent;
             public readonly CanEditEvent CanEditEvent;
@@ -32,6 +33,7 @@ namespace Deadfile.Tab.Test
                 LockedForEditingEvent = new LockedForEditingEvent();
                 CanSaveEvent = new CanSaveEvent();
                 CanDeleteEvent = new CanDeleteEvent();
+                CanDiscardEvent = new CanDiscardEvent();
                 CanEditEvent = new CanEditEvent();
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
@@ -44,6 +46,10 @@ namespace Deadfile.Tab.Test
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
                     .Returns(CanDeleteEvent)
+                    .Verifiable();
+                EventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<CanDiscardEvent>())
+                    .Returns(CanDiscardEvent)
                     .Verifiable();
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<CanEditEvent>())
@@ -86,7 +92,8 @@ namespace Deadfile.Tab.Test
             Assert.True(viewModel.EditItemIsVisible);
             Assert.False(viewModel.SaveItemIsVisible);
             Assert.True(viewModel.DeleteItemIsVisible);
-            Assert.False(viewModel.CanDiscardItem);
+            Assert.True(viewModel.CanDiscardItem);
+            Assert.False(viewModel.DiscardItemIsVisible);
             eventAggregatorMock.VerifyAll();
         }
 
@@ -131,7 +138,8 @@ namespace Deadfile.Tab.Test
                 Assert.True(host.ViewModel.EditItemIsVisible);
                 Assert.False(host.ViewModel.SaveItemIsVisible);
                 Assert.True(host.ViewModel.DeleteItemIsVisible);
-                Assert.False(host.ViewModel.CanDiscardItem);
+                Assert.True(host.ViewModel.CanDiscardItem);
+                Assert.False(host.ViewModel.DiscardItemIsVisible);
             }
         }
 
