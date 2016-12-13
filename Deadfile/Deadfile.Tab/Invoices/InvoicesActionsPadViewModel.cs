@@ -60,7 +60,7 @@ namespace Deadfile.Tab.Invoices
 
         public bool CanPrintItem
         {
-            get { return CanSaveItem || !CanEditItem; }
+            get { return CanSaveItem || CanEditItem; }
         }
 
         public void PaidItem()

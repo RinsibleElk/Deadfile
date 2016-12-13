@@ -78,9 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <EmbeddedResource Include="Resources\daniel.ttf" />
-    <EmbeddedResource Include="Resources\danielbd.ttf" />
-    <EmbeddedResource Include="Resources\danielbk.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Deadfile.Core\Deadfile.Core.csproj">
@@ -104,6 +101,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\pksLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Imagine3DText.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -54,16 +54,16 @@ namespace Deadfile.Pdf
             var headerStackPanel = new StackPanel() {Orientation = Orientation.Horizontal};
 
             // Start with image at the top left.
-            var bi = new BitmapImage();
-            bi.BeginInit();
-            bi.StreamSource = GetImagine3DLogoStream();
-            bi.EndInit();
-            var i = new Image();
-            i.Source = bi;
-            var imageWidth = 145.0;
-            i.Width = imageWidth;
-            i.Stretch = Stretch.Uniform;
-            headerStackPanel.Children.Add(i);
+            var logoBitmap = new BitmapImage();
+            logoBitmap.BeginInit();
+            logoBitmap.StreamSource = GetImagine3DLogoStream();
+            logoBitmap.EndInit();
+            var logoImage = new Image();
+            logoImage.Source = logoBitmap;
+            var logoImageWidth = 145.0;
+            logoImage.Width = logoImageWidth;
+            logoImage.Stretch = Stretch.Uniform;
+            headerStackPanel.Children.Add(logoImage);
 
             // Then there's a vertical stack panel.
             var header = new StackPanel() {Orientation = Orientation.Vertical};
@@ -75,18 +75,25 @@ namespace Deadfile.Pdf
                 FontWeight = FontWeights.Bold,
                 TextAlignment = TextAlignment.Right,
                 Padding = new Thickness(10),
-                Width = pageWidth - sideMargin - sideMargin - imageWidth
+                Width = pageWidth - sideMargin - sideMargin - logoImageWidth
             };
             var paddingAboveHeader = 45.0;
             header.Children.Add(new Imagine3DTextBlock() {Height = paddingAboveHeader});
             header.Children.Add(title);
-            header.Children.Add(new Imagine3DDanielTextBlock()
-            {
-                Foreground = new SolidColorBrush(PrimaryColor),
-                Text = "Imagine3D Ltd",
-                FontSize = 16,
+            // Use an image to show the handwriting text.
+            var danielBitmap = new BitmapImage();
+            danielBitmap.BeginInit();
+            danielBitmap.StreamSource = GetImagine3DTextStream();
+            danielBitmap.EndInit();
+            var danielImage = new Image();
+            danielImage.Source = danielBitmap;
+            var danielImageWidth = 145.0;
+            danielImage.Width = danielImageWidth;
+            danielImage.Stretch = Stretch.Uniform;
+            var danielImageStackPanel = new StackPanel {Orientation = Orientation.Horizontal};
+            danielImageStackPanel.Children.Add(danielImage);
+            header.Children.Add(danielImageStackPanel);
 
-            });
             headerStackPanel.Children.Add(header);
 
             var addressesSectionHeight = 200.0;
@@ -404,18 +411,18 @@ namespace Deadfile.Pdf
             return assembly.GetManifestResourceStream(resourceName);
         }
 
+        private static Stream GetImagine3DTextStream()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "Deadfile.Pdf.Resources.Imagine3DText.png";
+            return assembly.GetManifestResourceStream(resourceName);
+        }
+
         private class Imagine3DTextBlock : TextBlock
         {
             public Imagine3DTextBlock() : base()
             {
                 FontFamily = Calibri;
-            }
-        }
-        private class Imagine3DDanielTextBlock : TextBlock
-        {
-            public Imagine3DDanielTextBlock() : base()
-            {
-                FontFamily = new FontFamily(new Uri("pack://application:,,,/Deadfile.Pdf/Resources/"), "./#Daniel");
             }
         }
     }
