@@ -21,6 +21,12 @@ namespace Deadfile.Tab.Clients
         }
         public bool CanAddNewJob { get; } = true;
         public bool CanInvoiceClient { get; } = true;
+        public void EmailClient()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CanEmailClient { get; } = true;
         public ClientModel SelectedItem { get; set; } = new ClientModel() {FirstName = "Oliver", LastName = "Samson"};
         public bool Editable { get; } = true;
         public List<string> Errors { get; } = new List<string>();

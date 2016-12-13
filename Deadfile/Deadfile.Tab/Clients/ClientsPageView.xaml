@@ -45,6 +45,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0">Title:</TextBlock>
@@ -81,5 +82,6 @@
         <ItemsControl Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" TextBlock.Foreground="Red" />
         <Button Grid.Row="19" Grid.Column="1" x:Name="AddNewJob" Visibility="{Binding CanAddNewJob, Converter={StaticResource BooleanToVisibility}}">Add New Job...</Button>
         <Button Grid.Row="20" Grid.Column="1" x:Name="InvoiceClient" Visibility="{Binding CanInvoiceClient, Converter={StaticResource BooleanToVisibility}}">Invoice Client...</Button>
+        <Button Grid.Row="21" Grid.Column="1" x:Name="EmailClient" Visibility="{Binding CanEmailClient, Converter={StaticResource BooleanToVisibility}}">E-mail Client...</Button>
     </Grid>
 </UserControl>

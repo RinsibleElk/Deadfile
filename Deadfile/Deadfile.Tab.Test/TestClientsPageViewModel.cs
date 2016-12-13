@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Clients;
@@ -20,6 +21,7 @@ namespace Deadfile.Tab.Test
         {
             public readonly Mock<IEventAggregator> EventAggregatorMock = new Mock<IEventAggregator>();
             public readonly Mock<IDeadfileRepository> DeadfileRepositoryMock = new Mock<IDeadfileRepository>();
+            public readonly Mock<IUrlNavigationService> UrlNavigationServiceMock = new Mock<IUrlNavigationService>();
             public readonly Mock<LockedForEditingEvent> LockedForEditingMock = new Mock<LockedForEditingEvent>();
             public readonly Mock<CanUndoEvent> CanUndoEventMock = new Mock<CanUndoEvent>();
             public readonly Mock<DisplayNameEvent> DisplayNameEventMock = new Mock<DisplayNameEvent>();
@@ -53,7 +55,7 @@ namespace Deadfile.Tab.Test
             public Host(bool useRealEvents)
             {
                 _useRealEvents = useRealEvents;
-                ViewModel = new ClientsPageViewModel(TabIdentity, EventAggregatorMock.Object, DeadfileRepositoryMock.Object, DialogCoordinatorMock.Object);
+                ViewModel = new ClientsPageViewModel(TabIdentity, EventAggregatorMock.Object, DeadfileRepositoryMock.Object, DialogCoordinatorMock.Object, UrlNavigationServiceMock.Object);
             }
 
             public void NavigateTo(ClientModel model)

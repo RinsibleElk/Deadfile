@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
@@ -19,14 +20,17 @@ namespace Deadfile.Tab.Clients
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly TabIdentity _tabIdentity;
         private readonly IDeadfileRepository _repository;
+        private readonly IUrlNavigationService _urlNavigationService;
 
         public ClientsPageViewModel(TabIdentity tabIdentity,
             IEventAggregator eventAggregator,
             IDeadfileRepository repository,
-            IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator, new UndoTracker<ClientModel>())
+            IDialogCoordinator dialogCoordinator,
+            IUrlNavigationService urlNavigationService) : base(eventAggregator, dialogCoordinator, new UndoTracker<ClientModel>())
         {
             _tabIdentity = tabIdentity;
             _repository = repository;
+            _urlNavigationService = urlNavigationService;
         }
 
         /// <summary>
@@ -73,6 +77,26 @@ namespace Deadfile.Tab.Clients
             }
         }
 
+        public void EmailClient()
+        {
+            if (!String.IsNullOrWhiteSpace(SelectedItem.EmailAddress))
+                _urlNavigationService.SendEmail(SelectedItem.EmailAddress);
+            else
+                CanEmailClient = false;
+        }
+
+        private bool _canEmailClient = false;
+        public bool CanEmailClient
+        {
+            get { return _canEmailClient; }
+            set
+            {
+                if (value == _canEmailClient) return;
+                _canEmailClient = value;
+                NotifyOfPropertyChange(() => CanEmailClient);
+            }
+        }
+
         public override void OnNavigatedTo(ClientNavigationKey selectedClient)
         {
             Logger.Info("Navigated to Clients {0}, for client {1}", _tabIdentity.TabIndex, selectedClient);
@@ -81,6 +105,8 @@ namespace Deadfile.Tab.Clients
 
             CanAddNewJob = (!Editable) && (idToSelect != ModelBase.NewModelId);
             CanInvoiceClient = (!Editable) && (idToSelect != ModelBase.NewModelId);
+            CanEmailClient = (!Editable) && (idToSelect != ModelBase.NewModelId) &&
+                             (!String.IsNullOrWhiteSpace(SelectedItem.EmailAddress));
         }
 
         public override void OnNavigatedFrom()
@@ -124,6 +150,8 @@ namespace Deadfile.Tab.Clients
         {
             CanAddNewJob = (!Editable) && (SelectedItem.ClientId != ModelBase.NewModelId);
             CanInvoiceClient = (!Editable) && (SelectedItem.ClientId != ModelBase.NewModelId);
+            CanEmailClient = (!Editable) && (SelectedItem.ClientId != ModelBase.NewModelId) &&
+                 (!String.IsNullOrWhiteSpace(SelectedItem.EmailAddress));
         }
 
         public override void PerformSave(SaveMessage message)
