@@ -20,6 +20,7 @@ using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
 using Deadfile.Model.Billable;
 using Deadfile.Model.Interfaces;
+using Deadfile.Model.Utils;
 using Deadfile.Pdf;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;

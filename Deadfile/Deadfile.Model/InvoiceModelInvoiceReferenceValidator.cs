@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Deadfile.Entity;
+using Deadfile.Model.Utils;
 
 namespace Deadfile.Model
 {

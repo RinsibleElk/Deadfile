@@ -19,6 +19,11 @@ namespace Deadfile.Entity
          MaxLength(30, ErrorMessage = "A BillableHour must have at most 30 characters")]
         public string Description { get; set; }
 
+        /// <summary>
+        /// Who did the work?
+        /// </summary>
+        public string Who { get; set; }
+
         [Required(ErrorMessage = "A BillableHour must have an amount associated")]
         public double NetAmount { get; set; }
 

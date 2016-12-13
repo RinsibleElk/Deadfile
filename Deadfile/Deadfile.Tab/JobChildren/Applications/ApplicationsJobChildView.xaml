@@ -7,6 +7,7 @@
              xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
              xmlns:templates="clr-namespace:Deadfile.Infrastructure.Templates;assembly=Deadfile.Infrastructure"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:utils="clr-namespace:Deadfile.Model.Utils;assembly=Deadfile.Model"
              d:DataContext="{d:DesignInstance Type=local:ApplicationsJobChildDesignTimeViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -92,7 +93,7 @@
                                             IsTodayHighlighted="True" />
                                 <ComboBox Grid.Row="3"
                                           IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                          ItemsSource="{x:Static model:ApplicationTypeUtils.AllApplicationTypes}"
+                                          ItemsSource="{x:Static utils:ApplicationTypeUtils.AllApplicationTypes}"
                                           SelectedItem="{Binding Type}"
                                           IsEditable="False">
                                     <ComboBox.ItemTemplate>

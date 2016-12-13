@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using Deadfile.Entity;
 using Deadfile.Model;
+using Deadfile.Model.Utils;
 
 namespace Deadfile.Infrastructure.Converters
 {

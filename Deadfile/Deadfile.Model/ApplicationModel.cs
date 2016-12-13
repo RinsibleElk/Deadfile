@@ -63,51 +63,21 @@ namespace Deadfile.Model
             get { return _applicationType; }
             set { SetProperty(ref _applicationType, value); }
         }
-    }
 
-    /// <summary>
-    /// All the application types.
-    /// </summary>
-    public static class ApplicationTypeUtils
-    {
-        /// <summary>
-        /// All the known application types.
-        /// </summary>
-        public static readonly List<ApplicationType> AllApplicationTypes = Enum.GetValues(typeof(ApplicationType)).Cast<ApplicationType>().ToList();
-
-        public static string ConvertToString(ApplicationType applicationType)
+        private DateTime _estimatedDecisionDate;
+        [Required(ErrorMessage = "An Application must have an estimated decision date.")]
+        public DateTime EstimatedDecisionDate
         {
-            switch (applicationType)
-            {
-                case ApplicationType.HouseholderPlanningPermission:
-                    return "Householder Planning Permission";
-                case ApplicationType.FullPlanningPermission:
-                    return "Full Planning Permission";
-                case ApplicationType.LawfulDevelopmentCertificate:
-                    return "Lawful Development Certificate";
-                case ApplicationType.MinorAmendment:
-                    return "Minor Amendment";
-                case ApplicationType.Appeal:
-                    return "Appeal";
-                case ApplicationType.ConservationAreaConsent:
-                    return "Conservation Area Consent";
-                case ApplicationType.ListedBuildingConsent:
-                    return "Listed Building Consent";
-                case ApplicationType.BuildingControlBuildingNotice:
-                    return "Building Control - Building Notice";
-                case ApplicationType.BuildingControlFullPlans:
-                    return "Building Control - Full Plans";
-                case ApplicationType.OutlinePermission:
-                    return "Outline- Permission";
-                case ApplicationType.PriorNotification:
-                    return "Prior Notification";
-                case ApplicationType.ConditionsApplication:
-                    return "Conditions Application";
-                case ApplicationType.DisplayOfAdvertisment:
-                    return "Display of Advertisment";
-                default:
-                    throw new ApplicationException("Unknown application type: " + applicationType);
-            }
+            get { return _estimatedDecisionDate; }
+            set { SetProperty(ref _estimatedDecisionDate, value); }
+        }
+
+        private ApplicationState _state;
+        [Required(ErrorMessage = "An Application must have a state.")]
+        public ApplicationState State
+        {
+            get { return _state; }
+            set { SetProperty(ref _state, value); }
         }
     }
 }

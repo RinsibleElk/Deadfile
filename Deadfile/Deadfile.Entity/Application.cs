@@ -20,6 +20,12 @@ namespace Deadfile.Entity
         [Required(ErrorMessage = "An Application must have a creation date.")]
         public DateTime CreationDate { get; set; }
 
+        [Required(ErrorMessage = "An Application must have an estimated decision date.")]
+        public DateTime EstimatedDecisionDate { get; set; }
+
+        [Required(ErrorMessage = "An Application must have a state.")]
+        public ApplicationState State { get; set; }
+
         [Required(ErrorMessage = "An Application must have a type.")]
         public ApplicationType Type { get; set; }
 

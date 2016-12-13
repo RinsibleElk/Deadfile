@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Deadfile.Entity
 {
     /// <summary>
-    /// The set of companies that can be invoiced for.
+    /// Represents the state of a planning application.
     /// </summary>
-    public enum Company
+    public enum ApplicationState
     {
-        PaulSamsonCharteredSurveyorLtd,
-        Imagine3DLtd
+        Current,
+        Refused,
+        Approved,
+        Withdrawn
     }
 }

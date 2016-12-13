@@ -22,6 +22,9 @@ namespace Deadfile.Entity
         [Required(ErrorMessage = "A JobTask must have a due date.")]
         public DateTime DueDate { get; set; }
 
+        [Required(ErrorMessage = "A Job Task requires a state.")]
+        public JobTaskState State { get; set; }
+
         public int JobId { get; set; }
     }
 }

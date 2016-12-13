@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Entity;
 
 namespace Deadfile.Model
 {
@@ -54,6 +55,14 @@ namespace Deadfile.Model
                 if (SetProperty(ref _dueDate, value))
                     OnPropertyChanged(nameof(HeaderText));
             }
+        }
+
+        private JobTaskState _state;
+        [Required(ErrorMessage = "A Job Task requires a state.")]
+        public JobTaskState State
+        {
+            get { return _state; }
+            set { SetProperty(ref _state, value); }
         }
 
         public string HeaderText

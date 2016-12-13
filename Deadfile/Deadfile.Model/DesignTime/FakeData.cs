@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Entity;
 using Deadfile.Model.Billable;
+using Deadfile.Model.Utils;
 
 namespace Deadfile.Model.DesignTime
 {

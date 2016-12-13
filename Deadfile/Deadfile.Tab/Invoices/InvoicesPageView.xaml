@@ -13,6 +13,7 @@
              xmlns:billablemodel="clr-namespace:Deadfile.Model.Billable;assembly=Deadfile.Model"
              xmlns:templates="clr-namespace:Deadfile.Infrastructure.Templates;assembly=Deadfile.Infrastructure"
              xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
+             xmlns:utils="clr-namespace:Deadfile.Model.Utils;assembly=Deadfile.Model"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:InvoicesPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="1000" d:DesignWidth="1200">
@@ -590,7 +591,7 @@
             <ComboBox Grid.Row="3"
                       IsEditable="False"
                       IsEnabled="{Binding InvoiceEditable}"
-                      ItemsSource="{x:Static entity:CompanyUtils.AllCompanies}"
+                      ItemsSource="{x:Static utils:CompanyUtils.AllCompanies}"
                       SelectedItem="{Binding SelectedItem.Company, Mode=TwoWay}" />
             <ComboBox Grid.Row="4"
                       ItemsSource="{Binding Source={StaticResource InvoiceStatusValues}}"
