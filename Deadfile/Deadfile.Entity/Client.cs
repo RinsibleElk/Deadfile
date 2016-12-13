@@ -45,6 +45,12 @@ namespace Deadfile.Entity
         public string LastName { get; set; }
 
         /// <summary>
+        /// Company.
+        /// </summary>
+        [MaxLength(100, ErrorMessage = "A Client's Company must be 100 characters or fewer.")]
+        public string Company { get; set; }
+
+        /// <summary>
         /// First line of the Client's contact address. This is required.
         /// </summary>
         [Required(ErrorMessage = "You must provide an address for this Client."),

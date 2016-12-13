@@ -7,6 +7,7 @@
              Dialog:DialogParticipation.Register="{Binding}"
              xmlns:local="clr-namespace:Deadfile.Tab.Clients"
              xmlns:utils="clr-namespace:Deadfile.Model.Utils;assembly=Deadfile.Model"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:ClientsPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -47,6 +48,8 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0">Title:</TextBlock>
@@ -54,35 +57,38 @@
         <TextBlock Grid.Row="2" Grid.Column="0">Middle Names:</TextBlock>
         <TextBlock Grid.Row="3" Grid.Column="0">Last Name:</TextBlock>
         <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" />
-        <TextBlock Grid.Row="5" Grid.Column="0">Address Line 1:</TextBlock>
-        <TextBlock Grid.Row="6" Grid.Column="0">Address Line 2:</TextBlock>
-        <TextBlock Grid.Row="7" Grid.Column="0">Address Line 3:</TextBlock>
-        <TextBlock Grid.Row="8" Grid.Column="0">Post Code:</TextBlock>
-        <Label Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <TextBlock Grid.Row="10" Grid.Column="0">Phone Number 1:</TextBlock>
-        <TextBlock Grid.Row="11" Grid.Column="0">Phone Number 2:</TextBlock>
-        <TextBlock Grid.Row="12" Grid.Column="0">Phone Number 3:</TextBlock>
-        <Label Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <TextBlock Grid.Row="14" Grid.Column="0">Email Address:</TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="0">Company:</TextBlock>
+        <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" />
+        <TextBlock Grid.Row="7" Grid.Column="0">Address Line 1:</TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="0">Address Line 2:</TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="0">Address Line 3:</TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="0">Post Code:</TextBlock>
+        <Label Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <TextBlock Grid.Row="12" Grid.Column="0">Phone Number 1:</TextBlock>
+        <TextBlock Grid.Row="13" Grid.Column="0">Phone Number 2:</TextBlock>
+        <TextBlock Grid.Row="14" Grid.Column="0">Phone Number 3:</TextBlock>
         <Label Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <TextBlock Grid.Row="16" Grid.Column="0">Notes:</TextBlock>
-        <Label Grid.Row="18" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <ComboBox Grid.Row="0" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" IsEditable="True" ItemsSource="{x:Static utils:TitleUtils.AllTitles}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Title}"/>
-        <TextBox Grid.Row="1" Grid.Column="1"  IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.FirstName}"/>
-        <TextBox Grid.Row="2" Grid.Column="1"  IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.MiddleNames}"/>
-        <TextBox Grid.Row="3" Grid.Column="1"  IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.LastName}"/>
-        <TextBox Grid.Row="5" Grid.Column="1"  IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressFirstLine}"/>
-        <TextBox Grid.Row="6" Grid.Column="1"  IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressSecondLine}"/>
-        <TextBox Grid.Row="7" Grid.Column="1"  IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressThirdLine}"/>
-        <TextBox Grid.Row="8" Grid.Column="1"  IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressPostCode}"/>
-        <TextBox Grid.Row="10" Grid.Column="1"  IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.PhoneNumber1}"/>
-        <TextBox Grid.Row="11" Grid.Column="1"  IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.PhoneNumber2}"/>
-        <TextBox Grid.Row="12" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.PhoneNumber3}"/>
-        <TextBox Grid.Row="14" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.EmailAddress}"/>
-        <TextBox Grid.Row="16" Grid.Column="1" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Notes}"/>
-        <ItemsControl Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" TextBlock.Foreground="Red" />
-        <Button Grid.Row="19" Grid.Column="1" x:Name="AddNewJob" Visibility="{Binding CanAddNewJob, Converter={StaticResource BooleanToVisibility}}">Add New Job...</Button>
-        <Button Grid.Row="20" Grid.Column="1" x:Name="InvoiceClient" Visibility="{Binding CanInvoiceClient, Converter={StaticResource BooleanToVisibility}}">Invoice Client...</Button>
-        <Button Grid.Row="21" Grid.Column="1" x:Name="EmailClient" Visibility="{Binding CanEmailClient, Converter={StaticResource BooleanToVisibility}}">E-mail Client...</Button>
+        <TextBlock Grid.Row="16" Grid.Column="0">Email Address:</TextBlock>
+        <Label Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <TextBlock Grid.Row="18" Grid.Column="0">Notes:</TextBlock>
+        <Label Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <ComboBox Grid.Row="0" Grid.Column="1" controls:TextBoxHelper.Watermark="Title" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" IsEditable="True" ItemsSource="{x:Static utils:TitleUtils.AllTitles}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Title}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" controls:TextBoxHelper.Watermark="First Name" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.FirstName}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" controls:TextBoxHelper.Watermark="Middle Names" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.MiddleNames}"/>
+        <TextBox Grid.Row="3" Grid.Column="1" controls:TextBoxHelper.Watermark="Last Name" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.LastName}"/>
+        <TextBox Grid.Row="5" Grid.Column="1" controls:TextBoxHelper.Watermark="Company" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Company}"/>
+        <TextBox Grid.Row="7" Grid.Column="1" controls:TextBoxHelper.Watermark="Address First Line" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressFirstLine}"/>
+        <TextBox Grid.Row="8" Grid.Column="1" controls:TextBoxHelper.Watermark="Address Second Line" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressSecondLine}"/>
+        <TextBox Grid.Row="9" Grid.Column="1" controls:TextBoxHelper.Watermark="Address Third Line" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressThirdLine}"/>
+        <TextBox Grid.Row="10" Grid.Column="1" controls:TextBoxHelper.Watermark="Address PostCode" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressPostCode}"/>
+        <TextBox Grid.Row="12" Grid.Column="1" controls:TextBoxHelper.Watermark="1st Phone Number" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.PhoneNumber1}"/>
+        <TextBox Grid.Row="13" Grid.Column="1" controls:TextBoxHelper.Watermark="2nd Phone Number" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.PhoneNumber2}"/>
+        <TextBox Grid.Row="14" Grid.Column="1" controls:TextBoxHelper.Watermark="3rd Phone Number" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.PhoneNumber3}"/>
+        <TextBox Grid.Row="16" Grid.Column="1" controls:TextBoxHelper.Watermark="E-mail Address" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.EmailAddress}"/>
+        <TextBox Grid.Row="18" Grid.Column="1" controls:TextBoxHelper.Watermark="Notes" IsEnabled="{Binding Editable}" Style="{StaticResource ErrorStyle}" Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Notes}"/>
+        <ItemsControl Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" TextBlock.Foreground="Red" />
+        <Button Grid.Row="21" Grid.Column="1" x:Name="AddNewJob" Visibility="{Binding CanAddNewJob, Converter={StaticResource BooleanToVisibility}}">Add New Job...</Button>
+        <Button Grid.Row="22" Grid.Column="1" x:Name="InvoiceClient" Visibility="{Binding CanInvoiceClient, Converter={StaticResource BooleanToVisibility}}">Invoice Client...</Button>
+        <Button Grid.Row="23" Grid.Column="1" x:Name="EmailClient" Visibility="{Binding CanEmailClient, Converter={StaticResource BooleanToVisibility}}">E-mail Client...</Button>
     </Grid>
 </UserControl>

@@ -122,6 +122,17 @@ namespace Deadfile.Model
             }
         }
 
+        private string _company;
+        /// <summary>
+        /// Company.
+        /// </summary>
+        [MaxLength(100, ErrorMessage = "A Client's Company must be 100 characters or fewer.")]
+        public string Company
+        {
+            get { return _company; }
+            set { SetProperty(ref _company, value); }
+        }
+
         public string FullAddress
         {
             get
