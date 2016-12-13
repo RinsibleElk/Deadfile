@@ -83,6 +83,7 @@
     <Compile Include="Converters\BillableModelStateToIsEnabledConverter.cs" />
     <Compile Include="Converters\BillableModelStateToNullableBoolConverter.cs" />
     <Compile Include="Converters\CompanyToNameConverter.cs" />
+    <Compile Include="Converters\ExpenseTypeToStringConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\SwitchConverter.cs" />

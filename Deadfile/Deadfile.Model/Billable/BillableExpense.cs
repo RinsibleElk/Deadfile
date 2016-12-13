@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Entity;
 
 namespace Deadfile.Model.Billable
 {
@@ -18,10 +19,7 @@ namespace Deadfile.Model.Billable
             set { SetProperty(ref _expenseId, value); }
         }
 
-        public override BillableModelType ModelType
-        {
-            get { return BillableModelType.Expense; }
-        }
+        public override BillableModelType ModelType => BillableModelType.Expense;
 
         private string _description;
         public string Description
@@ -34,7 +32,18 @@ namespace Deadfile.Model.Billable
             }
         }
 
-        public override string Text { get { return Description + " (" + NetAmount + ")"; } }
+        private ExpenseType _type;
+        public ExpenseType Type
+        {
+            get { return _type; }
+            set
+            {
+                if (SetProperty(ref _type, value))
+                    OnPropertyChanged(nameof(Text));
+            }
+        }
+
+        public override string Text => Type + " - " + Description + " (" + NetAmount + ")";
 
         public override int Id
         {

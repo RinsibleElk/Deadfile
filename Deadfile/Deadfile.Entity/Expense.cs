@@ -25,6 +25,9 @@ namespace Deadfile.Entity
         [Required(ErrorMessage = "An Expense must have a creation date.")]
         public DateTime CreationDate { get; set; }
 
+        [Required(ErrorMessage = "An Expense must have a Type")]
+        public ExpenseType Type { get; set; }
+
         public int JobId { get; set; }
         public int? InvoiceId { get; set; }
     }

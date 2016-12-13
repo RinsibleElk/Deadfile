@@ -124,6 +124,7 @@
     <Compile Include="Reporting\UnbilledClientModel.cs" />
     <Compile Include="Utils\ApplicationTypeUtils.cs" />
     <Compile Include="Utils\CompanyUtils.cs" />
+    <Compile Include="Utils\ExpenseTypeUtils.cs" />
     <Compile Include="Utils\TitleUtils.cs" />
   </ItemGroup>
   <ItemGroup>

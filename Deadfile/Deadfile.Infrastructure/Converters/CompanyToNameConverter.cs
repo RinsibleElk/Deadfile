@@ -12,6 +12,7 @@ namespace Deadfile.Infrastructure.Converters
     /// <summary>
     /// Convert an object of type <see cref="Company"/> to its string name.
     /// </summary>
+    [ValueConversion(typeof(Company), typeof(string))]
     public class CompanyToNameConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
