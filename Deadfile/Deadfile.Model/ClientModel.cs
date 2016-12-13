@@ -215,7 +215,7 @@ namespace Deadfile.Model
             set
             {
                 OnPropertyChanging(nameof(PhoneNumbers));
-                SetProperty(ref _phoneNumber1, value);
+                SetProperty(ref _phoneNumber1, String.IsNullOrEmpty(value) ? null : value);
                 OnPropertyChanged(nameof(PhoneNumbers));
             }
         }
@@ -228,9 +228,7 @@ namespace Deadfile.Model
             set
             {
                 OnPropertyChanging(nameof(PhoneNumbers));
-                // This is to get cleared phone numbers to be free of validation.
-                var valueToSet = (value == "") ? null : value;
-                SetProperty(ref _phoneNumber2, valueToSet);
+                SetProperty(ref _phoneNumber2, String.IsNullOrEmpty(value) ? null : value);
                 OnPropertyChanged(nameof(PhoneNumbers));
             }
         }
@@ -243,9 +241,7 @@ namespace Deadfile.Model
             set
             {
                 OnPropertyChanging(nameof(PhoneNumbers));
-                // This is to get cleared phone numbers to be free of validation.
-                var valueToSet = (value == "") ? null : value;
-                SetProperty(ref _phoneNumber3, valueToSet);
+                SetProperty(ref _phoneNumber3, String.IsNullOrEmpty(value) ? null : value);
                 OnPropertyChanged(nameof(PhoneNumbers));
             }
         }
