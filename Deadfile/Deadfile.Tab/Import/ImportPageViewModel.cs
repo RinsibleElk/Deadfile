@@ -5,9 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Input;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model.Interfaces;
 using MahApps.Metro.Controls.Dialogs;
+using Prism.Commands;
 using Screen = Caliburn.Micro.Screen;
 
 namespace Deadfile.Tab.Import
@@ -22,6 +24,9 @@ namespace Deadfile.Tab.Import
         {
             _repository = repository;
             _dialogCoordinator = dialogCoordinator;
+            BrowseJobs = new DelegateCommand(BrowseJobsAction);
+            BrowseQuotations = new DelegateCommand(BrowseQuotationsAction);
+            BrowseLocalAuthorities = new DelegateCommand(BrowseLocalAuthoritiesAction);
         }
 
         public async void Import()
@@ -52,7 +57,7 @@ namespace Deadfile.Tab.Import
             }
         }
 
-        public void BrowseJobs()
+        private void BrowseJobsAction()
         {
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Multiselect = false;
@@ -64,6 +69,8 @@ namespace Deadfile.Tab.Import
         }
 
         private string _quotationsFile;
+        public ICommand BrowseJobs { get; }
+
         public string QuotationsFile
         {
             get { return _quotationsFile; }
@@ -76,7 +83,7 @@ namespace Deadfile.Tab.Import
             }
         }
 
-        public void BrowseQuotations()
+        private void BrowseQuotationsAction()
         {
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Multiselect = false;
@@ -88,6 +95,8 @@ namespace Deadfile.Tab.Import
         }
 
         private string _localAuthoritiesFile;
+        public ICommand BrowseQuotations { get; }
+
         public string LocalAuthoritiesFile
         {
             get { return _localAuthoritiesFile; }
@@ -100,7 +109,9 @@ namespace Deadfile.Tab.Import
             }
         }
 
-        public void BrowseLocalAuthorities()
+        public ICommand BrowseLocalAuthorities { get; }
+
+        private void BrowseLocalAuthoritiesAction()
         {
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Multiselect = false;

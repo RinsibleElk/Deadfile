@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Deadfile.Tab.DesignTime;
 
 namespace Deadfile.Tab.Import
@@ -17,23 +18,14 @@ namespace Deadfile.Tab.Import
         public bool CanImport { get; } = true;
         public string JobsFile { get; set; }
 
-        public void BrowseJobs()
-        {
-            throw new NotImplementedException();
-        }
+        public ICommand BrowseJobs { get; } = null;
 
         public string QuotationsFile { get; set; }
 
-        public void BrowseQuotations()
-        {
-            throw new NotImplementedException();
-        }
+        public ICommand BrowseQuotations { get; } = null;
 
         public string LocalAuthoritiesFile { get; set; }
 
-        public void BrowseLocalAuthorities()
-        {
-            throw new NotImplementedException();
-        }
+        public ICommand BrowseLocalAuthorities { get; } = null;
     }
 }
