@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Infrastructure.Services;
+using Deadfile.Model.Browser;
 using Deadfile.Tab.Browser;
 using Deadfile.Tab.Clients;
+using Deadfile.Tab.Events;
 using Deadfile.Tab.Home;
 using Deadfile.Tab.Import;
 using Deadfile.Tab.Invoices;
@@ -89,6 +91,13 @@ namespace Deadfile.Tab
         public IScreen GetFirstViewModel()
         {
             return _container.GetInstance<TabViewModel>();
+        }
+
+        public void NavigateToBrowserModel(BrowserModel browserModel)
+        {
+            _container.GetInstance<Prism.Events.IEventAggregator>()
+                .GetEvent<SelectedItemEvent>()
+                .Publish(new SelectedItemPacket(browserModel.ModelType, browserModel.ParentId, browserModel.Id));
         }
     }
 }

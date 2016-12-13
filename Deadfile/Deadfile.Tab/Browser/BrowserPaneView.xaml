@@ -43,12 +43,12 @@
                 <i:Interaction.Behaviors>
                     <behaviors:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
                 </i:Interaction.Behaviors>
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="{x:Type TreeViewItem}">
-                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                    </Style>
-                </TreeView.ItemContainerStyle>
                 <TreeView.Resources>
+                    <ContextMenu x:Key="OpenInNewTabMenu">
+                        <MenuItem Header="Open In New Tab..."
+                                  Command="{Binding RelativeSource={RelativeSource AncestorType=controls:MetroWindow}, Path=DataContext.OpenNewTabToBrowserModelCommand}"
+                                  CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
+                    </ContextMenu>
                     <HierarchicalDataTemplate DataType="{x:Type browsermodel:BrowserClient}" ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal">
                             <Image x:Name="imgIcon" Height="16" Width="16" Source="pack://application:,,,/Deadfile;component/Resources/client-tab.png" />
@@ -98,6 +98,12 @@
                         </HierarchicalDataTemplate.Triggers>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="ContextMenu" Value="{StaticResource OpenInNewTabMenu}"/>
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
             </TreeView>
         </Grid>
     </Border>

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Deadfile.Infrastructure;
+using Deadfile.Model.Browser;
 using Deadfile.Tab;
 using Dragablz;
 using Prism.Commands;
@@ -35,6 +36,7 @@ namespace Deadfile
             _container = container;
             InterTabClient = interTabClient;
             OpenNewTab = new DelegateCommand(OpenTab);
+            OpenNewTabToBrowserModelCommand = new DelegateCommand<BrowserModel>(OpenTabToBrowserItem);
             if (_isFirst)
             {
                 OpenTab();
@@ -50,6 +52,14 @@ namespace Deadfile
             ActivateItem(tabViewModel);
         }
 
+        public void OpenTabToBrowserItem(BrowserModel browserModel)
+        {
+            var tabModule = _container.GetInstance<TabModule>();
+            var tabViewModel = tabModule.GetFirstViewModel();
+            ActivateItem(tabViewModel);
+            tabModule.NavigateToBrowserModel(browserModel);
+        }
+
         public ItemActionCallback ClosingItemActionCallback { get { return _closingItemActionCallback; } }
         private readonly ItemActionCallback _closingItemActionCallback;
 
@@ -61,5 +71,7 @@ namespace Deadfile
         public IInterTabClient InterTabClient { get; private set; }
 
         public ICommand OpenNewTab { get; }
+
+        public ICommand OpenNewTabToBrowserModelCommand { get; }
     }
 }
