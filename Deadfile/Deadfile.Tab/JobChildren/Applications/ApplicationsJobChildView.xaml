@@ -91,7 +91,11 @@
                                             SelectedDate="{Binding CreationDate}"
                                             IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             IsTodayHighlighted="True" />
-                                <ComboBox Grid.Row="3"
+                                <DatePicker Grid.Row="3"
+                                            SelectedDate="{Binding EstimatedDecisionDate}"
+                                            IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            IsTodayHighlighted="True" />
+                                <ComboBox Grid.Row="4"
                                           IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                           ItemsSource="{x:Static utils:ApplicationTypeUtils.AllApplicationTypes}"
                                           SelectedItem="{Binding Type}"
@@ -102,9 +106,6 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <controls:NumericUpDown Grid.Row="4"
-                                                        Value="{Binding NetAmount}"
-                                                        IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                 <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
                                     <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             Command="{Binding Path=DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">

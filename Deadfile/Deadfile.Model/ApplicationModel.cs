@@ -45,7 +45,15 @@ namespace Deadfile.Model
         public DateTime CreationDate
         {
             get { return _creationDate; }
-            set { SetProperty(ref _creationDate, value); }
+            set
+            {
+                if (SetProperty(ref _creationDate, value))
+                {
+                    DisableUndoTracking = true;
+                    EstimatedDecisionDate = value.AddDays(8*7);
+                    DisableUndoTracking = false;
+                }
+            }
         }
 
         private ApplicationType _applicationType;
@@ -56,7 +64,7 @@ namespace Deadfile.Model
             set { SetProperty(ref _applicationType, value); }
         }
 
-        private DateTime _estimatedDecisionDate;
+        private DateTime _estimatedDecisionDate = DateTime.Today.AddDays(8*7);
         [Required(ErrorMessage = "An Application must have an estimated decision date.")]
         public DateTime EstimatedDecisionDate
         {

@@ -2459,6 +2459,7 @@ namespace Deadfile.Model.DesignTime
                 li.Add(new Application()
                 {
                     CreationDate = creationDate,
+                    EstimatedDecisionDate = creationDate.AddDays(8*7),
                     JobId = jobId,
                     Type = applicationType,
                     LocalAuthority = localAuthority.Name,
