@@ -14,5 +14,6 @@ namespace Deadfile.Tab.Jobs
         List<JobChildExperience> JobChildren { get; }
         JobChildExperience SelectedJobChild { get; set; }
         bool JobChildIsEditable { get; set; }
+        bool ChildIsEditable { get; set; }
     }
 }

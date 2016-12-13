@@ -83,5 +83,10 @@ namespace Deadfile.Tab.Common
         /// The selected index.
         /// </summary>
         int SelectedIndex { get; set; }
+
+        /// <summary>
+        /// Set by the parent when it becomes (un)editable. Used to block changes.
+        /// </summary>
+        bool ParentEditable { get; set; }
     }
 }

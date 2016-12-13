@@ -28,6 +28,7 @@ namespace Deadfile.Tab.DesignTime
         }
 
         public int SelectedIndex { get; set; }
+        public bool ParentEditable { get; set; }
 
         IUndoTracker ISimpleEditableItemViewModel.UndoTracker
         {

@@ -271,6 +271,7 @@ namespace Deadfile.Tab.Common
         }
 
         public int SelectedIndex { get; set; }
+        public bool ParentEditable { get; set; }
 
         IUndoTracker ISimpleEditableItemViewModel.UndoTracker
         {

@@ -23,5 +23,6 @@ namespace Deadfile.Tab.Jobs
         public List<JobChildExperience> JobChildren { get; } = JobsPageViewModel.AllJobChildExperiences;
         public JobChildExperience SelectedJobChild { get; set; } = JobChildExperience.Applications;
         public bool JobChildIsEditable { get; set; } = false;
+        public bool ChildIsEditable { get; set; } = false;
     }
 }

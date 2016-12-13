@@ -81,6 +81,9 @@ namespace Deadfile.Tab.Jobs
 
         public override void EditingStatusChanged(bool editable)
         {
+            // These two are both used to prevent moving the selection around while the parent job is editable.
+            _jobChildViewModel.ParentEditable = editable;
+            ChildIsEditable = editable;
         }
 
         public override void PerformSave(SaveMessage message)
@@ -142,9 +145,22 @@ namespace Deadfile.Tab.Jobs
                 _jobChildIsEditable = value;
                 NotifyOfPropertyChange(() => JobChildIsEditable);
 
+                ChildIsEditable = value;
+
                 var message = _jobChildIsEditable ? CanDiscardMessage.CannotDiscard : CanDiscardMessage.CanDiscard;
                 Logger.Info("Event,CanDiscardEvent,Send,{0},{1}", _tabIdentity, message);
                 EventAggregator.GetEvent<CanDiscardEvent>().Publish(message);
+            }
+        }
+
+        public bool ChildIsEditable
+        {
+            get { return _childIsEditable; }
+            set
+            {
+                if (value == _childIsEditable) return;
+                _childIsEditable = value;
+                NotifyOfPropertyChange(() => ChildIsEditable);
             }
         }
 
@@ -164,6 +180,8 @@ namespace Deadfile.Tab.Jobs
         }
 
         private int _clientId;
+        private bool _childIsEditable;
+
         public int ClientId
         {
             get { return _clientId; }

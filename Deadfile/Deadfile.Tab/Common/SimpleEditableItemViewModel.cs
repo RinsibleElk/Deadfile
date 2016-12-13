@@ -98,6 +98,8 @@ namespace Deadfile.Tab.Common
             }
         }
 
+        //@@@ Store if the parent is editable.
+
         public List<string> Errors
         {
             get { return _errors; }
@@ -276,6 +278,22 @@ namespace Deadfile.Tab.Common
                 {
                     _maintainSelectionTimer.Start();
                 }
+            }
+        }
+
+        private bool _parentEditable;
+        public bool ParentEditable
+        {
+            get { return _parentEditable; }
+            set
+            {
+                if (value == _parentEditable) return;
+                _parentEditable = value;
+                NotifyOfPropertyChange(() => ParentEditable);
+
+                // Maintain the selection.
+                if (value) _editingSelectedIndex = _selectedIndex;
+                else _editingSelectedIndex = null;
             }
         }
 
