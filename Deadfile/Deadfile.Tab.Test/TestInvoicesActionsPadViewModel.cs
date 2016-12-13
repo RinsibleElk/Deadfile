@@ -111,7 +111,7 @@ namespace Deadfile.Tab.Test
                 host.LockedForEditingEvent.Publish(new LockedForEditingMessage() { IsLocked = true });
 
                 // Checks.
-                Assert.False(host.ViewModel.CanPrintItem);
+                Assert.True(host.ViewModel.CanPrintItem);
                 Assert.False(host.ViewModel.EditItemIsVisible);
                 Assert.True(host.ViewModel.SaveItemIsVisible);
                 Assert.False(host.ViewModel.DeleteItemIsVisible);
@@ -134,7 +134,7 @@ namespace Deadfile.Tab.Test
                 host.LockedForEditingEvent.Publish(new LockedForEditingMessage() { IsLocked = false });
 
                 // Checks.
-                Assert.False(host.ViewModel.CanPrintItem);
+                Assert.True(host.ViewModel.CanPrintItem);
                 Assert.True(host.ViewModel.EditItemIsVisible);
                 Assert.False(host.ViewModel.SaveItemIsVisible);
                 Assert.True(host.ViewModel.DeleteItemIsVisible);
