@@ -215,11 +215,10 @@ namespace Deadfile.Tab.Test
                 JobId = 0,
                 InvoiceId = ModelBase.NewModelId
             };
-            var billableItem1 = new BillableApplication
+            var billableItem1 = new BillableExpense
             {
                 InvoiceId = null,
-                ApplicationId = 0,
-                LocalAuthorityReference = "INVOICEREF0",
+                ExpenseId = 0,
                 NetAmount = 100.0,
                 State = BillableModelState.Excluded
             };
@@ -227,7 +226,7 @@ namespace Deadfile.Tab.Test
             var billableItem2 = new BillableExpense
             {
                 InvoiceId = null,
-                ExpenseId = 0,
+                ExpenseId = 1,
                 Description = "Expense Description",
                 NetAmount = 50.0,
                 State = BillableModelState.Excluded
@@ -245,7 +244,7 @@ namespace Deadfile.Tab.Test
             var billableItem4 = new BillableBillableHour
             {
                 InvoiceId = 27,
-                BillableHourId = 0,
+                BillableHourId = 1,
                 Description = "Billable Hour Description",
                 NetAmount = 35.0,
                 State = BillableModelState.Claimed

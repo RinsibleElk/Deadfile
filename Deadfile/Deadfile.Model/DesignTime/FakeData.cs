@@ -2210,15 +2210,6 @@ namespace Deadfile.Model.DesignTime
             using (var dbContext = new DeadfileContext())
             {
                 foreach (var billable in (from job in dbContext.Jobs
-                    join billable in dbContext.Applications on job.JobId equals billable.JobId
-                    where job.ClientId == clientId
-                    where !billable.InvoiceId.HasValue
-                    select billable))
-                {
-                    allBillableTypesAndIds.Add(new Tuple<BillableModelType, int>(BillableModelType.Application,
-                        billable.ApplicationId));
-                }
-                foreach (var billable in (from job in dbContext.Jobs
                     join billable in dbContext.Expenses on job.JobId equals billable.JobId
                     where job.ClientId == clientId
                     where !billable.InvoiceId.HasValue
@@ -2249,12 +2240,7 @@ namespace Deadfile.Model.DesignTime
             {
                 foreach (var selectedBillableTypesAndId in selectedBillableTypesAndIds)
                 {
-                    if (selectedBillableTypesAndId.Item1 == BillableModelType.Application)
-                    {
-                        var billable = dbContext.Applications.Find(new object[1] {selectedBillableTypesAndId.Item2});
-                        selectedJobIds.Add(billable.JobId);
-                    }
-                    else if (selectedBillableTypesAndId.Item1 == BillableModelType.BillableHour)
+                    if (selectedBillableTypesAndId.Item1 == BillableModelType.BillableHour)
                     {
                         var billable = dbContext.BillableHours.Find(new object[1] {selectedBillableTypesAndId.Item2});
                         selectedJobIds.Add(billable.JobId);
@@ -2321,13 +2307,7 @@ namespace Deadfile.Model.DesignTime
                 string item = "";
                 foreach (var typeAndId in selectedBillableTypesAndIds)
                 {
-                    if (typeAndId.Item1 == BillableModelType.Application)
-                    {
-                        var billable = dbContext.Applications.Find(new object[1] { typeAndId.Item2 });
-                        billable.InvoiceId = invoiceId;
-                        item = "Inspection of property to take measurements and preparation of plans for " + ApplicationTypeUtils.ConvertToString(billable.Type);
-                    }
-                    else if (typeAndId.Item1 == BillableModelType.Expense)
+                    if (typeAndId.Item1 == BillableModelType.Expense)
                     {
                         var billable = dbContext.Expenses.Find(new object[1] { typeAndId.Item2 });
                         billable.InvoiceId = invoiceId;
@@ -2401,11 +2381,11 @@ namespace Deadfile.Model.DesignTime
                     dbContext.Applications.Add(new Application()
                     {
                         CreationDate = creationDate,
+                        EstimatedDecisionDate = creationDate.AddDays(8*7),
                         JobId = job.JobId,
                         Type = applicationType,
                         LocalAuthority = localAuthority,
-                        LocalAuthorityReference = localAuthority + "_" + reference,
-                        NetAmount = (double)random.Next(50, 150)
+                        LocalAuthorityReference = localAuthority + "_" + reference
                     });
                 }
             }

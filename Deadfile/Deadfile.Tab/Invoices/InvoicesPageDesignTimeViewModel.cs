@@ -35,7 +35,7 @@ namespace Deadfile.Tab.Invoices
                 JobId = 1314,
                 State = BillableModelState.Excluded
             };
-            opr.Children.Add(new BillableApplication() {});
+            opr.Children.Add(new BillableExpense() {});
             Jobs.Add(opr);
             Jobs.Add(new BillableJob()
             {

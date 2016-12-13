@@ -12,7 +12,6 @@ namespace Deadfile.Model.Billable
     public enum BillableModelType
     {
         Job,
-        Application,
         Expense,
         BillableHour
     }
