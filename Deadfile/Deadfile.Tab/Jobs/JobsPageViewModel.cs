@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using Deadfile.Entity;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
+using Deadfile.Model.Browser;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
@@ -90,7 +92,17 @@ namespace Deadfile.Tab.Jobs
         {
             try
             {
+                // First save the job.
                 _repository.SaveJob(SelectedItem);
+
+                // If the job is now in an inactive state, check if the client no longer has any active jobs and make it inactive.
+                var jobsForClient = _repository.GetBrowserJobsForClient(BrowserMode.Client, false, SelectedItem.ClientId);
+                if (jobsForClient.FirstOrDefault() == null)
+                {
+                    var clientModel = _repository.GetClientById(SelectedItem.ClientId);
+                    clientModel.Status = ClientStatus.Inactive;
+                    _repository.SaveClient(clientModel);
+                }
             }
             catch (Exception e)
             {
@@ -103,7 +115,17 @@ namespace Deadfile.Tab.Jobs
         {
             try
             {
+                // First delete the job.
                 _repository.DeleteJob(SelectedItem);
+
+                // If the job is now in an inactive state, check if the client no longer has any active jobs and make it inactive.
+                var jobsForClient = _repository.GetBrowserJobsForClient(BrowserMode.Client, false, SelectedItem.ClientId);
+                if (jobsForClient.FirstOrDefault() == null)
+                {
+                    var clientModel = _repository.GetClientById(SelectedItem.ClientId);
+                    clientModel.Status = ClientStatus.Inactive;
+                    _repository.SaveClient(clientModel);
+                }
             }
             catch (Exception e)
             {

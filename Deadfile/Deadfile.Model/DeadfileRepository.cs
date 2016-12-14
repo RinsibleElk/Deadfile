@@ -233,6 +233,7 @@ namespace Deadfile.Model
             {
                 foreach (var job in (from job in dbContext.Jobs
                     where job.ClientId == clientId
+                    where (includeInactiveEnabled || job.Status == JobStatus.Active)
                     select
                     new BrowserJob()
                     {
