@@ -36,9 +36,9 @@ namespace Deadfile.Tab.JobChildren.Applications
             return _repository.GetApplicationsForJob(jobId, filter);
         }
 
-        public override void OnNavigatedTo(int jobId)
+        public override void OnNavigatedTo(ClientAndJobNavigationKey key)
         {
-            base.OnNavigatedTo(jobId);
+            base.OnNavigatedTo(key);
             LocalAuthorities = new ObservableCollection<string>(_repository.GetLocalAuthorities(null).Select((la) => la.Name));
         }
 

@@ -16,9 +16,14 @@ namespace Deadfile.Tab.Events
             ParentId = parentId;
             Id = id;
         }
-        public BrowserModelType Type { get; private set; }
-        public int ParentId { get; private set; }
-        public int Id { get; private set; }
+        public BrowserModelType Type { get; }
+        public int ParentId { get; }
+        public int Id { get; }
+
+        public override string ToString()
+        {
+            return $"[Type={Type}, ParentId={ParentId}, Id={Id}]";
+        }
     }
     /// <summary>
     /// Used to communicate between ContentRegion and BrowserRegion.

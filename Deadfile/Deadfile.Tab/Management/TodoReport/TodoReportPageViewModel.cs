@@ -25,23 +25,32 @@ namespace Deadfile.Tab.Management.TodoReport
     /// </summary>
     class TodoReportPageViewModel : ManagementPageViewModel<JobTaskModel>, ITodoReportPageViewModel
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly TabIdentity _tabIdentity;
         private readonly IDeadfileRepository _repository;
         private readonly DelegateCommand<JobTaskModel> _navigateToJob;
 
         /// <summary>
         /// Create a new <see cref="TodoReportPageViewModel"/>.
         /// </summary>
+        /// <param name="tabIdentity"></param>
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
-        public TodoReportPageViewModel(IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator, false)
+        public TodoReportPageViewModel(TabIdentity tabIdentity,
+            IDeadfileRepository repository,
+            IEventAggregator eventAggregator) : base(eventAggregator, false)
         {
+            _tabIdentity = tabIdentity;
             _repository = repository;
             _navigateToJob = new DelegateCommand<JobTaskModel>(PerformNavigateToJob);
         }
 
         private void PerformNavigateToJob(JobTaskModel clientModel)
         {
-            //TODO Implement this.
+            var packet = new SelectedItemPacket(BrowserModelType.Job, SelectedItem.ClientId, SelectedItem.JobId);
+            Logger.Info("Event,SelectedItemEvent,Send,{0},{1}", _tabIdentity, packet);
+            EventAggregator.GetEvent<SelectedItemEvent>()
+                .Publish(packet);
         }
 
         /// <summary>

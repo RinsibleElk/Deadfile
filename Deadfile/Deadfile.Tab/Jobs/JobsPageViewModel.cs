@@ -153,7 +153,7 @@ namespace Deadfile.Tab.Jobs
                 if (_selectedJobChild == JobChildExperience.Empty)
                     _navigationService.RequestDeactivate(this, nameof(JobChildViewModel));
                 else
-                    _navigationService.RequestNavigate(this, nameof(JobChildViewModel), _selectedJobChild + JobChildKeys.JobChildKey, SelectedItem.JobId);
+                    _navigationService.RequestNavigate(this, nameof(JobChildViewModel), _selectedJobChild + JobChildKeys.JobChildKey, new ClientAndJobNavigationKey(SelectedItem.ClientId, SelectedItem.JobId));
             }
         }
 

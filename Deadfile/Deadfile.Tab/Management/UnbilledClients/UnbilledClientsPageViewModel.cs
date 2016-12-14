@@ -25,24 +25,32 @@ namespace Deadfile.Tab.Management.UnbilledClients
     /// </summary>
     class UnbilledClientsPageViewModel : ManagementPageViewModel<UnbilledClientModel>, IUnbilledClientsPageViewModel
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly TabIdentity _tabIdentity;
         private readonly IDeadfileRepository _repository;
         private readonly DelegateCommand<UnbilledClientModel> _navigateToClient;
 
         /// <summary>
         /// Create a new <see cref="UnbilledClientsPageViewModel"/>.
         /// </summary>
+        /// <param name="tabIdentity"></param>
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
-        public UnbilledClientsPageViewModel(IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator, false)
+        public UnbilledClientsPageViewModel(TabIdentity tabIdentity,
+            IDeadfileRepository repository,
+            IEventAggregator eventAggregator) : base(eventAggregator, false)
         {
+            _tabIdentity = tabIdentity;
             _repository = repository;
             _navigateToClient = new DelegateCommand<UnbilledClientModel>(PerformNavigateToClient);
         }
 
         private void PerformNavigateToClient(UnbilledClientModel clientModel)
         {
+            var packet = new SelectedItemPacket(BrowserModelType.Client, ModelBase.NewModelId, clientModel.ClientId);
+            Logger.Info("Event,SelectedItemEvent,Send,{0},{1}", _tabIdentity, packet);
             EventAggregator.GetEvent<SelectedItemEvent>()
-                .Publish(new SelectedItemPacket(BrowserModelType.Client, ModelBase.NewModelId, clientModel.ClientId));
+                .Publish(packet);
         }
 
         /// <summary>

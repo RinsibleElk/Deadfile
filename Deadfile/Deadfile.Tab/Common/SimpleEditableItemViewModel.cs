@@ -21,7 +21,7 @@ namespace Deadfile.Tab.Common
     /// These are parameterised by the job id of the parent job.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    abstract class SimpleEditableItemViewModel<T> : ParameterisedViewModel<int>, ISimpleEditableItemViewModel<T> where T : JobChildModelBase, new()
+    abstract class SimpleEditableItemViewModel<T> : ParameterisedViewModel<ClientAndJobNavigationKey>, ISimpleEditableItemViewModel<T> where T : JobChildModelBase, new()
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly DelegateCommand _editCommand;
@@ -134,7 +134,7 @@ namespace Deadfile.Tab.Common
         {
             // Populate the table.
             // We always add one more, to represent the user wanting to add a new one.
-            var value = new T() { JobId = _jobId };
+            var value = new T() { JobId = _jobId, ClientId = _clientId };
             Items = new ObservableCollection<T>(GetModelsForJobId(_jobId, _filter));
             Items.Add(value);
             SelectedItem = value;
@@ -182,6 +182,7 @@ namespace Deadfile.Tab.Common
 
         private T _selectedItem;
         private int _jobId = ModelBase.NewModelId;
+        private int _clientId = ModelBase.NewModelId;
         private ObservableCollection<T> _items;
 
         /// <summary>
@@ -209,13 +210,14 @@ namespace Deadfile.Tab.Common
         /// <summary>
         /// The user is navigating away.
         /// </summary>
-        /// <param name="jobId"></param>
-        public override void OnNavigatedTo(int jobId)
+        /// <param name="key"></param>
+        public override void OnNavigatedTo(ClientAndJobNavigationKey key)
         {
-            base.OnNavigatedTo(jobId);
+            base.OnNavigatedTo(key);
 
             // Hold on to the parent job.
-            _jobId = jobId;
+            _jobId = key.JobId;
+            _clientId = key.ClientId;
 
             // Populate.
             Populate();
@@ -233,9 +235,10 @@ namespace Deadfile.Tab.Common
             base.OnNavigatedFrom();
 
             _jobId = ModelBase.NewModelId;
+            _clientId = ModelBase.NewModelId;
 
             // Bin the table.
-            SelectedItem = new T() {JobId = _jobId};
+            SelectedItem = new T() {JobId = _jobId, ClientId = _clientId};
             Items = new ObservableCollection<T>();
             Items.Add(SelectedItem);
 
