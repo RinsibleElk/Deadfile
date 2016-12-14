@@ -8,8 +8,10 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model.Interfaces;
+using Deadfile.Tab.Common;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
+using Prism.Events;
 using Screen = Caliburn.Micro.Screen;
 
 namespace Deadfile.Tab.Import
@@ -17,12 +19,15 @@ namespace Deadfile.Tab.Import
     class ImportPageViewModel : Screen, IImportPageViewModel, INavigationAware
     {
         private readonly IDeadfileRepository _repository;
+        private readonly IEventAggregator _eventAggregator;
         private readonly IDialogCoordinator _dialogCoordinator;
 
         public ImportPageViewModel(IDeadfileRepository repository,
+            IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
         {
             _repository = repository;
+            _eventAggregator = eventAggregator;
             _dialogCoordinator = dialogCoordinator;
             BrowseJobs = new DelegateCommand(BrowseJobsAction);
             BrowseQuotations = new DelegateCommand(BrowseQuotationsAction);
@@ -124,6 +129,8 @@ namespace Deadfile.Tab.Import
 
         public void OnNavigatedTo(object parameters)
         {
+            // convert camel case to spaces
+            DisplayNameBroadcaster.BroadcastDisplayName(_eventAggregator, Experience);
         }
 
         public void OnNavigatedFrom()
