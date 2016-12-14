@@ -174,6 +174,21 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
+        public void DeleteExpense(ExpenseModel expenseModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteLocalAuthority(LocalAuthorityModel localAuthorityModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteQuotation(QuotationModel quotationModel)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
             throw new NotImplementedException();

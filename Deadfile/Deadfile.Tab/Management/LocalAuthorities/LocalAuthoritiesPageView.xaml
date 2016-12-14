@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             dialog:DialogParticipation.Register="{Binding}"
              xmlns:local="clr-namespace:Deadfile.Tab.Management.LocalAuthorities"
              xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
@@ -74,6 +76,10 @@
                                     <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             Command="{Binding Path=DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                         Edit
+                                    </Button>
+                                    <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            Command="{Binding Path=DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                        Delete
                                     </Button>
                                     <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             Command="{Binding Path=DataContext.DiscardCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">

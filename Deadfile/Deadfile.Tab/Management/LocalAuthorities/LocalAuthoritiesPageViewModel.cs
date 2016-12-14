@@ -11,6 +11,7 @@ using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Home;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using IEventAggregator = Prism.Events.IEventAggregator;
 
@@ -30,9 +31,13 @@ namespace Deadfile.Tab.Management.LocalAuthorities
         /// Create a new <see cref="LocalAuthoritiesPageViewModel"/>.
         /// </summary>
         /// <param name="urlNavigationService"></param>
+        /// <param name="dialogCoordinator"></param>
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
-        public LocalAuthoritiesPageViewModel(IUrlNavigationService urlNavigationService, IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator, true)
+        public LocalAuthoritiesPageViewModel(IUrlNavigationService urlNavigationService,
+            IDialogCoordinator dialogCoordinator,
+            IDeadfileRepository repository,
+            IEventAggregator eventAggregator) : base(dialogCoordinator, eventAggregator, true)
         {
             _urlNavigationService = urlNavigationService;
             _repository = repository;
@@ -55,7 +60,7 @@ namespace Deadfile.Tab.Management.LocalAuthorities
 
         protected override void PerformDelete()
         {
-            throw new NotImplementedException();
+            _repository.DeleteLocalAuthority(SelectedItem);
         }
 
         protected override void PerformSave()

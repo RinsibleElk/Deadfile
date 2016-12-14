@@ -746,6 +746,36 @@ namespace Deadfile.Model
             }
         }
 
+        public void DeleteExpense(ExpenseModel expenseModel)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var expense = dbContext.Expenses.Find(new object[1] { expenseModel.Id });
+                dbContext.Expenses.Remove(expense);
+                dbContext.SaveChanges();
+            }
+        }
+
+        public void DeleteLocalAuthority(LocalAuthorityModel localAuthorityModel)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var localAuthority = dbContext.LocalAuthorities.Find(new object[1] { localAuthorityModel.Id });
+                dbContext.LocalAuthorities.Remove(localAuthority);
+                dbContext.SaveChanges();
+            }
+        }
+
+        public void DeleteQuotation(QuotationModel quotationModel)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var quotation = dbContext.Quotations.Find(new object[1] { quotationModel.Id });
+                dbContext.Quotations.Remove(quotation);
+                dbContext.SaveChanges();
+            }
+        }
+
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
             using (var dbContext = new DeadfileContext())

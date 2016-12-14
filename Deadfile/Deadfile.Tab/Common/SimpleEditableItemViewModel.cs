@@ -66,7 +66,7 @@ namespace Deadfile.Tab.Common
 
         private async void DeleteItem()
         {
-            var result = await _dialogCoordinator.ShowMessageAsync(this, "Confirm Deletion", "Are you sure?", MessageDialogStyle.AffirmativeAndNegative);
+            var result = await _dialogCoordinator.ShowMessageAsync(this, "Confirm Deletion", "Are you sure? This action is permanent.", MessageDialogStyle.AffirmativeAndNegative);
             // Open a dialog to ask the user if they are sure.
             if (result == MessageDialogResult.Affirmative)
             {

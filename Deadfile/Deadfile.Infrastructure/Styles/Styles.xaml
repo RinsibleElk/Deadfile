@@ -3,13 +3,26 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
-    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls">
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:entity="clr-namespace:Deadfile.Entity;assembly=Deadfile.Entity">
 
     <LinearGradientBrush x:Key="ContentBackgroundBrush" StartPoint="0.47,0" EndPoint="0.53,1">
         <GradientStop Color="#FFFFFFFF" Offset="0.1" />
         <GradientStop Color="#FFABFFFF" Offset="0.3" />
         <GradientStop Color="#FF00AFFF" Offset="0.9" />
     </LinearGradientBrush>
+
+    <Style TargetType="{x:Type DatePickerTextBox}">
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <TextBox x:Name="PART_TextBox"
+                                     Text="{Binding Path=SelectedDate, StringFormat='dd/MM/yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key="OpenFileMetroTextBox"
        BasedOn="{StaticResource ButtonCommandMetroTextBox}"
@@ -71,6 +84,50 @@
         <GradientStop Color="#33000000" Offset="0.992"/>
         <GradientStop Color="#33000000" Offset="0.085"/>
     </LinearGradientBrush>
+
+    <Style x:Key="PksTextBlock" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="DarkBlue" />
+        <Setter Property="Margin" Value="0,20,0,20" />
+    </Style>
+    <Style x:Key="InvoiceTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="Width" Value="150" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="Calibri" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style x:Key="InvoiceTextBoxFullWidth" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="Calibri" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style x:Key="PksTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="Width" Value="150" />
+        <Setter Property="Margin" Value="0,15,0,15" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="Calibri" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style x:Key="PksTextBoxFullWidth" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="Margin" Value="0,15,0,15" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="Calibri" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style x:Key="InvoiceDatePicker" TargetType="DatePicker">
+        <Setter Property="Width" Value="150" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="Calibri" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style x:Key="PksDatePicker" TargetType="DatePicker">
+        <Setter Property="Width" Value="150" />
+        <Setter Property="Margin" Value="0,15,0,15" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="Calibri" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
 
     <Style x:Key="TreeViewTransparentBackground" TargetType="TreeView">
         <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -1054,4 +1111,6 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    
+    
 </ResourceDictionary>

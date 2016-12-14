@@ -11,30 +11,20 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:converters="clr-namespace:Deadfile.Infrastructure.Converters;assembly=Deadfile.Infrastructure"
              xmlns:entity="clr-namespace:Deadfile.Entity;assembly=Deadfile.Entity"
+             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
              d:DataContext="{d:DesignInstance Type=local:ExpensesJobChildDesignTimeViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <designTime:DesignTimeResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Converters.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </designTime:DesignTimeResourceDictionary>
+    </UserControl.Resources>
     <DockPanel LastChildFill="True">
         <DockPanel.Resources>
-            <ObjectDataProvider MethodName="GetValues"
-                ObjectType="{x:Type entity:ExpenseType}"
-                x:Key="ExpenseTypeValues">
-                <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="entity:ExpenseType" />
-                </ObjectDataProvider.MethodParameters>
-            </ObjectDataProvider>
-            <converters:ExpenseTypeToStringConverter x:Key="ExpenseTypeToString" />
-            <Style TargetType="{x:Type DatePickerTextBox}">
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                <Setter Property="Control.Template">
-                    <Setter.Value>
-                        <ControlTemplate>
-                            <TextBox x:Name="PART_TextBox"
-                                     Text="{Binding Path=SelectedDate, StringFormat='dd/MM/yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
             <DataTemplate x:Key="ExpanderHeaderTemplate" DataType="model:ExpenseModel">
                 <Border Height="24">
                     <StackPanel Orientation="Horizontal">
@@ -87,9 +77,15 @@
                                 </Grid.RowDefinitions>
                                 <ComboBox Grid.Row="0"
                                           ItemsSource="{Binding Source={StaticResource ExpenseTypeValues}}"
-                                          SelectedItem="{Binding Type}"
+                                          SelectedItem="{Binding Type, Mode=TwoWay}"
                                           IsEditable="False"
-                                          IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                          IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource ExpenseTypeToString}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                                 <TextBox Grid.Row="1"
                                          IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                          controls:TextBoxHelper.Watermark="Description"
@@ -109,6 +105,10 @@
                                     <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             Command="{Binding Path=DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                         Edit
+                                    </Button>
+                                    <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            Command="{Binding Path=DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                        Delete
                                     </Button>
                                     <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             Command="{Binding Path=DataContext.DiscardCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">

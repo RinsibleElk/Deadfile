@@ -29,7 +29,7 @@ namespace Deadfile.Tab.JobChildren.Expenses
 
         protected override void PerformDelete()
         {
-            throw new NotImplementedException();
+            _repository.DeleteExpense(SelectedItem);
         }
 
         protected override void PerformSave()

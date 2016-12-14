@@ -23,9 +23,9 @@ namespace Deadfile.Infrastructure.Converters
         /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (targetType != typeof(string))
-                throw new ApplicationException(
-                    "Attempted to convert an expense type to something other than a string");
+//            if (targetType != typeof(string))
+//                throw new ApplicationException(
+//                    "Attempted to convert an expense type to something other than a string");
             var expenseType = (ExpenseType)value;
             return ExpenseTypeUtils.GetName(expenseType);
 

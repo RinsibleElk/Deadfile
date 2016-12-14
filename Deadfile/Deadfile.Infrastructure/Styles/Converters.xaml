@@ -10,6 +10,7 @@
     <converters:BillableModelStateToNullableBoolConverter x:Key="BillableModelStateToNullableBool"/>
     <converters:BillableModelStateToIsEnabledConverter x:Key="BillableModelStateToIsEnabled"/>
     <converters:JobTaskToNullableBooleanStateConverter x:Key="JobTaskStateToBoolean" />
+    <converters:ExpenseTypeToStringConverter x:Key="ExpenseTypeToString" />
     <ObjectDataProvider MethodName="GetValues"
                 ObjectType="{x:Type entity:ClientStatus}"
                 x:Key="ClientStatusValues">
@@ -22,6 +23,20 @@
                 x:Key="JobStatusValues">
         <ObjectDataProvider.MethodParameters>
             <x:Type TypeName="entity:JobStatus" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider MethodName="GetValues"
+                ObjectType="{x:Type entity:InvoiceStatus}"
+                x:Key="InvoiceStatusValues">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="entity:InvoiceStatus" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider MethodName="GetValues"
+                ObjectType="{x:Type entity:ExpenseType}"
+                x:Key="ExpenseTypeValues">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="entity:ExpenseType" />
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
 </ResourceDictionary>

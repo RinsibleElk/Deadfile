@@ -11,6 +11,7 @@ using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Home;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using IEventAggregator = Prism.Events.IEventAggregator;
 
@@ -26,9 +27,12 @@ namespace Deadfile.Tab.Management.DefineQuotations
         /// <summary>
         /// Create a new <see cref="DefineQuotationsPageViewModel"/>.
         /// </summary>
+        /// <param name="dialogCoordinator"></param>
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
-        public DefineQuotationsPageViewModel(IDeadfileRepository repository, IEventAggregator eventAggregator) : base(eventAggregator, true)
+        public DefineQuotationsPageViewModel(IDialogCoordinator dialogCoordinator,
+            IDeadfileRepository repository,
+            IEventAggregator eventAggregator) : base(dialogCoordinator, eventAggregator, true)
         {
             _repository = repository;
         }
@@ -44,7 +48,7 @@ namespace Deadfile.Tab.Management.DefineQuotations
 
         protected override void PerformDelete()
         {
-            throw new NotImplementedException();
+            _repository.DeleteQuotation(SelectedItem);
         }
 
         protected override void PerformSave()

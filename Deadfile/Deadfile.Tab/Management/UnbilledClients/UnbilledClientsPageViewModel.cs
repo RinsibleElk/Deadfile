@@ -14,6 +14,7 @@ using Deadfile.Model.Reporting;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
 using Deadfile.Tab.Home;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using IEventAggregator = Prism.Events.IEventAggregator;
 
@@ -34,11 +35,13 @@ namespace Deadfile.Tab.Management.UnbilledClients
         /// Create a new <see cref="UnbilledClientsPageViewModel"/>.
         /// </summary>
         /// <param name="tabIdentity"></param>
+        /// <param name="dialogCoordinator"></param>
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
         public UnbilledClientsPageViewModel(TabIdentity tabIdentity,
+            IDialogCoordinator dialogCoordinator,
             IDeadfileRepository repository,
-            IEventAggregator eventAggregator) : base(eventAggregator, false)
+            IEventAggregator eventAggregator) : base(dialogCoordinator, eventAggregator, false)
         {
             _tabIdentity = tabIdentity;
             _repository = repository;

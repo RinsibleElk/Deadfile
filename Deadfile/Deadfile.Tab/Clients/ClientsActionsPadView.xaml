@@ -5,9 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Deadfile.Tab.Clients"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:ClientsActionsPadDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="100" d:DesignWidth="300">
+    <UserControl.Resources>
+        <designTime:DesignTimeResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Converters.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </designTime:DesignTimeResourceDictionary>
+    </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
         <Button x:Name="AddItem" Visibility="{Binding AddItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource AddButton}" />
         <Button x:Name="EditItem" Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource EditButton}"/>

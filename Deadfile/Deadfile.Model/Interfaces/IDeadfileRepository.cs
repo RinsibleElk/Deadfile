@@ -276,9 +276,27 @@ namespace Deadfile.Model.Interfaces
         IEnumerable<JobTaskModel> GetJobTasks(DateTime endDate, string filter);
 
         /// <summary>
-        /// Delete a job task.
+        /// Permanently delete a job task.
         /// </summary>
         /// <param name="jobTaskModel"></param>
         void DeleteJobTask(JobTaskModel jobTaskModel);
+
+        /// <summary>
+        /// Permanently delete an expense.
+        /// </summary>
+        /// <param name="expenseModel"></param>
+        void DeleteExpense(ExpenseModel expenseModel);
+
+        /// <summary>
+        /// Permanently delete a local authority.
+        /// </summary>
+        /// <param name="localAuthorityModel"></param>
+        void DeleteLocalAuthority(LocalAuthorityModel localAuthorityModel);
+
+        /// <summary>
+        /// Permanently delete a quotation.
+        /// </summary>
+        /// <param name="quotationModel"></param>
+        void DeleteQuotation(QuotationModel quotationModel);
     }
 }

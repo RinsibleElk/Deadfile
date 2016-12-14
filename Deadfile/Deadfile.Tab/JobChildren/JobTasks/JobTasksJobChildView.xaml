@@ -9,9 +9,18 @@
              xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
              xmlns:templates="clr-namespace:Deadfile.Infrastructure.Templates;assembly=Deadfile.Infrastructure"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
              d:DataContext="{d:DesignInstance Type=local:JobTasksJobChildDesignTimeViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <designTime:DesignTimeResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Converters.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </designTime:DesignTimeResourceDictionary>
+    </UserControl.Resources>
     <DockPanel LastChildFill="True">
         <DockPanel.Resources>
             <Style TargetType="{x:Type DatePickerTextBox}">

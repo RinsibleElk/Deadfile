@@ -12,6 +12,7 @@ using System.Windows.Input;
 using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
 using Deadfile.Tab.Navigation;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using IEventAggregator = Prism.Events.IEventAggregator;
@@ -23,6 +24,7 @@ namespace Deadfile.Tab.Common
     /// </summary>
     public abstract class ManagementPageViewModel<T> : Screen, IManagementViewModel<T> where T : ModelBase, new()
     {
+        private readonly IDialogCoordinator _dialogCoordinator;
         protected readonly IEventAggregator EventAggregator;
         private readonly bool _allowAdds;
         private ObservableCollection<T> _items;
@@ -40,10 +42,12 @@ namespace Deadfile.Tab.Common
         /// <summary>
         /// Requires an event aggregator to communicate the display name to the tab.
         /// </summary>
+        /// <param name="dialogCoordinator"></param>
         /// <param name="eventAggregator"></param>
         /// <param name="allowAdds"></param>
-        protected ManagementPageViewModel(IEventAggregator eventAggregator, bool allowAdds)
+        protected ManagementPageViewModel(IDialogCoordinator dialogCoordinator, IEventAggregator eventAggregator, bool allowAdds)
         {
+            _dialogCoordinator = dialogCoordinator;
             EventAggregator = eventAggregator;
             _allowAdds = allowAdds;
             _editCommand = new DelegateCommand(StartEditing);
@@ -52,9 +56,17 @@ namespace Deadfile.Tab.Common
             _saveCommand = new DelegateCommand(PerformSaveAction);
         }
 
-        private void DeleteItem()
+        private async void DeleteItem()
         {
-            PerformDelete();
+            var result = await _dialogCoordinator.ShowMessageAsync(this, "Confirm Deletion", "Are you sure? This action is permanent.", MessageDialogStyle.AffirmativeAndNegative);
+            // Open a dialog to ask the user if they are sure.
+            if (result == MessageDialogResult.Affirmative)
+            {
+                PerformDelete();
+
+                // Refresh the observable collection.
+                RefreshModels();
+            }
         }
 
         protected abstract void PerformDelete();
@@ -184,6 +196,9 @@ namespace Deadfile.Tab.Common
 
                     EditingStatusChanged(_editable);
 
+                    // Allow deletion.
+                    CanDeleteItem = _allowAdds && (SelectedItem != null) && !Editable;
+
                     // Only fire when it changes.
                     EventAggregator.GetEvent<LockedForEditingEvent>()
                         .Publish(new LockedForEditingMessage() {IsLocked = _editable});
@@ -252,6 +267,9 @@ namespace Deadfile.Tab.Common
                 if (value == null) _selectedItem = new T();
                 else _selectedItem = value;
                 NotifyOfPropertyChange(() => SelectedItem);
+
+                // Allow deletion.
+                CanDeleteItem = _allowAdds && (SelectedItem != null) && !Editable;
             }
         }
 
