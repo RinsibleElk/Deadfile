@@ -34,20 +34,23 @@ namespace Deadfile.Pdf
         private static readonly Brush PrimaryColorBrush = new SolidColorBrush(PrimaryColor);
         private static readonly Brush SecondaryColorBrush = new SolidColorBrush(SecondaryColor);
         private static readonly FontFamily Calibri = new FontFamily("Calibri");
+        private const double LogoImageWidth = 145.0;
+        private const double PageWidth = 793.92;
+        private const double PageHeight = 1122.24;
+        private const double SideMargin = 45.0;
+        private const double VerticalMargin = 100.0;
 
         public FixedDocument GenerateDocument(InvoiceModel invoiceModel)
         {
             // Create a FixedDocument.
             var doc = new FixedDocument();
-            var pageWidth = 793.92;
-            doc.DocumentPaginator.PageSize = new Size(pageWidth, 1122.24);
+            doc.DocumentPaginator.PageSize = new Size(PageWidth, PageHeight);
 
             // Single page doc.
             var page = new FixedPage();
             page.Width = doc.DocumentPaginator.PageSize.Width;
             page.Height = doc.DocumentPaginator.PageSize.Height;
-            var sideMargin = 45.0;
-            page.Margin = new Thickness(sideMargin, 100, sideMargin, 100);
+            page.Margin = new Thickness(SideMargin, VerticalMargin, SideMargin, VerticalMargin);
             var pageStackPanel = new StackPanel();
 
             // At the top, there's a stack panel.
@@ -60,8 +63,7 @@ namespace Deadfile.Pdf
             logoBitmap.EndInit();
             var logoImage = new Image();
             logoImage.Source = logoBitmap;
-            var logoImageWidth = 145.0;
-            logoImage.Width = logoImageWidth;
+            logoImage.Width = LogoImageWidth;
             logoImage.Stretch = Stretch.Uniform;
             headerStackPanel.Children.Add(logoImage);
 
@@ -75,7 +77,7 @@ namespace Deadfile.Pdf
                 FontWeight = FontWeights.Bold,
                 TextAlignment = TextAlignment.Right,
                 Padding = new Thickness(10),
-                Width = pageWidth - sideMargin - sideMargin - logoImageWidth
+                Width = PageWidth - SideMargin - SideMargin - LogoImageWidth
             };
             var paddingAboveHeader = 45.0;
             header.Children.Add(new Imagine3DTextBlock() {Height = paddingAboveHeader});
@@ -100,7 +102,7 @@ namespace Deadfile.Pdf
             var addressesStackPanel = new StackPanel
             {
                 Height = addressesSectionHeight,
-                Width = pageWidth - sideMargin - sideMargin,
+                Width = PageWidth - SideMargin - SideMargin,
                 Orientation = Orientation.Horizontal
             };
             var addressesColumn1Width = 300.0;
@@ -180,7 +182,7 @@ namespace Deadfile.Pdf
             });
             addressesStackPanel.Children.Add(detailsTitlesStackPanel);
 
-            var detailsWidth = pageWidth - sideMargin - sideMargin - addressesColumn1Width - detailsTitlesWidth;
+            var detailsWidth = PageWidth - SideMargin - SideMargin - addressesColumn1Width - detailsTitlesWidth;
             var detailsStackPanel = new StackPanel
             {
                 Width = detailsWidth
@@ -223,10 +225,10 @@ namespace Deadfile.Pdf
             var projectStackPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
-                Width = pageWidth - sideMargin - sideMargin,
+                Width = PageWidth - SideMargin - SideMargin,
                 Height = projectHeight
             };
-            var projectTitlesWidth = (pageWidth - sideMargin - sideMargin)/2;
+            var projectTitlesWidth = (PageWidth - SideMargin - SideMargin)/2;
             var projectTitlesStackPanel = new StackPanel
             {
                 Width = projectTitlesWidth
@@ -253,7 +255,7 @@ namespace Deadfile.Pdf
             projectStackPanel.Children.Add(projectTitlesStackPanel);
             var projectDetailsStackPanel = new StackPanel
             {
-                Width = pageWidth - sideMargin - sideMargin - projectTitlesWidth - projectPaddingWidth
+                Width = PageWidth - SideMargin - SideMargin - projectTitlesWidth - projectPaddingWidth
             };
             projectDetailsStackPanel.Children.Add(new Imagine3DTextBlock
             {
@@ -271,14 +273,14 @@ namespace Deadfile.Pdf
             });
             projectStackPanel.Children.Add(projectDetailsStackPanel);
 
-            var itemListWidth = pageWidth - sideMargin - sideMargin;
+            var itemListWidth = PageWidth - SideMargin - SideMargin;
             var itemListTitlesStackPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
                 Background = PrimaryColorBrush,
                 Width = itemListWidth
             };
-            var itemListTitlesWidth = pageWidth - sideMargin - sideMargin - detailsWidth;
+            var itemListTitlesWidth = PageWidth - SideMargin - SideMargin - detailsWidth;
             var descriptionLeftPadding = 5.0;
             itemListTitlesStackPanel.Children.Add(new Imagine3DTextBlock
             {
@@ -332,7 +334,7 @@ namespace Deadfile.Pdf
 
             var totalDueStackPanel = new StackPanel
             {
-                Width = pageWidth - sideMargin - sideMargin,
+                Width = PageWidth - SideMargin - SideMargin,
                 Orientation = Orientation.Horizontal
             };
             totalDueStackPanel.Children.Add(new Imagine3DTextBlock

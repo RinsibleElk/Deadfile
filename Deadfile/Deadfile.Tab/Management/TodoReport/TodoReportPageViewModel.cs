@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Deadfile.Infrastructure.Interfaces;
@@ -27,6 +28,7 @@ namespace Deadfile.Tab.Management.TodoReport
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly TabIdentity _tabIdentity;
+        private readonly IPrintService _printService;
         private readonly IDeadfileRepository _repository;
         private readonly DelegateCommand<JobTaskModel> _navigateToJob;
         private readonly DelegateCommand<JobTaskModel> _navigateToClient;
@@ -36,14 +38,17 @@ namespace Deadfile.Tab.Management.TodoReport
         /// </summary>
         /// <param name="tabIdentity"></param>
         /// <param name="dialogCoordinator"></param>
+        /// <param name="printService"></param>
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
         public TodoReportPageViewModel(TabIdentity tabIdentity,
             IDialogCoordinator dialogCoordinator,
+            IPrintService printService,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator) : base(dialogCoordinator, eventAggregator, false)
         {
             _tabIdentity = tabIdentity;
+            _printService = printService;
             _repository = repository;
             _navigateToJob = new DelegateCommand<JobTaskModel>(PerformNavigateToJob);
             _navigateToClient = new DelegateCommand<JobTaskModel>(PerformNavigateToClient);
@@ -135,6 +140,10 @@ namespace Deadfile.Tab.Management.TodoReport
 
                 RefreshModels();
             }
+        }
+
+        public void Print()
+        {
         }
     }
 }

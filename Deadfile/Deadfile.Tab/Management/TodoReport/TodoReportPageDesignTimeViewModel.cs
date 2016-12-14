@@ -59,5 +59,9 @@ namespace Deadfile.Tab.Management.TodoReport
 
         public DateTime EndDate { get; set; } = DateTime.Today.AddDays(7.0);
         public bool IncludeInactive { get; set; } = false;
+        public void Print()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

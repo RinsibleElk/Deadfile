@@ -20,5 +20,6 @@ namespace Deadfile.Tab.Management.TodoReport
         DateTime StartDate { get; set; }
         DateTime EndDate { get; set; }
         bool IncludeInactive { get; set; }
+        void Print();
     }
 }

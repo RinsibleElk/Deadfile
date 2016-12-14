@@ -27,7 +27,12 @@
                 </Border>
             </DataTemplate>
         </DockPanel.Resources>
-        <TextBox DockPanel.Dock="Top" controls:TextBoxHelper.Watermark="Filter" Text="{Binding Filter, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
+        <DockPanel DockPanel.Dock="Top" LastChildFill="True" >
+            <Button DockPanel.Dock="Right" x:Name="Print">
+                Print
+            </Button>
+            <TextBox controls:TextBoxHelper.Watermark="Filter" Text="{Binding Filter, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
+        </DockPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
             <TextBlock Text="Start Date:" Margin="5,0,5,0" VerticalAlignment="Center" />
             <DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay}" Margin="5,0,5,0" />
