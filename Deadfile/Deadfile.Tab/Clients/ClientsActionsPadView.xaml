@@ -18,10 +18,10 @@
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Button x:Name="AddItem" Visibility="{Binding AddItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource AddButton}" />
-        <Button x:Name="EditItem" Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource EditButton}"/>
-        <Button x:Name="SaveItem" Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" IsDefault="True" Style="{StaticResource SaveButton}"/>
-        <Button x:Name="DiscardItem" Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" IsCancel="True" Style="{StaticResource DiscardButton}"/>
-        <Button x:Name="DeleteItem" Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource DeleteButton}"/>
+        <Button x:Name="AddItem" Visibility="{Binding AddItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource AddButton}" ToolTip="Add a new Client." />
+        <Button x:Name="EditItem" Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource EditButton}" ToolTip="Edit this Client." />
+        <Button x:Name="SaveItem" Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" IsDefault="True" Style="{StaticResource SaveButton}" ToolTip="Save this Client." />
+        <Button x:Name="DiscardItem" Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" IsCancel="True" Style="{StaticResource DiscardButton}" ToolTip="Discard all changes and stop editing." />
+        <Button x:Name="DeleteItem" Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource DeleteButton}" ToolTip="Delete this Client. This is not permanent." />
     </StackPanel>
 </UserControl>

@@ -17,7 +17,7 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Common
 {
-    public abstract class EditableItemViewModel<K, T> : ParameterisedViewModel<K>, IEditableItemViewModel<T> where T : ModelBase
+    public abstract class EditableItemViewModel<K, T> : ParameterisedViewModel<K>, IEditableItemViewModel<T> where T : StateManagedModelBase
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly TabIdentity _tabIdentity;
@@ -94,7 +94,7 @@ namespace Deadfile.Tab.Common
                 NotifyOfPropertyChange(() => SelectedItem);
                 Editable = false;
                 Errors = new List<string>();
-                CanDelete = CanEdit = _selectedItem != null && _selectedItem.Id != ModelBase.NewModelId;
+                CanDelete = CanEdit = _selectedItem != null && _selectedItem.Id != ModelBase.NewModelId && _selectedItem.StateIsActive;
             }
         }
 
@@ -133,7 +133,10 @@ namespace Deadfile.Tab.Common
                 if (_canSave == value) return;
                 _canSave = value;
                 NotifyOfPropertyChange(() => CanSave);
-                EventAggregator.GetEvent<CanSaveEvent>().Publish(_canSave ? CanSaveMessage.CanSave : CanSaveMessage.CannotSave);
+
+                var message = _canSave ? CanSaveMessage.CanSave : CanSaveMessage.CannotSave;
+                Logger.Info("Event,CanSaveEvent,Send,{0},{1}", _tabIdentity, message);
+                EventAggregator.GetEvent<CanSaveEvent>().Publish(message);
             }
         }
 
@@ -146,7 +149,10 @@ namespace Deadfile.Tab.Common
                 if (_canDelete == value) return;
                 _canDelete = value;
                 NotifyOfPropertyChange(() => CanDelete);
-                EventAggregator.GetEvent<CanDeleteEvent>().Publish(_canDelete ? CanDeleteMessage.CanDelete : CanDeleteMessage.CannotDelete);
+
+                var message = _canDelete ? CanDeleteMessage.CanDelete : CanDeleteMessage.CannotDelete;
+                Logger.Info("Event,CanDeleteEvent,Send,{0},{1}", _tabIdentity, message);
+                EventAggregator.GetEvent<CanDeleteEvent>().Publish(message);
             }
         }
 
@@ -179,7 +185,7 @@ namespace Deadfile.Tab.Common
                         _saveSubscriptionToken = null;
                         _selectedItem.ErrorsChanged -= SelectedItemErrorsChanged;
                         _selectedItem.ClearAllErrors();
-                        CanDelete = SelectedItem.Id != ModelBase.NewModelId;
+                        CanDelete = SelectedItem.Id != ModelBase.NewModelId && SelectedItem.StateIsActive;
                     }
 
                     EditingStatusChanged(_editable);

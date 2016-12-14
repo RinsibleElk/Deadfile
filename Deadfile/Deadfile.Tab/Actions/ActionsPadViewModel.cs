@@ -237,6 +237,7 @@ namespace Deadfile.Tab.Actions
             DiscardItemIsVisible = lockedForEditingMessage.IsLocked;
             EditItemIsVisible = !lockedForEditingMessage.IsLocked;
             DeleteItemIsVisible = !lockedForEditingMessage.IsLocked;
+            CanEditItem = !lockedForEditingMessage.IsLocked;
         }
 
         public void OnNavigatedFrom()

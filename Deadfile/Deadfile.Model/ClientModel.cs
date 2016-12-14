@@ -13,7 +13,7 @@ namespace Deadfile.Model
     /// <summary>
     /// UI model for a Client.
     /// </summary>
-    public class ClientModel : ModelBase
+    public class ClientModel : StateManagedModelBase
     {
         public override int Id
         {
@@ -275,7 +275,11 @@ namespace Deadfile.Model
         public ClientStatus Status
         {
             get { return _status; }
-            set { SetProperty(ref _status, value); }
+            set
+            {
+                if (SetProperty(ref _status, value))
+                    OnPropertyChanged(nameof(StateIsActive));
+            }
         }
 
         private string _notes;
@@ -285,5 +289,7 @@ namespace Deadfile.Model
             get { return _notes; }
             set { SetProperty(ref _notes, value); }
         }
+
+        public override bool StateIsActive => Status == ClientStatus.Active;
     }
 }

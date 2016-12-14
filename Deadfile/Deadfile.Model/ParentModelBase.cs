@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Deadfile.Model
 {
-    public abstract class ParentModelBase<T> : ModelBase where T : ChildModelBase
+    public abstract class ParentModelBase<T> : StateManagedModelBase where T : ChildModelBase
     {
         public abstract List<T> ChildrenList { get; set; }
         private ObservableCollection<T> _children = new ObservableCollection<T>();

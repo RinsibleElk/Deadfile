@@ -75,7 +75,10 @@ namespace Deadfile.Model
             {
                 // revalidate the invoice reference
                 if (SetProperty(ref _status, value))
+                {
                     ValidateProperty(nameof(InvoiceReference), _invoiceReference);
+                    OnPropertyChanged(nameof(StateIsActive));
+                }
             }
         }
 
@@ -288,5 +291,7 @@ namespace Deadfile.Model
                 RecalculateNetAmount();
             }
         }
+
+        public override bool StateIsActive => Status == InvoiceStatus.Created;
     }
 }

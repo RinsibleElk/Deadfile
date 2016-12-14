@@ -11,7 +11,7 @@ namespace Deadfile.Model
     /// <summary>
     /// UI model for a Job.
     /// </summary>
-    public class JobModel : ModelBase
+    public class JobModel : StateManagedModelBase
     {
         public override int Id
         {
@@ -89,7 +89,11 @@ namespace Deadfile.Model
         public JobStatus Status
         {
             get { return _status;}
-            set { SetProperty(ref _status, value); }
+            set
+            {
+                if (SetProperty(ref _status, value))
+                    OnPropertyChanged(nameof(StateIsActive));
+            }
         }
 
         private string _notes;
@@ -119,5 +123,6 @@ namespace Deadfile.Model
             set { SetProperty(ref _clientId, value); }
         }
 
+        public override bool StateIsActive => Status == JobStatus.Active;
     }
 }

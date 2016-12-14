@@ -58,10 +58,7 @@ namespace Deadfile.Tab.Invoices
             NotifyOfPropertyChange(() => CanPrintItem);
         }
 
-        public bool CanPrintItem
-        {
-            get { return CanSaveItem || CanEditItem; }
-        }
+        public bool CanPrintItem => CanSaveItem || CanEditItem;
 
         public void PaidItem()
         {
