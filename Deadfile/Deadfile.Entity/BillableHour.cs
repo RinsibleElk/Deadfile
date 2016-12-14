@@ -15,14 +15,14 @@ namespace Deadfile.Entity
         public int BillableHourId { get; set; }
 
         [Required(ErrorMessage = "A BillableHour must be given a short description"),
-         MinLength(5, ErrorMessage = "A BillableHour must have at least 5 characters"),
-         MaxLength(30, ErrorMessage = "A BillableHour must have at most 30 characters")]
+         MaxLength(100, ErrorMessage = "A BillableHour must have at most 100 characters.")]
         public string Description { get; set; }
 
-        /// <summary>
-        /// Who did the work?
-        /// </summary>
-        public string Who { get; set; }
+        [MaxLength(100, ErrorMessage = "The person that worked these hours must be at most 100 characters.")]
+        public string Person { get; set; }
+
+        [Required(ErrorMessage = "You must supply the number of hours worked.")]
+        public int HoursWorked { get; set; } = 0;
 
         [Required(ErrorMessage = "A BillableHour must have an amount associated")]
         public double NetAmount { get; set; }
@@ -32,6 +32,9 @@ namespace Deadfile.Entity
 
         [Required(ErrorMessage = "A BillableHour must have a creation date.")]
         public DateTime CreationDate { get; set; }
+
+        [Required(ErrorMessage = "A BillableHour must have a State")]
+        public BillableState State { get; set; } = BillableState.Active;
 
         public int JobId { get; set; }
         public int? InvoiceId { get; set; }

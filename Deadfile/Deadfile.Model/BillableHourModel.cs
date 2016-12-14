@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Entity;
 
 namespace Deadfile.Model
 {
@@ -23,14 +24,26 @@ namespace Deadfile.Model
             set { SetProperty(ref _billableHourId, value); }
         }
 
-        private string _description;
         [Required(ErrorMessage = "A BillableHour must be given a short description"),
-         MinLength(5, ErrorMessage = "A BillableHour must have at least 5 characters"),
-         MaxLength(30, ErrorMessage = "A BillableHour must have at most 30 characters")]
+         MaxLength(100, ErrorMessage = "A BillableHour must have at most 100 characters.")]
         public string Description
         {
             get { return _description; }
             set { SetProperty(ref _description, value); }
+        }
+
+        [MaxLength(100, ErrorMessage = "The person that worked these hours must be at most 100 characters.")]
+        public string Person
+        {
+            get { return _person; }
+            set { SetProperty(ref _person, value); }
+        }
+
+        [Required(ErrorMessage = "You must supply the number of hours worked.")]
+        public int HoursWorked
+        {
+            get { return _hoursWorked; }
+            set { SetProperty(ref _hoursWorked, value); }
         }
 
         private double _netAmount;
@@ -55,6 +68,18 @@ namespace Deadfile.Model
         {
             get { return _creationDate; }
             set { SetProperty(ref _creationDate, value); }
+        }
+
+        private BillableState _state = BillableState.Active;
+        private int _hoursWorked = 0;
+        private string _person;
+        private string _description;
+
+        [Required(ErrorMessage = "A BillableHour must have a State")]
+        public BillableState State
+        {
+            get { return _state; }
+            set { SetProperty(ref _state, value); }
         }
     }
 }

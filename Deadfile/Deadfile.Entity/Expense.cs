@@ -27,6 +27,9 @@ namespace Deadfile.Entity
         [Required(ErrorMessage = "An Expense must have a Type")]
         public ExpenseType Type { get; set; }
 
+        [Required(ErrorMessage = "An Expense must have a State")]
+        public BillableState State { get; set; } = BillableState.Active;
+
         public int JobId { get; set; }
         public int? InvoiceId { get; set; }
     }
