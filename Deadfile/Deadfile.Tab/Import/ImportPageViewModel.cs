@@ -64,10 +64,12 @@ namespace Deadfile.Tab.Import
 
         private void BrowseJobsAction()
         {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Multiselect = false;
-            openFileDialog.Title = @"Find Jobs File";
-            openFileDialog.Filter = @"Tab Separated File|*.csv";
+            var openFileDialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Title = @"Find Jobs File",
+                Filter = @"Tab Separated File|*.csv"
+            };
             var result = openFileDialog.ShowDialog();
             if (result == DialogResult.OK)
                 JobsFile = openFileDialog.FileName;
@@ -90,10 +92,12 @@ namespace Deadfile.Tab.Import
 
         private void BrowseQuotationsAction()
         {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Multiselect = false;
-            openFileDialog.Title = @"Find Quotations File";
-            openFileDialog.Filter = @"Tab Separated File|*.csv";
+            var openFileDialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Title = @"Find Quotations File",
+                Filter = @"Tab Separated File|*.csv"
+            };
             var result = openFileDialog.ShowDialog();
             if (result == DialogResult.OK)
                 QuotationsFile = openFileDialog.FileName;
@@ -118,10 +122,12 @@ namespace Deadfile.Tab.Import
 
         private void BrowseLocalAuthoritiesAction()
         {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Multiselect = false;
-            openFileDialog.Title = @"Find Local Authorities File";
-            openFileDialog.Filter = @"Tab Separated File|*.csv";
+            var openFileDialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Title = @"Find Local Authorities File",
+                Filter = @"Tab Separated File|*.csv"
+            };
             var result = openFileDialog.ShowDialog();
             if (result == DialogResult.OK)
                 LocalAuthoritiesFile = openFileDialog.FileName;
