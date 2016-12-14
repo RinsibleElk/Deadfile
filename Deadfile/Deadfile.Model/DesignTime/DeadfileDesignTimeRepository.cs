@@ -169,6 +169,11 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
+        public void DeleteJobTask(JobTaskModel jobTaskModel)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
             throw new NotImplementedException();

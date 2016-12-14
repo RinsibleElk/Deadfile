@@ -26,7 +26,7 @@ namespace Deadfile.Tab.Clients
             IEventAggregator eventAggregator,
             IDeadfileRepository repository,
             IDialogCoordinator dialogCoordinator,
-            IUrlNavigationService urlNavigationService) : base(eventAggregator, dialogCoordinator, new UndoTracker<ClientModel>())
+            IUrlNavigationService urlNavigationService) : base(tabIdentity, eventAggregator, dialogCoordinator, new UndoTracker<ClientModel>())
         {
             _tabIdentity = tabIdentity;
             _repository = repository;

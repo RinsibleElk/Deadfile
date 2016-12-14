@@ -39,7 +39,7 @@ namespace Deadfile.Tab.Jobs
             INavigationService navigationService,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator,
-            IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator, new UndoTracker<JobModel>())
+            IDialogCoordinator dialogCoordinator) : base(tabIdentity, eventAggregator, dialogCoordinator, new UndoTracker<JobModel>())
         {
             _tabIdentity = tabIdentity;
             _navigationService = navigationService;

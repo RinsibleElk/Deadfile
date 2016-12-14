@@ -736,6 +736,16 @@ namespace Deadfile.Model
             return li;
         }
 
+        public void DeleteJobTask(JobTaskModel jobTaskModel)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var jobTask = dbContext.JobTasks.Find(new object[1] {jobTaskModel.Id});
+                dbContext.JobTasks.Remove(jobTask);
+                dbContext.SaveChanges();
+            }
+        }
+
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
             using (var dbContext = new DeadfileContext())

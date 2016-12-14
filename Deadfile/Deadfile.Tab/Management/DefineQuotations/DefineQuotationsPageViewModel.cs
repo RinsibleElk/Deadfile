@@ -42,6 +42,11 @@ namespace Deadfile.Tab.Management.DefineQuotations
             return _repository.GetQuotations(filter);
         }
 
+        protected override void PerformDelete()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void PerformSave()
         {
             _repository.SaveQuotation(SelectedItem);

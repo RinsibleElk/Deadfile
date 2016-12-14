@@ -62,6 +62,11 @@ namespace Deadfile.Tab.Management.TodoReport
             return _repository.GetJobTasks(EndDate, filter);
         }
 
+        protected override void PerformDelete()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void PerformSave()
         {
             throw new NotImplementedException();

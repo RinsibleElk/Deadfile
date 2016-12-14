@@ -7,6 +7,7 @@ using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Events;
 
 namespace Deadfile.Tab.JobChildren.Expenses
@@ -18,9 +19,17 @@ namespace Deadfile.Tab.JobChildren.Expenses
     {
         private readonly IDeadfileRepository _repository;
 
-        public ExpensesJobChildViewModel(IDeadfileDispatcherTimerService timerService, IDeadfileRepository repository, IEventAggregator eventAggregator) : base(timerService, eventAggregator)
+        public ExpensesJobChildViewModel(IDeadfileDispatcherTimerService timerService,
+            IDialogCoordinator dialogCoordinator,
+            IDeadfileRepository repository,
+            IEventAggregator eventAggregator) : base(timerService, dialogCoordinator, eventAggregator)
         {
             _repository = repository;
+        }
+
+        protected override void PerformDelete()
+        {
+            throw new NotImplementedException();
         }
 
         protected override void PerformSave()

@@ -43,7 +43,7 @@ namespace Deadfile.Tab.Invoices
             IPrintService printService,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator,
-            IDialogCoordinator dialogCoordinator) : base(eventAggregator, dialogCoordinator, new ParentUndoTracker<InvoiceModel, InvoiceItemModel>())
+            IDialogCoordinator dialogCoordinator) : base(tabIdentity, eventAggregator, dialogCoordinator, new ParentUndoTracker<InvoiceModel, InvoiceItemModel>())
         {
             _tabIdentity = tabIdentity;
             _printService = printService;

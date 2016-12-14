@@ -10,6 +10,7 @@ using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
 using Deadfile.Tab.Events;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using EventAggregator = Caliburn.Micro.EventAggregator;
@@ -23,20 +24,25 @@ namespace Deadfile.Tab.Common
     /// <typeparam name="T"></typeparam>
     abstract class SimpleEditableItemViewModel<T> : ParameterisedViewModel<ClientAndJobNavigationKey>, ISimpleEditableItemViewModel<T> where T : JobChildModelBase, new()
     {
+        private readonly IDialogCoordinator _dialogCoordinator;
         private readonly IEventAggregator _eventAggregator;
         private readonly DelegateCommand _editCommand;
         private readonly DelegateCommand _discardCommand;
+        private readonly DelegateCommand _deleteCommand;
         private readonly DelegateCommand _saveCommand;
         private readonly IDeadfileDispatcherTimer _maintainSelectionTimer;
         private List<string> _errors;
 
         public SimpleEditableItemViewModel(IDeadfileDispatcherTimerService timerService,
+            IDialogCoordinator dialogCoordinator,
             IEventAggregator eventAggregator)
         {
             _maintainSelectionTimer = timerService.CreateTimer(TimeSpan.FromMilliseconds(10), SetSelectedIndex);
+            _dialogCoordinator = dialogCoordinator;
             _eventAggregator = eventAggregator;
             _editCommand = new DelegateCommand(StartEditing);
             _discardCommand = new DelegateCommand(DiscardEdits);
+            _deleteCommand = new DelegateCommand(DeleteItem, () => CanDeleteItem);
             _saveCommand = new DelegateCommand(PerformSaveAction);
         }
 
@@ -56,6 +62,35 @@ namespace Deadfile.Tab.Common
         {
             PerformSave();
             Editable = false;
+        }
+
+        private async void DeleteItem()
+        {
+            var result = await _dialogCoordinator.ShowMessageAsync(this, "Confirm Deletion", "Are you sure?", MessageDialogStyle.AffirmativeAndNegative);
+            // Open a dialog to ask the user if they are sure.
+            if (result == MessageDialogResult.Affirmative)
+            {
+                PerformDelete();
+
+                // Refresh the observable collection.
+                Populate();
+            }
+        }
+
+        protected abstract void PerformDelete();
+
+        private bool _canDeleteItem = false;
+        private bool CanDeleteItem
+        {
+            get { return _canDeleteItem; }
+            set
+            {
+                if (_canDeleteItem != value)
+                {
+                    _canDeleteItem = value;
+                    _deleteCommand.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         protected abstract void PerformSave();
@@ -92,13 +127,14 @@ namespace Deadfile.Tab.Common
                 if (value) _editingSelectedIndex = _selectedIndex;
                 else _editingSelectedIndex = null;
 
+                // Allow deletion.
+                CanDeleteItem = (SelectedItem != null) && !Editable;
+
                 // Only fire when it changes.
                 _eventAggregator.GetEvent<LockedForEditingEvent>()
                     .Publish(new LockedForEditingMessage() {IsLocked = _editable});
             }
         }
-
-        //@@@ Store if the parent is editable.
 
         public List<string> Errors
         {
@@ -157,9 +193,10 @@ namespace Deadfile.Tab.Common
             }
         }
 
-        public ICommand EditCommand { get { return _editCommand; } }
-        public ICommand DiscardCommand { get { return _discardCommand; } }
-        public ICommand SaveCommand { get { return _saveCommand; } }
+        public ICommand EditCommand => _editCommand;
+        public ICommand DiscardCommand => _discardCommand;
+        public ICommand DeleteCommand => _deleteCommand;
+        public ICommand SaveCommand => _saveCommand;
 
         /// <summary>
         /// The type-specific undo tracker.
@@ -196,6 +233,8 @@ namespace Deadfile.Tab.Common
                 if (Equals(value, _selectedItem)) return;
                 _selectedItem = value;
                 NotifyOfPropertyChange();
+
+                CanDeleteItem = (SelectedItem != null) && !Editable;
             }
         }
 

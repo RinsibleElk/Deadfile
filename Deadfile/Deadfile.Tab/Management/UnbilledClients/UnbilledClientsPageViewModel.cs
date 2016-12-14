@@ -62,6 +62,11 @@ namespace Deadfile.Tab.Management.UnbilledClients
             return _repository.GetUnbilledClients(filter);
         }
 
+        protected override void PerformDelete()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void PerformSave()
         {
             throw new NotImplementedException();

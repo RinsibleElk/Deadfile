@@ -34,6 +34,7 @@ namespace Deadfile.Tab.Common
         private string _filter;
         private readonly DelegateCommand _editCommand;
         private readonly DelegateCommand _discardCommand;
+        private readonly DelegateCommand _deleteCommand;
         private readonly DelegateCommand _saveCommand;
 
         /// <summary>
@@ -47,7 +48,28 @@ namespace Deadfile.Tab.Common
             _allowAdds = allowAdds;
             _editCommand = new DelegateCommand(StartEditing);
             _discardCommand = new DelegateCommand(DiscardEdits);
+            _deleteCommand = new DelegateCommand(DeleteItem, () => CanDeleteItem);
             _saveCommand = new DelegateCommand(PerformSaveAction);
+        }
+
+        private void DeleteItem()
+        {
+            PerformDelete();
+        }
+
+        protected abstract void PerformDelete();
+
+        private bool CanDeleteItem
+        {
+            get { return _canDeleteItem; }
+            set
+            {
+                if (_canDeleteItem != value)
+                {
+                    _canDeleteItem = value;
+                    _deleteCommand.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         private void PerformSaveAction()
@@ -259,9 +281,10 @@ namespace Deadfile.Tab.Common
             }
         }
 
-        public ICommand EditCommand { get { return _editCommand; } }
-        public ICommand DiscardCommand { get { return _discardCommand; } }
-        public ICommand SaveCommand { get { return _saveCommand; } }
+        public ICommand EditCommand => _editCommand;
+        public ICommand DiscardCommand => _discardCommand;
+        public ICommand DeleteCommand => _deleteCommand;
+        public ICommand SaveCommand => _saveCommand;
 
         public UndoTracker<T> UndoTracker
         {
@@ -269,6 +292,8 @@ namespace Deadfile.Tab.Common
         }
 
         protected IUndoTrackerActivatable UndoTrackerActivatable = null;
+        private bool _canDeleteItem;
+
         public void RegisterUndoTrackerActivatable(IUndoTrackerActivatable undoTrackerActivatable)
         {
             UndoTrackerActivatable = undoTrackerActivatable;

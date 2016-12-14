@@ -64,6 +64,11 @@ namespace Deadfile.Tab.Common
         ICommand DiscardCommand { get; }
 
         /// <summary>
+        /// Delete the currently selected item.
+        /// </summary>
+        ICommand DeleteCommand { get; }
+
+        /// <summary>
         /// Save changes to the currently selected item and cease editing.
         /// </summary>
         ICommand SaveCommand { get; }

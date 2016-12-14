@@ -53,6 +53,11 @@ namespace Deadfile.Tab.Management.LocalAuthorities
             return _repository.GetLocalAuthorities(filter);
         }
 
+        protected override void PerformDelete()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void PerformSave()
         {
             _repository.SaveLocalAuthority(SelectedItem);

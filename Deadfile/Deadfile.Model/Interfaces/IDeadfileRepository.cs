@@ -274,5 +274,11 @@ namespace Deadfile.Model.Interfaces
         /// <param name="filter"></param>
         /// <returns></returns>
         IEnumerable<JobTaskModel> GetJobTasks(DateTime endDate, string filter);
+
+        /// <summary>
+        /// Delete a job task.
+        /// </summary>
+        /// <param name="jobTaskModel"></param>
+        void DeleteJobTask(JobTaskModel jobTaskModel);
     }
 }

@@ -18,9 +18,10 @@ namespace Deadfile.Tab.DesignTime
         public bool Editable { get; }
         public List<string> Errors { get; }
         public string Filter { get; set; }
-        public ICommand EditCommand { get; }
-        public ICommand DiscardCommand { get; }
-        public ICommand SaveCommand { get; }
+        public ICommand EditCommand { get; } = null;
+        public ICommand DiscardCommand { get; } = null;
+        public ICommand DeleteCommand { get; } = null;
+        public ICommand SaveCommand { get; } = null;
         public UndoTracker<T> UndoTracker { get; }
         public void RegisterUndoTrackerActivatable(IUndoTrackerActivatable undoTrackerActivatable)
         {

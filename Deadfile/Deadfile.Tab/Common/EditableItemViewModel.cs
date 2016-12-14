@@ -19,6 +19,8 @@ namespace Deadfile.Tab.Common
 {
     public abstract class EditableItemViewModel<K, T> : ParameterisedViewModel<K>, IEditableItemViewModel<T> where T : ModelBase
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly TabIdentity _tabIdentity;
         protected readonly IEventAggregator EventAggregator;
         protected readonly IDialogCoordinator DialogCoordinator;
 
@@ -35,8 +37,12 @@ namespace Deadfile.Tab.Common
         private SubscriptionToken _handleUndoSubcriptionToken;
         private SubscriptionToken _discardChangesSubscriptionToken;
 
-        public EditableItemViewModel(IEventAggregator eventAggregator, IDialogCoordinator dialogCoordinator, UndoTracker<T> undoTracker)
+        public EditableItemViewModel(TabIdentity tabIdentity,
+            IEventAggregator eventAggregator,
+            IDialogCoordinator dialogCoordinator,
+            UndoTracker<T> undoTracker)
         {
+            _tabIdentity = tabIdentity;
             EventAggregator = eventAggregator;
             DialogCoordinator = dialogCoordinator;
             UndoTracker = undoTracker;
@@ -248,6 +254,7 @@ namespace Deadfile.Tab.Common
                 PerformDelete();
 
                 // Notify the browser that something has changed.
+                Logger.Info("Event,RefreshBrowserEvent,Send,{0},{1}", _tabIdentity, RefreshBrowserMessage.Refresh);
                 EventAggregator.GetEvent<RefreshBrowserEvent>().Publish(RefreshBrowserMessage.Refresh);
             }
         }
