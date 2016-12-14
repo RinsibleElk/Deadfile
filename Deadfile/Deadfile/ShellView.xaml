@@ -61,12 +61,12 @@
     <DockPanel>
         <DockPanel.Resources>
             <converters:SwitchConverter x:Key="ExperienceToImage">
-                <converters:SwitchConverterCase When="Clients" Then="Resources/client-tab.png" />
-                <converters:SwitchConverterCase When="Jobs" Then="Resources/job-tab.png" />
-                <converters:SwitchConverterCase When="Invoices" Then="Resources/invoice-tab.png" />
-                <converters:SwitchConverterCase When="Home" Then="Resources/home-tab.png" />
-                <converters:SwitchConverterCase When="LocalAuthorities" Then="Resources/localauthority-tab.png" />
-                <converters:SwitchConverterCase When="DefineQuotations" Then="Resources/definequotations-tab.png" />
+                <converters:SwitchConverterCase When="Clients" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png" />
+                <converters:SwitchConverterCase When="Jobs" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab.png" />
+                <converters:SwitchConverterCase When="Invoices" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab.png" />
+                <converters:SwitchConverterCase When="Home" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/home-tab.png" />
+                <converters:SwitchConverterCase When="LocalAuthorities" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/localauthority-tab.png" />
+                <converters:SwitchConverterCase When="DefineQuotations" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/definequotations-tab.png" />
             </converters:SwitchConverter>
         </DockPanel.Resources>
         <dragablz:TabablzControl

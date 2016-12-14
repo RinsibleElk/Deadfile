@@ -11,9 +11,9 @@
 <!--                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" /> -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <!-- Accent and AppTheme setting -->
-                <ResourceDictionary Source="Styles/DeadfileTheme.xaml" />
-                <ResourceDictionary Source="Styles/DeadfileAccent.xaml" />
-                <ResourceDictionary Source="Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/DeadfileTheme.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/DeadfileAccent.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Fonts.xaml" />
                 <!-- Dragablz -->
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/MahApps.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/Generic.xaml" />
@@ -22,17 +22,10 @@
                     <local:AppBootstrapper x:Key="bootstrapper" />
                 </ResourceDictionary>
                 <!-- Deadfile themes and styles -->
-                <ResourceDictionary Source="Styles/Styles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Styles.xaml" />
+                <!-- Converters -->
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Converters.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <!-- Converters -->
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
-            <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibility"/>
-            <converters:InverseBooleanConverter x:Key="InverseBoolean"/>
-            <converters:ApplicationTypeToStringConverter x:Key="ApplicationTypeToString"/>
-            <converters:CompanyToNameConverter x:Key="CompanyToName"/>
-            <converters:BillableModelStateToNullableBoolConverter x:Key="BillableModelStateToNullableBool"/>
-            <converters:BillableModelStateToIsEnabledConverter x:Key="BillableModelStateToIsEnabled"/>
-            <converters:JobTaskToNullableBooleanStateConverter x:Key="JobTaskStateToBoolean" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

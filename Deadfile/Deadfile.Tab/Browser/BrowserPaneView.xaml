@@ -51,49 +51,49 @@
                     </ContextMenu>
                     <HierarchicalDataTemplate DataType="{x:Type browsermodel:BrowserClient}" ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal">
-                            <Image x:Name="imgIcon" Height="16" Width="16" Source="pack://application:,,,/Deadfile;component/Resources/client-tab.png" />
+                            <Image x:Name="imgIcon" Height="16" Width="16" Source="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png" />
                             <TextBlock Padding="4,0,0,0" Text="{Binding FullName}" />
                         </StackPanel>
                         <HierarchicalDataTemplate.Triggers>
                             <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:ClientStatus.Active}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile;component/Resources/client-tab.png"/>
+                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:ClientStatus.Inactive}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile;component/Resources/client-tab-dead.png"/>
+                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab-dead.png"/>
                             </DataTrigger>
                         </HierarchicalDataTemplate.Triggers>
                     </HierarchicalDataTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type browsermodel:BrowserJob}" ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal">
-                            <Image x:Name="imgIcon" Height="16" Width="16" Source="pack://application:,,,/Deadfile;component/Resources/job-tab.png" />
+                            <Image x:Name="imgIcon" Height="16" Width="16" Source="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab.png" />
                             <TextBlock Padding="4,0,0,0" Text="{Binding FullAddress}" />
                         </StackPanel>
                         <HierarchicalDataTemplate.Triggers>
                             <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:JobStatus.Active}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile;component/Resources/job-tab.png"/>
+                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab.png"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:JobStatus.Cancelled}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile;component/Resources/job-tab-cancelled.png"/>
+                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab-cancelled.png"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:JobStatus.Completed}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile;component/Resources/job-tab-completed.png"/>
+                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab-completed.png"/>
                             </DataTrigger>
                         </HierarchicalDataTemplate.Triggers>
                     </HierarchicalDataTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type browsermodel:BrowserInvoice}" ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal">
-                            <Image Name="imgIcon"  Height="16" Width="16" Source="pack://application:,,,/Deadfile;component/Resources/invoice-tab.png" />
+                            <Image Name="imgIcon"  Height="16" Width="16" Source="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab.png" />
                             <TextBlock Padding="4,0,0,0" Text="{Binding InvoiceReference}" />
                         </StackPanel>
                         <HierarchicalDataTemplate.Triggers>
                             <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:InvoiceStatus.Created}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile;component/Resources/invoice-tab.png"/>
+                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab.png"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:InvoiceStatus.Cancelled}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile;component/Resources/invoice-tab-cancelled.png"/>
+                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab-cancelled.png"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:InvoiceStatus.Paid}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile;component/Resources/invoice-tab-completed.png"/>
+                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab-completed.png"/>
                             </DataTrigger>
                         </HierarchicalDataTemplate.Triggers>
                     </HierarchicalDataTemplate>

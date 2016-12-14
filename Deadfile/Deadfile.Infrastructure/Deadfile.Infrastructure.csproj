@@ -88,6 +88,7 @@
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\SwitchConverter.cs" />
+    <Compile Include="DesignTime\DesignTimeResourceDictionary.cs" />
     <Compile Include="Interfaces\IDeadfileDispatcherTimer.cs" />
     <Compile Include="Interfaces\IDeadfileDispatcherTimerService.cs" />
     <Compile Include="Interfaces\IJournaled.cs" />
@@ -151,6 +152,199 @@
       <Project>{790F6F95-333F-4CD3-BB57-3E745A1C3224}</Project>
       <Name>Deadfile.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add-inactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add-tab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\back-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\back-inactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\background.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\client-tab-dead.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\client-tab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\definequotations-tab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete-inactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\discard-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\discard-inactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\discard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\edit-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\edit-inactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\forward-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\forward-inactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\forward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\home-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\home-inactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\home-tab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\import-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\import.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\invoice-tab-cancelled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\invoice-tab-completed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\invoice-tab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\job-tab-cancelled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\job-tab-completed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\job-tab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\localauthority-tab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\paid-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\paid-inactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\paid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\print-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\print-inactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\quote-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\quote.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\redo-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\redo-inactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\redo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\save-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\save-inactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\todo-report-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\todo-report.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\unbilled-clients-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\unbilled-clients.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\undo-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\undo-inactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Styles\Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\DeadfileAccent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\DeadfileTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Fonts.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

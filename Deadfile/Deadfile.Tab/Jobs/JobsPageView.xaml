@@ -8,24 +8,17 @@
              xmlns:local="clr-namespace:Deadfile.Tab.Jobs"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:entity="clr-namespace:Deadfile.Entity;assembly=Deadfile.Entity"
+             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:JobsPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <ObjectDataProvider MethodName="GetValues"
-                ObjectType="{x:Type entity:JobStatus}"
-                x:Key="JobStatusValues">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="entity:JobStatus" />
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-        <Style x:Key="ErrorStyle" TargetType="FrameworkElement">
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <designTime:DesignTimeResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Converters.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
     <Grid Margin="5,5,5,5" Background="{StaticResource ContentBackgroundBrush}">
         <Grid.ColumnDefinitions>
@@ -65,43 +58,36 @@
         <TextBox Grid.Row="1"
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
-                 Style="{StaticResource ErrorStyle}"
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.JobNumberString}"
                  controls:TextBoxHelper.Watermark="Job Number" />
         <TextBox Grid.Row="2"
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
-                 Style="{StaticResource ErrorStyle}"
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Description}"
                  controls:TextBoxHelper.Watermark="Description" />
         <TextBox Grid.Row="3"
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
-                 Style="{StaticResource ErrorStyle}"
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressFirstLine}"
                  controls:TextBoxHelper.Watermark="Address First Line" />
         <TextBox Grid.Row="4"
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
-                 Style="{StaticResource ErrorStyle}"
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressSecondLine}"
                  controls:TextBoxHelper.Watermark="Address Second Line" />
         <TextBox Grid.Row="5"
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
-                 Style="{StaticResource ErrorStyle}"
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressThirdLine}"
                  controls:TextBoxHelper.Watermark="Address Third Line" />
         <TextBox Grid.Row="6"
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
-                 Style="{StaticResource ErrorStyle}"
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressPostCode}"
                  controls:TextBoxHelper.Watermark="Post Code" />
         <TextBox Grid.Row="7"
                  Grid.Column="1"
                  IsEnabled="{Binding Editable}"
-                 Style="{StaticResource ErrorStyle}"
                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Notes}"
                  controls:TextBoxHelper.Watermark="Notes" />
         <ItemsControl Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" TextBlock.Foreground="Red" />

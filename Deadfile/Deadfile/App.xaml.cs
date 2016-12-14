@@ -22,8 +22,8 @@ namespace Deadfile
         protected override void OnStartup(StartupEventArgs e)
         {
             // Add Deadfile Accent and Theme Resource Dictionaries to the ThemeManager.
-            ThemeManager.AddAccent(DeadfileAccent, new Uri("pack://application:,,,/Deadfile;component/Styles/DeadfileAccent.xaml"));
-            ThemeManager.AddAppTheme(DeadfileTheme, new Uri("pack://application:,,,/Deadfile;component/Styles/DeadfileTheme.xaml"));
+            ThemeManager.AddAccent(DeadfileAccent, new Uri("pack://application:,,,/Deadfile.Infrastructure;component/Styles/DeadfileAccent.xaml"));
+            ThemeManager.AddAppTheme(DeadfileTheme, new Uri("pack://application:,,,/Deadfile.Infrastructure;component/Styles/DeadfileTheme.xaml"));
 
             // Change app style to the Deadfile theme.
             ThemeManager.ChangeAppStyle(Application.Current,

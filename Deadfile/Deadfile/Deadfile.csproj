@@ -151,22 +151,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\DeadfileAccent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\DeadfileTheme.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Fonts.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Styles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Deadfile.Infrastructure\Deadfile.Infrastructure.csproj">
@@ -183,92 +167,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\add-inactive.png" />
-    <Resource Include="Resources\add-hover.png" />
-    <Resource Include="Resources\add.png" />
-    <Resource Include="Resources\back-inactive.png" />
-    <Resource Include="Resources\back-hover.png" />
-    <Resource Include="Resources\back.png" />
-    <Resource Include="Resources\background.png" />
-    <Resource Include="Resources\delete-inactive.png" />
-    <Resource Include="Resources\delete-hover.png" />
-    <Resource Include="Resources\delete.png" />
-    <Resource Include="Resources\discard-inactive.png" />
-    <Resource Include="Resources\discard-hover.png" />
-    <Resource Include="Resources\discard.png" />
-    <Resource Include="Resources\edit-inactive.png" />
-    <Resource Include="Resources\edit-hover.png" />
-    <Resource Include="Resources\edit.png" />
-    <Resource Include="Resources\forward-inactive.png" />
-    <Resource Include="Resources\forward-hover.png" />
-    <Resource Include="Resources\forward.png" />
-    <Resource Include="Resources\home-inactive.png" />
-    <Resource Include="Resources\home-hover.png" />
-    <Resource Include="Resources\home.png" />
     <Resource Include="Resources\logo.png" />
-    <Resource Include="Resources\quote-hover.png" />
-    <Resource Include="Resources\quote.png" />
-    <Resource Include="Resources\redo-inactive.png" />
-    <Resource Include="Resources\redo-hover.png" />
-    <Resource Include="Resources\redo.png" />
-    <Resource Include="Resources\save-inactive.png" />
-    <Resource Include="Resources\save-hover.png" />
-    <Resource Include="Resources\save.png" />
-    <Resource Include="Resources\undo-inactive.png" />
-    <Resource Include="Resources\undo-hover.png" />
-    <Resource Include="Resources\undo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\client-tab.png" />
-    <Resource Include="Resources\home-tab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\localauthority-tab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\job-tab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\invoice-tab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\print-hover.png" />
-    <Resource Include="Resources\print-inactive.png" />
-    <Resource Include="Resources\print.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\client-tab-dead.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\job-tab-cancelled.png" />
-    <Resource Include="Resources\job-tab-completed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\invoice-tab-cancelled.png" />
-    <Resource Include="Resources\invoice-tab-completed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\paid-hover.png" />
-    <Resource Include="Resources\paid-inactive.png" />
-    <Resource Include="Resources\paid.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\add-tab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\definequotations-tab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\unbilled-clients-hover.png" />
-    <Resource Include="Resources\unbilled-clients.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\import-hover.png" />
-    <Resource Include="Resources\import.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\todo-report-hover.png" />
-    <Resource Include="Resources\todo-report.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
