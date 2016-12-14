@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="Deadfile.Tab.Management.TodoReport.TodoReportPageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Deadfile.Tab.Management.TodoReport"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:templates="clr-namespace:Deadfile.Infrastructure.Templates;assembly=Deadfile.Infrastructure"
+             xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=local:TodoReportPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <DockPanel LastChildFill="True" Background="{StaticResource ContentBackgroundBrush}">
+        <DockPanel.Resources>
+            <DataTemplate x:Key="ExpanderHeaderTemplate" DataType="model:JobTaskModel">
+                <Border Height="24">
+                    <TextBlock Text="{Binding HeaderText}" VerticalAlignment="Center"/>
+                </Border>
+            </DataTemplate>
+        </DockPanel.Resources>
+        <TextBox DockPanel.Dock="Top" controls:TextBoxHelper.Watermark="Filter" Text="{Binding Filter, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <TextBlock Text="End Date:" />
+            <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}" />
+        </StackPanel>
+        <ListBox SelectionMode="Single"
+                 ItemsSource="{Binding Items}"
+                 SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Background" Value="Transparent"></Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="0,0,0,1" BorderBrush="Black">
+                        <Expander   HeaderTemplate="{StaticResource ExpanderHeaderTemplate}"
+                                    Header="{Binding}" Style="{StaticResource GradientExpanderStyle}"
+                                    IsExpanded="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}">
+                            <Button Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.NavigateToJob}"
+                                    CommandParameter="{Binding}">
+                                Job Page
+                            </Button>
+                        </Expander>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
+</UserControl>

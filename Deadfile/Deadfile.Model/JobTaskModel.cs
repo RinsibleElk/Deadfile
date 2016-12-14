@@ -25,8 +25,7 @@ namespace Deadfile.Model
 
         private string _description;
         [Required(ErrorMessage = "A JobTask must be given a short description"),
-         MinLength(5, ErrorMessage = "A JobTask must have at least 5 characters"),
-         MaxLength(30, ErrorMessage = "A JobTask must have at most 30 characters")]
+         MaxLength(100, ErrorMessage = "A JobTask must have at most 100 characters")]
         public string Description
         {
             get { return _description; }

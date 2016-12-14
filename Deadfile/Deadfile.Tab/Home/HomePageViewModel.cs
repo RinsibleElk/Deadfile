@@ -52,6 +52,12 @@ namespace Deadfile.Tab.Home
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.Import));
         }
 
+        public void TodoReport()
+        {
+            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.TodoReport);
+            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.TodoReport));
+        }
+
         public Experience Experience
         {
             get { return Experience.Home; }

@@ -82,18 +82,8 @@ namespace Deadfile.Tab.Common
                 _undoTracker.Redo();
         }
 
-        /// <summary>
-        /// For management pages, the base class takes care of the display name for you.
-        /// </summary>
-        /// <param name="parameters"></param>
-        public virtual void OnNavigatedTo(object parameters)
+        protected void RefreshModels()
         {
-            // convert camel case to spaces
-            DisplayNameBroadcaster.BroadcastDisplayName(EventAggregator, Experience);
-
-            // Observe UndoMessages received from the NavigationBarViewModel.
-            _undoEventSubscriptionToken = EventAggregator.GetEvent<UndoEvent>().Subscribe(HandleUndo);
-
             // add a placeholder for an added item
             if (_allowAdds)
             {
@@ -109,6 +99,21 @@ namespace Deadfile.Tab.Common
                 else
                     SelectedItem = Items[0];
             }
+        }
+
+        /// <summary>
+        /// For management pages, the base class takes care of the display name for you.
+        /// </summary>
+        /// <param name="parameters"></param>
+        public virtual void OnNavigatedTo(object parameters)
+        {
+            // convert camel case to spaces
+            DisplayNameBroadcaster.BroadcastDisplayName(EventAggregator, Experience);
+
+            // Observe UndoMessages received from the NavigationBarViewModel.
+            _undoEventSubscriptionToken = EventAggregator.GetEvent<UndoEvent>().Subscribe(HandleUndo);
+
+            RefreshModels();
         }
 
         /// <summary>
@@ -249,9 +254,8 @@ namespace Deadfile.Tab.Common
                 if (value == _filter) return;
                 _filter = value;
                 NotifyOfPropertyChange(() => Filter);
-                SelectedItem = new T();
-                Items = new ObservableCollection<T>(GetModels(Filter));
-                Items.Add(SelectedItem);
+
+                RefreshModels();
             }
         }
 

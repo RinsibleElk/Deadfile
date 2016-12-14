@@ -718,6 +718,24 @@ namespace Deadfile.Model
             return li.Where((s) => s.UnbilledAmount > 0.0).OrderByDescending((s) => s.UnbilledAmount).ToArray();
         }
 
+        public IEnumerable<JobTaskModel> GetJobTasks(DateTime endDate, string filter)
+        {
+            var li = new List<JobTaskModel>();
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var jobTask in (from jobTask in dbContext.JobTasks
+                                         where jobTask.State == JobTaskState.Active
+                                         where jobTask.DueDate <= endDate
+                                         where (filter == null || filter == "" || jobTask.Description.Contains(filter))
+                                         orderby (jobTask.DueDate)
+                                         select jobTask))
+                {
+                    li.Add(_modelEntityMapper.Mapper.Map<JobTaskModel>(jobTask));
+                }
+            }
+            return li;
+        }
+
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
             using (var dbContext = new DeadfileContext())

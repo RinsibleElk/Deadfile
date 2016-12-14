@@ -266,6 +266,10 @@
     <Resource Include="Resources\import-hover.png" />
     <Resource Include="Resources\import.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\todo-report-hover.png" />
+    <Resource Include="Resources\todo-report.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

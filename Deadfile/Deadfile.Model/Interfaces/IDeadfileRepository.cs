@@ -266,5 +266,13 @@ namespace Deadfile.Model.Interfaces
         /// <param name="filterText"></param>
         /// <returns></returns>
         IEnumerable<UnbilledClientModel> GetUnbilledClients(string filterText);
+
+        /// <summary>
+        /// Get the job tasks that expire before the specified end date.
+        /// </summary>
+        /// <param name="endDate"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        IEnumerable<JobTaskModel> GetJobTasks(DateTime endDate, string filter);
     }
 }

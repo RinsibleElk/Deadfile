@@ -223,6 +223,12 @@
       <DependentUpon>DefineQuotationsPageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Management\DefineQuotations\DefineQuotationsPageViewModel.cs" />
+    <Compile Include="Management\TodoReport\ITodoReportPageViewModel.cs" />
+    <Compile Include="Management\TodoReport\TodoReportPageDesignTimeViewModel.cs" />
+    <Compile Include="Management\TodoReport\TodoReportPageView.xaml.cs">
+      <DependentUpon>TodoReportPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Management\TodoReport\TodoReportPageViewModel.cs" />
     <Compile Include="Management\UnbilledClients\IUnbilledClientsPageViewModel.cs" />
     <Compile Include="Management\UnbilledClients\UnbilledClientsPageDesignTimeViewModel.cs" />
     <Compile Include="Management\UnbilledClients\UnbilledClientsPageView.xaml.cs">
@@ -338,6 +344,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Management\DefineQuotations\DefineQuotationsPageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Management\TodoReport\TodoReportPageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

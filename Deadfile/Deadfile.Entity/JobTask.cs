@@ -12,8 +12,7 @@ namespace Deadfile.Entity
         public int JobTaskId { get; set; }
 
         [Required(ErrorMessage = "A JobTask must be given a short description"),
-         MinLength(5, ErrorMessage = "A JobTask must have at least 5 characters"),
-         MaxLength(30, ErrorMessage = "A JobTask must have at most 30 characters")]
+         MaxLength(100, ErrorMessage = "A JobTask must have at most 100 characters")]
         public string Description { get; set; }
 
         [MaxLength(500, ErrorMessage = "The free notes for a JobTask must be less than 500 characters long.")]

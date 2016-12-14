@@ -15,6 +15,7 @@ namespace Deadfile.Tab
         Invoices,
         DefineQuotations,
         UnbilledClients,
-        Import
+        Import,
+        TodoReport
     }
 }

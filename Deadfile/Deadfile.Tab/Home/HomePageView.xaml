@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Deadfile.Tab.Home"
              d:DataContext="{d:DesignInstance Type=local:HomePageDesignTimeViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="700" d:DesignWidth="700">
     <ScrollViewer HorizontalScrollBarVisibility="Visible">
         <Grid Margin="5"
               Background="{StaticResource ContentBackgroundBrush}">
@@ -38,6 +38,9 @@
                 <Button x:Name="DefineQuotations"
                         Style="{StaticResource DefineQuotationsButton}"
                         Margin="10,20,0,10" />
+                <Button x:Name="TodoReport"
+                        Style="{StaticResource TodoReportButton}"
+                        Margin="10,20,0,10"/>
             </StackPanel>
         </Grid>
     </ScrollViewer>
