@@ -76,6 +76,7 @@
     <Compile Include="InvoiceStatus.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="JobStatus.cs" />
+    <Compile Include="JobTaskPriority.cs" />
     <Compile Include="JobTaskState.cs" />
     <Compile Include="LocalAuthority.cs" />
     <Compile Include="Payment.cs" />

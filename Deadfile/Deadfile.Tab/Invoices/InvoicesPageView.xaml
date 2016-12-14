@@ -257,7 +257,7 @@
                         </Grid>
                     </ScrollViewer>
                 </DataTemplate>
-                    <DataTemplate x:Key="PksTemplate" DataType="local:IInvoicesPageViewModel">
+                <DataTemplate x:Key="PksTemplate" DataType="local:IInvoicesPageViewModel">
                     <ScrollViewer>
                         <Grid Margin="50,50,50,50">
                             <Grid.RowDefinitions>
@@ -495,7 +495,7 @@
                         </Grid>
                     </ScrollViewer>
                 </DataTemplate>
-                    <Style TargetType="{x:Type ContentControl}" x:Key="InvoiceDisplay">
+                <Style TargetType="{x:Type ContentControl}" x:Key="InvoiceDisplay">
                     <Setter Property="ContentTemplate" Value="{StaticResource I3DTemplate}" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding SelectedItem.Company}" 

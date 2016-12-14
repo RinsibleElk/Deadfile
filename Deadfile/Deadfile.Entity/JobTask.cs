@@ -24,6 +24,9 @@ namespace Deadfile.Entity
         [Required(ErrorMessage = "A Job Task requires a state.")]
         public JobTaskState State { get; set; }
 
+        [Required(ErrorMessage = "A Job Task requires a priority.")]
+        public JobTaskPriority Priority { get; set; }
+
         public int ClientId { get; set; }
 
         public int JobId { get; set; }

@@ -10,6 +10,7 @@
              xmlns:templates="clr-namespace:Deadfile.Infrastructure.Templates;assembly=Deadfile.Infrastructure"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
+             xmlns:entity="clr-namespace:Deadfile.Entity;assembly=Deadfile.Entity"
              d:DataContext="{d:DesignInstance Type=local:JobTasksJobChildDesignTimeViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -87,6 +88,29 @@
                                          controls:TextBoxHelper.Watermark="Description"
                                          Text="{Binding Description, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
                                 <DockPanel Grid.Row="1" LastChildFill="True">
+                                    <DockPanel.Resources>
+                                        <Style TargetType="{x:Type Image}" x:Key="PriorityToggle">
+                                            <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/medium-priority.png"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.Low}">
+                                                    <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/low-priority.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.Medium}">
+                                                    <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/medium-priority.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.High}">
+                                                    <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/high-priority.png"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DockPanel.Resources>
+                                    <Button IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            Command="{Binding Path=DataContext.TogglePriorityCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                        <Image DockPanel.Dock="Right"
+                                               Width="16"
+                                               Height="16"
+                                               Style="{StaticResource PriorityToggle}" />
+                                    </Button>
                                     <CheckBox Margin="10,0,10,0"
                                               DockPanel.Dock="Right"
                                               IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"

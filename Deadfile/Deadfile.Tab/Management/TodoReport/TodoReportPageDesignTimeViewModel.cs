@@ -20,7 +20,6 @@ namespace Deadfile.Tab.Management.TodoReport
     {
         public TodoReportPageDesignTimeViewModel()
         {
-            var repository = new DeadfileDesignTimeRepository();
             SelectedItem = null;
             var li = new List<JobTaskModel>();
             var clients = new string[2]
