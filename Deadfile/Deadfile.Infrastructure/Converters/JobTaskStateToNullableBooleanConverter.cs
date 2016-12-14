@@ -10,7 +10,7 @@ using Deadfile.Entity;
 namespace Deadfile.Infrastructure.Converters
 {
     [ValueConversion(typeof(JobTaskState), typeof(bool?))]
-    public class JobTaskToNullableBooleanStateConverter : IValueConverter
+    public class JobTaskStateToNullableBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

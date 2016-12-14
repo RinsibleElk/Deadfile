@@ -12,7 +12,7 @@
         <GradientStop Color="#FF00AFFF" Offset="0.9" />
     </LinearGradientBrush>
 
-    <Style TargetType="{x:Type DatePickerTextBox}">
+    <Style TargetType="{x:Type DatePickerTextBox}" BasedOn="{StaticResource {x:Type DatePickerTextBox}}">
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -22,6 +22,11 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource {x:Type DataGrid}}">
+        <Setter Property="AlternatingRowBackground" Value="LightGray" />
+        <Setter Property="AlternationCount" Value="2" />
     </Style>
 
     <Style x:Key="OpenFileMetroTextBox"

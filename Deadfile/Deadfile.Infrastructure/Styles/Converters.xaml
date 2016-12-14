@@ -9,7 +9,7 @@
     <converters:CompanyToNameConverter x:Key="CompanyToName"/>
     <converters:BillableModelStateToNullableBoolConverter x:Key="BillableModelStateToNullableBool"/>
     <converters:BillableModelStateToIsEnabledConverter x:Key="BillableModelStateToIsEnabled"/>
-    <converters:JobTaskToNullableBooleanStateConverter x:Key="JobTaskStateToBoolean" />
+    <converters:JobTaskStateToNullableBooleanConverter x:Key="JobTaskStateToBoolean" />
     <converters:ExpenseTypeToStringConverter x:Key="ExpenseTypeToString" />
     <ObjectDataProvider MethodName="GetValues"
                 ObjectType="{x:Type entity:ClientStatus}"

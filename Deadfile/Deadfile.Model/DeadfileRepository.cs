@@ -638,10 +638,23 @@ namespace Deadfile.Model
                 foreach (var jobTask in (from jobTask in dbContext.JobTasks
                                          where jobTask.JobId == jobId
                                          where (jobTask.Description == null || filter == null || jobTask.Description.Contains(filter))
+                                         join job in dbContext.Jobs on jobTask.JobId equals job.JobId
+                                         join client in dbContext.Clients on jobTask.ClientId equals client.ClientId
                                          orderby jobTask.DueDate descending
-                                         select jobTask))
+                                         select
+                                            new {
+                                                FullName =
+                                                    ((client.FirstName == null || client.FirstName == "")
+                                                        ? ((client.Title == null || client.Title == "") ? client.LastName : (client.Title + " " + client.LastName))
+                                                        : client.FirstName + " " + client.LastName),
+                                                Property = job.AddressFirstLine,
+                                                JobTask = jobTask
+                                            }))
                 {
-                    li.Add(_modelEntityMapper.Mapper.Map<JobTaskModel>(jobTask));
+                    var jobTaskModel = _modelEntityMapper.Mapper.Map<JobTaskModel>(jobTask.JobTask);
+                    jobTaskModel.ClientFullName = jobTask.FullName;
+                    jobTaskModel.Property = jobTask.Property;
+                    li.Add(jobTaskModel);
                 }
                 return li;
             }
@@ -718,19 +731,34 @@ namespace Deadfile.Model
             return li.Where((s) => s.UnbilledAmount > 0.0).OrderByDescending((s) => s.UnbilledAmount).ToArray();
         }
 
-        public IEnumerable<JobTaskModel> GetJobTasks(DateTime endDate, string filter)
+        public IEnumerable<JobTaskModel> GetJobTasks(DateTime startDate, DateTime endDate, string filter, bool includeInactive)
         {
             var li = new List<JobTaskModel>();
             using (var dbContext = new DeadfileContext())
             {
                 foreach (var jobTask in (from jobTask in dbContext.JobTasks
-                                         where jobTask.State == JobTaskState.Active
+                                         where (includeInactive || jobTask.State == JobTaskState.Active)
+                                         where (jobTask.State == JobTaskState.Active || jobTask.DueDate >= startDate)
                                          where jobTask.DueDate <= endDate
                                          where (filter == null || filter == "" || jobTask.Description.Contains(filter))
+                                         join job in dbContext.Jobs on jobTask.JobId equals job.JobId
+                                         join client in dbContext.Clients on jobTask.ClientId equals client.ClientId
                                          orderby (jobTask.DueDate)
-                                         select jobTask))
+                                         select
+                                            new
+                                            {
+                                                FullName =
+                                                    ((client.FirstName == null || client.FirstName == "")
+                                                        ? ((client.Title == null || client.Title == "") ? client.LastName : (client.Title + " " + client.LastName))
+                                                        : client.FirstName + " " + client.LastName),
+                                                Property = job.AddressFirstLine,
+                                                JobTask = jobTask
+                                            }))
                 {
-                    li.Add(_modelEntityMapper.Mapper.Map<JobTaskModel>(jobTask));
+                    var jobTaskModel = _modelEntityMapper.Mapper.Map<JobTaskModel>(jobTask.JobTask);
+                    jobTaskModel.ClientFullName = jobTask.FullName;
+                    jobTaskModel.Property = jobTask.Property;
+                    li.Add(jobTaskModel);
                 }
             }
             return li;

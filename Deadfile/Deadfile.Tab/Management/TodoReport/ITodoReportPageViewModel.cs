@@ -15,7 +15,10 @@ namespace Deadfile.Tab.Management.TodoReport
         IPageViewModel,
         IManagementViewModel<JobTaskModel>
     {
+        ICommand NavigateToClient { get; }
         ICommand NavigateToJob { get; }
+        DateTime StartDate { get; set; }
         DateTime EndDate { get; set; }
+        bool IncludeInactive { get; set; }
     }
 }

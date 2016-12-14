@@ -164,7 +164,7 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
-        public IEnumerable<JobTaskModel> GetJobTasks(DateTime endDate, string filter)
+        public IEnumerable<JobTaskModel> GetJobTasks(DateTime startDate, DateTime endDate, string filter, bool includeInactive)
         {
             throw new NotImplementedException();
         }

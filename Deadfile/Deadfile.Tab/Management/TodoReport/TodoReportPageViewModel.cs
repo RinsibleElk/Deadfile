@@ -21,8 +21,7 @@ using IEventAggregator = Prism.Events.IEventAggregator;
 namespace Deadfile.Tab.Management.TodoReport
 {
     /// <summary>
-    /// View model for the Unbilled Clients Experience. Allows management of the known set of local
-    /// authorities.
+    /// View model for the TodoReport Experience. Generates a readonly report of JobTasks.
     /// </summary>
     class TodoReportPageViewModel : ManagementPageViewModel<JobTaskModel>, ITodoReportPageViewModel
     {
@@ -30,6 +29,7 @@ namespace Deadfile.Tab.Management.TodoReport
         private readonly TabIdentity _tabIdentity;
         private readonly IDeadfileRepository _repository;
         private readonly DelegateCommand<JobTaskModel> _navigateToJob;
+        private readonly DelegateCommand<JobTaskModel> _navigateToClient;
 
         /// <summary>
         /// Create a new <see cref="TodoReportPageViewModel"/>.
@@ -46,11 +46,20 @@ namespace Deadfile.Tab.Management.TodoReport
             _tabIdentity = tabIdentity;
             _repository = repository;
             _navigateToJob = new DelegateCommand<JobTaskModel>(PerformNavigateToJob);
+            _navigateToClient = new DelegateCommand<JobTaskModel>(PerformNavigateToClient);
         }
 
-        private void PerformNavigateToJob(JobTaskModel clientModel)
+        private void PerformNavigateToJob(JobTaskModel jobTaskModel)
         {
-            var packet = new SelectedItemPacket(BrowserModelType.Job, SelectedItem.ClientId, SelectedItem.JobId);
+            var packet = new SelectedItemPacket(BrowserModelType.Job, jobTaskModel.ClientId, jobTaskModel.JobId);
+            Logger.Info("Event,SelectedItemEvent,Send,{0},{1}", _tabIdentity, packet);
+            EventAggregator.GetEvent<SelectedItemEvent>()
+                .Publish(packet);
+        }
+
+        private void PerformNavigateToClient(JobTaskModel jobTaskModel)
+        {
+            var packet = new SelectedItemPacket(BrowserModelType.Client, ModelBase.NewModelId, jobTaskModel.ClientId);
             Logger.Info("Event,SelectedItemEvent,Send,{0},{1}", _tabIdentity, packet);
             EventAggregator.GetEvent<SelectedItemEvent>()
                 .Publish(packet);
@@ -62,7 +71,7 @@ namespace Deadfile.Tab.Management.TodoReport
         /// <returns></returns>
         protected override IEnumerable<JobTaskModel> GetModels(string filter)
         {
-            return _repository.GetJobTasks(EndDate, filter);
+            return _repository.GetJobTasks(StartDate, EndDate, filter, IncludeInactive);
         }
 
         protected override void PerformDelete()
@@ -82,9 +91,22 @@ namespace Deadfile.Tab.Management.TodoReport
             throw new NotImplementedException();
         }
 
-        public ICommand NavigateToJob
+        public ICommand NavigateToClient => _navigateToClient;
+
+        public ICommand NavigateToJob => _navigateToJob;
+
+        private DateTime _startDate = DateTime.Today;
+        public DateTime StartDate
         {
-            get { return _navigateToJob; }
+            get { return _startDate; }
+            set
+            {
+                if (value.Equals(_startDate)) return;
+                _startDate = value;
+                NotifyOfPropertyChange(() => StartDate);
+
+                RefreshModels();
+            }
         }
 
         private DateTime _endDate = DateTime.Today.AddDays(7.0);
@@ -96,6 +118,20 @@ namespace Deadfile.Tab.Management.TodoReport
                 if (value.Equals(_endDate)) return;
                 _endDate = value;
                 NotifyOfPropertyChange(() => EndDate);
+
+                RefreshModels();
+            }
+        }
+
+        private bool _includeInactive;
+        public bool IncludeInactive
+        {
+            get { return _includeInactive; }
+            set
+            {
+                if (value == _includeInactive) return;
+                _includeInactive = value;
+                NotifyOfPropertyChange(() => IncludeInactive);
 
                 RefreshModels();
             }

@@ -67,6 +67,7 @@
                 <converters:SwitchConverterCase When="Home" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/home-tab.png" />
                 <converters:SwitchConverterCase When="LocalAuthorities" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/localauthority-tab.png" />
                 <converters:SwitchConverterCase When="DefineQuotations" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/definequotations-tab.png" />
+                <converters:SwitchConverterCase When="TodoReport" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/todo-report-tab.png" />
             </converters:SwitchConverter>
         </DockPanel.Resources>
         <dragablz:TabablzControl

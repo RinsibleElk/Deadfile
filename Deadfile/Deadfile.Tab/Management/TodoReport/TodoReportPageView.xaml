@@ -7,9 +7,18 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:templates="clr-namespace:Deadfile.Infrastructure.Templates;assembly=Deadfile.Infrastructure"
              xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
+             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:TodoReportPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="700" d:DesignWidth="700">
+    <UserControl.Resources>
+        <designTime:DesignTimeResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Converters.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </designTime:DesignTimeResourceDictionary>
+    </UserControl.Resources>
     <DockPanel LastChildFill="True" Background="{StaticResource ContentBackgroundBrush}">
         <DockPanel.Resources>
             <DataTemplate x:Key="ExpanderHeaderTemplate" DataType="model:JobTaskModel">
@@ -20,33 +29,55 @@
         </DockPanel.Resources>
         <TextBox DockPanel.Dock="Top" controls:TextBoxHelper.Watermark="Filter" Text="{Binding Filter, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <TextBlock Text="End Date:" />
-            <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}" />
+            <TextBlock Text="Start Date:" Margin="5,0,5,0" VerticalAlignment="Center" />
+            <DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay}" Margin="5,0,5,0" />
+            <TextBlock Text="End Date:" Margin="5,0,5,0" VerticalAlignment="Center" />
+            <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}" Margin="5,0,5,0" />
+            <CheckBox Margin="5,0,5,0" IsChecked="{Binding IncludeInactive}" VerticalAlignment="Center">
+                Include Inactive
+            </CheckBox>
         </StackPanel>
-        <ListBox SelectionMode="Single"
-                 ItemsSource="{Binding Items}"
-                 SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="Padding" Value="0" />
-                    <Setter Property="Background" Value="Transparent"></Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderThickness="0,0,0,1" BorderBrush="Black">
-                        <Expander   HeaderTemplate="{StaticResource ExpanderHeaderTemplate}"
-                                    Header="{Binding}" Style="{StaticResource GradientExpanderStyle}"
-                                    IsExpanded="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}">
-                            <Button Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.NavigateToJob}"
-                                    CommandParameter="{Binding}">
-                                Job Page
-                            </Button>
-                        </Expander>
-                    </Border>
+        <DataGrid AutoGenerateColumns="False"
+                  ItemsSource="{Binding Items}"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserResizeColumns="True"
+                  CanUserResizeRows="False"
+                  CanUserSortColumns="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn IsReadOnly="True" Header="Description" Binding="{Binding Description}" />
+                <DataGridTemplateColumn IsReadOnly="True" Header="Client" SortMemberPath="State">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="model:JobTaskModel">
+                            <Button Content="{Binding ClientFullName}"
+                                    Command="{Binding Path=DataContext.NavigateToClient, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn IsReadOnly="True" Header="Property" SortMemberPath="State">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="model:JobTaskModel">
+                            <Button Content="{Binding Property}"
+                                    Command="{Binding Path=DataContext.NavigateToJob, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn IsReadOnly="True" Header="Due Date" Binding="{Binding DueDate, StringFormat=dd/MM/yyyy}" />
+                <DataGridTemplateColumn IsReadOnly="True" Header="Completed" SortMemberPath="State">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="model:JobTaskModel">
+                            <CheckBox IsEnabled="False" IsChecked="{Binding State, Converter={StaticResource JobTaskStateToBoolean}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate DataType="model:JobTaskModel">
+                    <TextBlock Text="{Binding Notes}" Margin="10" />
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
     </DockPanel>
 </UserControl>

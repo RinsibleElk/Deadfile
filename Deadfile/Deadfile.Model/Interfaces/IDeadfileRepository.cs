@@ -270,10 +270,12 @@ namespace Deadfile.Model.Interfaces
         /// <summary>
         /// Get the job tasks that expire before the specified end date.
         /// </summary>
+        /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <param name="filter"></param>
+        /// <param name="includeInactive"></param>
         /// <returns></returns>
-        IEnumerable<JobTaskModel> GetJobTasks(DateTime endDate, string filter);
+        IEnumerable<JobTaskModel> GetJobTasks(DateTime startDate, DateTime endDate, string filter, bool includeInactive);
 
         /// <summary>
         /// Permanently delete a job task.

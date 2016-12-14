@@ -21,8 +21,7 @@ using IEventAggregator = Prism.Events.IEventAggregator;
 namespace Deadfile.Tab.Management.UnbilledClients
 {
     /// <summary>
-    /// View model for the Unbilled Clients Experience. Allows management of the known set of local
-    /// authorities.
+    /// View model for the Unbilled Clients Experience. Generates a readonly report of Unbilled Clients.
     /// </summary>
     class UnbilledClientsPageViewModel : ManagementPageViewModel<UnbilledClientModel>, IUnbilledClientsPageViewModel
     {

@@ -23,6 +23,20 @@ namespace Deadfile.Model
             set { SetProperty(ref _jobTaskId, value); }
         }
 
+        private string _clientFullName;
+        public string ClientFullName
+        {
+            get { return _clientFullName; }
+            set { SetProperty(ref _clientFullName, value); }
+        }
+
+        private string _property;
+        public string Property
+        {
+            get { return _property; }
+            set { SetProperty(ref _property, value); }
+        }
+
         private string _description;
         [Required(ErrorMessage = "A JobTask must be given a short description"),
          MaxLength(100, ErrorMessage = "A JobTask must have at most 100 characters")]
