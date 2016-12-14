@@ -32,6 +32,7 @@
             <converters:CompanyToNameConverter x:Key="CompanyToName"/>
             <converters:BillableModelStateToNullableBoolConverter x:Key="BillableModelStateToNullableBool"/>
             <converters:BillableModelStateToIsEnabledConverter x:Key="BillableModelStateToIsEnabled"/>
+            <converters:JobTaskToNullableBooleanStateConverter x:Key="JobTaskStateToBoolean" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -77,10 +77,17 @@
                                          IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                          controls:TextBoxHelper.Watermark="Description"
                                          Text="{Binding Description, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
-                                <DatePicker Grid.Row="1"
-                                            SelectedDate="{Binding DueDate}"
-                                            IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            IsTodayHighlighted="True" />
+                                <DockPanel Grid.Row="1" LastChildFill="True">
+                                    <CheckBox Margin="10,0,10,0"
+                                              DockPanel.Dock="Right"
+                                              IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                              IsChecked="{Binding State, Mode=TwoWay, Converter={StaticResource JobTaskStateToBoolean}}">
+                                        Completed
+                                    </CheckBox>
+                                    <DatePicker SelectedDate="{Binding DueDate}"
+                                                IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                IsTodayHighlighted="True" />
+                                </DockPanel>
                                 <TextBox Grid.Row="2"
                                          IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                          controls:TextBoxHelper.Watermark="Notes"

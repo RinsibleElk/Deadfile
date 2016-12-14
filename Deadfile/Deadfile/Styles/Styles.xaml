@@ -5,7 +5,11 @@
     xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls">
 
-    <ImageBrush x:Key="ContentBackgroundBrush" ImageSource="../Resources/background.png" Stretch="UniformToFill"/>
+    <LinearGradientBrush x:Key="ContentBackgroundBrush" StartPoint="0.47,0" EndPoint="0.53,1">
+        <GradientStop Color="#FFFFFFFF" Offset="0.1" />
+        <GradientStop Color="#FFABFFFF" Offset="0.3" />
+        <GradientStop Color="#FF00AFFF" Offset="0.9" />
+    </LinearGradientBrush>
 
     <Style x:Key="OpenFileMetroTextBox"
        BasedOn="{StaticResource ButtonCommandMetroTextBox}"
