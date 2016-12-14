@@ -62,7 +62,7 @@
         <Setter Property="controls:ButtonHelper.PreserveTextCase" Value="True" />
     </Style>
 
-    <Style TargetType="Expander" x:Key="GradientExpanderStyle">
+    <Style TargetType="{x:Type Expander}" x:Key="GradientExpanderStyle">
         <Style.Resources>
             <LinearGradientBrush x:Key="BackBrush" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop Color="#887777AA" Offset="0.1" />

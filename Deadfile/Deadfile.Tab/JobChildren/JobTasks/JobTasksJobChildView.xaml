@@ -36,8 +36,28 @@
                 </Setter>
             </Style>
             <DataTemplate x:Key="ExpanderHeaderTemplate" DataType="model:JobTaskModel">
+                <DataTemplate.Resources>
+                    <Style TargetType="{x:Type Image}" x:Key="PriorityImage">
+                        <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/medium-priority.png"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.Low}">
+                                <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/low-priority.png"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.Medium}">
+                                <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/medium-priority.png"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.High}">
+                                <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/high-priority.png"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataTemplate.Resources>
                 <Border Height="24">
                     <StackPanel Orientation="Horizontal">
+                        <Image Width="16"
+                               Height="16"
+                               Margin="0,0,5,0"
+                               Style="{StaticResource PriorityImage}" />
                         <TextBlock Text="{Binding HeaderText}" VerticalAlignment="Center" />
                     </StackPanel>
                 </Border>
@@ -74,7 +94,8 @@
                 <DataTemplate>
                     <Border BorderThickness="0,0,0,1" BorderBrush="Black">
                         <Expander   HeaderTemplateSelector="{StaticResource ExpanderHeaderTemplateSelector}"
-                                    Header="{Binding}" Style="{StaticResource GradientExpanderStyle}"
+                                    Header="{Binding}"
+                                    Style="{StaticResource GradientExpanderStyle}"
                                     IsExpanded="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}">
                             <Grid Background="White">
                                 <Grid.RowDefinitions>
@@ -91,15 +112,19 @@
                                     <DockPanel.Resources>
                                         <Style TargetType="{x:Type Image}" x:Key="PriorityToggle">
                                             <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/medium-priority.png"/>
+                                            <Setter Property="ToolTip" Value="Toggle Priority (Medium)" />
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.Low}">
                                                     <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/low-priority.png"/>
+                                                    <Setter Property="ToolTip" Value="Toggle Priority (Low)" />
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.Medium}">
                                                     <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/medium-priority.png"/>
+                                                    <Setter Property="ToolTip" Value="Toggle Priority (Medium)" />
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.High}">
                                                     <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/high-priority.png"/>
+                                                    <Setter Property="ToolTip" Value="Toggle Priority (High)" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
