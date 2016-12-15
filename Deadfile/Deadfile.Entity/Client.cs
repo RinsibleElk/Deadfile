@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace Deadfile.Entity
 {
     /// <summary>
@@ -75,21 +74,39 @@ namespace Deadfile.Entity
         [MaxLength(20, ErrorMessage = "A postcode must be less than 20 characters long.")]
         public string AddressPostCode { get; set; }
 
+        /// <summary>
+        /// 1st Phone Number.
+        /// </summary>
         [Phone(ErrorMessage = "Not a valid phone number for Client.")]
         public string PhoneNumber1 { get; set; }
 
+        /// <summary>
+        /// 2nd Phone Number.
+        /// </summary>
         [Phone(ErrorMessage = "Not a valid phone number for Client.")]
         public string PhoneNumber2 { get; set; }
 
+        /// <summary>
+        /// 3rd Phone Number.
+        /// </summary>
         [Phone(ErrorMessage = "Not a valid phone number for Client.")]
         public string PhoneNumber3 { get; set; }
 
+        /// <summary>
+        /// Client's E-mail Address.
+        /// </summary>
         [EmailAddress(ErrorMessage = "Invalid e-mail address given for this Client.")]
         public string EmailAddress { get; set; }
 
+        /// <summary>
+        /// A Client is never deleted from the database. They are only ever <see cref="ClientStatus.Active"/> or <see cref="ClientStatus.Inactive"/>.
+        /// </summary>
         [Required(ErrorMessage = "Every Client must have a status.")]
         public ClientStatus Status { get; set; }
 
+        /// <summary>
+        /// Free form notes for the client.
+        /// </summary>
         [MaxLength(500, ErrorMessage = "The free notes for a Client must be less than 500 characters long.")]
         public string Notes { get; set; }
 

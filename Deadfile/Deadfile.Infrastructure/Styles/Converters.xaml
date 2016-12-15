@@ -12,6 +12,20 @@
     <converters:JobTaskStateToNullableBooleanConverter x:Key="JobTaskStateToBoolean" />
     <converters:ExpenseTypeToStringConverter x:Key="ExpenseTypeToString" />
     <ObjectDataProvider MethodName="GetValues"
+                ObjectType="{x:Type entity:ApplicationState}"
+                x:Key="ApplicationStateValues">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="entity:ApplicationState" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider MethodName="GetValues"
+                ObjectType="{x:Type entity:JobTaskState}"
+                x:Key="JobTaskStateValues">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="entity:JobTaskState" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider MethodName="GetValues"
                 ObjectType="{x:Type entity:ClientStatus}"
                 x:Key="ClientStatusValues">
         <ObjectDataProvider.MethodParameters>

@@ -9,6 +9,8 @@ namespace Deadfile.Entity
     public enum BillableState
     {
         Active,
-        Paid
+        Paid,
+        Billed,
+        Cancelled
     }
 }

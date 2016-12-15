@@ -73,6 +73,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <ComboBox Grid.Row="0"
@@ -101,7 +102,10 @@
                                          IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                          controls:TextBoxHelper.Watermark="Notes"
                                          Text="{Binding Notes, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
-                                <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <TextBox Grid.Row="5"
+                                         IsEnabled="False"
+                                         Text="{Binding State}"/>
+                                <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right">
                                     <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             Command="{Binding Path=DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                         Edit

@@ -84,6 +84,10 @@
     <Compile Include="Migrations\201612142347392_InitialCreate.Designer.cs">
       <DependentUpon>201612142347392_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612152310183_AddSomeRandomField.cs" />
+    <Compile Include="Migrations\201612152310183_AddSomeRandomField.Designer.cs">
+      <DependentUpon>201612152310183_AddSomeRandomField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -97,6 +101,12 @@
     <EmbeddedResource Include="Migrations\201612142347392_InitialCreate.resx">
       <DependentUpon>201612142347392_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612152310183_AddSomeRandomField.resx">
+      <DependentUpon>201612152310183_AddSomeRandomField.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Migrations\SQL\InitialCreate_To_AddSomeRandomField.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

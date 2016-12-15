@@ -478,11 +478,11 @@ namespace Deadfile.Model
                 {
                     if (billable.State == BillableModelState.FullyIncluded)
                     {
-                        SetInvoiceForBillable(billable, invoiceId);
+                        SetInvoiceForBillable(billable, invoiceId, invoiceModel.Status);
                     }
                     else if (billable.State == BillableModelState.Excluded)
                     {
-                        SetInvoiceForBillable(billable, null);
+                        SetInvoiceForBillable(billable, null, invoiceModel.Status);
                     }
                 }
             }
@@ -515,7 +515,7 @@ namespace Deadfile.Model
             }
         }
 
-        private void SetInvoiceForBillable(BillableModel billableModel, int? invoiceId)
+        private void SetInvoiceForBillable(BillableModel billableModel, int? invoiceId, InvoiceStatus invoiceStatus)
         {
             if (billableModel.ModelType == BillableModelType.Expense)
             {
@@ -523,6 +523,23 @@ namespace Deadfile.Model
                 {
                     var billable = dbContext.Expenses.Find(new object[] { billableModel.Id });
                     billable.InvoiceId = invoiceId;
+                    if (invoiceId == null)
+                        billable.State = BillableState.Active;
+                    else
+                    {
+                        switch (invoiceStatus)
+                        {
+                            case InvoiceStatus.Created:
+                                billable.State = BillableState.Billed;
+                                break;
+                            case InvoiceStatus.Cancelled:
+                                billable.State = BillableState.Cancelled;
+                                break;
+                            case InvoiceStatus.Paid:
+                                billable.State = BillableState.Paid;
+                                break;
+                        }
+                    }
                     dbContext.SaveChanges();
                 }
             }
@@ -532,6 +549,23 @@ namespace Deadfile.Model
                 {
                     var billable = dbContext.BillableHours.Find(new object[] { billableModel.Id });
                     billable.InvoiceId = invoiceId;
+                    if (invoiceId == null)
+                        billable.State = BillableState.Active;
+                    else
+                    {
+                        switch (invoiceStatus)
+                        {
+                            case InvoiceStatus.Created:
+                                billable.State = BillableState.Billed;
+                                break;
+                            case InvoiceStatus.Cancelled:
+                                billable.State = BillableState.Cancelled;
+                                break;
+                            case InvoiceStatus.Paid:
+                                billable.State = BillableState.Paid;
+                                break;
+                        }
+                    }
                     dbContext.SaveChanges();
                 }
             }
