@@ -1,0 +1,3 @@
+Enable-Migrations -ContextProjectName Deadfile.Entity -StartUpProjectName Deadfile -ContextTypeName Deadfile.Entity.DeadfileContext -ProjectName Deadfile.Entity -ConnectionStringName Deadfile
+Add-Migration -Name AddSomeRandomField -ProjectName Deadfile.Entity -StartUpProjectName Deadfile -ConfigurationTypeName Deadfile.Entity.Migrations.Configuration -ConnectionStringName Deadfile
+Update-Database -SourceMigration InitialCreate -TargetMigration AddSomeRandomField -Script -ProjectName Deadfile.Entity -StartUpProjectName Deadfile -ConnectionStringName Deadfile
