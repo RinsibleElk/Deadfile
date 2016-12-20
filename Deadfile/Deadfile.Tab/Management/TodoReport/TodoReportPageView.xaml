@@ -48,7 +48,8 @@
                   CanUserDeleteRows="False"
                   CanUserResizeColumns="True"
                   CanUserResizeRows="False"
-                  CanUserSortColumns="True">
+                  CanUserSortColumns="True"
+                  x:Name="Report">
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True" Header="Description" Binding="{Binding Description}" />
                 <DataGridTemplateColumn IsReadOnly="True" Header="Client" SortMemberPath="State">

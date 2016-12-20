@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 using Deadfile.Infrastructure.Interfaces;
 
 namespace Deadfile.Infrastructure.Services
@@ -20,6 +21,14 @@ namespace Deadfile.Infrastructure.Services
             var result = printDlg.ShowDialog();
             if (result.Value)
                 printDlg.PrintDocument(((IDocumentPaginatorSource)document).DocumentPaginator, "Invoice");
+        }
+
+        public void PrintVisual(Visual visual)
+        {
+            var printDlg = new PrintDialog();
+            var result = printDlg.ShowDialog();
+            if (result.Value)
+                printDlg.PrintVisual(visual, "Report");
         }
     }
 }

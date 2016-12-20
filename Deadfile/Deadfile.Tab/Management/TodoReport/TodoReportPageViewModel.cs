@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -142,8 +143,17 @@ namespace Deadfile.Tab.Management.TodoReport
             }
         }
 
+        protected override void OnViewAttached(object view, object context)
+        {
+            base.OnViewAttached(view, context);
+            _view = (TodoReportPageView)view;
+        }
+
+        private TodoReportPageView _view;
         public void Print()
         {
+            var visual = _view.Report;
+            _printService.PrintVisual(visual);
         }
     }
 }
