@@ -10,9 +10,7 @@ using Deadfile.Tab.Common;
 
 namespace Deadfile.Tab.Management.UnbilledClients
 {
-    interface IUnbilledClientsPageViewModel :
-        IPageViewModel,
-        IManagementViewModel<UnbilledClientModel>
+    interface IUnbilledClientsPageViewModel : IReportPageViewModel<UnbilledClientModel>
     {
         ICommand NavigateToClient { get; }
     }

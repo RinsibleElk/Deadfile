@@ -11,15 +11,9 @@ using Deadfile.Tab.Common;
 
 namespace Deadfile.Tab.Management.TodoReport
 {
-    interface ITodoReportPageViewModel :
-        IPageViewModel,
-        IManagementViewModel<JobTaskModel>
+    interface ITodoReportPageViewModel : IReportPageViewModel<JobTaskModel>
     {
         ICommand NavigateToClient { get; }
         ICommand NavigateToJob { get; }
-        DateTime StartDate { get; set; }
-        DateTime EndDate { get; set; }
-        bool IncludeInactive { get; set; }
-        void Print();
     }
 }

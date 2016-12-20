@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Deadfile.Infrastructure.Interfaces;
@@ -23,7 +24,7 @@ namespace Deadfile.Tab.Management.UnbilledClients
     /// <summary>
     /// View model for the Unbilled Clients Experience. Generates a readonly report of Unbilled Clients.
     /// </summary>
-    class UnbilledClientsPageViewModel : ManagementPageViewModel<UnbilledClientModel>, IUnbilledClientsPageViewModel
+    class UnbilledClientsPageViewModel : ReportPageViewModel<UnbilledClientModel>, IUnbilledClientsPageViewModel
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly TabIdentity _tabIdentity;
@@ -35,12 +36,14 @@ namespace Deadfile.Tab.Management.UnbilledClients
         /// </summary>
         /// <param name="tabIdentity"></param>
         /// <param name="dialogCoordinator"></param>
+        /// <param name="printService"></param>
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
         public UnbilledClientsPageViewModel(TabIdentity tabIdentity,
             IDialogCoordinator dialogCoordinator,
+            IPrintService printService,
             IDeadfileRepository repository,
-            IEventAggregator eventAggregator) : base(dialogCoordinator, eventAggregator, false)
+            IEventAggregator eventAggregator) : base(printService, dialogCoordinator, eventAggregator, false)
         {
             _tabIdentity = tabIdentity;
             _repository = repository;
@@ -64,26 +67,14 @@ namespace Deadfile.Tab.Management.UnbilledClients
             return _repository.GetUnbilledClients(filter);
         }
 
-        protected override void PerformDelete()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void PerformSave()
-        {
-            throw new NotImplementedException();
-        }
-
         // Common for every journaled page (content).
         public override Experience Experience { get; } = Experience.UnbilledClients;
-        public override void EditingStatusChanged(bool editable)
-        {
-            throw new NotImplementedException();
-        }
 
-        public ICommand NavigateToClient
+        public ICommand NavigateToClient => _navigateToClient;
+
+        protected override DataGrid GetVisual(object view)
         {
-            get { return _navigateToClient; }
+            return ((UnbilledClientsPageView) view).Report;
         }
     }
 }

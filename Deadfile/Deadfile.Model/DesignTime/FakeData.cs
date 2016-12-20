@@ -2298,6 +2298,15 @@ namespace Deadfile.Model.DesignTime
                 }
                 catch (DbEntityValidationException e)
                 {
+                    Console.Error.WriteLine("Validation Errors:");
+                    foreach (var validationError in e.EntityValidationErrors)
+                    {
+                        foreach (var error in validationError.ValidationErrors)
+                        {
+                            Console.Error.WriteLine("Error: {0}, {1}", error.PropertyName, error.ErrorMessage);
+                        }
+                    }
+                    Console.Error.WriteLine(e.EntityValidationErrors);
                     throw;
                 }
             }
@@ -2330,6 +2339,15 @@ namespace Deadfile.Model.DesignTime
                 }
                 catch (DbEntityValidationException e)
                 {
+                    Console.Error.WriteLine("Validation Errors:");
+                    foreach (var validationError in e.EntityValidationErrors)
+                    {
+                        foreach (var error in validationError.ValidationErrors)
+                        {
+                            Console.Error.WriteLine("Error: {0}, {1}", error.PropertyName, error.ErrorMessage);
+                        }
+                    }
+                    Console.Error.WriteLine(e.EntityValidationErrors);
                     throw;
                 }
             }

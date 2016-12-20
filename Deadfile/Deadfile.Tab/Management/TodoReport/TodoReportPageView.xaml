@@ -19,14 +19,7 @@
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
-    <DockPanel LastChildFill="True" Background="{StaticResource ContentBackgroundBrush}">
-        <DockPanel.Resources>
-            <DataTemplate x:Key="ExpanderHeaderTemplate" DataType="model:JobTaskModel">
-                <Border Height="24">
-                    <TextBlock Text="{Binding HeaderText}" VerticalAlignment="Center"/>
-                </Border>
-            </DataTemplate>
-        </DockPanel.Resources>
+    <DockPanel LastChildFill="True">
         <DockPanel DockPanel.Dock="Top" LastChildFill="True" >
             <Button DockPanel.Dock="Right" x:Name="Print">
                 Print

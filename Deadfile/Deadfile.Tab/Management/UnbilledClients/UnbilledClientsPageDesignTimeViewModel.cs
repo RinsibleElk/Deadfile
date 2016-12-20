@@ -14,7 +14,7 @@ using Deadfile.Tab.DesignTime;
 namespace Deadfile.Tab.Management.UnbilledClients
 {
     class UnbilledClientsPageDesignTimeViewModel :
-        ManagementPageDesignTimeViewModel<UnbilledClientModel>,
+        ReportPageDesignTimeViewModel<UnbilledClientModel>,
         IUnbilledClientsPageViewModel
     {
         public UnbilledClientsPageDesignTimeViewModel()

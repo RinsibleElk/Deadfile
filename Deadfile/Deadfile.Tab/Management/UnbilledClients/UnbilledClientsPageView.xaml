@@ -7,42 +7,54 @@
              xmlns:model="clr-namespace:Deadfile.Model.Reporting;assembly=Deadfile.Model"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:templates="clr-namespace:Deadfile.Infrastructure.Templates;assembly=Deadfile.Infrastructure"
+             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:UnbilledClientsPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
-    <DockPanel LastChildFill="True" Background="{StaticResource ContentBackgroundBrush}">
-        <DockPanel.Resources>
-            <DataTemplate x:Key="ExpanderHeaderTemplate" DataType="model:UnbilledClientModel">
-                <Border Height="24">
-                    <TextBlock Text="{Binding HeaderString}" VerticalAlignment="Center"/>
-                </Border>
-            </DataTemplate>
-        </DockPanel.Resources>
-        <TextBox DockPanel.Dock="Top" controls:TextBoxHelper.Watermark="Filter" Text="{Binding Filter, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
-        <ListBox SelectionMode="Single"
-                 ItemsSource="{Binding Items}"
-                 SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="Padding" Value="0" />
-                    <Setter Property="Background" Value="Transparent"></Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderThickness="0,0,0,1" BorderBrush="Black">
-                        <Expander   HeaderTemplate="{StaticResource ExpanderHeaderTemplate}"
-                                    Header="{Binding}" Style="{StaticResource GradientExpanderStyle}"
-                                    IsExpanded="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}">
-                            <Button Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.NavigateToClient}"
-                                    CommandParameter="{Binding}">
-                                Client Page
-                            </Button>
-                        </Expander>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+    <UserControl.Resources>
+        <designTime:DesignTimeResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Converters.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </designTime:DesignTimeResourceDictionary>
+    </UserControl.Resources>
+    <DockPanel LastChildFill="True">
+        <DockPanel DockPanel.Dock="Top" LastChildFill="True" >
+            <Button DockPanel.Dock="Right" x:Name="Print">
+                Print
+            </Button>
+            <TextBox controls:TextBoxHelper.Watermark="Filter" Text="{Binding Filter, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
+        </DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <TextBlock Text="Start Date:" Margin="5,0,5,0" VerticalAlignment="Center" />
+            <DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay}" Margin="5,0,5,0" />
+            <TextBlock Text="End Date:" Margin="5,0,5,0" VerticalAlignment="Center" />
+            <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}" Margin="5,0,5,0" />
+            <CheckBox Margin="5,0,5,0" IsChecked="{Binding IncludeInactive}" VerticalAlignment="Center">
+                Include Inactive
+            </CheckBox>
+        </StackPanel>
+        <DataGrid AutoGenerateColumns="False"
+                  ItemsSource="{Binding Items}"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserResizeColumns="True"
+                  CanUserResizeRows="False"
+                  CanUserSortColumns="True"
+                  x:Name="Report">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn IsReadOnly="True" Header="Client" SortMemberPath="State">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="model:UnbilledClientModel">
+                            <Button Content="{Binding FullName}"
+                                    Command="{Binding Path=DataContext.NavigateToClient, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn IsReadOnly="True" Header="Amount Due" Binding="{Binding UnbilledAmount}" />
+            </DataGrid.Columns>
+        </DataGrid>
     </DockPanel>
 </UserControl>

@@ -15,7 +15,7 @@ using Deadfile.Tab.DesignTime;
 namespace Deadfile.Tab.Management.TodoReport
 {
     class TodoReportPageDesignTimeViewModel :
-        ManagementPageDesignTimeViewModel<JobTaskModel>,
+        ReportPageDesignTimeViewModel<JobTaskModel>,
         ITodoReportPageViewModel
     {
         public TodoReportPageDesignTimeViewModel()
@@ -54,13 +54,5 @@ namespace Deadfile.Tab.Management.TodoReport
         public ICommand NavigateToClient { get; } = null;
 
         public ICommand NavigateToJob { get; } = null;
-        public DateTime StartDate { get; set; } = DateTime.Today;
-
-        public DateTime EndDate { get; set; } = DateTime.Today.AddDays(7.0);
-        public bool IncludeInactive { get; set; } = false;
-        public void Print()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

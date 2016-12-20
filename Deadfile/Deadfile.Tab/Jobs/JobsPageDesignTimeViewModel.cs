@@ -18,8 +18,8 @@ namespace Deadfile.Tab.Jobs
         };
         public bool Editable { get; } = false;
         public List<string> Errors { get; } = new List<string>();
-        public Experience Experience { get; } = Experience.Jobs;
-        public bool ShowActionsPad { get; } = true;
+        public override Experience Experience { get; } = Experience.Jobs;
+        public override bool ShowActionsPad { get; } = true;
         public List<JobChildExperience> JobChildren { get; } = JobsPageViewModel.AllJobChildExperiences;
         public JobChildExperience SelectedJobChild { get; set; } = JobChildExperience.Applications;
         public bool JobChildIsEditable { get; set; } = false;

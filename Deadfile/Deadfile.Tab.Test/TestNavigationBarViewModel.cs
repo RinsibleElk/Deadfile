@@ -14,7 +14,6 @@ namespace Deadfile.Tab.Test
     public class TestNavigationBarViewModel
     {
         private static readonly TabIdentity TabIdentity = new TabIdentity(1);
-        private NavigationBarViewModel _viewModel = null;
 
         private class RealEventsHost : IDisposable
         {
