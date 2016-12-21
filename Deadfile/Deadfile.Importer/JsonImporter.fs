@@ -33,52 +33,52 @@ type ClientJson =
 
 type JobJson =
     {
-        JobId               : int
-        JobNumber           : int
-        AddressFirstLine    : string
-        AddressSecondLine   : string
-        AddressThirdLine    : string
-        AddressPostCode     : string
-        Status              : JobStatus
-        Notes               : string
-        Description         : string
-        ClientId            : int
+        JobId : int
+        JobNumber : int
+        AddressFirstLine : string
+        AddressSecondLine : string
+        AddressThirdLine : string
+        AddressPostCode : string
+        Status : JobStatus
+        Notes : string
+        Description : string
+        ClientId : int
     }
 
 type InvoiceJson =
     {
-        InvoiceId                   : int
-        CreatedDate                 : DateTime
-        GrossAmount                 : double
-        NetAmount                   : double
-        Status                      : InvoiceStatus
-        InvoiceReference            : int
-        Company                     : Company
-        CreationState               : InvoiceCreationState
-        ClientName                  : string
-        ClientAddressFirstLine      : string
-        ClientAddressSecondLine     : string
-        ClientAddressThirdLine      : string
-        ClientAddressPostCode       : string
-        Project                     : string
-        Description                 : string
-        VatRate                     : double
-        VatValue                    : double
-        ClientId                    : int
+        InvoiceId : int
+        CreatedDate : DateTime
+        GrossAmount : double
+        NetAmount : double
+        Status : InvoiceStatus
+        InvoiceReference : int
+        Company : Company
+        CreationState : InvoiceCreationState
+        ClientName : string
+        ClientAddressFirstLine : string
+        ClientAddressSecondLine : string
+        ClientAddressThirdLine : string
+        ClientAddressPostCode : string
+        Project : string
+        Description : string
+        VatRate : double
+        VatValue : double
+        ClientId : int
     }
 
 type JobTaskJson =
     {
-        ClientId        : int
-        JobId           : int
-        JobTaskId       : int
-        ClientFullName  : string
-        Property        : string
-        Description     : string
-        Notes           : string
-        DueDate         : DateTime
-        State           : JobTaskState
-        Priority        : JobTaskPriority
+        ClientId : int
+        JobId : int
+        JobTaskId : int
+        ClientFullName : string
+        Property : string
+        Description : string
+        Notes : string
+        DueDate : DateTime
+        State : JobTaskState
+        Priority : JobTaskPriority
     }
 
 type QuotationJson =
@@ -143,14 +143,14 @@ type LocalAuthorityJson =
         Url : string
     }
 
-type IdCacheBehaviour =
+type internal IdCacheBehaviour =
     | RetrieveAll
     | LearnClientId
     | LearnJobId
     | LearnInvoiceId
 
 [<Sealed>]
-type IdCache() =
+type internal IdCache() =
     let clientIdCache = new Dictionary<int,int>()
     let jobIdCache = new Dictionary<int,int>()
     let invoiceIdCache = new Dictionary<int,int>()
@@ -177,7 +177,7 @@ type IdCache() =
     member __.AddInvoiceId(invoiceId, newInvoiceId) = invoiceIdCache.Add(invoiceId, newInvoiceId)
 
 [<RequireQualifiedAccess>]
-module ToFromRecord =
+module internal ToFromRecord =
     /// Map from some POCO to a record.
     let mapToRecord<'recordType, 'classType> (c:'classType) =
         FSharpType.GetRecordFields(typeof<'recordType>)
