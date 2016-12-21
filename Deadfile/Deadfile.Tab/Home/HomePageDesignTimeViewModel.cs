@@ -39,6 +39,11 @@ namespace Deadfile.Tab.Home
             throw new NotImplementedException();
         }
 
+        public void ImportExportToJson()
+        {
+            throw new NotImplementedException();
+        }
+
         public override Experience Experience
         {
             get { return Experience.Home; }

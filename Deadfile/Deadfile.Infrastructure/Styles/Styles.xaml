@@ -1092,6 +1092,56 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="ImportExportButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border BorderThickness="1"
+                            BorderBrush="{StaticResource HomeButtonBorder}"
+                            Background="{StaticResource HomeButtonBackground}"
+                            Height="{StaticResource HomePageButtonHeight}"
+                            Width="{StaticResource HomePageButtonSize}">
+                        <StackPanel>
+                            <Image Width="{StaticResource HomePageButtonSize}"
+                                   Height="{StaticResource HomePageButtonSize}"
+                                   Source="../Resources/import-export.png"/>
+                            <Label Width="{StaticResource HomePageButtonSize}"
+                                   Height="{StaticResource HomePageButtonLabelHeight}"
+                                   HorizontalContentAlignment="Center"
+                                   HorizontalAlignment="Center">Export to JSON</Label>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border BorderThickness="1"
+                                    BorderBrush="{StaticResource HomeButtonBorderHover}"
+                                    Background="{StaticResource HomeButtonBackgroundHover}"
+                                    Height="{StaticResource HomePageButtonHeight}"
+                                    Width="{StaticResource HomePageButtonSize}">
+                                <StackPanel>
+                                    <Image Width="{StaticResource HomePageButtonSize}"
+                                           Height="{StaticResource HomePageButtonSize}"
+                                           Source="../Resources/import-export-hover.png"></Image>
+                                    <Label Width="{StaticResource HomePageButtonSize}"
+                                           Height="{StaticResource HomePageButtonLabelHeight}"
+                                           FontWeight="Bold"
+                                           HorizontalContentAlignment="Center"
+                                           HorizontalAlignment="Center">Export to JSON</Label>
+                                </StackPanel>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <ImageBrush x:Key="QuoteButtonImageBrush" ImageSource="../Resources/quote.png" Stretch="Uniform"/>
     <ImageBrush x:Key="QuoteInactiveButtonImageBrush" ImageSource="../Resources/quote.png" Stretch="Uniform"/>
     <ImageBrush x:Key="QuoteHoverButtonImageBrush" ImageSource="../Resources/quote-hover.png" Stretch="Uniform"/>

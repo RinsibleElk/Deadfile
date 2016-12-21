@@ -68,6 +68,7 @@
                 <converters:SwitchConverterCase When="LocalAuthorities" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/localauthority-tab.png" />
                 <converters:SwitchConverterCase When="DefineQuotations" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/definequotations-tab.png" />
                 <converters:SwitchConverterCase When="Import" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-tab.png" />
+                <converters:SwitchConverterCase When="Json" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-export-tab.png" />
                 <converters:SwitchConverterCase When="TodoReport" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/todo-report-tab.png" />
             </converters:SwitchConverter>
         </DockPanel.Resources>
