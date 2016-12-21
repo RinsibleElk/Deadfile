@@ -12,7 +12,7 @@ using Deadfile.Model.DesignTime;
 using Deadfile.Model.Reporting;
 using Deadfile.Tab.DesignTime;
 
-namespace Deadfile.Tab.Management.TodoReport
+namespace Deadfile.Tab.Reports.TodoReport
 {
     class TodoReportPageDesignTimeViewModel :
         ReportPageDesignTimeViewModel<JobTaskModel>,

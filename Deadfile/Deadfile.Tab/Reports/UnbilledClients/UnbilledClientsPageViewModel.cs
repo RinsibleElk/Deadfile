@@ -19,7 +19,7 @@ using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using IEventAggregator = Prism.Events.IEventAggregator;
 
-namespace Deadfile.Tab.Management.UnbilledClients
+namespace Deadfile.Tab.Reports.UnbilledClients
 {
     /// <summary>
     /// View model for the Unbilled Clients Experience. Generates a readonly report of Unbilled Clients.

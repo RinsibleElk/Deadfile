@@ -9,7 +9,7 @@ using Deadfile.Model;
 using Deadfile.Model.Reporting;
 using Deadfile.Tab.Common;
 
-namespace Deadfile.Tab.Management.TodoReport
+namespace Deadfile.Tab.Reports.TodoReport
 {
     interface ITodoReportPageViewModel : IReportPageViewModel<JobTaskModel>
     {

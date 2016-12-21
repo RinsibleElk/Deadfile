@@ -11,7 +11,7 @@ using Deadfile.Model.DesignTime;
 using Deadfile.Model.Reporting;
 using Deadfile.Tab.DesignTime;
 
-namespace Deadfile.Tab.Management.UnbilledClients
+namespace Deadfile.Tab.Reports.UnbilledClients
 {
     class UnbilledClientsPageDesignTimeViewModel :
         ReportPageDesignTimeViewModel<UnbilledClientModel>,

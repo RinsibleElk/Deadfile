@@ -20,7 +20,7 @@ using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using IEventAggregator = Prism.Events.IEventAggregator;
 
-namespace Deadfile.Tab.Management.TodoReport
+namespace Deadfile.Tab.Reports.TodoReport
 {
     /// <summary>
     /// View model for the TodoReport Experience. Generates a readonly report of JobTasks.

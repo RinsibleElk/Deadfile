@@ -232,18 +232,18 @@
       <DependentUpon>DefineQuotationsPageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Management\DefineQuotations\DefineQuotationsPageViewModel.cs" />
-    <Compile Include="Management\TodoReport\ITodoReportPageViewModel.cs" />
-    <Compile Include="Management\TodoReport\TodoReportPageDesignTimeViewModel.cs" />
-    <Compile Include="Management\TodoReport\TodoReportPageView.xaml.cs">
+    <Compile Include="Reports\TodoReport\ITodoReportPageViewModel.cs" />
+    <Compile Include="Reports\TodoReport\TodoReportPageDesignTimeViewModel.cs" />
+    <Compile Include="Reports\TodoReport\TodoReportPageView.xaml.cs">
       <DependentUpon>TodoReportPageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Management\TodoReport\TodoReportPageViewModel.cs" />
-    <Compile Include="Management\UnbilledClients\IUnbilledClientsPageViewModel.cs" />
-    <Compile Include="Management\UnbilledClients\UnbilledClientsPageDesignTimeViewModel.cs" />
-    <Compile Include="Management\UnbilledClients\UnbilledClientsPageView.xaml.cs">
+    <Compile Include="Reports\TodoReport\TodoReportPageViewModel.cs" />
+    <Compile Include="Reports\UnbilledClients\IUnbilledClientsPageViewModel.cs" />
+    <Compile Include="Reports\UnbilledClients\UnbilledClientsPageDesignTimeViewModel.cs" />
+    <Compile Include="Reports\UnbilledClients\UnbilledClientsPageView.xaml.cs">
       <DependentUpon>UnbilledClientsPageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Management\UnbilledClients\UnbilledClientsPageViewModel.cs" />
+    <Compile Include="Reports\UnbilledClients\UnbilledClientsPageViewModel.cs" />
     <Compile Include="Management\LocalAuthorities\ILocalAuthoritiesPageViewModel.cs" />
     <Compile Include="Management\LocalAuthorities\LocalAuthoritiesPageDesignTimeViewModel.cs" />
     <Compile Include="Management\LocalAuthorities\LocalAuthoritiesPageView.xaml.cs">
@@ -360,11 +360,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Management\TodoReport\TodoReportPageView.xaml">
+    <Page Include="Reports\TodoReport\TodoReportPageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Management\UnbilledClients\UnbilledClientsPageView.xaml">
+    <Page Include="Reports\UnbilledClients\UnbilledClientsPageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

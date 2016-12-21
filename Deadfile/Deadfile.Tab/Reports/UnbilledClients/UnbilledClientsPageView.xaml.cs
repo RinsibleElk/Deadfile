@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Deadfile.Tab.Management.TodoReport
+namespace Deadfile.Tab.Reports.UnbilledClients
 {
     /// <summary>
-    /// Interaction logic for TodoReportPageView.xaml
+    /// Interaction logic for UnbilledClientsPageView.xaml
     /// </summary>
-    public partial class TodoReportPageView : UserControl
+    public partial class UnbilledClientsPageView : UserControl
     {
-        public TodoReportPageView()
+        public UnbilledClientsPageView()
         {
             InitializeComponent();
         }

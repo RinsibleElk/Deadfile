@@ -8,7 +8,7 @@ using System.Windows.Input;
 using Deadfile.Model.Reporting;
 using Deadfile.Tab.Common;
 
-namespace Deadfile.Tab.Management.UnbilledClients
+namespace Deadfile.Tab.Reports.UnbilledClients
 {
     interface IUnbilledClientsPageViewModel : IReportPageViewModel<UnbilledClientModel>
     {
