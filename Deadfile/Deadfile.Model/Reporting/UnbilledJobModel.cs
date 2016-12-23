@@ -10,7 +10,7 @@ namespace Deadfile.Model.Reporting
     /// <summary>
     /// Representation of a client who has unbilled items attached.
     /// </summary>
-    public class UnbilledClientModel : ModelBase
+    public class UnbilledJobModel : ModelBase
     {
         public override int Id
         {
@@ -26,6 +26,23 @@ namespace Deadfile.Model.Reporting
         {
             get { return _clientId; }
             set { SetProperty(ref _clientId, value); }
+        }
+
+        private int _jobId;
+        /// <summary>
+        /// EntityFramework's job id.
+        /// </summary>
+        public int JobId
+        {
+            get { return _jobId; }
+            set { SetProperty(ref _jobId, value); }
+        }
+
+        private string _addressFirstLine;
+        public string AddressFirstLine
+        {
+            get { return _addressFirstLine; }
+            set { SetProperty(ref _addressFirstLine, value); }
         }
 
         private string _fullName;

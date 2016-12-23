@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Deadfile.Tab.Reports.UnbilledClients
+namespace Deadfile.Tab.Reports.UnbilledJobs
 {
     /// <summary>
-    /// Interaction logic for UnbilledClientsPageView.xaml
+    /// Interaction logic for UnbilledJobsPageView.xaml
     /// </summary>
-    public partial class UnbilledClientsPageView : UserControl
+    public partial class UnbilledJobsPageView : UserControl
     {
-        public UnbilledClientsPageView()
+        public UnbilledJobsPageView()
         {
             InitializeComponent();
         }

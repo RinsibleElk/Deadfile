@@ -40,10 +40,10 @@ namespace Deadfile.Tab.Home
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.DefineQuotations));
         }
 
-        public void UnbilledClients()
+        public void UnbilledJobs()
         {
-            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.UnbilledClients);
-            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.UnbilledClients));
+            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.UnbilledJobs);
+            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.UnbilledJobs));
         }
 
         public void Import()

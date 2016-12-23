@@ -54,7 +54,7 @@ namespace Deadfile.Pdf
             var header = new StackPanel() {Orientation = Orientation.Vertical};
             headerStackPanel.Children.Add(header);
 
-            // Address at the top left.
+            // AddressFirstLine at the top left.
             var logoWidth = 200.0;
             var addressWidth = pageWidth - sideMargin - sideMargin - logoWidth;
             var glasgowStudAddress = new StackPanel
@@ -153,7 +153,7 @@ namespace Deadfile.Pdf
             });
             invoicePropertiesSecondAndThirdRowsStackPanel.Children.Add(invoiceDateAndPropertyTitles);
             invoicePropertiesSecondAndThirdRowsStackPanel.Children.Add(invoiceDateAndPropertyValues);
-            invoicePropertiesSecondAndThirdRowsStackPanel.Children.Add(new PaulSamsonFieldTitleTextBlock("Invoice Address:")
+            invoicePropertiesSecondAndThirdRowsStackPanel.Children.Add(new PaulSamsonFieldTitleTextBlock("Invoice AddressFirstLine:")
             {
                 Width = invoicePropertiesColumnWidth
             });

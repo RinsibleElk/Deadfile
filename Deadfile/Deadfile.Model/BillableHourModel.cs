@@ -70,10 +70,17 @@ namespace Deadfile.Model
             set { SetProperty(ref _creationDate, value); }
         }
 
+        public int? InvoiceId
+        {
+            get { return _invoiceId; }
+            set { SetProperty(ref _invoiceId, value); }
+        }
+
         private BillableState _state = BillableState.Active;
         private int _hoursWorked = 0;
         private string _person;
         private string _description;
+        private int? _invoiceId;
 
         [Required(ErrorMessage = "A BillableHour must have a State")]
         public BillableState State

@@ -892,7 +892,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="UnbilledClientsButton" TargetType="{x:Type Button}">
+    <Style x:Key="UnbilledJobsButton" TargetType="{x:Type Button}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -908,7 +908,7 @@
                             <Label Width="{StaticResource HomePageButtonSize}"
                                    Height="{StaticResource HomePageButtonLabelHeight}"
                                    HorizontalContentAlignment="Center"
-                                   HorizontalAlignment="Center">Unbilled Clients</Label>
+                                   HorizontalAlignment="Center">Unbilled Jobs</Label>
                         </StackPanel>
                     </Border>
                 </ControlTemplate>
@@ -932,7 +932,7 @@
                                            Height="{StaticResource HomePageButtonLabelHeight}"
                                            FontWeight="Bold"
                                            HorizontalContentAlignment="Center"
-                                           HorizontalAlignment="Center">Unbilled Clients</Label>
+                                           HorizontalAlignment="Center">Unbilled Jobs</Label>
                                 </StackPanel>
                             </Border>
                         </ControlTemplate>

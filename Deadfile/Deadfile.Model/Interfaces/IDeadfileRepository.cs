@@ -261,11 +261,11 @@ namespace Deadfile.Model.Interfaces
         void SaveQuotation(QuotationModel quotationModel);
 
         /// <summary>
-        /// Get the unbilled clients.
+        /// Get the unbilled jobs.
         /// </summary>
         /// <param name="filterText"></param>
         /// <returns></returns>
-        IEnumerable<UnbilledClientModel> GetUnbilledClients(string filterText);
+        IEnumerable<UnbilledJobModel> GetUnbilledJobs(string filterText);
 
         /// <summary>
         /// Get the job tasks that expire before the specified end date.

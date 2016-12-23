@@ -24,8 +24,6 @@ namespace Deadfile.Entity
         [Required(ErrorMessage = "A Job Task requires a state.")]
         public JobTaskState State { get; set; }
 
-        public int SomeRandomField { get; set; } = 0;
-
         /// <summary>
         /// The priority of this job. This affects ordering for jobs due on the same date particularly.
         /// </summary>

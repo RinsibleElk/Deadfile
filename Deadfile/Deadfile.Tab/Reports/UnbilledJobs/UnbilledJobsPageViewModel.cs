@@ -19,27 +19,28 @@ using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using IEventAggregator = Prism.Events.IEventAggregator;
 
-namespace Deadfile.Tab.Reports.UnbilledClients
+namespace Deadfile.Tab.Reports.UnbilledJobs
 {
     /// <summary>
-    /// View model for the Unbilled Clients Experience. Generates a readonly report of Unbilled Clients.
+    /// View model for the Unbilled Jobs Experience. Generates a readonly report of Unbilled Jobs.
     /// </summary>
-    class UnbilledClientsPageViewModel : ReportPageViewModel<UnbilledClientModel>, IUnbilledClientsPageViewModel
+    class UnbilledJobsPageViewModel : ReportPageViewModel<UnbilledJobModel>, IUnbilledJobsPageViewModel
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly TabIdentity _tabIdentity;
         private readonly IDeadfileRepository _repository;
-        private readonly DelegateCommand<UnbilledClientModel> _navigateToClient;
+        private readonly DelegateCommand<UnbilledJobModel> _navigateToClient;
+        private readonly DelegateCommand<UnbilledJobModel> _navigateToJob;
 
         /// <summary>
-        /// Create a new <see cref="UnbilledClientsPageViewModel"/>.
+        /// Create a new <see cref="UnbilledJobsPageViewModel"/>.
         /// </summary>
         /// <param name="tabIdentity"></param>
         /// <param name="dialogCoordinator"></param>
         /// <param name="printService"></param>
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
-        public UnbilledClientsPageViewModel(TabIdentity tabIdentity,
+        public UnbilledJobsPageViewModel(TabIdentity tabIdentity,
             IDialogCoordinator dialogCoordinator,
             IPrintService printService,
             IDeadfileRepository repository,
@@ -47,12 +48,21 @@ namespace Deadfile.Tab.Reports.UnbilledClients
         {
             _tabIdentity = tabIdentity;
             _repository = repository;
-            _navigateToClient = new DelegateCommand<UnbilledClientModel>(PerformNavigateToClient);
+            _navigateToClient = new DelegateCommand<UnbilledJobModel>(PerformNavigateToClient);
+            _navigateToJob = new DelegateCommand<UnbilledJobModel>(PerformNavigateToJob);
         }
 
-        private void PerformNavigateToClient(UnbilledClientModel clientModel)
+        private void PerformNavigateToClient(UnbilledJobModel jobModel)
         {
-            var packet = new SelectedItemPacket(BrowserModelType.Client, ModelBase.NewModelId, clientModel.ClientId);
+            var packet = new SelectedItemPacket(BrowserModelType.Client, ModelBase.NewModelId, jobModel.ClientId);
+            Logger.Info("Event,SelectedItemEvent,Send,{0},{1}", _tabIdentity, packet);
+            EventAggregator.GetEvent<SelectedItemEvent>()
+                .Publish(packet);
+        }
+
+        private void PerformNavigateToJob(UnbilledJobModel jobModel)
+        {
+            var packet = new SelectedItemPacket(BrowserModelType.Job, jobModel.ClientId, jobModel.JobId);
             Logger.Info("Event,SelectedItemEvent,Send,{0},{1}", _tabIdentity, packet);
             EventAggregator.GetEvent<SelectedItemEvent>()
                 .Publish(packet);
@@ -62,19 +72,21 @@ namespace Deadfile.Tab.Reports.UnbilledClients
         /// Perform the database interaction.
         /// </summary>
         /// <returns></returns>
-        protected override IEnumerable<UnbilledClientModel> GetModels(string filter)
+        protected override IEnumerable<UnbilledJobModel> GetModels(string filter)
         {
-            return _repository.GetUnbilledClients(filter);
+            return _repository.GetUnbilledJobs(filter);
         }
 
         // Common for every journaled page (content).
-        public override Experience Experience { get; } = Experience.UnbilledClients;
+        public override Experience Experience { get; } = Experience.UnbilledJobs;
 
         public ICommand NavigateToClient => _navigateToClient;
 
+        public ICommand NavigateToJob => _navigateToJob;
+
         protected override DataGrid GetVisual(object view)
         {
-            return ((UnbilledClientsPageView) view).Report;
+            return ((UnbilledJobsPageView) view).Report;
         }
     }
 }

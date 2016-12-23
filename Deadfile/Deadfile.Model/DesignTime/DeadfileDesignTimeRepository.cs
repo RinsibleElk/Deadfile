@@ -159,7 +159,7 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
-        public IEnumerable<UnbilledClientModel> GetUnbilledClients(string filterText)
+        public IEnumerable<UnbilledJobModel> GetUnbilledJobs(string filterText)
         {
             throw new NotImplementedException();
         }

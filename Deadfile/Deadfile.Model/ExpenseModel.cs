@@ -68,6 +68,13 @@ namespace Deadfile.Model
             set { SetProperty(ref _creationDate, value); }
         }
 
+        private int? _invoiceId;
+        public int? InvoiceId
+        {
+            get { return _invoiceId; }
+            set { SetProperty(ref _invoiceId, value); }
+        }
+
         private BillableState _state = BillableState.Active;
         [Required(ErrorMessage = "An Expense must have a State")]
         public BillableState State

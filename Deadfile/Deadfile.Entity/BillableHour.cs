@@ -37,6 +37,7 @@ namespace Deadfile.Entity
         public BillableState State { get; set; } = BillableState.Active;
 
         public int JobId { get; set; }
+        public virtual Job Job { get; set; }
         public int? InvoiceId { get; set; }
     }
 }

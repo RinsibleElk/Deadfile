@@ -23,7 +23,7 @@ using Deadfile.Tab.Json;
 using Deadfile.Tab.Management.DefineQuotations;
 using Deadfile.Tab.Management.LocalAuthorities;
 using Deadfile.Tab.Reports.TodoReport;
-using Deadfile.Tab.Reports.UnbilledClients;
+using Deadfile.Tab.Reports.UnbilledJobs;
 using Deadfile.Tab.Navigation;
 using Deadfile.Tab.Quotes;
 using Deadfile.Tab.Tab;
@@ -63,7 +63,7 @@ namespace Deadfile.Tab
             _container.RegisterSingleton(typeof(ClientsPageViewModel), Experience.Clients + RegionNames.Page, typeof(ClientsPageViewModel));
             _container.RegisterSingleton(typeof(JobsPageViewModel), Experience.Jobs + RegionNames.Page, typeof(JobsPageViewModel));
             _container.RegisterSingleton(typeof(LocalAuthoritiesPageViewModel), Experience.LocalAuthorities + RegionNames.Page, typeof(LocalAuthoritiesPageViewModel));
-            _container.RegisterSingleton(typeof(UnbilledClientsPageViewModel), Experience.UnbilledClients + RegionNames.Page, typeof(UnbilledClientsPageViewModel));
+            _container.RegisterSingleton(typeof(UnbilledJobsPageViewModel), Experience.UnbilledJobs + RegionNames.Page, typeof(UnbilledJobsPageViewModel));
             _container.RegisterSingleton(typeof(TodoReportPageViewModel), Experience.TodoReport + RegionNames.Page, typeof(TodoReportPageViewModel));
             _container.RegisterSingleton(typeof(ImportPageViewModel), Experience.Import + RegionNames.Page, typeof(ImportPageViewModel));
             _container.RegisterSingleton(typeof(JsonPageViewModel), Experience.Json + RegionNames.Page, typeof(JsonPageViewModel));

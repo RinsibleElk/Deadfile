@@ -238,12 +238,12 @@
       <DependentUpon>TodoReportPageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Reports\TodoReport\TodoReportPageViewModel.cs" />
-    <Compile Include="Reports\UnbilledClients\IUnbilledClientsPageViewModel.cs" />
-    <Compile Include="Reports\UnbilledClients\UnbilledClientsPageDesignTimeViewModel.cs" />
-    <Compile Include="Reports\UnbilledClients\UnbilledClientsPageView.xaml.cs">
-      <DependentUpon>UnbilledClientsPageView.xaml</DependentUpon>
+    <Compile Include="Reports\UnbilledJobs\IUnbilledJobsPageViewModel.cs" />
+    <Compile Include="Reports\UnbilledJobs\UnbilledJobsPageDesignTimeViewModel.cs" />
+    <Compile Include="Reports\UnbilledJobs\UnbilledJobsPageView.xaml.cs">
+      <DependentUpon>UnbilledJobsPageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Reports\UnbilledClients\UnbilledClientsPageViewModel.cs" />
+    <Compile Include="Reports\UnbilledJobs\UnbilledJobsPageViewModel.cs" />
     <Compile Include="Management\LocalAuthorities\ILocalAuthoritiesPageViewModel.cs" />
     <Compile Include="Management\LocalAuthorities\LocalAuthoritiesPageDesignTimeViewModel.cs" />
     <Compile Include="Management\LocalAuthorities\LocalAuthoritiesPageView.xaml.cs">
@@ -364,7 +364,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Reports\UnbilledClients\UnbilledClientsPageView.xaml">
+    <Page Include="Reports\UnbilledJobs\UnbilledJobsPageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

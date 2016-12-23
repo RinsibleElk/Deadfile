@@ -211,7 +211,7 @@ namespace Deadfile.Tab.Test
         {
             var billableJob = new BillableJob
             {
-                FullAddress = "1 Some Address Road",
+                FullAddress = "1 Some AddressFirstLine Road",
                 JobId = 0,
                 InvoiceId = ModelBase.NewModelId
             };

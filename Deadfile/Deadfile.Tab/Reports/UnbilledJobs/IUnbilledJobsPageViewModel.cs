@@ -8,10 +8,11 @@ using System.Windows.Input;
 using Deadfile.Model.Reporting;
 using Deadfile.Tab.Common;
 
-namespace Deadfile.Tab.Reports.UnbilledClients
+namespace Deadfile.Tab.Reports.UnbilledJobs
 {
-    interface IUnbilledClientsPageViewModel : IReportPageViewModel<UnbilledClientModel>
+    interface IUnbilledJobsPageViewModel : IReportPageViewModel<UnbilledJobModel>
     {
         ICommand NavigateToClient { get; }
+        ICommand NavigateToJob { get; }
     }
 }

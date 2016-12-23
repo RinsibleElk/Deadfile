@@ -40,5 +40,8 @@ namespace Deadfile.Entity
         public int ClientId { get; set; }
 
         public virtual Client Client { get; set; }
+
+        public virtual List<Expense> Expenses { get; set; }
+        public virtual List<BillableHour> BillableHours { get; set; }
     }
 }

@@ -88,6 +88,10 @@
     <Compile Include="Migrations\201612152310183_AddSomeRandomField.Designer.cs">
       <DependentUpon>201612152310183_AddSomeRandomField.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612231041583_UnbilledJobs.cs" />
+    <Compile Include="Migrations\201612231041583_UnbilledJobs.Designer.cs">
+      <DependentUpon>201612231041583_UnbilledJobs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -104,9 +108,15 @@
     <EmbeddedResource Include="Migrations\201612152310183_AddSomeRandomField.resx">
       <DependentUpon>201612152310183_AddSomeRandomField.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612231041583_UnbilledJobs.resx">
+      <DependentUpon>201612231041583_UnbilledJobs.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Migrations\SQL\InitialCreate_To_AddSomeRandomField.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Migrations\SQL\AddSomeRandomField_To_UnbilledJobs.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

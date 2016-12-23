@@ -735,34 +735,107 @@ namespace Deadfile.Model
             }
         }
 
-        public IEnumerable<UnbilledClientModel> GetUnbilledClients(string filterText)
+        public IEnumerable<UnbilledJobModel> GetUnbilledJobs(string filterText)
         {
-            var li = new List<UnbilledClientModel>();
-            var browserClients =
-                GetBrowserItems(new BrowserSettings
-                {
-                    FilterText = filterText,
-                    IncludeInactiveEnabled = false,
-                    Mode = BrowserMode.Client,
-                    Sort = BrowserSort.ClientLastName
-                });
-            foreach (var client in browserClients.Cast<BrowserClient>())
+            var d = new Dictionary<int, UnbilledJobModel>();
+            using (var dbContext = new DeadfileContext())
             {
-                var unbilledAmount =
-                    GetBillableModelsForClientAndInvoice(client.Id, ModelBase.NewModelId)
-                        .SelectMany((a) => a.Children)
-                        .Where((a) => a.InvoiceId == null)
-                        .Where((a) => a.NetAmount > 0.0)
-                        .Select((a) => a.NetAmount)
-                        .Sum();
-                li.Add(new UnbilledClientModel
+                foreach (var expense in (from expense in dbContext.Expenses
+                                         where expense.Job.Status == JobStatus.Active
+                                         where (filterText == null || filterText == "" || expense.Job.AddressFirstLine.Contains(filterText))
+                                         where expense.State == BillableState.Active
+                                         where expense.NetAmount > 0
+                                         select new
+                                         {
+                                             Billable = expense,
+                                             Job = expense.Job,
+                                             Client = expense.Job.Client
+                                         }))
                 {
-                    ClientId = client.Id,
-                    FullName = client.FullName,
-                    UnbilledAmount = unbilledAmount
-                });
+                    var billable = expense.Billable;
+                    if ((billable.State == BillableState.Active) && (billable.NetAmount > 0))
+                    {
+                        var job = expense.Job;
+                        var client = expense.Client;
+                        if (d.ContainsKey(job.JobId))
+                        {
+                            var model = d[job.JobId];
+                            d[job.JobId] = new UnbilledJobModel
+                            {
+                                ClientId = model.ClientId,
+                                JobId = model.JobId,
+                                FullName = model.FullName,
+                                AddressFirstLine = model.AddressFirstLine,
+                                UnbilledAmount = model.UnbilledAmount + billable.NetAmount
+                            };
+                        }
+                        else
+                        {
+                            var fullName = (String.IsNullOrWhiteSpace(client.FirstName))
+                                ? ((String.IsNullOrWhiteSpace(client.Title))
+                                    ? client.LastName
+                                    : $"{client.Title} {client.LastName}")
+                                : $"{client.FirstName} {client.LastName}";
+                            d.Add(job.JobId, new UnbilledJobModel
+                            {
+                                ClientId = job.Client.ClientId,
+                                JobId = job.JobId,
+                                FullName = fullName,
+                                AddressFirstLine = job.AddressFirstLine,
+                                UnbilledAmount = billable.NetAmount
+                            });
+                        }
+                    }
+                }
+                foreach (var expense in (from expense in dbContext.BillableHours
+                                         where expense.Job.Status == JobStatus.Active
+                                         where (filterText == null || filterText == "" || expense.Job.AddressFirstLine.Contains(filterText))
+                                         where expense.State == BillableState.Active
+                                         where expense.NetAmount > 0
+                                         select new
+                                         {
+                                             Billable = expense,
+                                             Job = expense.Job,
+                                             Client = expense.Job.Client
+                                         }))
+                {
+                    var billable = expense.Billable;
+                    if ((billable.State == BillableState.Active) && (billable.NetAmount > 0))
+                    {
+                        var job = expense.Job;
+                        var client = expense.Client;
+                        if (d.ContainsKey(job.JobId))
+                        {
+                            var model = d[job.JobId];
+                            d[job.JobId] = new UnbilledJobModel
+                            {
+                                ClientId = model.ClientId,
+                                JobId = model.JobId,
+                                FullName = model.FullName,
+                                AddressFirstLine = model.AddressFirstLine,
+                                UnbilledAmount = model.UnbilledAmount + billable.NetAmount
+                            };
+                        }
+                        else
+                        {
+                            var fullName = (String.IsNullOrWhiteSpace(client.FirstName))
+                                ? ((String.IsNullOrWhiteSpace(client.Title))
+                                    ? client.LastName
+                                    : $"{client.Title} {client.LastName}")
+                                : $"{client.FirstName} {client.LastName}";
+                            d.Add(job.JobId, new UnbilledJobModel
+                            {
+                                ClientId = job.Client.ClientId,
+                                JobId = job.JobId,
+                                FullName = fullName,
+                                AddressFirstLine = job.AddressFirstLine,
+                                UnbilledAmount = billable.NetAmount
+                            });
+                        }
+                    }
+                }
             }
-            return li.Where((s) => s.UnbilledAmount > 0.0).OrderByDescending((s) => s.UnbilledAmount).ToArray();
+            return d.Values.OrderByDescending((s) => s.UnbilledAmount).ToArray();
         }
 
         public IEnumerable<JobTaskModel> GetJobTasks(DateTime startDate, DateTime endDate, string filter, bool includeInactive)

@@ -29,8 +29,8 @@
                 <Button x:Name="AddClient"
                         Style="{StaticResource AddClientButton}"
                         Margin="10,20,0,10"/>
-                <Button x:Name="UnbilledClients"
-                        Style="{StaticResource UnbilledClientsButton}"
+                <Button x:Name="UnbilledJobs"
+                        Style="{StaticResource UnbilledJobsButton}"
                         Margin="10,20,0,10"/>
                 <Button x:Name="ImportExportToJson"
                         Style="{StaticResource ImportExportButton}"
