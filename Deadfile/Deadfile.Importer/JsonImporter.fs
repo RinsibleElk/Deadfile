@@ -186,7 +186,7 @@ module internal ToFromRecord =
         |> Array.map
             (fun pi ->
                 let propertyInfo = typeof<'classType>.GetProperty(pi.Name, Reflection.BindingFlags.Public ||| Reflection.BindingFlags.Instance)
-                if propertyInfo.PropertyType = typeof<int option> then
+                if pi.PropertyType = typeof<int option> then
                     box (propertyInfo.GetMethod.Invoke(c, [||]) |> unbox<Nullable<int>> |> fun ni -> if ni.HasValue then Some ni.Value else None)
                 else
                     propertyInfo.GetMethod.Invoke(c, [||]))
