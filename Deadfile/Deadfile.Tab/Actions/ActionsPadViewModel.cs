@@ -85,7 +85,7 @@ namespace Deadfile.Tab.Actions
             }
             catch (Exception e)
             {
-                Logger.Fatal(e, "Exception thrown during Save");
+                Logger.Fatal(e, "Exception thrown during Save, {0}, {1}", e, e.StackTrace);
                 throw;
             }
         }
@@ -165,7 +165,7 @@ namespace Deadfile.Tab.Actions
             }
             catch (Exception e)
             {
-                Logger.Fatal(e, "Exception thrown during Discard");
+                Logger.Fatal(e, "Exception thrown during Discard, {0}, {1}", e, e.StackTrace);
                 throw;
             }
         }

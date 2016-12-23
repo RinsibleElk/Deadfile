@@ -58,6 +58,7 @@
     <None Include="Script1.fsx" />
     <Content Include="packages.config" />
     <Content Include="App.config" />
+    <Compile Include="FromCsv.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">

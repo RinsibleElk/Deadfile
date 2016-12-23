@@ -30,7 +30,7 @@ namespace Deadfile.Infrastructure.Services
             }
             catch (Exception e)
             {
-                Logger.Fatal(e, "Exception thrown during Navigate");
+                Logger.Fatal(e, "Exception thrown during Navigate, {0}, {1}", e, e.StackTrace);
                 throw;
             }
         }

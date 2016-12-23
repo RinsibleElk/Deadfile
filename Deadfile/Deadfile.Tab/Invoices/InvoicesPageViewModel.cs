@@ -243,7 +243,7 @@ namespace Deadfile.Tab.Invoices
             }
             catch (Exception e)
             {
-                Logger.Fatal(e, "Exception while saving {0}, {1}, {2}", _tabIdentity, SelectedItem, message);
+                Logger.Fatal(e, "Exception while saving {0}, {1}, {2}, {3}, {4}", _tabIdentity, SelectedItem, message, e, e.StackTrace);
                 throw;
             }
         }
@@ -263,7 +263,7 @@ namespace Deadfile.Tab.Invoices
             }
             catch (Exception e)
             {
-                Logger.Fatal(e, "Exception while deleting {0}, {1}", _tabIdentity, SelectedItem);
+                Logger.Fatal(e, "Exception while deleting {0}, {1}, {2}, {3}", _tabIdentity, SelectedItem, e, e.StackTrace);
                 throw;
             }
         }

@@ -112,6 +112,7 @@ type ExpenseJson =
         Notes : string
         CreationDate : DateTime
         State : BillableState
+        InvoiceId : int option
     }
 
 type BillableHourJson =
@@ -126,6 +127,7 @@ type BillableHourJson =
         Notes : string
         CreationDate : DateTime
         State : BillableState
+        InvoiceId : int option
     }
 
 type InvoiceItemJson =
@@ -181,7 +183,13 @@ module internal ToFromRecord =
     /// Map from some POCO to a record.
     let mapToRecord<'recordType, 'classType> (c:'classType) =
         FSharpType.GetRecordFields(typeof<'recordType>)
-        |> Array.map (fun pi -> typeof<'classType>.GetProperty(pi.Name, Reflection.BindingFlags.Public ||| Reflection.BindingFlags.Instance).GetMethod.Invoke(c, [||]))
+        |> Array.map
+            (fun pi ->
+                let propertyInfo = typeof<'classType>.GetProperty(pi.Name, Reflection.BindingFlags.Public ||| Reflection.BindingFlags.Instance)
+                if propertyInfo.PropertyType = typeof<int option> then
+                    box (propertyInfo.GetMethod.Invoke(c, [||]) |> unbox<Nullable<int>> |> fun ni -> if ni.HasValue then Some ni.Value else None)
+                else
+                    propertyInfo.GetMethod.Invoke(c, [||]))
         |> fun a -> FSharp.Reflection.FSharpValue.MakeRecord(typeof<'recordType>, a)
         |> unbox<'recordType>
     /// Map from some record to an entity.
@@ -192,18 +200,25 @@ module internal ToFromRecord =
             (FSharpValue.GetRecordFields(r))
         |> Array.iter
             (fun (pi, value) ->
-                let methodInfo = typeof<'classType>.GetProperty(pi.Name, Reflection.BindingFlags.Public ||| Reflection.BindingFlags.Instance)
+                let propertyInfo = typeof<'classType>.GetProperty(pi.Name, Reflection.BindingFlags.Public ||| Reflection.BindingFlags.Instance)
                 let setMethod =
-                    if isNull methodInfo then
+                    if isNull propertyInfo then
                         eprintfn "Did you mean to try setting %s?" pi.Name
                         null
                     else
-                        methodInfo.SetMethod
-                if (isNull (setMethod)) then
-                    eprintfn "Did you mean to try setting %s?" pi.Name
-                    ()
+                        propertyInfo.SetMethod
+                if pi.Name = "InvoiceId" && pi.PropertyType = typeof<int option> then
+                    let invoiceId = unbox<int option> value
+                    if invoiceId.IsNone then
+                        setMethod.Invoke(c, [|new Nullable<int>()|]) |> ignore
+                    else
+                        setMethod.Invoke(c, [|new Nullable<int>(unbox<int>(idCache.Map(pi.Name, behaviour, box invoiceId.Value)))|]) |> ignore
                 else
-                    setMethod.Invoke(c, [|(idCache.Map(pi.Name, behaviour, value))|]) |> ignore)
+                    if (isNull (setMethod)) then
+                        eprintfn "Did you mean to try setting %s?" pi.Name
+                        ()
+                    else
+                        setMethod.Invoke(c, [|(idCache.Map(pi.Name, behaviour, value))|]) |> ignore)
         c
 
 type EntireDbVersion1 =
@@ -231,59 +246,73 @@ type EntireDb() =
 [<Sealed>]
 type JsonImporter(repository:IDeadfileRepository) =
     let cache = IdCache()
+    let saveChanges (context:DeadfileContext) =
+        try
+            context.SaveChanges() |> ignore
+        with e ->
+            match (box e) with
+            | :? System.Data.Entity.Validation.DbEntityValidationException as validationEx ->
+                validationEx.EntityValidationErrors
+                |> Seq.iter
+                    (fun v ->
+                        v.ValidationErrors
+                        |> Seq.iter
+                            (fun ve ->
+                                failwithf "%s: %s" ve.PropertyName ve.ErrorMessage))
+            failwithf "%A" e
     let saveClient clientJson =
         use context = new DeadfileContext()
         let client = ToFromRecord.mapToEntity<ClientJson, Client> cache LearnClientId clientJson
         context.Clients.Add(client) |> ignore
-        context.SaveChanges() |> ignore
+        context |> saveChanges
         cache.AddClientId(clientJson.ClientId, client.ClientId)
     let saveJob jobJson =
         use context = new DeadfileContext()
         let job = ToFromRecord.mapToEntity<JobJson, Job> cache LearnJobId jobJson
         context.Jobs.Add(job) |> ignore
-        context.SaveChanges() |> ignore
+        context |> saveChanges
         cache.AddJobId(jobJson.JobId, job.JobId)
     let saveInvoice invoiceJson =
         use context = new DeadfileContext()
         let invoice = ToFromRecord.mapToEntity<InvoiceJson, Invoice> cache LearnInvoiceId invoiceJson
         context.Invoices.Add(invoice) |> ignore
-        context.SaveChanges() |> ignore
+        context |> saveChanges
         cache.AddInvoiceId(invoiceJson.InvoiceId, invoice.InvoiceId)
     let saveInvoiceItem json =
         use context = new DeadfileContext()
         let entity = ToFromRecord.mapToEntity<InvoiceItemJson, InvoiceItem> cache RetrieveAll json
         context.InvoiceItems.Add(entity) |> ignore
-        context.SaveChanges() |> ignore
+        context |> saveChanges
     let saveQuotation json =
         use context = new DeadfileContext()
         let entity = ToFromRecord.mapToEntity<QuotationJson, Quotation> cache RetrieveAll json
         context.Quotations.Add(entity) |> ignore
-        context.SaveChanges() |> ignore
+        context |> saveChanges
     let saveJobTask json =
         use context = new DeadfileContext()
         let entity = ToFromRecord.mapToEntity<JobTaskJson, JobTask> cache RetrieveAll json
         context.JobTasks.Add(entity) |> ignore
-        context.SaveChanges() |> ignore
+        context |> saveChanges
     let saveApplication json =
         use context = new DeadfileContext()
         let entity = ToFromRecord.mapToEntity<ApplicationJson, Application> cache RetrieveAll json
         context.Applications.Add(entity) |> ignore
-        context.SaveChanges() |> ignore
+        context |> saveChanges
     let saveExpense json =
         use context = new DeadfileContext()
         let entity = ToFromRecord.mapToEntity<ExpenseJson, Expense> cache RetrieveAll json
         context.Expenses.Add(entity) |> ignore
-        context.SaveChanges() |> ignore
+        context |> saveChanges
     let saveBillableHour json =
         use context = new DeadfileContext()
         let entity = ToFromRecord.mapToEntity<BillableHourJson, BillableHour> cache RetrieveAll json
         context.BillableHours.Add(entity) |> ignore
-        context.SaveChanges() |> ignore
+        context |> saveChanges
     let saveLocalAuthority json =
         use context = new DeadfileContext()
         let entity = ToFromRecord.mapToEntity<LocalAuthorityJson, LocalAuthority> cache RetrieveAll json
         context.LocalAuthorities.Add(entity) |> ignore
-        context.SaveChanges() |> ignore
+        context |> saveChanges
     member __.ExportToJsonFile(jsonFile:FileInfo) =
         let clients =
             repository.GetBrowserItems(BrowserSettings(IncludeInactiveEnabled = true, Mode = BrowserMode.Client))
