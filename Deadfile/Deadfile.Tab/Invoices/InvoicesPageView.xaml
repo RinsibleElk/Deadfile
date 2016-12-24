@@ -338,7 +338,7 @@
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="2"
                                                Style="{StaticResource PksTextBlock}"
-                                               Text="Invoice AddressFirstLine:"/>
+                                               Text="Invoice Address:"/>
                                     <StackPanel Grid.Row="1"
                                                 Grid.RowSpan="2"
                                                 Grid.Column="3">

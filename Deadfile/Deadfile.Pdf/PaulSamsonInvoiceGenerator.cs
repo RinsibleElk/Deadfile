@@ -43,7 +43,7 @@ namespace Deadfile.Pdf
             page.Width = doc.DocumentPaginator.PageSize.Width;
             page.Height = doc.DocumentPaginator.PageSize.Height;
             var sideMargin = 30;
-            var verticalMargin = 50;
+            var verticalMargin = 60;
             page.Margin = new Thickness(sideMargin, verticalMargin, sideMargin, verticalMargin);
             var pageStackPanel = new StackPanel();
 
@@ -82,15 +82,7 @@ namespace Deadfile.Pdf
                 BorderThickness = new Thickness(0),
                 Margin = new Thickness(20, 20, 20, 50),
                 Background = SecondaryColorBrush,
-                Child = new PaulSamsonTextBlock
-                {
-                    Text = "INVOICE",
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    TextAlignment = TextAlignment.Center,
-                    FontSize = 15,
-                    Foreground = PrimaryColorBrush,
-                    FontWeight = FontWeights.Bold
-                }
+                Child = new PaulSamsonHeaderTextBlock("INVOICE")
             };
 
             // The top level properties of the invoice.
@@ -153,7 +145,7 @@ namespace Deadfile.Pdf
             });
             invoicePropertiesSecondAndThirdRowsStackPanel.Children.Add(invoiceDateAndPropertyTitles);
             invoicePropertiesSecondAndThirdRowsStackPanel.Children.Add(invoiceDateAndPropertyValues);
-            invoicePropertiesSecondAndThirdRowsStackPanel.Children.Add(new PaulSamsonFieldTitleTextBlock("Invoice AddressFirstLine:")
+            invoicePropertiesSecondAndThirdRowsStackPanel.Children.Add(new PaulSamsonFieldTitleTextBlock("Invoice Address:")
             {
                 Width = invoicePropertiesColumnWidth
             });
@@ -193,8 +185,8 @@ namespace Deadfile.Pdf
 
             // Itemised bit.
             var sideMarginForItemised = 20;
-            var itemisedHeight = 180;
-            var marginAboveAndBelowItemised = 20;
+            var itemisedHeight = 210;
+            var marginAboveAndBelowItemised = 30;
             var itemizedPropertiesStackPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
@@ -270,10 +262,9 @@ namespace Deadfile.Pdf
                 Orientation = Orientation.Horizontal,
                 Margin = new Thickness(0, 0, 0, 50)
             };
-            grossAmountStackPanel.Children.Add(new PaulSamsonFieldTitleTextBlock("Total amount due:")
+            grossAmountStackPanel.Children.Add(new PaulSamsonTotalFieldTitleTextBlock("Total amount due:")
             {
-                Width = pricesTitlesWidth,
-                FontSize = 14
+                Width = pricesTitlesWidth
             });
             grossAmountStackPanel.Children.Add(
                 new Border
@@ -282,10 +273,9 @@ namespace Deadfile.Pdf
                     BorderBrush = PrimaryColorBrush,
                     BorderThickness = new Thickness(0, 2, 0, 2),
                     Child =
-                        new PaulSamsonFieldValueTextBlock(invoiceModel.GrossAmount.ToString("C", CultureInfo.CurrentCulture), true)
+                        new PaulSamsonTotalFieldValueTextBlock(invoiceModel.GrossAmount.ToString("C", CultureInfo.CurrentCulture))
                         {
-                            Width = pricesValuesWidth,
-                            FontSize = 15
+                            Width = pricesValuesWidth
                         }
                 });
             pricesStackPanel.Children.Add(netAmountStackPanel);
@@ -358,7 +348,7 @@ namespace Deadfile.Pdf
         {
             public PaulSamsonFieldTitleTextBlock(string text) : base()
             {
-                FontSize = 11;
+                FontSize = 12;
                 TextAlignment = TextAlignment.Left;
                 VerticalAlignment = VerticalAlignment.Top;
                 HorizontalAlignment = HorizontalAlignment.Left;
@@ -376,8 +366,7 @@ namespace Deadfile.Pdf
 
             public PaulSamsonFieldValueTextBlock(string text, bool isBold) : base()
             {
-                FontSize = 11;
-                FontSize = 11;
+                FontSize = 12;
                 TextAlignment = TextAlignment.Left;
                 VerticalAlignment = VerticalAlignment.Top;
                 HorizontalAlignment = HorizontalAlignment.Left;
@@ -388,11 +377,24 @@ namespace Deadfile.Pdf
             }
         }
 
+        private class PaulSamsonHeaderTextBlock : PaulSamsonTextBlock
+        {
+            public PaulSamsonHeaderTextBlock(string text) : base()
+            {
+                Text = text;
+                HorizontalAlignment = HorizontalAlignment.Center;
+                TextAlignment = TextAlignment.Center;
+                FontSize = 16;
+                Foreground = PrimaryColorBrush;
+                FontWeight = FontWeights.Bold;
+            }
+        }
+
         private class PaulSamsonTsAndCsTextBlock : PaulSamsonTextBlock
         {
             public PaulSamsonTsAndCsTextBlock(string text) : base()
             {
-                FontSize = 10;
+                FontSize = 11;
                 TextAlignment = TextAlignment.Center;
                 HorizontalAlignment = HorizontalAlignment.Center;
                 Foreground = PrimaryColorBrush;
@@ -404,9 +406,25 @@ namespace Deadfile.Pdf
         {
             public PaulSamsonAddressTextBlock() : base()
             {
-                FontSize = 11;
+                FontSize = 12;
                 Foreground = PrimaryColorBrush;
                 FontWeight = FontWeights.Bold;
+            }
+        }
+
+        private class PaulSamsonTotalFieldTitleTextBlock : PaulSamsonFieldTitleTextBlock
+        {
+            public PaulSamsonTotalFieldTitleTextBlock(string text) : base(text)
+            {
+                FontSize = 15;
+            }
+        }
+
+        private class PaulSamsonTotalFieldValueTextBlock : PaulSamsonFieldValueTextBlock
+        {
+            public PaulSamsonTotalFieldValueTextBlock(string text) : base(text, true)
+            {
+                FontSize = 16;
             }
         }
     }
