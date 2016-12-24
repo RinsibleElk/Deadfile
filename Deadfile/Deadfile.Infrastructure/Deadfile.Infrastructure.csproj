@@ -310,10 +310,10 @@
     <Resource Include="Resources\todo-report.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\unbilled-clients-hover.png" />
+    <Resource Include="Resources\unbilled-jobs-hover.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\unbilled-clients.png" />
+    <Resource Include="Resources\unbilled-jobs.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\undo-hover.png" />
@@ -363,6 +363,19 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\import-export-tab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\unpaid-invoices-hover.png" />
+    <Resource Include="Resources\unpaid-invoices-tab.png" />
+    <Resource Include="Resources\unpaid-invoices.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\unbilled-jobs-tab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\current-applications-hover.png" />
+    <Resource Include="Resources\current-applications-tab.png" />
+    <Resource Include="Resources\current-applications.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

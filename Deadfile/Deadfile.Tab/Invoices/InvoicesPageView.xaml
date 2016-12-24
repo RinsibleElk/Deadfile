@@ -132,17 +132,17 @@
                                                  Margin="0,20,0,0"
                                                  IsEnabled="{Binding InvoiceEditable}"
                                                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressFirstLine}"
-                                                 controls:TextBoxHelper.Watermark="Client AddressFirstLine First Line" />
+                                                 controls:TextBoxHelper.Watermark="Client Address First Line" />
                                         <TextBox Style="{StaticResource InvoiceTextBox}"
                                                  Margin="0,0,0,0"
                                                  IsEnabled="{Binding InvoiceEditable}"
                                                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressSecondLine}"
-                                                 controls:TextBoxHelper.Watermark="Client AddressFirstLine Second Line" />
+                                                 controls:TextBoxHelper.Watermark="Client Address Second Line" />
                                         <TextBox Style="{StaticResource InvoiceTextBox}"
                                                  Margin="0,0,0,0"
                                                  IsEnabled="{Binding InvoiceEditable}"
                                                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressThirdLine}"
-                                                 controls:TextBoxHelper.Watermark="Client AddressFirstLine Third Line" />
+                                                 controls:TextBoxHelper.Watermark="Client Address Third Line" />
                                         <TextBox Style="{StaticResource InvoiceTextBox}"
                                                  Margin="0,0,0,0"
                                                  IsEnabled="{Binding InvoiceEditable}"
@@ -346,17 +346,17 @@
                                                  Margin="0,20,0,0"
                                                  IsEnabled="{Binding InvoiceEditable}"
                                                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressFirstLine}"
-                                                 controls:TextBoxHelper.Watermark="Client AddressFirstLine First Line" />
+                                                 controls:TextBoxHelper.Watermark="Client Address First Line" />
                                         <TextBox Style="{StaticResource PksTextBox}"
                                                  Margin="0,0,0,0"
                                                  IsEnabled="{Binding InvoiceEditable}"
                                                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressSecondLine}"
-                                                 controls:TextBoxHelper.Watermark="Client AddressFirstLine Second Line" />
+                                                 controls:TextBoxHelper.Watermark="Client Address Second Line" />
                                         <TextBox Style="{StaticResource PksTextBox}"
                                                  Margin="0,0,0,0"
                                                  IsEnabled="{Binding InvoiceEditable}"
                                                  Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.ClientAddressThirdLine}"
-                                                 controls:TextBoxHelper.Watermark="Client AddressFirstLine Third Line" />
+                                                 controls:TextBoxHelper.Watermark="Client Address Third Line" />
                                         <TextBox Style="{StaticResource PksTextBox}"
                                                  Margin="0,0,0,0"
                                                  IsEnabled="{Binding InvoiceEditable}"

@@ -904,7 +904,7 @@
                         <StackPanel>
                             <Image Width="{StaticResource HomePageButtonSize}"
                                    Height="{StaticResource HomePageButtonSize}"
-                                   Source="../Resources/unbilled-clients.png"/>
+                                   Source="../Resources/unbilled-jobs.png"/>
                             <Label Width="{StaticResource HomePageButtonSize}"
                                    Height="{StaticResource HomePageButtonLabelHeight}"
                                    HorizontalContentAlignment="Center"
@@ -927,12 +927,62 @@
                                 <StackPanel>
                                     <Image Width="{StaticResource HomePageButtonSize}"
                                            Height="{StaticResource HomePageButtonSize}"
-                                           Source="../Resources/unbilled-clients-hover.png"></Image>
+                                           Source="../Resources/unbilled-jobs-hover.png"></Image>
                                     <Label Width="{StaticResource HomePageButtonSize}"
                                            Height="{StaticResource HomePageButtonLabelHeight}"
                                            FontWeight="Bold"
                                            HorizontalContentAlignment="Center"
                                            HorizontalAlignment="Center">Unbilled Jobs</Label>
+                                </StackPanel>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="UnpaidInvoicesButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border BorderThickness="1"
+                            BorderBrush="{StaticResource HomeButtonBorder}"
+                            Background="{StaticResource HomeButtonBackground}"
+                            Height="{StaticResource HomePageButtonHeight}"
+                            Width="{StaticResource HomePageButtonSize}">
+                        <StackPanel>
+                            <Image Width="{StaticResource HomePageButtonSize}"
+                                   Height="{StaticResource HomePageButtonSize}"
+                                   Source="../Resources/unpaid-invoices.png"/>
+                            <Label Width="{StaticResource HomePageButtonSize}"
+                                   Height="{StaticResource HomePageButtonLabelHeight}"
+                                   HorizontalContentAlignment="Center"
+                                   HorizontalAlignment="Center">Unpaid Invoices</Label>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border BorderThickness="1"
+                                    BorderBrush="{StaticResource HomeButtonBorderHover}"
+                                    Background="{StaticResource HomeButtonBackgroundHover}"
+                                    Height="{StaticResource HomePageButtonHeight}"
+                                    Width="{StaticResource HomePageButtonSize}">
+                                <StackPanel>
+                                    <Image Width="{StaticResource HomePageButtonSize}"
+                                           Height="{StaticResource HomePageButtonSize}"
+                                           Source="../Resources/unpaid-invoices-hover.png"></Image>
+                                    <Label Width="{StaticResource HomePageButtonSize}"
+                                           Height="{StaticResource HomePageButtonLabelHeight}"
+                                           FontWeight="Bold"
+                                           HorizontalContentAlignment="Center"
+                                           HorizontalAlignment="Center">Unpaid Invoices</Label>
                                 </StackPanel>
                             </Border>
                         </ControlTemplate>
@@ -983,6 +1033,56 @@
                                            FontWeight="Bold"
                                            HorizontalContentAlignment="Center"
                                            HorizontalAlignment="Center">Todo Report</Label>
+                                </StackPanel>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="CurrentApplicationsButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border BorderThickness="1"
+                            BorderBrush="{StaticResource HomeButtonBorder}"
+                            Background="{StaticResource HomeButtonBackground}"
+                            Height="{StaticResource HomePageButtonHeight}"
+                            Width="{StaticResource HomePageButtonSize}">
+                        <StackPanel>
+                            <Image Width="{StaticResource HomePageButtonSize}"
+                                   Height="{StaticResource HomePageButtonSize}"
+                                   Source="../Resources/current-applications.png"/>
+                            <Label Width="{StaticResource HomePageButtonSize}"
+                                   Height="{StaticResource HomePageButtonLabelHeight}"
+                                   HorizontalContentAlignment="Center"
+                                   HorizontalAlignment="Center">Current Applications</Label>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border BorderThickness="1"
+                                    BorderBrush="{StaticResource HomeButtonBorderHover}"
+                                    Background="{StaticResource HomeButtonBackgroundHover}"
+                                    Height="{StaticResource HomePageButtonHeight}"
+                                    Width="{StaticResource HomePageButtonSize}">
+                                <StackPanel>
+                                    <Image Width="{StaticResource HomePageButtonSize}"
+                                           Height="{StaticResource HomePageButtonSize}"
+                                           Source="../Resources/current-applications-hover.png"></Image>
+                                    <Label Width="{StaticResource HomePageButtonSize}"
+                                           Height="{StaticResource HomePageButtonLabelHeight}"
+                                           FontWeight="Bold"
+                                           HorizontalContentAlignment="Center"
+                                           HorizontalAlignment="Center">Current Applications</Label>
                                 </StackPanel>
                             </Border>
                         </ControlTemplate>

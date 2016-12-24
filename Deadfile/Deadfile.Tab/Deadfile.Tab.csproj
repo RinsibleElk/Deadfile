@@ -238,6 +238,18 @@
       <DependentUpon>TodoReportPageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Reports\TodoReport\TodoReportPageViewModel.cs" />
+    <Compile Include="Reports\CurrentApplications\ICurrentApplicationsPageViewModel.cs" />
+    <Compile Include="Reports\CurrentApplications\CurrentApplicationsPageDesignTimeViewModel.cs" />
+    <Compile Include="Reports\CurrentApplications\CurrentApplicationsPageView.xaml.cs">
+      <DependentUpon>CurrentApplicationsPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\CurrentApplications\CurrentApplicationsPageViewModel.cs" />
+    <Compile Include="Reports\UnpaidInvoices\IUnpaidInvoicesPageViewModel.cs" />
+    <Compile Include="Reports\UnpaidInvoices\UnpaidInvoicesPageDesignTimeViewModel.cs" />
+    <Compile Include="Reports\UnpaidInvoices\UnpaidInvoicesPageView.xaml.cs">
+      <DependentUpon>UnpaidInvoicesPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UnpaidInvoices\UnpaidInvoicesPageViewModel.cs" />
     <Compile Include="Reports\UnbilledJobs\IUnbilledJobsPageViewModel.cs" />
     <Compile Include="Reports\UnbilledJobs\UnbilledJobsPageDesignTimeViewModel.cs" />
     <Compile Include="Reports\UnbilledJobs\UnbilledJobsPageView.xaml.cs">
@@ -361,6 +373,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Reports\TodoReport\TodoReportPageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Reports\CurrentApplications\CurrentApplicationsPageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Reports\UnpaidInvoices\UnpaidInvoicesPageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

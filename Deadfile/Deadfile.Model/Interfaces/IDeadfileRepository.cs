@@ -300,5 +300,19 @@ namespace Deadfile.Model.Interfaces
         /// </summary>
         /// <param name="quotationModel"></param>
         void DeleteQuotation(QuotationModel quotationModel);
+
+        /// <summary>
+        /// Get the unpaid invoices.
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        IEnumerable<InvoiceModel> GetUnpaidInvoices(string filter);
+
+        /// <summary>
+        /// Get the current applications.
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        IEnumerable<CurrentApplicationModel> GetCurrentApplications(string filter);
     }
 }

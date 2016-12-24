@@ -64,6 +64,18 @@ namespace Deadfile.Tab.Home
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.Json));
         }
 
+        public void UnpaidInvoices()
+        {
+            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.UnpaidInvoices);
+            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.UnpaidInvoices));
+        }
+
+        public void CurrentApplications()
+        {
+            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.CurrentApplications);
+            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.CurrentApplications));
+        }
+
         public Experience Experience
         {
             get { return Experience.Home; }

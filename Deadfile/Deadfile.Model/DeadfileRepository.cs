@@ -911,6 +911,43 @@ namespace Deadfile.Model
             }
         }
 
+        public IEnumerable<InvoiceModel> GetUnpaidInvoices(string filter)
+        {
+            var li = new List<InvoiceModel>();
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var invoice in (from invoice in dbContext.Invoices
+                                         where invoice.Status == InvoiceStatus.Created
+                                         where (filter == null || filter == "" || invoice.InvoiceReference.ToString().Contains(filter))
+                                         select invoice))
+                {
+                    li.Add(_modelEntityMapper.Mapper.Map<Invoice, InvoiceModel>(invoice));
+                }
+            }
+            return li;
+        }
+
+        public IEnumerable<CurrentApplicationModel> GetCurrentApplications(string filter)
+        {
+            var li = new List<CurrentApplicationModel>();
+            using (var dbContext = new DeadfileContext())
+            {
+                foreach (var application in (from application in dbContext.Applications
+                                             where application.State == ApplicationState.Current
+                                             where (filter == null || filter == "" || application.LocalAuthorityReference.Contains(filter))
+                                             orderby application.EstimatedDecisionDate descending
+                                             join job in dbContext.Jobs on application.JobId equals job.JobId
+                                             select new {Job = job, Application = application}))
+                {
+                    var currentApplicationModel = new CurrentApplicationModel();
+                    _modelEntityMapper.Mapper.Map(application.Application, currentApplicationModel);
+                    currentApplicationModel.JobAddressFirstLine = application.Job.AddressFirstLine;
+                    li.Add(currentApplicationModel);
+                }
+            }
+            return li;
+        }
+
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
             using (var dbContext = new DeadfileContext())

@@ -26,6 +26,8 @@ using Deadfile.Tab.Reports.TodoReport;
 using Deadfile.Tab.Reports.UnbilledJobs;
 using Deadfile.Tab.Navigation;
 using Deadfile.Tab.Quotes;
+using Deadfile.Tab.Reports.CurrentApplications;
+using Deadfile.Tab.Reports.UnpaidInvoices;
 using Deadfile.Tab.Tab;
 using MahApps.Metro.Controls.Dialogs;
 
@@ -64,6 +66,8 @@ namespace Deadfile.Tab
             _container.RegisterSingleton(typeof(JobsPageViewModel), Experience.Jobs + RegionNames.Page, typeof(JobsPageViewModel));
             _container.RegisterSingleton(typeof(LocalAuthoritiesPageViewModel), Experience.LocalAuthorities + RegionNames.Page, typeof(LocalAuthoritiesPageViewModel));
             _container.RegisterSingleton(typeof(UnbilledJobsPageViewModel), Experience.UnbilledJobs + RegionNames.Page, typeof(UnbilledJobsPageViewModel));
+            _container.RegisterSingleton(typeof(CurrentApplicationsPageViewModel), Experience.CurrentApplications + RegionNames.Page, typeof(CurrentApplicationsPageViewModel));
+            _container.RegisterSingleton(typeof(UnpaidInvoicesPageViewModel), Experience.UnpaidInvoices + RegionNames.Page, typeof(UnpaidInvoicesPageViewModel));
             _container.RegisterSingleton(typeof(TodoReportPageViewModel), Experience.TodoReport + RegionNames.Page, typeof(TodoReportPageViewModel));
             _container.RegisterSingleton(typeof(ImportPageViewModel), Experience.Import + RegionNames.Page, typeof(ImportPageViewModel));
             _container.RegisterSingleton(typeof(JsonPageViewModel), Experience.Json + RegionNames.Page, typeof(JsonPageViewModel));

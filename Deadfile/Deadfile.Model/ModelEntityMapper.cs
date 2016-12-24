@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Deadfile.Entity;
 using AutoMapper;
 using Deadfile.Model.Interfaces;
+using Deadfile.Model.Reporting;
 
 namespace Deadfile.Model
 {
@@ -27,6 +28,8 @@ namespace Deadfile.Model
                 cfg.CreateMap<QuotationModel, Quotation>();
                 cfg.CreateMap<Application, ApplicationModel>();
                 cfg.CreateMap<ApplicationModel, Application>();
+                cfg.CreateMap<Application, CurrentApplicationModel>();
+                cfg.CreateMap<CurrentApplicationModel, Application>();
                 cfg.CreateMap<BillableHour, BillableHourModel>();
                 cfg.CreateMap<BillableHourModel, BillableHour>();
                 cfg.CreateMap<Expense, ExpenseModel>();

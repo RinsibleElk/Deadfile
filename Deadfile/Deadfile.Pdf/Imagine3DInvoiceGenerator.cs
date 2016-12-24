@@ -302,7 +302,7 @@ namespace Deadfile.Pdf
             public Imagine3DHeaderTextBlock(string text) : base()
             {
                 Background = new SolidColorBrush(SecondaryColor);
-                FontSize = 36;
+                FontSize = 38;
                 Text = text;
                 FontWeight = FontWeights.Bold;
                 TextAlignment = TextAlignment.Right;
@@ -317,7 +317,7 @@ namespace Deadfile.Pdf
             {
                 Text = text;
                 FontWeight = FontWeights.Bold;
-                FontSize = 12;
+                FontSize = 13;
             }
         }
 
@@ -328,7 +328,7 @@ namespace Deadfile.Pdf
                 Text = text;
                 Foreground = PrimaryColorBrush;
                 FontWeight = FontWeights.Bold;
-                FontSize = 11;
+                FontSize = 12;
                 HorizontalAlignment = HorizontalAlignment.Right;
             }
         }
@@ -338,7 +338,7 @@ namespace Deadfile.Pdf
             public Imagine3DDetailsValuesTextBlock(string text) : base()
             {
                 Text = text;
-                FontSize = 11;
+                FontSize = 12;
             }
         }
 
@@ -347,7 +347,7 @@ namespace Deadfile.Pdf
             public Imagine3DAddressLineTextBlock(string text) : base()
             {
                 Text = text;
-                FontSize = 12;
+                FontSize = 13;
             }
         }
 
@@ -356,11 +356,11 @@ namespace Deadfile.Pdf
             public Imagine3DProjectTitlesTextBlock(string text) : base()
             {
                 Text = text;
-                FontSize = 15;
+                FontSize = 16;
                 FontWeight = FontWeights.Bold;
                 Foreground = PrimaryColorBrush;
                 HorizontalAlignment = HorizontalAlignment.Right;
-                Margin = new Thickness(0, 0, ProjectPaddingWidth, 0);
+                Margin = new Thickness(0, 1, ProjectPaddingWidth, 0);
             }
         }
 
@@ -371,7 +371,7 @@ namespace Deadfile.Pdf
                 Text = text;
                 FontWeight = FontWeights.Bold;
                 Margin = new Thickness(0, 4, 0, 0);
-                FontSize = 12;
+                FontSize = 13;
             }
         }
 
@@ -381,7 +381,7 @@ namespace Deadfile.Pdf
             {
                 Text = text;
                 Foreground = Brushes.White;
-                FontSize = 15;
+                FontSize = 16;
             }
         }
 
@@ -390,7 +390,7 @@ namespace Deadfile.Pdf
             public Imagine3DItemListItemsTextBlock(string text) : base()
             {
                 Text = text;
-                FontSize = 11;
+                FontSize = 12;
             }
         }
 
@@ -410,7 +410,7 @@ namespace Deadfile.Pdf
             {
                 Text = text;
                 FontWeight = FontWeights.Bold;
-                FontSize = 17;
+                FontSize = 18;
             }
         }
     }

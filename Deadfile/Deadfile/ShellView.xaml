@@ -70,6 +70,9 @@
                 <converters:SwitchConverterCase When="Import" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-tab.png" />
                 <converters:SwitchConverterCase When="Json" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-export-tab.png" />
                 <converters:SwitchConverterCase When="TodoReport" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/todo-report-tab.png" />
+                <converters:SwitchConverterCase When="UnbilledJobs" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unbilled-jobs-tab.png" />
+                <converters:SwitchConverterCase When="UnpaidInvoices" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unpaid-invoices-tab.png" />
+                <converters:SwitchConverterCase When="CurrentApplications" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/current-applications-tab.png" />
             </converters:SwitchConverter>
         </DockPanel.Resources>
         <dragablz:TabablzControl

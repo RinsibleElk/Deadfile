@@ -44,6 +44,16 @@ namespace Deadfile.Tab.Home
             throw new NotImplementedException();
         }
 
+        public void UnpaidInvoices()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CurrentApplications()
+        {
+            throw new NotImplementedException();
+        }
+
         public override Experience Experience
         {
             get { return Experience.Home; }

@@ -17,6 +17,8 @@ namespace Deadfile.Tab
         UnbilledJobs,
         Import,
         TodoReport,
-        Json
+        Json,
+        UnpaidInvoices,
+        CurrentApplications
     }
 }
