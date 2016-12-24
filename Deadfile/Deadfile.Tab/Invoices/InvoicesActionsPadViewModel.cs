@@ -62,10 +62,8 @@ namespace Deadfile.Tab.Invoices
 
         public void PaidItem()
         {
-            // Send a message to perform the print.
-            // Save (if locked).
-            // Unlock for editing (if locked).
-            // Should only be available if either unlocked or locked but no errors.
+            Logger.Info("Event,PaidEvent,Send,{0},{1}", TabIdentity.TabIndex, PaidMessage.Paid);
+            EventAggregator.GetEvent<PaidEvent>().Publish(PaidMessage.Paid);
         }
 
         public bool CanPaidItem

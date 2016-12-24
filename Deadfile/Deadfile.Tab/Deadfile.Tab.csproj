@@ -146,6 +146,7 @@
     <Compile Include="Events\LockedForEditingEvent.cs" />
     <Compile Include="Events\NavigateFallBackEvent.cs" />
     <Compile Include="Events\NavigateEvent.cs" />
+    <Compile Include="Events\PaidEvent.cs" />
     <Compile Include="Events\PrintEvent.cs" />
     <Compile Include="Events\RefreshBrowserEvent.cs" />
     <Compile Include="Events\SaveEvent.cs" />

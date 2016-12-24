@@ -61,6 +61,7 @@ namespace Deadfile.Tab.Invoices
             base.OnNavigatedTo(clientAndInvoiceNavigationKey);
 
             _printEventSubscriptionToken = EventAggregator.GetEvent<PrintEvent>().Subscribe(PerformPrint);
+            _paidEventSubscriptionToken = EventAggregator.GetEvent<PaidEvent>().Subscribe(PerformPaid);
 
             SuggestedInvoiceReferences = new ObservableCollection<string>(new string[] {SelectedItem.InvoiceReferenceString});
 
@@ -87,6 +88,12 @@ namespace Deadfile.Tab.Invoices
 
             // Hook up to changes in editing state.
             SelectedItem.PropertyChanged += SelectedItemOnPropertyChanged;
+        }
+
+        private void PerformPaid(PaidMessage message)
+        {
+            SelectedItem.Status = InvoiceStatus.Paid;
+            _repository.SaveInvoice(SelectedItem, Jobs.Cast<BillableJob>());
         }
 
         private ObservableCollection<string> _suggestedInvoiceReferences = new ObservableCollection<string>();
@@ -161,6 +168,8 @@ namespace Deadfile.Tab.Invoices
 
             EventAggregator.GetEvent<PrintEvent>().Unsubscribe(_printEventSubscriptionToken);
             _printEventSubscriptionToken = null;
+            EventAggregator.GetEvent<PaidEvent>().Unsubscribe(_paidEventSubscriptionToken);
+            _paidEventSubscriptionToken = null;
             SuggestedInvoiceReferences = new ObservableCollection<string>();
             Jobs = new ObservableCollection<BillableModel>();
             SelectedItem.PropertyChanged -= SelectedItemOnPropertyChanged;
@@ -311,6 +320,7 @@ namespace Deadfile.Tab.Invoices
 
         private double _netAmount;
         private SubscriptionToken _printEventSubscriptionToken = null;
+        private SubscriptionToken _paidEventSubscriptionToken = null;
 
         public double NetAmount
         {
