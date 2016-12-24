@@ -42,7 +42,13 @@
                 <CheckBox Grid.Row="0" Grid.Column="0" IsEnabled="{Binding BrowsingEnabled}" IsChecked="{Binding BrowserSettings.IncludeInactiveEnabled, Mode=TwoWay}">Inactive</CheckBox>
                 <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding BrowserSettings.Modes}" IsEnabled="{Binding BrowsingEnabled}" IsEditable="False" SelectedItem="{Binding BrowserSettings.Mode}" />
                 <Label Grid.Row="1" Grid.Column="0">Sort:</Label>
-                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding BrowserSettings.Sorts}" IsEnabled="{Binding BrowsingEnabled}" IsEditable="False" SelectedItem="{Binding BrowserSettings.Sort}" />
+                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding BrowserSettings.Sorts}" IsEnabled="{Binding BrowsingEnabled}" IsEditable="False" SelectedItem="{Binding BrowserSettings.Sort}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource BrowserSortToString}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
                 <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" controls:TextBoxHelper.Watermark="Filter" IsEnabled="{Binding BrowsingEnabled}" Text="{Binding BrowserSettings.FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </Grid>
             <TreeView Grid.Row="1"

@@ -11,6 +11,7 @@
     <converters:BillableModelStateToIsEnabledConverter x:Key="BillableModelStateToIsEnabled"/>
     <converters:JobTaskStateToNullableBooleanConverter x:Key="JobTaskStateToBoolean" />
     <converters:ExpenseTypeToStringConverter x:Key="ExpenseTypeToString" />
+    <converters:BrowserSortToStringConverter x:Key="BrowserSortToString" />
     <ObjectDataProvider MethodName="GetValues"
                 ObjectType="{x:Type entity:ApplicationState}"
                 x:Key="ApplicationStateValues">

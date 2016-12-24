@@ -82,6 +82,7 @@
     <Compile Include="Converters\ApplicationTypeToStringConverter.cs" />
     <Compile Include="Converters\BillableModelStateToIsEnabledConverter.cs" />
     <Compile Include="Converters\BillableModelStateToNullableBoolConverter.cs" />
+    <Compile Include="Converters\BrowserSortToStringConverter.cs" />
     <Compile Include="Converters\JobTaskStateToNullableBooleanConverter.cs" />
     <Compile Include="Converters\CompanyToNameConverter.cs" />
     <Compile Include="Converters\ExpenseTypeToStringConverter.cs" />
