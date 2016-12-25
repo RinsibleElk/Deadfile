@@ -88,7 +88,7 @@ namespace Deadfile.Tab.Jobs
             ChildIsEditable = editable;
         }
 
-        public override void PerformSave(SaveMessage message)
+        protected override void PerformSave(SaveMessage message)
         {
             try
             {
@@ -111,21 +111,18 @@ namespace Deadfile.Tab.Jobs
             }
         }
 
-        public override void PerformDelete()
+        protected override bool MayDelete(out string details)
+        {
+            details = null;
+            return true;
+        }
+
+        protected override void PerformDelete()
         {
             try
             {
-                // First delete the job.
-                _repository.DeleteJob(SelectedItem);
-
-                // If the job is now in an inactive state, check if the client no longer has any active jobs and make it inactive.
-                var jobsForClient = _repository.GetBrowserJobsForClient(BrowserMode.Client, false, SelectedItem.ClientId);
-                if (jobsForClient.FirstOrDefault() == null)
-                {
-                    var clientModel = _repository.GetClientById(SelectedItem.ClientId);
-                    clientModel.Status = ClientStatus.Inactive;
-                    _repository.SaveClient(clientModel);
-                }
+                SelectedItem.Status = JobStatus.Cancelled;
+                PerformSave(SaveMessage.Save);
             }
             catch (Exception e)
             {

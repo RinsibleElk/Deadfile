@@ -240,7 +240,7 @@ namespace Deadfile.Tab.Invoices
             get { return Editable && SelectedItem.CreationState == InvoiceCreationState.DefineInvoice; }
         }
 
-        public override void PerformSave(SaveMessage message)
+        protected override void PerformSave(SaveMessage message)
         {
             try
             {
@@ -257,6 +257,12 @@ namespace Deadfile.Tab.Invoices
             }
         }
 
+        protected override bool MayDelete(out string details)
+        {
+            details = null;
+            return true;
+        }
+
         private void PerformPrint(PrintMessage print)
         {
             var invoiceGenerator = new CompanySwitchingInvoiceGenerator();
@@ -264,15 +270,17 @@ namespace Deadfile.Tab.Invoices
             _printService.PrintDocument(fixedDocument);
         }
 
-        public override void PerformDelete()
+        protected override void PerformDelete()
         {
             try
             {
-                _repository.DeleteInvoice(SelectedItem);
+                SelectedItem.Status = InvoiceStatus.Cancelled;
+                PerformSave(SaveMessage.Save);
             }
             catch (Exception e)
             {
-                Logger.Fatal(e, "Exception while deleting {0}, {1}, {2}, {3}", _tabIdentity, SelectedItem, e, e.StackTrace);
+                Logger.Fatal(e, "Exception while deleting {0}, {1}, {2}, {3}", _tabIdentity, SelectedItem, e,
+                    e.StackTrace);
                 throw;
             }
         }

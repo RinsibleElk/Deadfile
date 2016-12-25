@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Entity;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
@@ -154,7 +155,7 @@ namespace Deadfile.Tab.Clients
                  (!String.IsNullOrWhiteSpace(SelectedItem.EmailAddress));
         }
 
-        public override void PerformSave(SaveMessage message)
+        protected override void PerformSave(SaveMessage message)
         {
             try
             {
@@ -168,11 +169,18 @@ namespace Deadfile.Tab.Clients
             }
         }
 
-        public override void PerformDelete()
+        protected override bool MayDelete(out string details)
+        {
+            details = null;
+            return true;
+        }
+
+        protected override void PerformDelete()
         {
             try
             {
-                _repository.DeleteClient(SelectedItem);
+                SelectedItem.Status = ClientStatus.Inactive;
+                PerformSave(SaveMessage.Save);
             }
             catch (Exception e)
             {

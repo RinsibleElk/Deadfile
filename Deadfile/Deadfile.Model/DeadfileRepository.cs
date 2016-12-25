@@ -586,39 +586,6 @@ namespace Deadfile.Model
             }
         }
 
-        public void DeleteClient(ClientModel clientModel)
-        {
-            if (clientModel.ClientId == ModelBase.NewModelId) return;
-            using (var dbContext = new DeadfileContext())
-            {
-                var client = dbContext.Clients.Find(new object[] { clientModel.ClientId });
-                client.Status = ClientStatus.Inactive;
-                dbContext.SaveChanges();
-            }
-        }
-
-        public void DeleteInvoice(InvoiceModel invoiceModel)
-        {
-            if (invoiceModel.InvoiceId == ModelBase.NewModelId) return;
-            using (var dbContext = new DeadfileContext())
-            {
-                var invoice = dbContext.Invoices.Find(new object[] { invoiceModel.InvoiceId });
-                invoice.Status = InvoiceStatus.Cancelled;
-                dbContext.SaveChanges();
-            }
-        }
-
-        public void DeleteJob(JobModel jobModel)
-        {
-            if (jobModel.JobId == ModelBase.NewModelId) return;
-            using (var dbContext = new DeadfileContext())
-            {
-                var job = dbContext.Jobs.Find(new object[] { jobModel.JobId });
-                job.Status = JobStatus.Cancelled;
-                dbContext.SaveChanges();
-            }
-        }
-
         public int[] GetSuggestedInvoiceReferenceIdsForCompany(Company company)
         {
             List<int> usedInvoiceIds;
