@@ -122,13 +122,13 @@ namespace Deadfile.Tab.Clients
             if (key.ClientId == 0 || key.ClientId == ModelBase.NewModelId)
             {
                 clientModel = new ClientModel();
-                DisplayName = "Clients";
+                DisplayName = "New Client";
             }
             else
             {
                 clientModel = _repository.GetClientById(key.ClientId);
                 if (clientModel.ClientId == ModelBase.NewModelId)
-                    DisplayName = "Clients";
+                    DisplayName = "New Client";
                 else
                     DisplayName = clientModel.FullName;
             }

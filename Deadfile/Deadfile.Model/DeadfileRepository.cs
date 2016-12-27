@@ -399,6 +399,10 @@ namespace Deadfile.Model
             return invoiceModel;
         }
 
+        /// <summary>
+        /// Save changes to a client (or add a new one, or 'delete' one).
+        /// </summary>
+        /// <param name="clientModel"></param>
         public void SaveClient(ClientModel clientModel)
         {
             try
@@ -436,7 +440,7 @@ namespace Deadfile.Model
         }
 
         /// <summary>
-        /// Save changes to an invoice (or add a new one).
+        /// Save changes to an invoice (or add a new one, or 'delete' one).
         /// </summary>
         /// <param name="invoiceModel"></param>
         /// <param name="billableJobs"></param>
@@ -1083,6 +1087,10 @@ namespace Deadfile.Model
             job.Children.Add(billable);
         }
 
+        /// <summary>
+        /// Save changes to a job (or add a new one, or 'delete' one).
+        /// </summary>
+        /// <param name="jobModel"></param>
         public void SaveJob(JobModel jobModel)
         {
             using (var dbContext = new DeadfileContext())

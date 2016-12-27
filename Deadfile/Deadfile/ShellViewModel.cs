@@ -17,7 +17,7 @@ namespace Deadfile
     /// <summary>
     /// The view model for Deadfile's shell.
     /// </summary>
-    public sealed class ShellViewModel : Conductor<IScreen>.Collection.OneActive
+    public sealed class ShellViewModel : Conductor<IScreen>.Collection.OneActive, IShellViewModel
     {
         private readonly SimpleContainer _container;
         private static bool _isFirst = true;
@@ -29,7 +29,7 @@ namespace Deadfile
         /// <param name="interTabClient"></param>
         public ShellViewModel(SimpleContainer container, IInterTabClient interTabClient)
         {
-            _closingItemActionCallback = new ItemActionCallback((dataContext) =>
+            ClosingItemActionCallback = new ItemActionCallback((dataContext) =>
             {
                 CloseItem((Screen)dataContext.DragablzItem.DataContext);
             });
@@ -37,6 +37,7 @@ namespace Deadfile
             InterTabClient = interTabClient;
             OpenNewTab = new DelegateCommand(OpenTab);
             OpenNewTabToBrowserModelCommand = new DelegateCommand<BrowserModel>(OpenTabToBrowserItem);
+            OpenNewTabToNewClientCommand=new DelegateCommand(OpenNewTabToNewClient);
             if (_isFirst)
             {
                 OpenTab();
@@ -60,18 +61,35 @@ namespace Deadfile
             tabModule.NavigateToBrowserModel(browserModel);
         }
 
-        public ItemActionCallback ClosingItemActionCallback { get { return _closingItemActionCallback; } }
-        private readonly ItemActionCallback _closingItemActionCallback;
+        public void OpenNewTabToNewClient()
+        {
+            var tabModule = _container.GetInstance<TabModule>();
+            var tabViewModel = tabModule.GetFirstViewModel();
+            ActivateItem(tabViewModel);
+            tabModule.NavigateToNewClient();
+        }
+
+        public ItemActionCallback ClosingItemActionCallback { get; }
 
         public void CloseItem(Screen dataContext)
         {
             dataContext.TryClose();
         }
 
-        public IInterTabClient InterTabClient { get; private set; }
+        public IInterTabClient InterTabClient { get; }
 
         public ICommand OpenNewTab { get; }
 
         public ICommand OpenNewTabToBrowserModelCommand { get; }
+
+        public ICommand OpenNewTabToNewClientCommand { get; }
+
+        private TabablzControl _tabablz = null;
+        protected override void OnViewAttached(object view, object context)
+        {
+            base.OnViewAttached(view, context);
+
+            _tabablz = ((ShellView) view).Items;
+        }
     }
 }

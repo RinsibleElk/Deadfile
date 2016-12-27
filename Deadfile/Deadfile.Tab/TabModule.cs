@@ -107,5 +107,10 @@ namespace Deadfile.Tab
                 .GetEvent<SelectedItemEvent>()
                 .Publish(new SelectedItemPacket(browserModel.ModelType, browserModel.ParentId, browserModel.Id));
         }
+
+        public void NavigateToNewClient()
+        {
+            _container.GetInstance<Prism.Events.IEventAggregator>().GetEvent<AddClientEvent>().Publish(AddClientMessage.AddClient);
+        }
     }
 }

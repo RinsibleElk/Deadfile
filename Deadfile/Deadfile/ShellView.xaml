@@ -20,8 +20,18 @@
              Title="deadfile"
              Icon="Resources/logo.png"
              WindowStartupLocation="CenterScreen"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             FocusManager.FocusedElement="{Binding ElementName=Items}"
+             d:DataContext="{d:DesignInstance Type=local:ShellDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Control"
+                    Key="T"
+                    Command="{Binding OpenNewTab}" />
+        <KeyBinding Modifiers="Control"
+                    Key="N"
+                    Command="{Binding OpenNewTabToNewClientCommand}"></KeyBinding>
+    </Window.InputBindings>
     <controls:MetroWindow.TitleTemplate>
         <DataTemplate>
             <StackPanel Orientation="Horizontal">
@@ -80,6 +90,7 @@
             ShowDefaultCloseButton="True"
             ClosingItemCallback="{Binding ClosingItemActionCallback}"
             ItemContainerStyle="{StaticResource TrapezoidDragableTabItemStyle}"
+            Focusable="True"
             AdjacentHeaderItemOffset="-10">
             <dragablz:TabablzControl.HeaderItemTemplate>
                 <DataTemplate DataType="tab:TabViewModel">

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Deadfile.Tab.Actions;
 using Deadfile.Tab.Events;
+using Prism.Commands;
 using Prism.Events;
 
 namespace Deadfile.Tab.Clients
@@ -18,6 +20,7 @@ namespace Deadfile.Tab.Clients
         public ClientsActionsPadViewModel(TabIdentity tabIdentity,
             IEventAggregator eventAggregator) : base(tabIdentity, eventAggregator)
         {
+            AddItemCommand = new DelegateCommand(AddItem, () => CanAddItem);
         }
 
         protected override void LockedForEditingAction(LockedForEditingMessage lockedForEditingMessage)
@@ -54,5 +57,7 @@ namespace Deadfile.Tab.Clients
                 NotifyOfPropertyChange(() => AddItemIsVisible);
             }
         }
+
+        public ICommand AddItemCommand { get; }
     }
 }

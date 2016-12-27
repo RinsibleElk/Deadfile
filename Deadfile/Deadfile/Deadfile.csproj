@@ -111,6 +111,8 @@
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="InterTabClient.cs" />
+    <Compile Include="IShellViewModel.cs" />
+    <Compile Include="ShellDesignTimeViewModel.cs" />
     <Compile Include="ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
