@@ -399,6 +399,20 @@ namespace Deadfile.Model
             return invoiceModel;
         }
 
+        public InvoiceModel GetFirstActiveInvoiceForClient(int clientId)
+        {
+            using (var dbContext = new DeadfileContext())
+            {
+                var activeInvoice = (from invoice in dbContext.Invoices
+                                     where invoice.ClientId == clientId
+                                     where invoice.Status == InvoiceStatus.Created
+                                     orderby invoice.CreatedDate
+                                     select invoice).FirstOrDefault();
+                if (activeInvoice == null) return null;
+                return _modelEntityMapper.Mapper.Map<InvoiceModel>(activeInvoice);
+            }
+        }
+
         /// <summary>
         /// Save changes to a client (or add a new one, or 'delete' one).
         /// </summary>

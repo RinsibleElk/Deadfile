@@ -250,38 +250,16 @@ namespace Deadfile.Tab.Common
 
         protected abstract void PerformSave(SaveMessage message);
 
-        protected abstract bool MayDelete(out string details);
-
-        protected abstract void PerformDelete();
+        protected abstract Task<bool> PerformDelete();
 
         private async void PerformDelete(DeleteMessage message)
         {
-            string details;
-            MessageDialogResult result;
-            if (!MayDelete(out details))
+            var deleted = await PerformDelete();
+            if (deleted)
             {
-                result = await DialogCoordinator.ShowMessageAsync(this, "Cannot Delete",
-                    "Unable to delete due to active children - please delete children prior to deleting this entity.\n\nFor example:\n\n" + details);
-            }
-            else
-            {
-                result = MessageDialogResult.Affirmative;
-            }
-            if (result == MessageDialogResult.Affirmative)
-            {
-                result =
-                    await
-                        DialogCoordinator.ShowMessageAsync(this, "Confirm Deletion", "Are you sure?",
-                            MessageDialogStyle.AffirmativeAndNegative);
-                // Open a dialog to ask the user if they are sure.
-                if (result == MessageDialogResult.Affirmative)
-                {
-                    PerformDelete();
-
-                    // Notify the browser that something has changed.
-                    Logger.Info("Event,RefreshBrowserEvent,Send,{0},{1}", _tabIdentity, RefreshBrowserMessage.Refresh);
-                    EventAggregator.GetEvent<RefreshBrowserEvent>().Publish(RefreshBrowserMessage.Refresh);
-                }
+                // Notify the browser that something has changed.
+                Logger.Info("Event,RefreshBrowserEvent,Send,{0},{1}", _tabIdentity, RefreshBrowserMessage.Refresh);
+                EventAggregator.GetEvent<RefreshBrowserEvent>().Publish(RefreshBrowserMessage.Refresh);
             }
         }
 

@@ -88,41 +88,126 @@ namespace Deadfile.Tab.Jobs
             ChildIsEditable = editable;
         }
 
-        protected override void PerformSave(SaveMessage message)
+        private async Task<bool> ActuallySave()
         {
             try
             {
-                // First save the job.
-                _repository.SaveJob(SelectedItem);
-
-                // If the job is now in an inactive state, check if the client no longer has any active jobs and make it inactive.
-                var jobsForClient = _repository.GetBrowserJobsForClient(BrowserMode.Client, false, SelectedItem.ClientId);
-                if (jobsForClient.FirstOrDefault() == null)
+                // If deleting or completing, but there are active incomplete job children, raise a dialog.
+                var isBeingCompleted = SelectedItem.IsBeingCompleted();
+                var isBeingDeleted = SelectedItem.IsBeingDeleted();
+                var actuallySave = true;
+                if (isBeingDeleted || isBeingCompleted)
                 {
-                    var clientModel = _repository.GetClientById(SelectedItem.ClientId);
-                    clientModel.Status = ClientStatus.Inactive;
-                    _repository.SaveClient(clientModel);
+                    var activeExpense =
+                    (from expense in _repository.GetExpensesForJob(SelectedItem.JobId, "")
+                        where (expense.State == BillableState.Active || expense.State == BillableState.Billed)
+                        select expense).FirstOrDefault();
+                    var activeChildDetails =
+                        activeExpense == null
+                            ? null
+                            : (activeExpense.State == BillableState.Active
+                                ? "Unbilled expense: " + activeExpense.Description
+                                : "Unpaid expense: " + activeExpense.Description);
+                    if (activeChildDetails == null)
+                    {
+                        var activeBillableHour =
+                        (from billableHour in _repository.GetBillableHoursForJob(SelectedItem.JobId, "")
+                            where
+                            (billableHour.State == BillableState.Active || billableHour.State == BillableState.Billed)
+                            select billableHour).FirstOrDefault();
+                        activeChildDetails =
+                            activeBillableHour == null
+                                ? null
+                                : (activeBillableHour.State == BillableState.Active
+                                    ? "Unbilled expense: " + activeBillableHour.Description
+                                    : "Unpaid expense: " + activeBillableHour.Description);
+                    }
+                    if (activeChildDetails == null)
+                    {
+                        var activeJobTask =
+                        (from jobTask in _repository.GetJobTasksForJob(SelectedItem.JobId, "")
+                            where jobTask.State == JobTaskState.Active
+                            select jobTask).FirstOrDefault();
+                        activeChildDetails =
+                            activeJobTask == null
+                                ? null
+                                : ("Active job task: " + activeJobTask.Description);
+                    }
+                    if (activeChildDetails == null)
+                    {
+                        var activeApplication =
+                        (from application in _repository.GetApplicationsForJob(SelectedItem.JobId, "")
+                            where application.State == ApplicationState.Current
+                            select application).FirstOrDefault();
+                        activeChildDetails =
+                            activeApplication == null
+                                ? null
+                                : "Current application " + activeApplication.LocalAuthorityReference;
+                    }
+                    if (activeChildDetails != null)
+                    {
+                        var result =
+                            await
+                                DialogCoordinator.ShowMessageAsync(this,
+                                    (isBeingCompleted ? "Complete" : "Delete") + " job with active children?",
+                                    "The job " + SelectedItem.AddressFirstLine + " has active children - for example " +
+                                    activeChildDetails + ". Are you sure you want to proceed?",
+                                    MessageDialogStyle.AffirmativeAndNegative);
+                        actuallySave = result == MessageDialogResult.Affirmative;
+                    }
                 }
+
+                // If deleting, give the user a courtesy are you sure?
+                if (isBeingDeleted && actuallySave)
+                {
+                    var result =
+                        await
+                            DialogCoordinator.ShowMessageAsync(this,
+                                "Are you sure?",
+                                "Do you want to delete " + SelectedItem.AddressFirstLine + "?",
+                                MessageDialogStyle.AffirmativeAndNegative);
+                    actuallySave = result == MessageDialogResult.Affirmative;
+                }
+
+                // Finally, save the job and handle any related stuffs.
+                if (actuallySave)
+                {
+                    // Now save the job.
+                    _repository.SaveJob(SelectedItem);
+
+                    // If the job is now in an inactive state, check if the client no longer has any active jobs and make it inactive.
+                    var jobsForClient = _repository.GetBrowserJobsForClient(BrowserMode.Client, false,
+                        SelectedItem.ClientId);
+                    if (jobsForClient.FirstOrDefault() == null)
+                    {
+                        var clientModel = _repository.GetClientById(SelectedItem.ClientId);
+                        clientModel.Status = ClientStatus.Inactive;
+                        _repository.SaveClient(clientModel);
+                    }
+                }
+                return actuallySave;
             }
             catch (Exception e)
             {
                 Logger.Fatal(e, "Exception while saving {0}, {1}, {2}, {3}", _tabIdentity, SelectedItem, e, e.StackTrace);
-                throw;
+                await DialogCoordinator.ShowMessageAsync(this, "Failed to save", "Failed to save due to exception: " + e.Message);
+                return false;
             }
         }
 
-        protected override bool MayDelete(out string details)
+        protected override void PerformSave(SaveMessage message)
         {
-            details = null;
-            return true;
         }
 
-        protected override void PerformDelete()
+        protected override async Task<bool> PerformDelete()
         {
             try
             {
                 SelectedItem.Status = JobStatus.Cancelled;
-                PerformSave(SaveMessage.Save);
+                var saved = await ActuallySave();
+                if (!saved)
+                    SelectedItem.ResetStatus();
+                return saved;
             }
             catch (Exception e)
             {

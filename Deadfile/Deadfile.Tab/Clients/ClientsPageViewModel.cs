@@ -8,7 +8,9 @@ using Deadfile.Entity;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
+using Deadfile.Model.Browser;
 using Deadfile.Model.Interfaces;
+using Deadfile.Model.Utils;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
 using MahApps.Metro.Controls.Dialogs;
@@ -155,44 +157,82 @@ namespace Deadfile.Tab.Clients
                  (!String.IsNullOrWhiteSpace(SelectedItem.EmailAddress));
         }
 
-        protected override void PerformSave(SaveMessage message)
+        private async Task<bool> ActuallySave()
         {
             try
             {
+                var carryOn = true;
+                if (SelectedItem.IsBeingDeleted() && SelectedItem.ClientId != ModelBase.NewModelId)
+                {
+                    // If the client has any active children, then throw up a dialog that says so.
+                    string firstActiveChildDetails = null;
+                    var firstActiveJob = _repository.GetBrowserJobsForClient(BrowserMode.Client, false, SelectedItem.ClientId).FirstOrDefault();
+                    if (firstActiveJob == null)
+                    {
+                        var firstActiveInvoice = _repository.GetFirstActiveInvoiceForClient(SelectedItem.ClientId);
+                        if (firstActiveInvoice != null)
+                            firstActiveChildDetails = $"Invoice: ({CompanyUtils.GetShortName(firstActiveInvoice.Company)}) {firstActiveInvoice.InvoiceReference}";
+                    }
+                    else
+                    {
+                        firstActiveChildDetails = "Job: " + firstActiveJob.FullAddress;
+                    }
+
+                    // Raise a dialog if necessary to prevent deletion of entities with active children.
+                    var result = MessageDialogResult.Affirmative;
+                    if (firstActiveChildDetails != null)
+                    {
+                        result =
+                            await
+                                DialogCoordinator.ShowMessageAsync(this, "Delete Client with Active children?",
+                                    "This client (" + SelectedItem.FullName + ") has active children. For example: " + firstActiveChildDetails +
+                                    ". Deleting will leave things in an inconsistent state? Are you sure?",
+                                    MessageDialogStyle.AffirmativeAndNegative);
+                    }
+
+                    // Now the normal dialog for deleting.
+                    if (result == MessageDialogResult.Affirmative)
+                    {
+                        result =
+                            await
+                                DialogCoordinator.ShowMessageAsync(this, "Delete " + SelectedItem.FullName + "?",
+                                    "Are you sure you want to delete this client?",
+                                    MessageDialogStyle.AffirmativeAndNegative);
+                    }
+
+                    carryOn = result == MessageDialogResult.Affirmative;
+                }
+
                 // For a new client this will also set the ClientId.
-                _repository.SaveClient(SelectedItem);
+                if (carryOn)
+                    _repository.SaveClient(SelectedItem);
+                return carryOn;
             }
             catch (Exception e)
             {
                 Logger.Fatal(e, "Exception while saving {0}, {1}, {2}, {3}", _tabIdentity, SelectedItem, e, e.StackTrace);
-                throw;
+                await DialogCoordinator.ShowMessageAsync(this, "Failed to save", "Failed to save due to exception: " + e.Message);
+                return false;
             }
         }
 
-        protected override bool MayDelete(out string details)
+        protected override async void PerformSave(SaveMessage message)
         {
-            details = null;
-            return true;
+            await ActuallySave();
         }
 
-        protected override void PerformDelete()
+        protected override async Task<bool> PerformDelete()
         {
-            try
+            SelectedItem.Status = ClientStatus.Inactive;
+            var saved = await ActuallySave();
+            if (!saved)
             {
-                SelectedItem.Status = ClientStatus.Inactive;
-                PerformSave(SaveMessage.Save);
+                SelectedItem.ResetStatus();
             }
-            catch (Exception e)
-            {
-                Logger.Fatal(e, "Exception while deleting {0}, {1}, {2}, {3}", _tabIdentity, SelectedItem, e, e.StackTrace);
-                throw;
-            }
+            return saved;
         }
 
-        public Experience Experience
-        {
-            get { return Experience.Clients; }
-        }
+        public Experience Experience => Experience.Clients;
 
         public bool ShowActionsPad { get; } = true;
     }

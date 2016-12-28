@@ -99,6 +99,11 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
+        public InvoiceModel GetFirstActiveInvoiceForClient(int clientId)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveClient(ClientModel selectedClient)
         {
             throw new NotImplementedException();

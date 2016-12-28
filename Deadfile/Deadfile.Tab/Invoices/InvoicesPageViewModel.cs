@@ -240,12 +240,32 @@ namespace Deadfile.Tab.Invoices
             get { return Editable && SelectedItem.CreationState == InvoiceCreationState.DefineInvoice; }
         }
 
-        protected override void PerformSave(SaveMessage message)
+        private async Task<bool> PerformSave()
+        {
+            var actuallySave = true;
+
+            // Raise a dialog if being deleted.
+            if (SelectedItem.IsBeingDeleted())
+            {
+                var result =
+                    await
+                        DialogCoordinator.ShowMessageAsync(this,
+                            "Are you sure?",
+                            $"Do you want to delete ({CompanyUtils.GetShortName(SelectedItem.Company)}) invoice {SelectedItem.InvoiceReference}?",
+                            MessageDialogStyle.AffirmativeAndNegative);
+                actuallySave = result == MessageDialogResult.Affirmative;
+            }
+            if (actuallySave)
+                _repository.SaveInvoice(SelectedItem, Jobs.Cast<BillableJob>());
+            return actuallySave;
+        }
+
+        protected override async void PerformSave(SaveMessage message)
         {
             try
             {
-                _repository.SaveInvoice(SelectedItem, Jobs.Cast<BillableJob>());
-                if (message == SaveMessage.SaveAndPrint)
+                var saved = await PerformSave();
+                if (saved && message == SaveMessage.SaveAndPrint)
                 {
                     PerformPrint(PrintMessage.Print);
                 }
@@ -257,12 +277,6 @@ namespace Deadfile.Tab.Invoices
             }
         }
 
-        protected override bool MayDelete(out string details)
-        {
-            details = null;
-            return true;
-        }
-
         private void PerformPrint(PrintMessage print)
         {
             var invoiceGenerator = new CompanySwitchingInvoiceGenerator();
@@ -270,12 +284,15 @@ namespace Deadfile.Tab.Invoices
             _printService.PrintDocument(fixedDocument);
         }
 
-        protected override void PerformDelete()
+        protected override async Task<bool> PerformDelete()
         {
             try
             {
                 SelectedItem.Status = InvoiceStatus.Cancelled;
-                PerformSave(SaveMessage.Save);
+                var saved = await PerformSave();
+                if (!saved)
+                    SelectedItem.ResetStatus();
+                return saved;
             }
             catch (Exception e)
             {

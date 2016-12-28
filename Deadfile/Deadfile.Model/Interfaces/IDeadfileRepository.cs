@@ -120,6 +120,13 @@ namespace Deadfile.Model.Interfaces
         InvoiceModel GetInvoiceById(int invoiceId);
 
         /// <summary>
+        /// Should rarely return something - used to detect if deletion of a client should be blocked because the client still has an unpaid invoice outstanding.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <returns></returns>
+        InvoiceModel GetFirstActiveInvoiceForClient(int clientId);
+
+        /// <summary>
         /// Save changes to a client (or create a new one).
         /// </summary>
         /// <param name="clientModel"></param>

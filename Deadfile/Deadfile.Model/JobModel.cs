@@ -85,15 +85,22 @@ namespace Deadfile.Model
             set { SetProperty(ref _addressPostCode, value); }
         }
 
+        private JobStatus? _initialStatus = null;
         private JobStatus _status;
         public JobStatus Status
         {
-            get { return _status;}
+            get { return _status; }
             set
             {
+                if (_initialStatus == null) _initialStatus = value;
                 if (SetProperty(ref _status, value))
                     OnPropertyChanged(nameof(StateIsActive));
             }
+        }
+
+        public bool IsBeingDeleted()
+        {
+            return (_initialStatus == JobStatus.Active) && (_status == JobStatus.Cancelled);
         }
 
         private string _notes;
@@ -124,5 +131,15 @@ namespace Deadfile.Model
         }
 
         public override bool StateIsActive => Status == JobStatus.Active;
+
+        public void ResetStatus()
+        {
+            Status = _initialStatus ?? JobStatus.Active;
+        }
+
+        public bool IsBeingCompleted()
+        {
+            return (_initialStatus == JobStatus.Active) && (_status == JobStatus.Completed);
+        }
     }
 }

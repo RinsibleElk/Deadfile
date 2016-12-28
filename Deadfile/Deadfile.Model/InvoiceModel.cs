@@ -66,6 +66,7 @@ namespace Deadfile.Model
             }
         }
 
+        private InvoiceStatus? _initialStatus = null;
         private InvoiceStatus _status;
         [Required(ErrorMessage = "The Invoice requires a Status.")]
         public InvoiceStatus Status
@@ -73,6 +74,7 @@ namespace Deadfile.Model
             get { return _status; }
             set
             {
+                if (_initialStatus == null) _initialStatus = value;
                 // revalidate the invoice reference
                 if (SetProperty(ref _status, value))
                 {
@@ -80,6 +82,12 @@ namespace Deadfile.Model
                     OnPropertyChanged(nameof(StateIsActive));
                 }
             }
+        }
+
+        public bool IsBeingDeleted()
+        {
+            return _initialStatus != null && _initialStatus.Value == InvoiceStatus.Created &&
+                   _status == InvoiceStatus.Cancelled;
         }
 
         private int _invoiceReference = 0;
@@ -293,5 +301,10 @@ namespace Deadfile.Model
         }
 
         public override bool StateIsActive => Status == InvoiceStatus.Created;
+
+        public void ResetStatus()
+        {
+            Status = _initialStatus ?? InvoiceStatus.Created;
+        }
     }
 }
