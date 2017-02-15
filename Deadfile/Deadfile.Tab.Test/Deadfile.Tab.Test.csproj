@@ -117,6 +117,10 @@
       <Project>{0e3750d8-a06c-4b2b-b151-c687281d14bd}</Project>
       <Name>Deadfile.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Deadfile.Entity\Deadfile.Entity.csproj">
+      <Project>{C43DA0CA-BD37-4109-A581-695B9080B74C}</Project>
+      <Name>Deadfile.Entity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Deadfile.Infrastructure\Deadfile.Infrastructure.csproj">
       <Project>{cd07d8ad-c1d6-4c0c-acb5-aefd73173387}</Project>
       <Name>Deadfile.Infrastructure</Name>

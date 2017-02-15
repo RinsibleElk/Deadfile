@@ -68,6 +68,22 @@
             </StackPanel>
         </DataTemplate>
     </controls:MetroWindow.TitleTemplate>
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout x:Name="SettingsFlyout"
+                             Header="Settings"
+                             Position="Right"
+                             Width="500">
+            </controls:Flyout>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <ToggleButton Content="Settings"
+                          IsChecked="{Binding ElementName=SettingsFlyout, Path=IsOpen}"
+                          Cursor="Hand" />
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
     <DockPanel>
         <DockPanel.Resources>
             <converters:SwitchConverter x:Key="ExperienceToImage">

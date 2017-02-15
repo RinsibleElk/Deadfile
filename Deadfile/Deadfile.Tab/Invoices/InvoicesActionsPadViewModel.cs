@@ -54,7 +54,7 @@ namespace Deadfile.Tab.Invoices
 
         protected override void CanEditItemChanged(bool canEdit)
         {
-            base.CanSaveItemChanged(canEdit);
+            base.CanEditItemChanged(canEdit);
             NotifyOfPropertyChange(() => CanPrintItem);
         }
 
