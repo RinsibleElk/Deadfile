@@ -48,7 +48,7 @@ namespace Deadfile.Tab.Test
             public readonly SubscriptionToken UndoEventSubscriptionToken = new SubscriptionToken((a) => { });
             public readonly SubscriptionToken DeleteEventSubscriptionToken = new SubscriptionToken((a) => { });
 
-            public readonly Mock<IDialogCoordinator> DialogCoordinatorMock = new Mock<IDialogCoordinator>();
+            public readonly Mock<IDeadfileDialogCoordinator> DialogCoordinatorMock = new Mock<IDeadfileDialogCoordinator>();
 
             private readonly bool _useRealEvents;
 

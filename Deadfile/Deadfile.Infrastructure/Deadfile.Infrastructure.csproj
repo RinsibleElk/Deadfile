@@ -90,6 +90,7 @@
     <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\SwitchConverter.cs" />
     <Compile Include="DesignTime\DesignTimeResourceDictionary.cs" />
+    <Compile Include="Interfaces\IDeadfileDialogCoordinator.cs" />
     <Compile Include="Interfaces\IDeadfileDispatcherTimer.cs" />
     <Compile Include="Interfaces\IDeadfileDispatcherTimerService.cs" />
     <Compile Include="Interfaces\IJournaled.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Interfaces\NavigationContext.cs" />
     <Compile Include="Services\DeadfileDeadfileDispatcherTimer.cs" />
     <Compile Include="Services\DeadfileDeadfileDispatcherTimerService.cs" />
+    <Compile Include="Services\DeadfileDialogCoordinator.cs" />
     <Compile Include="Services\NavigationContainer.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

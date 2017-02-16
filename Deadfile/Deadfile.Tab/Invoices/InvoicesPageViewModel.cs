@@ -43,7 +43,7 @@ namespace Deadfile.Tab.Invoices
             IPrintService printService,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator,
-            IDialogCoordinator dialogCoordinator) : base(tabIdentity, eventAggregator, dialogCoordinator, new ParentUndoTracker<InvoiceModel, InvoiceItemModel>())
+            IDeadfileDialogCoordinator dialogCoordinator) : base(tabIdentity, eventAggregator, dialogCoordinator, new ParentUndoTracker<InvoiceModel, InvoiceItemModel>())
         {
             _tabIdentity = tabIdentity;
             _printService = printService;
@@ -249,10 +249,9 @@ namespace Deadfile.Tab.Invoices
             {
                 var result =
                     await
-                        DialogCoordinator.ShowMessageAsync(this,
+                        DialogCoordinator.ConfirmDeleteAsync(this,
                             "Are you sure?",
-                            $"Do you want to delete ({CompanyUtils.GetShortName(SelectedItem.Company)}) invoice {SelectedItem.InvoiceReference}?",
-                            MessageDialogStyle.AffirmativeAndNegative);
+                            $"Do you want to delete ({CompanyUtils.GetShortName(SelectedItem.Company)}) invoice {SelectedItem.InvoiceReference}?");
                 actuallySave = result == MessageDialogResult.Affirmative;
             }
             if (actuallySave)

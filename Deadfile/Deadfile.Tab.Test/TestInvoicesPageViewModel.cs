@@ -30,7 +30,7 @@ namespace Deadfile.Tab.Test
             public readonly Mock<IPrintService> PrintServiceMock = new Mock<IPrintService>();
             public readonly Mock<IEventAggregator> EventAggregatorMock = new Mock<IEventAggregator>();
             public readonly Mock<IDeadfileRepository> DeadfileRepositoryMock = new Mock<IDeadfileRepository>();
-            public readonly Mock<IDialogCoordinator> DialogCoordinatorMock = new Mock<IDialogCoordinator>();
+            public readonly Mock<IDeadfileDialogCoordinator> DialogCoordinatorMock = new Mock<IDeadfileDialogCoordinator>();
             public readonly Mock<LockedForEditingEvent> LockedForEditingMock = new Mock<LockedForEditingEvent>();
             public readonly Mock<CanUndoEvent> CanUndoEventMock = new Mock<CanUndoEvent>();
             public readonly Mock<DisplayNameEvent> DisplayNameEventMock = new Mock<DisplayNameEvent>();

@@ -39,7 +39,7 @@ namespace Deadfile.Tab.Jobs
             INavigationService navigationService,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator,
-            IDialogCoordinator dialogCoordinator) : base(tabIdentity, eventAggregator, dialogCoordinator, new UndoTracker<JobModel>())
+            IDeadfileDialogCoordinator dialogCoordinator) : base(tabIdentity, eventAggregator, dialogCoordinator, new UndoTracker<JobModel>())
         {
             _tabIdentity = tabIdentity;
             _navigationService = navigationService;
@@ -148,11 +148,10 @@ namespace Deadfile.Tab.Jobs
                     {
                         var result =
                             await
-                                DialogCoordinator.ShowMessageAsync(this,
+                                DialogCoordinator.ConfirmDeleteAsync(this,
                                     (isBeingCompleted ? "Complete" : "Delete") + " job with active children?",
                                     "The job " + SelectedItem.AddressFirstLine + " has active children - for example " +
-                                    activeChildDetails + ". Are you sure you want to proceed?",
-                                    MessageDialogStyle.AffirmativeAndNegative);
+                                    activeChildDetails + ". Are you sure you want to proceed?");
                         actuallySave = result == MessageDialogResult.Affirmative;
                     }
                 }
@@ -162,10 +161,9 @@ namespace Deadfile.Tab.Jobs
                 {
                     var result =
                         await
-                            DialogCoordinator.ShowMessageAsync(this,
+                            DialogCoordinator.ConfirmDeleteAsync(this,
                                 "Are you sure?",
-                                "Do you want to delete " + SelectedItem.AddressFirstLine + "?",
-                                MessageDialogStyle.AffirmativeAndNegative);
+                                "Do you want to delete " + SelectedItem.AddressFirstLine + "?");
                     actuallySave = result == MessageDialogResult.Affirmative;
                 }
 

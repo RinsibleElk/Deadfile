@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
+using Deadfile.Entity;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
@@ -35,6 +37,7 @@ namespace Deadfile.Tab.Test
             public readonly CanSaveEvent CanSaveEvent = new CanSaveEvent();
             public readonly SaveEvent SaveEvent = new SaveEvent();
             public readonly DiscardChangesEvent DiscardChangesEvent = new DiscardChangesEvent();
+            public readonly RefreshBrowserEvent RefreshBrowserEvent = new RefreshBrowserEvent();
 
             public readonly Mock<UndoEvent> UndoEventMock = new Mock<UndoEvent>();
             public readonly Mock<DeleteEvent> DeleteEventMock = new Mock<DeleteEvent>();
@@ -48,7 +51,7 @@ namespace Deadfile.Tab.Test
             public readonly SubscriptionToken UndoEventSubscriptionToken = new SubscriptionToken((a) => { });
             public readonly SubscriptionToken DeleteEventSubscriptionToken = new SubscriptionToken((a) => { });
 
-            public readonly Mock<IDialogCoordinator> DialogCoordinatorMock = new Mock<IDialogCoordinator>();
+            public readonly Mock<IDeadfileDialogCoordinator> DialogCoordinatorMock = new Mock<IDeadfileDialogCoordinator>();
 
             private readonly bool _useRealEvents;
 
@@ -198,6 +201,23 @@ namespace Deadfile.Tab.Test
                 EditActionEvent.Publish(EditActionMessage.StartEditing);
             }
 
+            public void DeleteClient(MessageDialogResult dialogResult)
+            {
+                Assert.True(ViewModel.CanDelete);
+                DialogCoordinatorMock
+                    .Setup((dc) => dc.ConfirmDeleteAsync(ViewModel, It.IsAny<string>(), It.IsAny<string>()))
+                    .Returns(Task.FromResult(dialogResult))
+                    .Verifiable();
+                if (dialogResult == MessageDialogResult.Affirmative)
+                {
+                    EventAggregatorMock
+                        .Setup((ea) => ea.GetEvent<RefreshBrowserEvent>())
+                        .Returns(RefreshBrowserEvent)
+                        .Verifiable();
+                }
+                DeleteEvent.Publish(DeleteMessage.Delete);
+            }
+
             public void VerifyAll()
             {
                 EventAggregatorMock.VerifyAll();
@@ -310,6 +330,46 @@ namespace Deadfile.Tab.Test
                     .Setup((uns) => uns.SendEmail(client.EmailAddress))
                     .Verifiable();
                 host.ViewModel.EmailClient();
+            }
+        }
+
+        [Fact]
+        public void TestDeleteExistingClient_UserSaysYes()
+        {
+            using (var host = new Host(true))
+            {
+                Assert.False(host.ViewModel.CanDelete);
+                var client = new ClientModel
+                {
+                    ClientId = 1,
+                    AddressFirstLine = "1 Yemen Road",
+                    LastName = "Johnson",
+                    PhoneNumber1 = "07544454514",
+                    EmailAddress = "john.johnson@yahoo.co.uk",
+                    Status = ClientStatus.Active
+                };
+                host.NavigateTo(client);
+                host.DeleteClient(MessageDialogResult.Affirmative);
+            }
+        }
+
+        [Fact]
+        public void TestDeleteExistingClient_UserSaysNo()
+        {
+            using (var host = new Host(true))
+            {
+                Assert.False(host.ViewModel.CanDelete);
+                var client = new ClientModel
+                {
+                    ClientId = 1,
+                    AddressFirstLine = "1 Yemen Road",
+                    LastName = "Johnson",
+                    PhoneNumber1 = "07544454514",
+                    EmailAddress = "john.johnson@yahoo.co.uk",
+                    Status = ClientStatus.Active
+                };
+                host.NavigateTo(client);
+                host.DeleteClient(MessageDialogResult.Negative);
             }
         }
 

@@ -28,7 +28,7 @@ namespace Deadfile.Tab.Clients
         public ClientsPageViewModel(TabIdentity tabIdentity,
             IEventAggregator eventAggregator,
             IDeadfileRepository repository,
-            IDialogCoordinator dialogCoordinator,
+            IDeadfileDialogCoordinator dialogCoordinator,
             IUrlNavigationService urlNavigationService) : base(tabIdentity, eventAggregator, dialogCoordinator, new UndoTracker<ClientModel>())
         {
             _tabIdentity = tabIdentity;
@@ -184,10 +184,9 @@ namespace Deadfile.Tab.Clients
                     {
                         result =
                             await
-                                DialogCoordinator.ShowMessageAsync(this, "Delete Client with Active children?",
-                                    "This client (" + SelectedItem.FullName + ") has active children. For example: " + firstActiveChildDetails +
-                                    ". Deleting will leave things in an inconsistent state? Are you sure?",
-                                    MessageDialogStyle.AffirmativeAndNegative);
+                                DialogCoordinator.ConfirmDeleteAsync(this, "Delete Client with Active children?",
+                                    "This client (" + SelectedItem.FullName + ") has active children. For example: " +
+                                    firstActiveChildDetails + ". Deleting will leave things in an inconsistent state? Are you sure?");
                     }
 
                     // Now the normal dialog for deleting.
@@ -195,9 +194,9 @@ namespace Deadfile.Tab.Clients
                     {
                         result =
                             await
-                                DialogCoordinator.ShowMessageAsync(this, "Delete " + SelectedItem.FullName + "?",
-                                    "Are you sure you want to delete this client?",
-                                    MessageDialogStyle.AffirmativeAndNegative);
+                                DialogCoordinator.ConfirmDeleteAsync(this,
+                                    "Delete " + SelectedItem.FullName + "?",
+                                    "Are you sure you want to delete this client?");
                     }
 
                     carryOn = result == MessageDialogResult.Affirmative;

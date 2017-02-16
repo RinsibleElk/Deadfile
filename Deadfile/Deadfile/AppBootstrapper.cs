@@ -77,6 +77,7 @@ namespace Deadfile
 
             // Dialog coordinator
             ContainerInstance.RegisterInstance(typeof(IDialogCoordinator), nameof(DialogCoordinator), DialogCoordinator.Instance);
+            ContainerInstance.RegisterSingleton(typeof(IDeadfileDialogCoordinator), nameof(DeadfileDialogCoordinator), typeof(DeadfileDialogCoordinator));
 
             // Print service
             ContainerInstance.RegisterSingleton(typeof(IPrintService), nameof(PrintService), typeof(PrintService));

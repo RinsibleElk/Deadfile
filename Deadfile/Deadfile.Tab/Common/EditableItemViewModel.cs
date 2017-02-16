@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Deadfile.Infrastructure.Services;
+using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
@@ -22,7 +22,7 @@ namespace Deadfile.Tab.Common
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly TabIdentity _tabIdentity;
         protected readonly IEventAggregator EventAggregator;
-        protected readonly IDialogCoordinator DialogCoordinator;
+        protected readonly IDeadfileDialogCoordinator DialogCoordinator;
 
         // This is the main undo tracker for the object under management. However, it may not be the active one responding to undo events from the nav-bar.
         protected readonly UndoTracker<T> UndoTracker;
@@ -39,7 +39,7 @@ namespace Deadfile.Tab.Common
 
         public EditableItemViewModel(TabIdentity tabIdentity,
             IEventAggregator eventAggregator,
-            IDialogCoordinator dialogCoordinator,
+            IDeadfileDialogCoordinator dialogCoordinator,
             UndoTracker<T> undoTracker)
         {
             _tabIdentity = tabIdentity;
