@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Deadfile.Entity;
@@ -38,6 +39,7 @@ namespace Deadfile.Tab.Test
             public readonly SaveEvent SaveEvent = new SaveEvent();
             public readonly DiscardChangesEvent DiscardChangesEvent = new DiscardChangesEvent();
             public readonly RefreshBrowserEvent RefreshBrowserEvent = new RefreshBrowserEvent();
+            public readonly AddNewJobEvent AddNewJobEvent = new AddNewJobEvent();
 
             public readonly Mock<UndoEvent> UndoEventMock = new Mock<UndoEvent>();
             public readonly Mock<DeleteEvent> DeleteEventMock = new Mock<DeleteEvent>();
@@ -334,6 +336,34 @@ namespace Deadfile.Tab.Test
         }
 
         [Fact]
+        public void TestExistingClient_AddNewJob_SendsAddNewJobEvent()
+        {
+            using (var host = new Host(true))
+            {
+                Assert.False(host.ViewModel.CanEdit);
+                var client = new ClientModel
+                {
+                    ClientId = 1,
+                    AddressFirstLine = "1 Yemen Road",
+                    LastName = "Johnson",
+                    PhoneNumber1 = "07544454514",
+                    EmailAddress = "john.johnson@yahoo.co.uk"
+                };
+                host.NavigateTo(client);
+                Assert.True(host.ViewModel.CanAddNewJob);
+                var li = new List<int>();
+                host.AddNewJobEvent.Subscribe((clientId) => li.Add(clientId));
+                host.EventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<AddNewJobEvent>())
+                    .Returns(host.AddNewJobEvent)
+                    .Verifiable();
+                host.ViewModel.AddNewJob();
+                Assert.Equal(1, li.Count);
+                Assert.Equal(client.ClientId, li[0]);
+            }
+        }
+
+        [Fact]
         public void TestDeleteExistingClient_UserSaysYes()
         {
             using (var host = new Host(true))
@@ -371,7 +401,6 @@ namespace Deadfile.Tab.Test
                 host.NavigateTo(client);
                 host.DeleteClient(MessageDialogResult.Negative);
             }
-
         }
 
         [Theory]
