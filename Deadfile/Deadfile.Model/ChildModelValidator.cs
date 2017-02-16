@@ -15,7 +15,7 @@ namespace Deadfile.Model
             foreach (var childModelBase in children)
             {
                 if (childModelBase.HasErrors)
-                    return new ValidationResult("A child has errors", new string[] { "Children" });
+                    return new ValidationResult("A child has errors", new string[] { nameof(ParentModelBase.Children) });
             }
             return ValidationResult.Success;
         }

@@ -8,16 +8,20 @@ using System.Threading.Tasks;
 
 namespace Deadfile.Model
 {
-    public abstract class ParentModelBase<T> : StateManagedModelBase where T : ChildModelBase
+    public abstract class ParentModelBase : StateManagedModelBase
     {
-        public abstract List<T> ChildrenList { get; set; }
         private ObservableCollection<ChildModelBase> _children = new ObservableCollection<ChildModelBase>();
         [CustomValidation(typeof(ChildModelValidator), nameof(ChildModelValidator.ChildrenAreValid))]
         public ObservableCollection<ChildModelBase> Children
         {
             get { return _children; }
-            private set { SetProperty(ref _children, value); }
+            protected set { SetProperty(ref _children, value); }
         }
+    }
+
+    public abstract class ParentModelBase<T> : ParentModelBase where T : ChildModelBase
+    {
+        public abstract List<T> ChildrenList { get; set; }
 
         public virtual void ChildrenUpdated()
         {
