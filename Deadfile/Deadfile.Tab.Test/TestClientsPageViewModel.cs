@@ -371,6 +371,7 @@ namespace Deadfile.Tab.Test
                 host.NavigateTo(client);
                 host.DeleteClient(MessageDialogResult.Negative);
             }
+
         }
 
         [Theory]
