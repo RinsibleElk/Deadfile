@@ -247,6 +247,8 @@ namespace Deadfile.Tab.Test
             using (var host = new Host(true))
             {
                 host.NavigateTo(new ClientModel());
+                Assert.Equal(Experience.Clients, host.ViewModel.Experience);
+                Assert.True(host.ViewModel.ShowActionsPad);
             }
         }
 
@@ -283,6 +285,31 @@ namespace Deadfile.Tab.Test
                 Assert.Equal(CanEditMessage.CanEdit, ce);
                 Assert.Equal(CanSaveMessage.CannotSave, cs);
                 Assert.True(host.ViewModel.CanEdit);
+                Assert.False(host.ViewModel.CanEmailClient);
+            }
+        }
+
+        [Fact]
+        public void TestEmailExistingClient()
+        {
+            using (var host = new Host(true))
+            {
+                Assert.False(host.ViewModel.CanEdit);
+                var client = new ClientModel
+                {
+                    ClientId = 1,
+                    AddressFirstLine = "1 Yemen Road",
+                    LastName = "Johnson",
+                    PhoneNumber1 = "07544454514",
+                    EmailAddress = "john.johnson@yahoo.co.uk"
+                };
+                host.NavigateTo(client);
+                Assert.True(host.ViewModel.CanEdit);
+                Assert.True(host.ViewModel.CanEmailClient);
+                host.UrlNavigationServiceMock
+                    .Setup((uns) => uns.SendEmail(client.EmailAddress))
+                    .Verifiable();
+                host.ViewModel.EmailClient();
             }
         }
 

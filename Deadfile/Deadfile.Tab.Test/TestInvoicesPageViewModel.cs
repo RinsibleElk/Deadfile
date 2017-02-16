@@ -342,10 +342,20 @@ namespace Deadfile.Tab.Test
                 Assert.Equal(1, host.ViewModel.SelectedItem.ChildrenList.Count);
                 Assert.True(host.ViewModel.InvoiceEditable);
                 host.ViewModel.SelectedItem.Description = "Hello world";
-                host.ViewModel.SelectedItem.ChildrenList[0].Description = "Some description";
                 host.ViewModel.SelectedItem.Project = "Various";
+                // Until the child is given a description, cannot save.
+                Assert.Equal(1, host.ViewModel.Errors.Count);
+                Assert.False(host.ViewModel.CanSave);
+
+                // Should receive a message saying that we can save when no errors.
+                var canSaveMessages = new List<CanSaveMessage>();
+                host.CanSaveEvent.Subscribe((message) => canSaveMessages.Add(message));
+                host.ViewModel.SelectedItem.ChildrenList[0].Description = "Some description";
+                // Nooooow we can save.
                 Assert.Equal(0, host.ViewModel.Errors.Count);
                 Assert.True(host.ViewModel.CanSave);
+                Assert.Equal(1, canSaveMessages.Count);
+                Assert.Equal(CanSaveMessage.CanSave, canSaveMessages[0]);
             }
         }
 
