@@ -98,6 +98,7 @@
     <Compile Include="Browser\BrowserSettings.cs" />
     <Compile Include="Browser\BrowserSort.cs" />
     <Compile Include="ChildModelBase.cs" />
+    <Compile Include="ChildModelValidator.cs" />
     <Compile Include="ClientModel.cs" />
     <Compile Include="DeadfileRepository.cs" />
     <Compile Include="DesignTime\DeadfileDesignTimeRepository.cs" />

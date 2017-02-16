@@ -274,9 +274,13 @@ namespace Deadfile.Model
             {
                 child.PropertyChanged -= ChildPropertyChanged;
                 child.PropertyChanged += ChildPropertyChanged;
+                child.RefreshAllErrors();
             }
 
             RecalculateNetAmount();
+
+            ValidateProperty(nameof(Children), Children);
+            RefreshAllErrors();
         }
 
         private void RecalculateNetAmount()
@@ -298,6 +302,9 @@ namespace Deadfile.Model
             {
                 RecalculateNetAmount();
             }
+
+            ValidateProperty(nameof(Children), Children);
+            RefreshAllErrors();
         }
 
         public override bool StateIsActive => Status == InvoiceStatus.Created;
