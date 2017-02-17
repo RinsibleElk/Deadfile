@@ -14,7 +14,7 @@ using LogManager = NLog.LogManager;
 
 namespace Deadfile.Tab.Tab
 {
-    public class TabViewModel : Screen, ITabViewModel
+    public sealed class TabViewModel : Screen, ITabViewModel
     {
         private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly TabIdentity _tabIdentity;
@@ -31,9 +31,7 @@ namespace Deadfile.Tab.Tab
             _tabIdentity = tabIdentity;
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
-            _navigateEventSubscriptionToken = eventAggregator.GetEvent<NavigateEvent>().Subscribe(NavigateAction);
-            _displayNameEventSubscriptionToken = eventAggregator.GetEvent<DisplayNameEvent>().Subscribe(DisplayNameChanged);
-            _addClientEventSubscriptionToken = eventAggregator.GetEvent<AddClientEvent>().Subscribe(AddClientAction);
+            DisplayName = "Home";
             navigationService.RequestNavigate(this, nameof(NavigationBar), "NavigationBar", null);
             navigationService.RequestNavigate(this, nameof(ContentArea), "HomePage", null);
             navigationService.RequestNavigate(this, nameof(BrowserPane), "BrowserPane", null);
@@ -142,12 +140,9 @@ namespace Deadfile.Tab.Tab
 
             base.OnActivate();
 
-            if (_navigateEventSubscriptionToken == null)
-                _navigateEventSubscriptionToken = _eventAggregator.GetEvent<NavigateEvent>().Subscribe(NavigateAction);
-            if (_displayNameEventSubscriptionToken == null)
-                _displayNameEventSubscriptionToken = _eventAggregator.GetEvent<DisplayNameEvent>().Subscribe(DisplayNameChanged);
-            if (_addClientEventSubscriptionToken == null)
-                _addClientEventSubscriptionToken = _eventAggregator.GetEvent<AddClientEvent>().Subscribe(AddClientAction);
+            _navigateEventSubscriptionToken = _eventAggregator.GetEvent<NavigateEvent>().Subscribe(NavigateAction);
+            _displayNameEventSubscriptionToken = _eventAggregator.GetEvent<DisplayNameEvent>().Subscribe(DisplayNameChanged);
+            _addClientEventSubscriptionToken = _eventAggregator.GetEvent<AddClientEvent>().Subscribe(AddClientAction);
 
             // Subscribe to selection changes.
             _navigateToSelectedClientSubscriptionToken = _eventAggregator.GetEvent<SelectedItemEvent>().Subscribe(NavigateToExperience);
@@ -157,6 +152,11 @@ namespace Deadfile.Tab.Tab
 
             // Subscribe to the clients page requesting navigation to create a new invoice for a selected client.
             _invoiceClientSubscriptionToken = _eventAggregator.GetEvent<InvoiceClientEvent>().Subscribe(InvoiceClientAction);
+        }
+
+        internal void TestOnlyOnActivate()
+        {
+            OnActivate();
         }
 
         private void AddNewJobAction(int clientId)
@@ -200,6 +200,11 @@ namespace Deadfile.Tab.Tab
                 _navigationService.RequestDeactivate(this, nameof(NavigationBar));
                 _navigationService.Teardown();
             }
+        }
+
+        internal void TestOnlyOnDeactivate(bool close)
+        {
+            OnDeactivate(close);
         }
 
         private SubscriptionToken _navigateToSelectedClientSubscriptionToken = null;

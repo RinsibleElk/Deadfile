@@ -111,6 +111,7 @@
     <Compile Include="TestInvoicesActionsPadViewModel.cs" />
     <Compile Include="TestInvoicesPageViewModel.cs" />
     <Compile Include="TestNavigationBarViewModel.cs" />
+    <Compile Include="TestTabViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Deadfile.Core\Deadfile.Core.csproj">
