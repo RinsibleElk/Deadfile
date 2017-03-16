@@ -103,7 +103,7 @@ namespace Deadfile.Model
 
         private string _invoiceReferenceString = "0";
         [CustomValidation(typeof(InvoiceModelInvoiceReferenceValidator), nameof(InvoiceModelInvoiceReferenceValidator.InvoiceReferenceIsValid)),
-         RegularExpression("[1-9][0-9]*", ErrorMessage = "The invoice reference should be a number")]
+         RegularExpression("[0-9]+", ErrorMessage = "The invoice reference should be a number")]
         public string InvoiceReferenceString
         {
             get { return _invoiceReferenceString; }

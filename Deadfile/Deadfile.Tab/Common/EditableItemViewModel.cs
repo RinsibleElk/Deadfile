@@ -94,7 +94,8 @@ namespace Deadfile.Tab.Common
                 NotifyOfPropertyChange(() => SelectedItem);
                 Editable = false;
                 Errors = new List<string>();
-                CanDelete = CanEdit = _selectedItem != null && _selectedItem.Id != ModelBase.NewModelId;
+                CanEdit = _selectedItem != null && _selectedItem.Id != ModelBase.NewModelId;
+                CanDelete = _selectedItem != null && _selectedItem.Id != ModelBase.NewModelId && _selectedItem.StateIsActive;
             }
         }
 
