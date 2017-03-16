@@ -7,13 +7,7 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Events
 {
-    enum CanDiscardMessage
-    {
-        CanDiscard,
-        CannotDiscard
-    }
-
-    class CanDiscardEvent : PubSubEvent<CanDiscardMessage>
+    class PageStateEvent<TPageState> : PubSubEvent<TPageState> where TPageState : struct
     {
     }
 }

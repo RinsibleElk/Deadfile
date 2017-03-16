@@ -39,9 +39,7 @@ namespace Deadfile.Tab.Test
             public readonly UndoEvent UndoEvent = new UndoEvent();
             public readonly DeleteEvent DeleteEvent = new DeleteEvent();
             public readonly EditActionEvent EditActionEvent = new EditActionEvent();
-            public readonly CanEditEvent CanEditEvent = new CanEditEvent();
-            public readonly CanDeleteEvent CanDeleteEvent = new CanDeleteEvent();
-            public readonly CanSaveEvent CanSaveEvent = new CanSaveEvent();
+            public readonly PageStateEvent<InvoicesPageState> PageStateEvent = new PageStateEvent<InvoicesPageState>();
             public readonly SaveEvent SaveEvent = new SaveEvent();
             public readonly PrintEvent PrintEvent = new PrintEvent();
             public readonly PaidEvent PaidEvent = new PaidEvent();
@@ -51,9 +49,7 @@ namespace Deadfile.Tab.Test
             public readonly Mock<UndoEvent> UndoEventMock = new Mock<UndoEvent>();
             public readonly Mock<DeleteEvent> DeleteEventMock = new Mock<DeleteEvent>();
             public readonly Mock<EditActionEvent> EditActionEventMock = new Mock<EditActionEvent>();
-            public readonly Mock<CanDeleteEvent> CanDeleteEventMock = new Mock<CanDeleteEvent>();
-            public readonly Mock<CanEditEvent> CanEditEventMock = new Mock<CanEditEvent>();
-            public readonly Mock<CanSaveEvent> CanSaveEventMock = new Mock<CanSaveEvent>();
+            public readonly Mock<PageStateEvent<InvoicesPageState>> PageStateEventMock = new Mock<PageStateEvent<InvoicesPageState>>();
             public readonly Mock<SaveEvent> SaveEventMock = new Mock<SaveEvent>();
             public readonly Mock<PrintEvent> PrintEventMock = new Mock<PrintEvent>();
             public readonly Mock<PaidEvent> PaidEventMock = new Mock<PaidEvent>();
@@ -131,23 +127,15 @@ namespace Deadfile.Tab.Test
                     if (_useRealEvents)
                     {
                         EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<CanEditEvent>())
-                            .Returns(CanEditEvent)
-                            .Verifiable();
-                        EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
-                            .Returns(CanDeleteEvent)
+                            .Setup((ea) => ea.GetEvent<PageStateEvent<InvoicesPageState>>())
+                            .Returns(PageStateEvent)
                             .Verifiable();
                     }
                     else
                     {
                         EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<CanEditEvent>())
-                            .Returns(CanEditEventMock.Object)
-                            .Verifiable();
-                        EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
-                            .Returns(CanDeleteEventMock.Object)
+                            .Setup((ea) => ea.GetEvent< PageStateEvent<InvoicesPageState>>())
+                            .Returns(PageStateEventMock.Object)
                             .Verifiable();
                     }
                     DeadfileRepositoryMock
@@ -229,8 +217,8 @@ namespace Deadfile.Tab.Test
                         .Returns(DiscardChangesEvent)
                         .Verifiable();
                     EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<CanSaveEvent>())
-                        .Returns(CanSaveEvent)
+                        .Setup((ea) => ea.GetEvent<PageStateEvent<InvoicesPageState>>())
+                        .Returns(PageStateEvent)
                         .Verifiable();
                     EventAggregatorMock
                         .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
@@ -283,8 +271,8 @@ namespace Deadfile.Tab.Test
                     })
                     .Verifiable();
                 EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
-                    .Returns(CanDeleteEvent)
+                    .Setup((ea) => ea.GetEvent<PageStateEvent<InvoicesPageState>>())
+                    .Returns(PageStateEvent)
                     .Verifiable();
                 SaveEvent.Publish(SaveMessage.Save);
                 EditActionEvent.Publish(EditActionMessage.EndEditing);
@@ -348,14 +336,14 @@ namespace Deadfile.Tab.Test
                 Assert.False(host.ViewModel.CanSave);
 
                 // Should receive a message saying that we can save when no errors.
-                var canSaveMessages = new List<CanSaveMessage>();
-                host.CanSaveEvent.Subscribe((message) => canSaveMessages.Add(message));
+                var stateMessages = new List<InvoicesPageState>();
+                host.PageStateEvent.Subscribe((message) => stateMessages.Add(message));
                 host.ViewModel.SelectedItem.ChildrenList[0].Description = "Some description";
                 // Nooooow we can save.
                 Assert.Equal(0, host.ViewModel.Errors.Count);
                 Assert.True(host.ViewModel.CanSave);
-                Assert.Equal(1, canSaveMessages.Count);
-                Assert.Equal(CanSaveMessage.CanSave, canSaveMessages[0]);
+                Assert.Equal(1, stateMessages.Count);
+                Assert.True(stateMessages[0].HasFlag(InvoicesPageState.CanSave));
             }
         }
 
@@ -364,8 +352,8 @@ namespace Deadfile.Tab.Test
         {
             using (var host = new Host(true))
             {
-                var li = new List<CanSaveMessage>();
-                host.CanSaveEvent.Subscribe((message) => li.Add(message));
+                var li = new List<InvoicesPageState>();
+                host.PageStateEvent.Subscribe((message) => li.Add(message));
                 var billables = new List<BillableJob>();
                 billables.Add(MakeBillableJob1());
                 host.SetBillablesForClient(0, ModelBase.NewModelId, billables);
@@ -386,7 +374,7 @@ namespace Deadfile.Tab.Test
                 Assert.True(host.ViewModel.CanSave);
                 host.SaveAndEndEditing(65);
                 Assert.Equal(6, li.Count);
-                Assert.Equal(CanSaveMessage.CannotSave, li[5]);
+                Assert.False(li[5].HasFlag(InvoicesPageState.CanSave));
             }
         }
 

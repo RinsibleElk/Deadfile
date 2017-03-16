@@ -43,7 +43,7 @@ namespace Deadfile.Pdf
             page.Width = doc.DocumentPaginator.PageSize.Width;
             page.Height = doc.DocumentPaginator.PageSize.Height;
             var sideMargin = 30;
-            var verticalMargin = 60;
+            var verticalMargin = 30;
             page.Margin = new Thickness(sideMargin, verticalMargin, sideMargin, verticalMargin);
             var pageStackPanel = new StackPanel();
 
@@ -186,7 +186,7 @@ namespace Deadfile.Pdf
             // Itemised bit.
             var sideMarginForItemised = 20;
             var itemisedHeight = 210;
-            var marginAboveAndBelowItemised = 30;
+            var marginAboveAndBelowItemised = 60;
             var itemizedPropertiesStackPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
@@ -348,7 +348,7 @@ namespace Deadfile.Pdf
         {
             public PaulSamsonFieldTitleTextBlock(string text) : base()
             {
-                FontSize = 12;
+                FontSize = 13;
                 TextAlignment = TextAlignment.Left;
                 VerticalAlignment = VerticalAlignment.Top;
                 HorizontalAlignment = HorizontalAlignment.Left;
@@ -366,7 +366,7 @@ namespace Deadfile.Pdf
 
             public PaulSamsonFieldValueTextBlock(string text, bool isBold) : base()
             {
-                FontSize = 12;
+                FontSize = 13;
                 TextAlignment = TextAlignment.Left;
                 VerticalAlignment = VerticalAlignment.Top;
                 HorizontalAlignment = HorizontalAlignment.Left;
@@ -384,7 +384,7 @@ namespace Deadfile.Pdf
                 Text = text;
                 HorizontalAlignment = HorizontalAlignment.Center;
                 TextAlignment = TextAlignment.Center;
-                FontSize = 16;
+                FontSize = 17;
                 Foreground = PrimaryColorBrush;
                 FontWeight = FontWeights.Bold;
             }
@@ -394,7 +394,7 @@ namespace Deadfile.Pdf
         {
             public PaulSamsonTsAndCsTextBlock(string text) : base()
             {
-                FontSize = 11;
+                FontSize = 12;
                 TextAlignment = TextAlignment.Center;
                 HorizontalAlignment = HorizontalAlignment.Center;
                 Foreground = PrimaryColorBrush;
@@ -406,7 +406,7 @@ namespace Deadfile.Pdf
         {
             public PaulSamsonAddressTextBlock() : base()
             {
-                FontSize = 12;
+                FontSize = 13;
                 Foreground = PrimaryColorBrush;
                 FontWeight = FontWeights.Bold;
             }
@@ -416,7 +416,7 @@ namespace Deadfile.Pdf
         {
             public PaulSamsonTotalFieldTitleTextBlock(string text) : base(text)
             {
-                FontSize = 15;
+                FontSize = 16;
             }
         }
 
@@ -424,7 +424,7 @@ namespace Deadfile.Pdf
         {
             public PaulSamsonTotalFieldValueTextBlock(string text) : base(text, true)
             {
-                FontSize = 16;
+                FontSize = 17;
             }
         }
     }

@@ -11,51 +11,32 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Clients
 {
-    class ClientsActionsPadViewModel : ActionsPadViewModel, IClientsActionsPadViewModel
+    class ClientsActionsPadViewModel : ActionsPadViewModel<ClientsPageState>, IClientsActionsPadViewModel
     {
-        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-        private bool _canAddItem = true;
-        private bool _addItemIsVisible = true;
-
         public ClientsActionsPadViewModel(TabIdentity tabIdentity,
             IEventAggregator eventAggregator) : base(tabIdentity, eventAggregator)
         {
             AddItemCommand = new DelegateCommand(AddItem, () => CanAddItem);
         }
 
-        protected override void LockedForEditingAction(LockedForEditingMessage lockedForEditingMessage)
+        public bool CanAddItem => !PageState.HasFlag(ClientsPageState.UnderEdit);
+        public bool AddItemIsVisible => !PageState.HasFlag(ClientsPageState.UnderEdit);
+        public override bool CanSaveItem => PageState.HasFlag(ClientsPageState.CanSave);
+        public override bool SaveItemIsVisible => PageState.HasFlag(ClientsPageState.UnderEdit);
+        public override bool CanDeleteItem => PageState.HasFlag(ClientsPageState.CanDelete);
+        public override bool DeleteItemIsVisible => !PageState.HasFlag(ClientsPageState.UnderEdit);
+        public override bool CanEditItem => PageState.HasFlag(ClientsPageState.CanEdit);
+        public override bool EditItemIsVisible => !PageState.HasFlag(ClientsPageState.UnderEdit);
+        public override bool CanDiscardItem => PageState.HasFlag(ClientsPageState.CanDiscard);
+        public override bool DiscardItemIsVisible => PageState.HasFlag(ClientsPageState.UnderEdit);
+        protected override void PageStateChanged(ClientsPageState state)
         {
-            base.LockedForEditingAction(lockedForEditingMessage);
-
-            AddItemIsVisible = CanAddItem = !lockedForEditingMessage.IsLocked;
         }
 
         public void AddItem()
         {
-            Logger.Info("Event,AddClientEvent,Send,{0},{1}", TabIdentity.TabIndex, AddClientMessage.AddClient);
+            Logger.Info("Event|AddClientEvent|Send|{0}|{1}", TabIdentity.TabIndex, AddClientMessage.AddClient);
             EventAggregator.GetEvent<AddClientEvent>().Publish(AddClientMessage.AddClient);
-        }
-
-        public bool CanAddItem
-        {
-            get { return _canAddItem; }
-            set
-            {
-                if (value == _canAddItem) return;
-                _canAddItem = value;
-                NotifyOfPropertyChange(() => CanAddItem);
-            }
-        }
-
-        public bool AddItemIsVisible
-        {
-            get { return _addItemIsVisible; }
-            set
-            {
-                if (value == _addItemIsVisible) return;
-                _addItemIsVisible = value;
-                NotifyOfPropertyChange(() => AddItemIsVisible);
-            }
         }
 
         public ICommand AddItemCommand { get; }

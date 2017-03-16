@@ -30,18 +30,14 @@ namespace Deadfile.Tab.Test
             public readonly UndoEvent UndoEvent = new UndoEvent();
             public readonly DeleteEvent DeleteEvent = new DeleteEvent();
             public readonly EditActionEvent EditActionEvent = new EditActionEvent();
-            public readonly CanEditEvent CanEditEvent = new CanEditEvent();
-            public readonly CanDeleteEvent CanDeleteEvent = new CanDeleteEvent();
-            public readonly CanSaveEvent CanSaveEvent = new CanSaveEvent();
+            public readonly PageStateEvent<JobsPageState> PageStateEvent = new PageStateEvent<JobsPageState>();
             public readonly SaveEvent SaveEvent = new SaveEvent();
             public readonly DiscardChangesEvent DiscardChangesEvent = new DiscardChangesEvent();
 
             public readonly Mock<UndoEvent> UndoEventMock = new Mock<UndoEvent>();
             public readonly Mock<DeleteEvent> DeleteEventMock = new Mock<DeleteEvent>();
             public readonly Mock<EditActionEvent> EditActionEventMock = new Mock<EditActionEvent>();
-            public readonly Mock<CanDeleteEvent> CanDeleteEventMock = new Mock<CanDeleteEvent>();
-            public readonly Mock<CanEditEvent> CanEditEventMock = new Mock<CanEditEvent>();
-            public readonly Mock<CanSaveEvent> CanSaveEventMock = new Mock<CanSaveEvent>();
+            public readonly Mock<PageStateEvent<JobsPageState>> PageStateEventMock = new Mock<PageStateEvent<JobsPageState>>();
             public readonly Mock<SaveEvent> SaveEventMock = new Mock<SaveEvent>();
 
             public readonly SubscriptionToken EditActionEventSubscriptionToken = new SubscriptionToken((a) => { });
@@ -96,23 +92,15 @@ namespace Deadfile.Tab.Test
                     if (_useRealEvents)
                     {
                         EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<CanEditEvent>())
-                            .Returns(CanEditEvent)
-                            .Verifiable();
-                        EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
-                            .Returns(CanDeleteEvent)
+                            .Setup((ea) => ea.GetEvent<PageStateEvent<JobsPageState>>())
+                            .Returns(PageStateEvent)
                             .Verifiable();
                     }
                     else
                     {
                         EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<CanEditEvent>())
-                            .Returns(CanEditEventMock.Object)
-                            .Verifiable();
-                        EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
-                            .Returns(CanDeleteEventMock.Object)
+                            .Setup((ea) => ea.GetEvent<PageStateEvent<JobsPageState>>())
+                            .Returns(PageStateEventMock.Object)
                             .Verifiable();
                     }
                     DeadfileRepositoryMock
@@ -175,23 +163,15 @@ namespace Deadfile.Tab.Test
                 if (_useRealEvents)
                 {
                     EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<CanSaveEvent>())
-                        .Returns(CanSaveEvent)
-                        .Verifiable();
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
-                        .Returns(CanDeleteEvent)
+                        .Setup((ea) => ea.GetEvent<PageStateEvent<JobsPageState>>())
+                        .Returns(PageStateEvent)
                         .Verifiable();
                 }
                 else
                 {
                     EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
-                        .Returns(CanDeleteEventMock.Object)
-                        .Verifiable();
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<CanSaveEvent>())
-                        .Returns(CanSaveEventMock.Object)
+                        .Setup((ea) => ea.GetEvent<PageStateEvent<JobsPageState>>())
+                        .Returns(PageStateEventMock.Object)
                         .Verifiable();
                 }
                 // only makes sense if using real events
@@ -216,16 +196,11 @@ namespace Deadfile.Tab.Test
                     UndoEventMock.VerifyAll();
                     DeleteEventMock.VerifyAll();
                     EditActionEventMock.VerifyAll();
-                    CanEditEventMock.VerifyAll();
-                    CanDeleteEventMock.VerifyAll();
-                    CanSaveEventMock.VerifyAll();
+                    PageStateEventMock.VerifyAll();
                     SaveEventMock.VerifyAll();
                     UndoEventMock.Reset();
                     DeleteEventMock.Reset();
                     EditActionEventMock.Reset();
-                    CanEditEventMock.Reset();
-                    CanDeleteEventMock.Reset();
-                    CanSaveEventMock.Reset();
                     SaveEventMock.Reset();
                 }
             }

@@ -53,7 +53,7 @@ namespace Deadfile.Tab.Reports.CurrentApplications
         private void PerformNavigateToJob(CurrentApplicationModel applicationModel)
         {
             var packet = new SelectedItemPacket(BrowserModelType.Job, applicationModel.ClientId, applicationModel.JobId);
-            Logger.Info("Event,SelectedItemEvent,Send,{0},{1}", _tabIdentity, packet);
+            Logger.Info("Event|SelectedItemEvent|Send|{0}|{1}", _tabIdentity, packet);
             EventAggregator.GetEvent<SelectedItemEvent>()
                 .Publish(packet);
         }

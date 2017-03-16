@@ -18,9 +18,8 @@ using IEventAggregator = Prism.Events.IEventAggregator;
 
 namespace Deadfile.Tab.Jobs
 {
-    class JobsPageViewModel : EditableItemViewModel<ClientAndJobNavigationKey, JobModel>, IJobsPageViewModel
+    class JobsPageViewModel : EditableItemViewModel<ClientAndJobNavigationKey, JobModel, JobsPageState>, IJobsPageViewModel
     {
-        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly TabIdentity _tabIdentity;
         private readonly INavigationService _navigationService;
         private readonly IDeadfileRepository _repository;
@@ -46,6 +45,54 @@ namespace Deadfile.Tab.Jobs
             _repository = repository;
         }
 
+        internal override bool CanEdit
+        {
+            get { return State.HasFlag(JobsPageState.CanEdit); }
+            set
+            {
+                if (value)
+                    State = State | JobsPageState.CanEdit;
+                else
+                    State = State & ~JobsPageState.CanEdit;
+            }
+        }
+
+        internal override bool CanDelete
+        {
+            get { return State.HasFlag(JobsPageState.CanDelete); }
+            set
+            {
+                if (value)
+                    State = State | JobsPageState.CanDelete;
+                else
+                    State = State & ~JobsPageState.CanDelete;
+            }
+        }
+
+        internal override bool CanSave
+        {
+            get { return State.HasFlag(JobsPageState.CanSave); }
+            set
+            {
+                if (value)
+                    State = State | JobsPageState.CanSave;
+                else
+                    State = State & ~JobsPageState.CanSave;
+            }
+        }
+
+        internal override bool UnderEdit
+        {
+            get { return State.HasFlag(JobsPageState.UnderEdit); }
+            set
+            {
+                if (value)
+                    State = State | JobsPageState.UnderEdit;
+                else
+                    State = State & ~JobsPageState.UnderEdit;
+            }
+        }
+
         protected override JobModel GetModel(ClientAndJobNavigationKey clientAndJobNavigationKey)
         {
             JobModel jobModel;
@@ -66,7 +113,7 @@ namespace Deadfile.Tab.Jobs
                 else
                     DisplayName = jobModel.AddressFirstLine;
             }
-            Logger.Info("Event,DisplayNameEvent,Send,{0},{1}", _tabIdentity.TabIndex, DisplayName);
+            Logger.Info("Event|DisplayNameEvent|Send|{0}|{1}", _tabIdentity.TabIndex, DisplayName);
             EventAggregator.GetEvent<DisplayNameEvent>().Publish(DisplayName);
             return jobModel;
         }
@@ -86,6 +133,7 @@ namespace Deadfile.Tab.Jobs
             // These two are both used to prevent moving the selection around while the parent job is editable.
             _jobChildViewModel.ParentEditable = editable;
             ChildIsEditable = editable;
+            State = editable ? State | JobsPageState.CanDiscard : State & ~JobsPageState.CanDiscard;
         }
 
         private async Task<bool> ActuallySave()
@@ -215,8 +263,7 @@ namespace Deadfile.Tab.Jobs
             }
         }
 
-        public Experience Experience { get; } = Experience.Jobs;
-        public bool ShowActionsPad { get; } = true;
+        public override Experience Experience { get; } = Experience.Jobs;
 
         public List<JobChildExperience> JobChildren { get; } = AllJobChildExperiences;
 
@@ -250,9 +297,10 @@ namespace Deadfile.Tab.Jobs
 
                 ChildIsEditable = value;
 
-                var message = _jobChildIsEditable ? CanDiscardMessage.CannotDiscard : CanDiscardMessage.CanDiscard;
-                Logger.Info("Event,CanDiscardEvent,Send,{0},{1}", _tabIdentity, message);
-                EventAggregator.GetEvent<CanDiscardEvent>().Publish(message);
+                if (_jobChildIsEditable)
+                    State = State & ~JobsPageState.CanDiscard;
+                else
+                    State = State.HasFlag(JobsPageState.UnderEdit) ? State | JobsPageState.CanDiscard : State & ~JobsPageState.CanDiscard;
             }
         }
 

@@ -55,7 +55,7 @@ namespace Deadfile.Tab.Reports.UnbilledJobs
         private void PerformNavigateToClient(UnbilledJobModel jobModel)
         {
             var packet = new SelectedItemPacket(BrowserModelType.Client, ModelBase.NewModelId, jobModel.ClientId);
-            Logger.Info("Event,SelectedItemEvent,Send,{0},{1}", _tabIdentity, packet);
+            Logger.Info("Event|SelectedItemEvent|Send|{0}|{1}", _tabIdentity, packet);
             EventAggregator.GetEvent<SelectedItemEvent>()
                 .Publish(packet);
         }
@@ -63,7 +63,7 @@ namespace Deadfile.Tab.Reports.UnbilledJobs
         private void PerformNavigateToJob(UnbilledJobModel jobModel)
         {
             var packet = new SelectedItemPacket(BrowserModelType.Job, jobModel.ClientId, jobModel.JobId);
-            Logger.Info("Event,SelectedItemEvent,Send,{0},{1}", _tabIdentity, packet);
+            Logger.Info("Event|SelectedItemEvent|Send|{0}|{1}", _tabIdentity, packet);
             EventAggregator.GetEvent<SelectedItemEvent>()
                 .Publish(packet);
         }

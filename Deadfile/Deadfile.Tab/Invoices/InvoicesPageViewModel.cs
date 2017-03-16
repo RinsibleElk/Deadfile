@@ -32,9 +32,8 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Invoices
 {
-    class InvoicesPageViewModel : EditableItemViewModel<ClientAndInvoiceNavigationKey, InvoiceModel>, IInvoicesPageViewModel, IBillableModelContainer
+    class InvoicesPageViewModel : EditableItemViewModel<ClientAndInvoiceNavigationKey, InvoiceModel, InvoicesPageState>, IInvoicesPageViewModel, IBillableModelContainer
     {
-        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly TabIdentity _tabIdentity;
         private readonly IPrintService _printService;
         private readonly IDeadfileRepository _repository;
@@ -49,6 +48,54 @@ namespace Deadfile.Tab.Invoices
             _printService = printService;
             _repository = repository;
             AddItemCommand = new DelegateCommand(AddItemAction);
+        }
+
+        internal override bool CanEdit
+        {
+            get { return State.HasFlag(InvoicesPageState.CanEdit); }
+            set
+            {
+                if (value)
+                    State = State | InvoicesPageState.CanEdit;
+                else
+                    State = State & ~InvoicesPageState.CanEdit;
+            }
+        }
+
+        internal override bool CanDelete
+        {
+            get { return State.HasFlag(InvoicesPageState.CanDelete); }
+            set
+            {
+                if (value)
+                    State = State | InvoicesPageState.CanDelete;
+                else
+                    State = State & ~InvoicesPageState.CanDelete;
+            }
+        }
+
+        internal override bool CanSave
+        {
+            get { return State.HasFlag(InvoicesPageState.CanSave); }
+            set
+            {
+                if (value)
+                    State = State | InvoicesPageState.CanSave;
+                else
+                    State = State & ~InvoicesPageState.CanSave;
+            }
+        }
+
+        internal override bool UnderEdit
+        {
+            get { return State.HasFlag(InvoicesPageState.UnderEdit); }
+            set
+            {
+                if (value)
+                    State = State | InvoicesPageState.UnderEdit;
+                else
+                    State = State & ~InvoicesPageState.UnderEdit;
+            }
         }
 
         private void AddItemAction()
@@ -228,17 +275,12 @@ namespace Deadfile.Tab.Invoices
         {
             NotifyOfPropertyChange(nameof(CanSetBillableItems));
             NotifyOfPropertyChange(nameof(InvoiceEditable));
+            State = editable ? State | InvoicesPageState.CanDiscard : State & ~InvoicesPageState.CanDiscard;
         }
 
-        public bool CanSetBillableItems
-        {
-            get { return Editable && SelectedItem.CreationState == InvoiceCreationState.DefineBillables; }
-        }
+        public bool CanSetBillableItems => Editable && SelectedItem.CreationState == InvoiceCreationState.DefineBillables;
 
-        public bool InvoiceEditable
-        {
-            get { return Editable && SelectedItem.CreationState == InvoiceCreationState.DefineInvoice; }
-        }
+        public bool InvoiceEditable => Editable && SelectedItem.CreationState == InvoiceCreationState.DefineInvoice;
 
         private async Task<bool> PerformSave()
         {
@@ -302,8 +344,7 @@ namespace Deadfile.Tab.Invoices
         }
 
 
-        public Experience Experience { get; } = Experience.Invoices;
-        public bool ShowActionsPad { get; } = true;
+        public override Experience Experience { get; } = Experience.Invoices;
 
         private string _filterText = "";
         public string FilterText

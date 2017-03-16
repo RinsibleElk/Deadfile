@@ -17,10 +17,7 @@ namespace Deadfile.Tab.Test
             public readonly Mock<EditActionEvent> EditClientEventMock;
             public readonly ClientsActionsPadViewModel ViewModel;
             public readonly LockedForEditingEvent LockedForEditingEvent;
-            public readonly CanDiscardEvent CanDiscardEvent;
-            public readonly CanDeleteEvent CanDeleteEvent;
-            public readonly CanSaveEvent CanSaveEvent;
-            public readonly CanEditEvent CanEditEvent;
+            public readonly PageStateEvent<ClientsPageState> PageStateEvent;
             public Host()
             {
                 EventAggregatorMock = new Mock<IEventAggregator>();
@@ -31,29 +28,14 @@ namespace Deadfile.Tab.Test
                     .Verifiable();
                 ViewModel = new ClientsActionsPadViewModel(TabIdentity, EventAggregatorMock.Object);
                 LockedForEditingEvent = new LockedForEditingEvent();
-                CanSaveEvent = new CanSaveEvent();
-                CanDeleteEvent = new CanDeleteEvent();
-                CanDiscardEvent = new CanDiscardEvent();
-                CanEditEvent = new CanEditEvent();
+                PageStateEvent = new PageStateEvent<ClientsPageState>();
                 EventAggregatorMock
                     .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
                     .Returns(LockedForEditingEvent)
                     .Verifiable();
                 EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<CanSaveEvent>())
-                    .Returns(CanSaveEvent)
-                    .Verifiable();
-                EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
-                    .Returns(CanDeleteEvent)
-                    .Verifiable();
-                EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<CanDiscardEvent>())
-                    .Returns(CanDiscardEvent)
-                    .Verifiable();
-                EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<CanEditEvent>())
-                    .Returns(CanEditEvent)
+                    .Setup((ea) => ea.GetEvent<PageStateEvent<ClientsPageState>>())
+                    .Returns(PageStateEvent)
                     .Verifiable();
                 ViewModel.OnNavigatedTo(null);
             }
@@ -158,7 +140,7 @@ namespace Deadfile.Tab.Test
                     .Verifiable();
                 host.ViewModel.EditItem();
                 host.LockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = true});
-                host.CanSaveEvent.Publish(CanSaveMessage.CannotSave);
+//                host.PageStateEvent.Publish(CanSaveMessage.CannotSave);
 
                 // Checks.
                 Assert.True(host.ViewModel.SaveItemIsVisible);

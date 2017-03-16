@@ -55,7 +55,7 @@ namespace Deadfile.Tab.Reports.UnpaidInvoices
         private void PerformNavigateToClient(InvoiceModel invoiceModel)
         {
             var packet = new SelectedItemPacket(BrowserModelType.Client, ModelBase.NewModelId, invoiceModel.ClientId);
-            Logger.Info("Event,SelectedItemEvent,Send,{0},{1}", _tabIdentity, packet);
+            Logger.Info("Event|SelectedItemEvent|Send|{0}|{1}", _tabIdentity, packet);
             EventAggregator.GetEvent<SelectedItemEvent>()
                 .Publish(packet);
         }
@@ -63,7 +63,7 @@ namespace Deadfile.Tab.Reports.UnpaidInvoices
         private void PerformNavigateToInvoice(InvoiceModel invoiceModel)
         {
             var packet = new SelectedItemPacket(BrowserModelType.Invoice, invoiceModel.ClientId, invoiceModel.InvoiceId);
-            Logger.Info("Event,SelectedItemEvent,Send,{0},{1}", _tabIdentity, packet);
+            Logger.Info("Event|SelectedItemEvent|Send|{0}|{1}", _tabIdentity, packet);
             EventAggregator.GetEvent<SelectedItemEvent>()
                 .Publish(packet);
         }

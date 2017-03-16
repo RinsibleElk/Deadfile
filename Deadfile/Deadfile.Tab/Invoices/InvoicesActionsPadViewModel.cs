@@ -12,7 +12,7 @@ namespace Deadfile.Tab.Invoices
     /// <summary>
     /// Actions pad providing specific actions for the Invoices experience.
     /// </summary>
-    class InvoicesActionsPadViewModel : ActionsPadViewModel, IInvoicesActionsPadViewModel
+    class InvoicesActionsPadViewModel : ActionsPadViewModel<InvoicesPageState>, IInvoicesActionsPadViewModel
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private bool _canPaidItem = true;
@@ -32,37 +32,38 @@ namespace Deadfile.Tab.Invoices
             if (CanSaveItem)
             {
                 // Perform the save, and lock the item again.
-                Logger.Info("Event,SaveEvent,Send,{0},{1}", TabIdentity.TabIndex, SaveMessage.SaveAndPrint);
+                Logger.Info("Event|SaveEvent|Send|{0}|{1}", TabIdentity.TabIndex, SaveMessage.SaveAndPrint);
                 EventAggregator.GetEvent<SaveEvent>().Publish(SaveMessage.SaveAndPrint);
 
                 // Notify the other pages for the end of editing.
-                Logger.Info("Event,EditActionEvent,Send,{0},{1}", TabIdentity.TabIndex, EditActionMessage.EndEditing);
+                Logger.Info("Event|EditActionEvent|Send|{0}|{1}", TabIdentity.TabIndex, EditActionMessage.EndEditing);
                 EventAggregator.GetEvent<EditActionEvent>().Publish(EditActionMessage.EndEditing);
             }
             else
             {
-                Logger.Info("Event,PrintEvent,Send,{0},{1}", TabIdentity.TabIndex, PrintMessage.Print);
+                Logger.Info("Event|PrintEvent|Send|{0}|{1}", TabIdentity.TabIndex, PrintMessage.Print);
                 EventAggregator.GetEvent<PrintEvent>().Publish(PrintMessage.Print);
             }
         }
 
-        protected override void CanSaveItemChanged(bool canSave)
-        {
-            base.CanSaveItemChanged(canSave);
-            NotifyOfPropertyChange(() => CanPrintItem);
-        }
-
-        protected override void CanEditItemChanged(bool canEdit)
-        {
-            base.CanEditItemChanged(canEdit);
-            NotifyOfPropertyChange(() => CanPrintItem);
-        }
-
         public bool CanPrintItem => CanSaveItem || CanEditItem;
+
+        public override bool CanSaveItem => PageState.HasFlag(InvoicesPageState.CanSave);
+        public override bool SaveItemIsVisible => PageState.HasFlag(InvoicesPageState.UnderEdit);
+        public override bool CanDeleteItem => PageState.HasFlag(InvoicesPageState.CanDelete);
+        public override bool DeleteItemIsVisible => !PageState.HasFlag(InvoicesPageState.UnderEdit);
+        public override bool CanEditItem => PageState.HasFlag(InvoicesPageState.CanEdit);
+        public override bool EditItemIsVisible => !PageState.HasFlag(InvoicesPageState.UnderEdit);
+        public override bool CanDiscardItem => PageState.HasFlag(InvoicesPageState.CanDiscard);
+        public override bool DiscardItemIsVisible => PageState.HasFlag(InvoicesPageState.UnderEdit);
+        protected override void PageStateChanged(InvoicesPageState state)
+        {
+            NotifyOfPropertyChange(() => CanPrintItem);
+        }
 
         public void PaidItem()
         {
-            Logger.Info("Event,PaidEvent,Send,{0},{1}", TabIdentity.TabIndex, PaidMessage.Paid);
+            Logger.Info("Event|PaidEvent|Send|{0}|{1}", TabIdentity.TabIndex, PaidMessage.Paid);
             EventAggregator.GetEvent<PaidEvent>().Publish(PaidMessage.Paid);
         }
 

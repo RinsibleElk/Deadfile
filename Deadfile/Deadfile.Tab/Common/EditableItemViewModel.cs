@@ -17,15 +17,16 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Common
 {
-    public abstract class EditableItemViewModel<K, T> : ParameterisedViewModel<K>, IEditableItemViewModel<T> where T : StateManagedModelBase
+    public abstract class EditableItemViewModel<TKey, TModel, TState> : ParameterisedViewModel<TKey>, IEditableItemViewModel<TModel>, IPageViewModel
+        where TModel : StateManagedModelBase
+        where TState : struct
     {
-        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly TabIdentity _tabIdentity;
         protected readonly IEventAggregator EventAggregator;
         protected readonly IDeadfileDialogCoordinator DialogCoordinator;
 
         // This is the main undo tracker for the object under management. However, it may not be the active one responding to undo events from the nav-bar.
-        protected readonly UndoTracker<T> UndoTracker;
+        protected readonly UndoTracker<TModel> UndoTracker;
 
         // This is the "active" undo tracker. For the Jobs page, this could represent a billable item.
         private IUndoTracker _activeUndoTracker = null;
@@ -37,10 +38,10 @@ namespace Deadfile.Tab.Common
         private SubscriptionToken _handleUndoSubcriptionToken;
         private SubscriptionToken _discardChangesSubscriptionToken;
 
-        public EditableItemViewModel(TabIdentity tabIdentity,
+        protected EditableItemViewModel(TabIdentity tabIdentity,
             IEventAggregator eventAggregator,
             IDeadfileDialogCoordinator dialogCoordinator,
-            UndoTracker<T> undoTracker)
+            UndoTracker<TModel> undoTracker)
         {
             _tabIdentity = tabIdentity;
             EventAggregator = eventAggregator;
@@ -53,14 +54,14 @@ namespace Deadfile.Tab.Common
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        protected abstract T GetModel(K key);
+        protected abstract TModel GetModel(TKey key);
 
         /// <summary>
         /// Ask the specific implementation whether to edit on navigate.
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        protected abstract bool ShouldEditOnNavigate(K key);
+        protected abstract bool ShouldEditOnNavigate(TKey key);
 
         /// <summary>
         /// Respond to an event from the <see cref="NavigationBarViewModel"/>. This should only happen if an Undo or Redo is possible (marshalled to the
@@ -75,11 +76,11 @@ namespace Deadfile.Tab.Common
                 _activeUndoTracker.Redo();
         }
 
-        private T _selectedItem = null;
+        private TModel _selectedItem = null;
         /// <summary>
         /// The item selected in the <see cref="BrowserPaneViewModel"/>.
         /// </summary>
-        public T SelectedItem
+        public TModel SelectedItem
         {
             get { return _selectedItem; }
             set
@@ -99,16 +100,21 @@ namespace Deadfile.Tab.Common
             }
         }
 
-        private bool _canEdit = false;
-        public bool CanEdit
+        internal abstract bool CanEdit { get; set; }
+        internal abstract bool CanDelete { get; set; }
+        internal abstract bool CanSave { get; set; }
+        internal abstract bool UnderEdit { get; set; }
+
+        private TState _state = new TState();
+        public TState State
         {
-            get { return _canEdit; }
+            get { return _state; }
             set
             {
-                if (_canEdit == value) return;
-                _canEdit = value;
-                NotifyOfPropertyChange(() => CanEdit);
-                EventAggregator.GetEvent<CanEditEvent>().Publish(_canEdit ? CanEditMessage.CanEdit : CanEditMessage.CannotEdit);
+                if (_state.Equals(value)) return;
+                _state = value;
+                NotifyOfPropertyChange(() => State);
+                EventAggregator.GetEvent<PageStateEvent<TState>>().Publish(_state);
             }
         }
 
@@ -122,38 +128,6 @@ namespace Deadfile.Tab.Common
                 _errors = value;
                 NotifyOfPropertyChange(() => Errors);
                 CanSave = Editable && _errors.Count == 0;
-            }
-        }
-
-        private bool _canSave = false;
-        public bool CanSave
-        {
-            get { return _canSave; }
-            set
-            {
-                if (_canSave == value) return;
-                _canSave = value;
-                NotifyOfPropertyChange(() => CanSave);
-
-                var message = _canSave ? CanSaveMessage.CanSave : CanSaveMessage.CannotSave;
-                Logger.Info("Event,CanSaveEvent,Send,{0},{1}", _tabIdentity, message);
-                EventAggregator.GetEvent<CanSaveEvent>().Publish(message);
-            }
-        }
-
-        private bool _canDelete = false;
-        public bool CanDelete
-        {
-            get { return _canDelete; }
-            set
-            {
-                if (_canDelete == value) return;
-                _canDelete = value;
-                NotifyOfPropertyChange(() => CanDelete);
-
-                var message = _canDelete ? CanDeleteMessage.CanDelete : CanDeleteMessage.CannotDelete;
-                Logger.Info("Event,CanDeleteEvent,Send,{0},{1}", _tabIdentity, message);
-                EventAggregator.GetEvent<CanDeleteEvent>().Publish(message);
             }
         }
 
@@ -191,6 +165,8 @@ namespace Deadfile.Tab.Common
 
                     EditingStatusChanged(_editable);
 
+                    UnderEdit = _editable;
+
                     // Only fire when it changes.
                     if (_editable)
                     {
@@ -213,7 +189,7 @@ namespace Deadfile.Tab.Common
             }
         }
 
-        protected abstract K GetLookupParameters();
+        protected abstract TKey GetLookupParameters();
 
         public abstract void EditingStatusChanged(bool editable);
 
@@ -260,7 +236,7 @@ namespace Deadfile.Tab.Common
             if (deleted)
             {
                 // Notify the browser that something has changed.
-                Logger.Info("Event,RefreshBrowserEvent,Send,{0},{1}", _tabIdentity, RefreshBrowserMessage.Refresh);
+                Logger.Info("Event|RefreshBrowserEvent|Send|{0}|{1}", _tabIdentity, RefreshBrowserMessage.Refresh);
                 EventAggregator.GetEvent<RefreshBrowserEvent>().Publish(RefreshBrowserMessage.Refresh);
             }
         }
@@ -278,7 +254,7 @@ namespace Deadfile.Tab.Common
         }
 
         private bool _pendingEdit = false;
-        public override void OnNavigatedTo(K parameters)
+        public override void OnNavigatedTo(TKey parameters)
         {
             base.OnNavigatedTo(parameters);
 
@@ -292,11 +268,16 @@ namespace Deadfile.Tab.Common
             _pendingEdit = ShouldEditOnNavigate(parameters);
         }
 
+        public abstract Experience Experience { get; }
+        public bool ShowActionsPad => true;
+
         /// <summary>
         /// Finalise navigation by enabling editing if requested.
         /// </summary>
         public void CompleteNavigation()
         {
+            Logger.Info("Event|PageStateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, State);
+            EventAggregator.GetEvent<PageStateEvent<TState>>().Publish(State);
             if (_pendingEdit)
             {
                 _pendingEdit = false;
