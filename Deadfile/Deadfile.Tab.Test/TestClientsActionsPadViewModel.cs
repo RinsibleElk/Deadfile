@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Deadfile.Tab.Clients;
 using Deadfile.Tab.Events;
@@ -13,53 +14,65 @@ namespace Deadfile.Tab.Test
         private static readonly TabIdentity TabIdentity = new TabIdentity(1);
         private class Host : IDisposable
         {
-            public readonly Mock<IEventAggregator> EventAggregatorMock;
-            public readonly Mock<EditActionEvent> EditClientEventMock;
+            private readonly Mock<IEventAggregator> _eventAggregatorMock;
+            private readonly List<EditActionMessage> _receivedEditActionMessages = new List<EditActionMessage>();
+            private readonly EditActionEvent _editClientEvent = new EditActionEvent();
+            private readonly List<DiscardChangesMessage> _receiveDiscardChangesMessages = new List<DiscardChangesMessage>();
+            private readonly DiscardChangesEvent _discardChangesEvent = new DiscardChangesEvent();
             public readonly ClientsActionsPadViewModel ViewModel;
-            public readonly LockedForEditingEvent LockedForEditingEvent;
-            public readonly PageStateEvent<ClientsPageState> PageStateEvent;
+            private readonly LockedForEditingEvent LockedForEditingEvent;
+            private readonly PageStateEvent<ClientsPageState> _pageStateEvent;
             public Host()
             {
-                EventAggregatorMock = new Mock<IEventAggregator>();
-                EditClientEventMock = new Mock<EditActionEvent>();
-                EventAggregatorMock
+                _eventAggregatorMock = new Mock<IEventAggregator>();
+                _editClientEvent.Subscribe((m) => _receivedEditActionMessages.Add(m));
+                _discardChangesEvent.Subscribe((m) => _receiveDiscardChangesMessages.Add(m));
+                _eventAggregatorMock
                     .Setup((eventAggregator) => eventAggregator.GetEvent<EditActionEvent>())
-                    .Returns(EditClientEventMock.Object)
+                    .Returns(_editClientEvent)
                     .Verifiable();
-                ViewModel = new ClientsActionsPadViewModel(TabIdentity, EventAggregatorMock.Object);
+                ViewModel = new ClientsActionsPadViewModel(TabIdentity, _eventAggregatorMock.Object);
                 LockedForEditingEvent = new LockedForEditingEvent();
-                PageStateEvent = new PageStateEvent<ClientsPageState>();
-                EventAggregatorMock
+                _pageStateEvent = new PageStateEvent<ClientsPageState>();
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
                     .Returns(LockedForEditingEvent)
                     .Verifiable();
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<PageStateEvent<ClientsPageState>>())
-                    .Returns(PageStateEvent)
+                    .Returns(_pageStateEvent)
                     .Verifiable();
                 ViewModel.OnNavigatedTo(null);
             }
 
+            public void Edit()
+            {
+                Assert.True(ViewModel.CanEditItem);
+                ViewModel.EditItem();
+                Assert.Equal(1, _receivedEditActionMessages.Count);
+                Assert.Equal(EditActionMessage.StartEditing, _receivedEditActionMessages[0]);
+                _receivedEditActionMessages.Clear();
+                LockedForEditingEvent.Publish(new LockedForEditingMessage() { IsLocked = true });
+            }
+
+            public void Discard()
+            {
+                Assert.True(ViewModel.CanDiscardItem);
+                ViewModel.DiscardItem();
+                Assert.Equal(1, _receiveDiscardChangesMessages.Count);
+                Assert.Equal(DiscardChangesMessage.Discard, _receiveDiscardChangesMessages[0]);
+                _receiveDiscardChangesMessages.Clear();
+                Assert.Equal(1, _receivedEditActionMessages.Count);
+                Assert.Equal(EditActionMessage.EndEditing, _receivedEditActionMessages[0]);
+                _receivedEditActionMessages.Clear();
+                LockedForEditingEvent.Publish(new LockedForEditingMessage() { IsLocked = false });
+            }
+
             public void Dispose()
             {
-                EventAggregatorMock.VerifyAll();
-                EditClientEventMock.VerifyAll();
-            }
-        }
-
-        [Fact]
-        public void TestRaisesEditClientEvent()
-        {
-            // Setup.
-            using (var host = new Host())
-            {
-                // Hit the Edit button.
-                host.EditClientEventMock
-                    .Setup((ev) => ev.Publish(EditActionMessage.StartEditing))
-                    .Verifiable();
-                host.ViewModel.EditItem();
-
-                // Checks.
+                _eventAggregatorMock.VerifyAll();
+                Assert.Empty(_receivedEditActionMessages);
+                Assert.Empty(_receiveDiscardChangesMessages);
             }
         }
 
@@ -81,17 +94,13 @@ namespace Deadfile.Tab.Test
         }
 
         [Fact]
-        public void TestSwitchToEditingMode_VisibilitiesChange()
+        public void TestEditAndLock_VisibilitiesChange()
         {
             // Setup.
             using (var host = new Host())
             {
                 // Act.
-                host.EditClientEventMock
-                    .Setup((ev) => ev.Publish(EditActionMessage.StartEditing))
-                    .Verifiable();
-                host.ViewModel.EditItem();
-                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = true});
+                host.Edit();
 
                 // Checks.
                 Assert.False(host.ViewModel.AddItemIsVisible);
@@ -110,12 +119,8 @@ namespace Deadfile.Tab.Test
             using (var host = new Host())
             {
                 // Act.
-                host.EditClientEventMock
-                    .Setup((ev) => ev.Publish(EditActionMessage.StartEditing))
-                    .Verifiable();
-                host.ViewModel.EditItem();
-                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = true});
-                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = false});
+                host.Edit();
+                host.Discard();
 
                 // Checks.
                 Assert.True(host.ViewModel.AddItemIsVisible);
@@ -135,12 +140,8 @@ namespace Deadfile.Tab.Test
             using (var host = new Host())
             {
                 // Act.
-                host.EditClientEventMock
-                    .Setup((ev) => ev.Publish(EditActionMessage.StartEditing))
-                    .Verifiable();
-                host.ViewModel.EditItem();
-                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = true});
-//                host.PageStateEvent.Publish(CanSaveMessage.CannotSave);
+                host.Edit();
+                //                host.PageStateEvent.Publish(CanSaveMessage.CannotSave);
 
                 // Checks.
                 Assert.True(host.ViewModel.SaveItemIsVisible);

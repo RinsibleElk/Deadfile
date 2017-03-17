@@ -46,6 +46,8 @@ namespace Deadfile.Tab.Test
             private readonly DisplayNameEvent _displayNameEvent = new DisplayNameEvent();
             private readonly List<LockedForEditingMessage> _receivedLockedForEditingMessages = new List<LockedForEditingMessage>();
             private readonly LockedForEditingEvent _lockedForEditingEvent = new LockedForEditingEvent();
+            private readonly List<int> _receivedInvoiceClientMessages = new List<int>();
+            private readonly InvoiceClientEvent _invoiceClientEvent = new InvoiceClientEvent();
 
             public Host()
             {
@@ -55,6 +57,7 @@ namespace Deadfile.Tab.Test
                 _lockedForEditingEvent.Subscribe((m) => _receivedLockedForEditingMessages.Add(m));
                 _pageStateEvent.Subscribe((m) => _currentState = m);
                 _canUndoEvent.Subscribe((m) => _receivedCanUndoMessages.Add(m));
+                _invoiceClientEvent.Subscribe((m) => _receivedInvoiceClientMessages.Add(m));
             }
 
             public void NavigateToExisting(ClientModel model)
@@ -86,6 +89,59 @@ namespace Deadfile.Tab.Test
                 ViewModel.OnNavigatedTo(new ClientNavigationKey(model.Id));
                 ViewModel.CompleteNavigation();
                 VerifyDisplayName(model.FullName);
+                Assert.True(ViewModel.CanInvoiceClient);
+                VerifyAll();
+            }
+
+            public void NavigateToNewClient()
+            {
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<UndoEvent>())
+                    .Returns(_undoEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DeleteEvent>())
+                    .Returns(_deleteEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<EditActionEvent>())
+                    .Returns(_editActionEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<PageStateEvent<ClientsPageState>>())
+                    .Returns(_pageStateEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DisplayNameEvent>())
+                    .Returns(_displayNameEvent)
+                    .Verifiable();
+                ViewModel.OnNavigatedTo(new ClientNavigationKey(Int32.MinValue));
+                // He'll subscribe to the save event and discard changes event.
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<SaveEvent>())
+                    .Returns(_saveEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DiscardChangesEvent>())
+                    .Returns(_discardChangesEvent)
+                    .Verifiable();
+                // And he'll publish that we're locked for editing.
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
+                    .Returns(_lockedForEditingEvent)
+                    .Verifiable();
+                // And he'll publish that it is allowed to save.
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<PageStateEvent<ClientsPageState>>())
+                    .Returns(_pageStateEvent)
+                    .Verifiable();
+                ViewModel.CompleteNavigation();
+                VerifyDisplayName("New Client");
+                Assert.Equal(1, _receivedLockedForEditingMessages.Count);
+                Assert.True(_receivedLockedForEditingMessages[0].IsLocked);
+                _receivedLockedForEditingMessages.Clear();
+                Assert.True(ViewModel.UnderEdit);
+                Assert.False(ViewModel.CanInvoiceClient);
                 VerifyAll();
             }
 
@@ -140,6 +196,7 @@ namespace Deadfile.Tab.Test
                 Assert.Equal(1, _receivedLockedForEditingMessages.Count);
                 Assert.True(_receivedLockedForEditingMessages[0].IsLocked);
                 _receivedLockedForEditingMessages.Clear();
+                Assert.True(ViewModel.UnderEdit);
             }
 
             public void ExpectCanUndoPublish()
@@ -200,6 +257,7 @@ namespace Deadfile.Tab.Test
                 Assert.Equal(0, _receivedDisplayNames.Count);
                 Assert.Equal(0, _receivedRefreshBrowserMessages.Count);
                 Assert.Equal(0, _receivedLockedForEditingMessages.Count);
+                Assert.Equal(0, _receivedInvoiceClientMessages.Count);
             }
 
             public void EmailClient()
@@ -209,6 +267,19 @@ namespace Deadfile.Tab.Test
                     .Setup((uns) => uns.SendEmail(ViewModel.SelectedItem.EmailAddress))
                     .Verifiable();
                 ViewModel.EmailClient();
+            }
+
+            public void InvoiceClient()
+            {
+                Assert.True(ViewModel.CanInvoiceClient);
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<InvoiceClientEvent>())
+                    .Returns(_invoiceClientEvent)
+                    .Verifiable();
+                ViewModel.InvoiceClient();
+                Assert.Equal(1, _receivedInvoiceClientMessages.Count);
+                Assert.Equal(ViewModel.SelectedItem.ClientId, _receivedInvoiceClientMessages[0]);
+                _receivedInvoiceClientMessages.Clear();
             }
 
             public void AddNewJob()
@@ -240,6 +311,17 @@ namespace Deadfile.Tab.Test
             public void Dispose()
             {
                 VerifyAll();
+            }
+
+            public void Discard(ClientNavigationKey navigationKey)
+            {
+                _discardChangesEvent.Publish(DiscardChangesMessage.Discard);
+                _editActionEvent.Publish(EditActionMessage.EndEditing);
+                Assert.Equal(1, _receivedLockedForEditingMessages.Count);
+                Assert.True(!_receivedLockedForEditingMessages[0].IsLocked);
+                var key = (ClientNavigationKey)_receivedLockedForEditingMessages[0].NewParameters;
+                Assert.Equal(navigationKey, key);
+                _receivedLockedForEditingMessages.Clear();
             }
         }
 
@@ -364,6 +446,7 @@ namespace Deadfile.Tab.Test
                 host.ExpectCanUndo(true);
                 Assert.Equal(ClientsPageState.CanEdit | ClientsPageState.CanDiscard | ClientsPageState.UnderEdit, host.ViewModel.State);
                 Assert.False(host.CanSave);
+                Assert.False(host.ViewModel.CanSave);
             }
         }
 
@@ -387,6 +470,7 @@ namespace Deadfile.Tab.Test
                 host.ExpectCanUndo(true);
                 Assert.Equal(ClientsPageState.CanSave | ClientsPageState.CanEdit | ClientsPageState.CanDiscard | ClientsPageState.UnderEdit, host.ViewModel.State);
                 Assert.True(host.CanSave);
+                Assert.True(host.ViewModel.CanSave);
             }
         }
 
@@ -444,6 +528,38 @@ namespace Deadfile.Tab.Test
         }
 
         [Fact]
+        public void TestDiscardNoChanges()
+        {
+            using (var host = new Host())
+            {
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
+                host.StartEditing();
+                host.Discard(new ClientNavigationKey(rinsibleElk.ClientId));
+            }
+        }
+
+        [Theory]
+        [InlineData("LastName", "Moose", "AddressFirstLine", "1 Yemen Road")]
+        [InlineData("EmailAddress", "jack.bauer@yahoo.com", "PhoneNumber1", "07192567842")]
+        [InlineData("PhoneNumber2", "07192567842", "PhoneNumber3", "07192567842")]
+        public void TestDiscardAfterChanges(string property1, object value1, string property2, object value2)
+        {
+            using (var host = new Host())
+            {
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
+                host.StartEditing();
+                host.ExpectCanUndoPublish();
+                typeof(ClientModel).GetProperty(property1).SetMethod.Invoke(host.ViewModel.SelectedItem, new object[1] { value1 });
+                host.ExpectCanUndo(true);
+                typeof(ClientModel).GetProperty(property2).SetMethod.Invoke(host.ViewModel.SelectedItem, new object[1] { value2 });
+                Assert.True(host.CanSave);
+                host.Discard(new ClientNavigationKey(rinsibleElk.ClientId));
+            }
+        }
+
+        [Fact]
         public void TestUnsubscribeFromEventsOnNavigatedFrom()
         {
             using (var host = new Host())
@@ -451,6 +567,26 @@ namespace Deadfile.Tab.Test
                 var rinsibleElk = MakeRinsibleElk();
                 host.NavigateToExisting(rinsibleElk);
                 host.NavigateFrom();
+            }
+        }
+
+        [Fact]
+        public void TestNavigateToNewClient()
+        {
+            using (var host = new Host())
+            {
+                host.NavigateToNewClient();
+            }
+        }
+
+        [Fact]
+        public void TestInvoiceClient()
+        {
+            using (var host = new Host())
+            {
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
+                host.InvoiceClient();
             }
         }
     }
