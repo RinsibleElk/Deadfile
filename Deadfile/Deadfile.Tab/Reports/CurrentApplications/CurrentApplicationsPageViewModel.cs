@@ -40,7 +40,7 @@ namespace Deadfile.Tab.Reports.CurrentApplications
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
         public CurrentApplicationsPageViewModel(TabIdentity tabIdentity,
-            IDialogCoordinator dialogCoordinator,
+            IDeadfileDialogCoordinator dialogCoordinator,
             IPrintService printService,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator) : base(printService, dialogCoordinator, eventAggregator, false)

@@ -24,7 +24,7 @@ namespace Deadfile.Tab.Common
     /// <typeparam name="T"></typeparam>
     abstract class SimpleEditableItemViewModel<T> : ParameterisedViewModel<ClientAndJobNavigationKey>, ISimpleEditableItemViewModel<T> where T : JobChildModelBase, new()
     {
-        private readonly IDialogCoordinator _dialogCoordinator;
+        private readonly IDeadfileDialogCoordinator _dialogCoordinator;
         private readonly IEventAggregator _eventAggregator;
         private readonly DelegateCommand _editCommand;
         private readonly DelegateCommand _discardCommand;
@@ -34,7 +34,7 @@ namespace Deadfile.Tab.Common
         private List<string> _errors;
 
         public SimpleEditableItemViewModel(IDeadfileDispatcherTimerService timerService,
-            IDialogCoordinator dialogCoordinator,
+            IDeadfileDialogCoordinator dialogCoordinator,
             IEventAggregator eventAggregator)
         {
             _maintainSelectionTimer = timerService.CreateTimer(TimeSpan.FromMilliseconds(10), SetSelectedIndex);
@@ -66,7 +66,7 @@ namespace Deadfile.Tab.Common
 
         private async void DeleteItem()
         {
-            var result = await _dialogCoordinator.ShowMessageAsync(this, "Confirm Deletion", "Are you sure? This action is permanent.", MessageDialogStyle.AffirmativeAndNegative);
+            var result = await _dialogCoordinator.ConfirmDeleteAsync(this, "Confirm Deletion", "Are you sure? This action is permanent.");
             // Open a dialog to ask the user if they are sure.
             if (result == MessageDialogResult.Affirmative)
             {

@@ -41,7 +41,7 @@ namespace Deadfile.Tab.Reports.UnbilledJobs
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
         public UnbilledJobsPageViewModel(TabIdentity tabIdentity,
-            IDialogCoordinator dialogCoordinator,
+            IDeadfileDialogCoordinator dialogCoordinator,
             IPrintService printService,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator) : base(printService, dialogCoordinator, eventAggregator, false)

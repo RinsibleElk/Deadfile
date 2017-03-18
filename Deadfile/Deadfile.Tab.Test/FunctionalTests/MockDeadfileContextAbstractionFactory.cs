@@ -9,7 +9,7 @@ using Deadfile.Model;
 using Deadfile.Model.Browser;
 using Deadfile.Model.Interfaces;
 
-namespace Deadfile.Tab.Test
+namespace Deadfile.Tab.Test.FunctionalTests
 {
     class MockDeadfileContextAbstractionFactory : IDeadfileContextAbstractionFactory
     {

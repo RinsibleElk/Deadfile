@@ -20,11 +20,11 @@ namespace Deadfile.Tab.Import
     {
         private readonly IDeadfileRepository _repository;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IDialogCoordinator _dialogCoordinator;
+        private readonly IDeadfileDialogCoordinator _dialogCoordinator;
 
         public ImportPageViewModel(IDeadfileRepository repository,
             IEventAggregator eventAggregator,
-            IDialogCoordinator dialogCoordinator)
+            IDeadfileDialogCoordinator dialogCoordinator)
         {
             _repository = repository;
             _eventAggregator = eventAggregator;

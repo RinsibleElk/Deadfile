@@ -53,6 +53,11 @@ namespace Deadfile.Model
             return MakeConnectionString();
         }
 
+        public static void TestOnlyFakeConnectionString()
+        {
+            _connectionString = "Some fake connection string";
+        }
+
         public static bool HasConnectionString()
         {
             if (String.IsNullOrEmpty(_connectionString))

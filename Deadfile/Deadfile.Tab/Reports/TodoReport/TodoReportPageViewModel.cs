@@ -42,7 +42,7 @@ namespace Deadfile.Tab.Reports.TodoReport
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
         public TodoReportPageViewModel(TabIdentity tabIdentity,
-            IDialogCoordinator dialogCoordinator,
+            IDeadfileDialogCoordinator dialogCoordinator,
             IPrintService printService,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator) : base(printService, dialogCoordinator, eventAggregator, false)

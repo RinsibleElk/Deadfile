@@ -35,7 +35,7 @@ namespace Deadfile.Tab.Management.LocalAuthorities
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
         public LocalAuthoritiesPageViewModel(IUrlNavigationService urlNavigationService,
-            IDialogCoordinator dialogCoordinator,
+            IDeadfileDialogCoordinator dialogCoordinator,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator) : base(dialogCoordinator, eventAggregator, true)
         {

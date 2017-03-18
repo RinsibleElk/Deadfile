@@ -11,5 +11,6 @@ namespace Deadfile.Infrastructure.Interfaces
     {
         Task<MessageDialogResult> ConfirmDeleteAsync(object viewModel, string title, string message);
         Task ShowMessageAsync(object viewModel, string title, string message);
+        Task<IDeadfileProgressController> ShowProgressAsync(object viewModel, string title, string message);
     }
 }

@@ -94,6 +94,7 @@
     <Compile Include="Interfaces\IDeadfileDialogCoordinator.cs" />
     <Compile Include="Interfaces\IDeadfileDispatcherTimer.cs" />
     <Compile Include="Interfaces\IDeadfileDispatcherTimerService.cs" />
+    <Compile Include="Interfaces\IDeadfileProgressController.cs" />
     <Compile Include="Interfaces\IJournaled.cs" />
     <Compile Include="Interfaces\INavigationAware.cs" />
     <Compile Include="Interfaces\INavigationContainer.cs" />

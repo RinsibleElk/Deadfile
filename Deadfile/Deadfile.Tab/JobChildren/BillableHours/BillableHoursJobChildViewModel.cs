@@ -20,7 +20,7 @@ namespace Deadfile.Tab.JobChildren.BillableHours
         private readonly IDeadfileRepository _repository;
 
         public BillableHoursJobChildViewModel(IDeadfileDispatcherTimerService timerService,
-            IDialogCoordinator dialogCoordinator,
+            IDeadfileDialogCoordinator dialogCoordinator,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator) : base(timerService, dialogCoordinator, eventAggregator)
         {
