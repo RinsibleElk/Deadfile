@@ -14,6 +14,7 @@ namespace Deadfile.Model.Browser
         JobAddress,
         InvoiceReference,
         InvoiceCreationDate,
-        InvoiceAddress
+        InvoiceAddress,
+        InvoiceClient
     }
 }

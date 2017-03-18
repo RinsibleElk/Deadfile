@@ -6,6 +6,7 @@ using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Deadfile.Entity;
 using Deadfile.Model.Billable;
@@ -38,6 +39,7 @@ namespace Deadfile.Model
         public static string Password = "ObviouslyNotARealPassword";
         public static string ServerName = @".\SQLEXPRESS";
         public static string DatabaseName = "Deadfile";
+
         private static bool MakeConnectionString()
         {
             var sqlBuilder = new SqlConnectionStringBuilder
@@ -201,9 +203,9 @@ namespace Deadfile.Model
                         foreach (var client in (from client in dbContext.Clients
                             where
                             ((settings.FilterText == null || settings.FilterText == "") ||
-                                ((client.FirstName == null || client.FirstName == "")
-                                        ? client.Title + " " + client.LastName
-                                        : client.FirstName + " " + client.LastName).Contains(settings.FilterText))
+                             ((client.FirstName == null || client.FirstName == "")
+                                 ? client.Title + " " + client.LastName
+                                 : client.FirstName + " " + client.LastName).Contains(settings.FilterText))
                             where
                             ((settings.IncludeInactiveEnabled) || client.Status == ClientStatus.Active)
                             orderby
@@ -218,7 +220,9 @@ namespace Deadfile.Model
                                 Id = client.ClientId,
                                 FullName =
                                 ((client.FirstName == null || client.FirstName == "")
-                                    ? ((client.Title == null || client.Title == "") ? client.LastName : (client.Title + " " + client.LastName))
+                                    ? ((client.Title == null || client.Title == "")
+                                        ? client.LastName
+                                        : (client.Title + " " + client.LastName))
                                     : client.FirstName + " " + client.LastName),
                                 Status = client.Status
                             }))
@@ -259,18 +263,13 @@ namespace Deadfile.Model
                     {
                         foreach (var invoice in (from invoice in dbContext.Invoices
                             where
-                            ((  settings.FilterText == null ||
-                                settings.FilterText == "") ||
-                                invoice.InvoiceReference.ToString().Contains(settings.FilterText) ||
-                                invoice.ClientName.Contains(settings.FilterText) ||
-                                invoice.Project.Contains(settings.FilterText))
+                            ((settings.FilterText == null ||
+                              settings.FilterText == "") ||
+                             invoice.InvoiceReference.ToString().Contains(settings.FilterText) ||
+                             invoice.ClientName.Contains(settings.FilterText) ||
+                             invoice.Project.Contains(settings.FilterText))
                             where
                             ((settings.IncludeInactiveEnabled) || invoice.Status == InvoiceStatus.Created)
-                            orderby
-                            (settings.Sort == BrowserSort.InvoiceCreationDate
-                                ? -(invoice.CreatedDate.Year*10000 + invoice.CreatedDate.Month*100 +
-                                    invoice.CreatedDate.Day)
-                                : invoice.InvoiceReference)
                             select
                             new BrowserInvoice()
                             {
@@ -279,16 +278,112 @@ namespace Deadfile.Model
                                 InvoiceReference = invoice.InvoiceReference,
                                 Status = invoice.Status,
                                 ClientName = invoice.ClientName,
-                                Project = invoice.Project
+                                Project = invoice.Project,
+                                CreatedDate = invoice.CreatedDate
                             }))
                         {
                             invoice.SetRepository(settings.Mode, settings.IncludeInactiveEnabled, false, this);
                             invoices.Add(invoice);
                         }
                     }
+                    invoices.Sort(GetInvoiceComparer(settings.Sort));
                     return invoices;
                 default:
                     return new List<BrowserModel>();
+            }
+        }
+
+        private class BrowserInvoiceByInvoiceAddressComparer : IComparer<BrowserInvoice>
+        {
+            private static Regex addressAndNumber = new Regex(@"^(([0-9]*)([A-Za-z]?)\s+)?([^,]+)(,|$)");
+
+            private readonly Dictionary<string, Tuple<int, string, string>> _cache =
+                new Dictionary<string, Tuple<int, string, string>>();
+
+            private void GetResultsFromCache(string project, out int number, out string letter, out string road)
+            {
+                number = Int32.MinValue;
+                letter = null;
+                road = "";
+                Tuple<int, string, string> cacheResult;
+                if (!_cache.TryGetValue(project, out cacheResult))
+                {
+                    var xProject = addressAndNumber.Match(project);
+                    if (xProject.Success)
+                    {
+                        if (xProject.Groups[2].Success && xProject.Groups[2].Value.Length > 0) number = Int32.Parse(xProject.Groups[2].Value);
+                        if (xProject.Groups[3].Success) letter = xProject.Groups[3].Value;
+                        if (xProject.Groups[4].Success) road = xProject.Groups[4].Value;
+                    }
+                    else
+                    {
+                        road = project;
+                    }
+                    _cache.Add(project, new Tuple<int, string, string>(number, letter, road));
+                }
+                else
+                {
+                    number = cacheResult.Item1;
+                    letter = cacheResult.Item2;
+                    road = cacheResult.Item3;
+                }
+
+            }
+
+            public int Compare(BrowserInvoice x, BrowserInvoice y)
+            {
+                if (x.Project == y.Project) return 0;
+                int xNumber;
+                string xLetter;
+                string xRoad;
+                int yNumber;
+                string yLetter;
+                string yRoad;
+                GetResultsFromCache(x.Project, out xNumber, out xLetter, out xRoad);
+                GetResultsFromCache(y.Project, out yNumber, out yLetter, out yRoad);
+                var roadComp = String.Compare(xRoad, yRoad, StringComparison.InvariantCultureIgnoreCase);
+                if (roadComp != 0) return roadComp;
+                if (xNumber != yNumber) return xNumber.CompareTo(yNumber);
+                return String.Compare(xLetter, yLetter, StringComparison.InvariantCultureIgnoreCase);
+            }
+        }
+
+        private class BrowserInvoiceByReferenceComparer : IComparer<BrowserInvoice>
+        {
+            public int Compare(BrowserInvoice x, BrowserInvoice y)
+            {
+                return x.InvoiceReference.CompareTo(y.InvoiceReference);
+            }
+        }
+
+        private class BrowserInvoiceByClientNameComparer : IComparer<BrowserInvoice>
+        {
+            public int Compare(BrowserInvoice x, BrowserInvoice y)
+            {
+                return String.Compare(x.ClientName, y.ClientName, StringComparison.InvariantCultureIgnoreCase);
+            }
+        }
+
+        private class BrowserInvoiceByCreatedDateComparer : IComparer<BrowserInvoice>
+        {
+            public int Compare(BrowserInvoice x, BrowserInvoice y)
+            {
+                return y.CreatedDate.CompareTo(x.CreatedDate);
+            }
+        }
+
+        private IComparer<BrowserInvoice> GetInvoiceComparer(BrowserSort settingsSort)
+        {
+            switch (settingsSort)
+            {
+                case BrowserSort.InvoiceAddress:
+                    return new BrowserInvoiceByInvoiceAddressComparer();
+                case BrowserSort.InvoiceReference:
+                    return new BrowserInvoiceByReferenceComparer();
+                case BrowserSort.InvoiceClient:
+                    return new BrowserInvoiceByClientNameComparer();
+                default: // Invoice CreatedDate
+                    return new BrowserInvoiceByCreatedDateComparer();
             }
         }
 
@@ -363,7 +458,8 @@ namespace Deadfile.Model
                             ParentId = invoiceEntity.ClientId,
                             Status = invoiceEntity.Status,
                             ClientName = invoiceEntity.ClientName,
-                            Project = invoiceEntity.Project
+                            Project = invoiceEntity.Project,
+                            CreatedDate = invoiceEntity.CreatedDate
                         };
                     invoice.SetRepository(mode, includeInactiveEnabled, true, this);
                     li.Add(invoice);

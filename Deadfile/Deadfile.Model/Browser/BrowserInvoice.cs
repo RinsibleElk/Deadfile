@@ -61,13 +61,21 @@ namespace Deadfile.Model.Browser
         }
 
         private string _project = "";
-        public string Project {
+        public string Project
+        {
             get { return _project; }
             set
             {
                 if (SetProperty(ref _project, value))
                     OnPropertyChanged(nameof(DisplayName));
             }
+        }
+
+        private DateTime _createdDate = DateTime.Today;
+        public DateTime CreatedDate
+        {
+            get { return _createdDate; }
+            set { SetProperty(ref _createdDate, value); }
         }
     }
 }
