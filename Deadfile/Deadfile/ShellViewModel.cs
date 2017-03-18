@@ -162,10 +162,13 @@ namespace Deadfile
             SettingsIsOpen = false;
         }
 
+        private static bool DebugAcceptAnything = false;
+
         private bool CanAccept
         {
             get
             {
+                if (DebugAcceptAnything) return true;
                 DeadfileRepository.DatabaseName = _database;
                 DeadfileRepository.UserId = _username;
                 DeadfileRepository.ServerName = _server;

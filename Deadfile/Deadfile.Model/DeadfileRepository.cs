@@ -21,7 +21,7 @@ namespace Deadfile.Model
         private readonly IRandomNumberGenerator _rng;
         private readonly IModelEntityMapper _modelEntityMapper;
 
-        private static readonly QuotationModel _emptyQuotationModel = new QuotationModel
+        private static readonly QuotationModel EmptyQuotationModel = new QuotationModel
         {
             Author = "Oliver Samson",
             Phrase = "No Quotations defined. Soz."
@@ -398,7 +398,7 @@ namespace Deadfile.Model
             {
                 var quotations = (from quotation in dbContext.Quotations select quotation).ToArray();
                 if (quotations.Length == 0)
-                    return _emptyQuotationModel;
+                    return EmptyQuotationModel;
                 var index = _rng.Next(quotations.Length);
                 return _modelEntityMapper.Mapper.Map<QuotationModel>(quotations[index]);
             }
