@@ -9,8 +9,8 @@ namespace Deadfile.Entity
     /// </summary>
     public class DeadfileContext : DbContext
     {
-        public DeadfileContext()
-            : base("name=Deadfile")
+        public DeadfileContext(string connectionString)
+            : base(connectionString)
         {
         }
 

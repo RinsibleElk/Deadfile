@@ -28,6 +28,10 @@ namespace Deadfile
         public AppBootstrapper()
         {
             Initialize();
+            DeadfileRepository.UserId = Properties.Settings.Default.Username;
+            DeadfileRepository.ServerName = Properties.Settings.Default.Server;
+            DeadfileRepository.Password = Properties.Settings.Default.Password;
+            DeadfileRepository.DatabaseName = Properties.Settings.Default.Database;
         }
 
         /// <summary>

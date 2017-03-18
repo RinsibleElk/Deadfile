@@ -78,6 +78,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\PasswordHelper.cs" />
     <Compile Include="Behaviors\TreeViewSelectedItemBehavior.cs" />
     <Compile Include="Converters\ApplicationTypeToStringConverter.cs" />
     <Compile Include="Converters\BillableModelStateToIsEnabledConverter.cs" />

@@ -11,6 +11,7 @@
              xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:converters="clr-namespace:Deadfile.Infrastructure.Converters;assembly=Deadfile.Infrastructure"
+             xmlns:behaviors="clr-namespace:Deadfile.Infrastructure.Behaviors;assembly=Deadfile.Infrastructure"
              xmlns:tab="clr-namespace:Deadfile.Tab.Tab;assembly=Deadfile.Tab"
              Background="Black"
              GlowBrush="Black"
@@ -73,7 +74,32 @@
             <controls:Flyout x:Name="SettingsFlyout"
                              Header="Settings"
                              Position="Right"
-                             Width="500">
+                             Width="500"
+                             IsOpen="{Binding SettingsIsOpen, Mode=TwoWay}"
+                             DataContext="{Binding}"
+                             CloseCommand="{Binding CancelCommand}">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Margin="5" Grid.Row="0" Grid.Column="0">Server:</TextBlock>
+                    <TextBox Margin="5" Grid.Row="0" Grid.Column="1" Text="{Binding Path=Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" />
+                    <TextBlock Margin="5" Grid.Row="1" Grid.Column="0">Database:</TextBlock>
+                    <TextBox Margin="5" Grid.Row="1" Grid.Column="1" Text="{Binding Path=Database, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" />
+                    <TextBlock Margin="5" Grid.Row="2" Grid.Column="0">Username:</TextBlock>
+                    <TextBox Margin="5" Grid.Row="2" Grid.Column="1" Text="{Binding Path=Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" />
+                    <TextBlock Margin="5" Grid.Row="3" Grid.Column="0">Password:</TextBlock>
+                    <PasswordBox Margin="5" Grid.Row="3" Grid.Column="1" PasswordChar="*" behaviors:PasswordHelper.Attach="True" behaviors:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" />
+                    <Button Margin="5" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding Path=AcceptCommand}">OK</Button>
+                </Grid>
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>

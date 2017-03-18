@@ -246,6 +246,11 @@ type EntireDb() =
 [<Sealed>]
 type JsonImporter(repository:IDeadfileRepository) =
     let cache = IdCache()
+    let tryDo (f:DeadfileContext -> unit) =
+        if (not (String.IsNullOrEmpty repository.ConnectionString)) then
+            use context = new DeadfileContext(repository.ConnectionString)
+            f context
+        else ()
     let saveChanges (context:DeadfileContext) =
         try
             context.SaveChanges() |> ignore
@@ -261,58 +266,68 @@ type JsonImporter(repository:IDeadfileRepository) =
                                 failwithf "%s: %s" ve.PropertyName ve.ErrorMessage))
             failwithf "%A" e
     let saveClient clientJson =
-        use context = new DeadfileContext()
-        let client = ToFromRecord.mapToEntity<ClientJson, Client> cache LearnClientId clientJson
-        context.Clients.Add(client) |> ignore
-        context |> saveChanges
-        cache.AddClientId(clientJson.ClientId, client.ClientId)
+        tryDo
+            <| fun context ->
+                let client = ToFromRecord.mapToEntity<ClientJson, Client> cache LearnClientId clientJson
+                context.Clients.Add(client) |> ignore
+                context |> saveChanges
+                cache.AddClientId(clientJson.ClientId, client.ClientId)
     let saveJob jobJson =
-        use context = new DeadfileContext()
-        let job = ToFromRecord.mapToEntity<JobJson, Job> cache LearnJobId jobJson
-        context.Jobs.Add(job) |> ignore
-        context |> saveChanges
-        cache.AddJobId(jobJson.JobId, job.JobId)
+        tryDo
+            <| fun context ->
+                let job = ToFromRecord.mapToEntity<JobJson, Job> cache LearnJobId jobJson
+                context.Jobs.Add(job) |> ignore
+                context |> saveChanges
+                cache.AddJobId(jobJson.JobId, job.JobId)
     let saveInvoice invoiceJson =
-        use context = new DeadfileContext()
-        let invoice = ToFromRecord.mapToEntity<InvoiceJson, Invoice> cache LearnInvoiceId invoiceJson
-        context.Invoices.Add(invoice) |> ignore
-        context |> saveChanges
-        cache.AddInvoiceId(invoiceJson.InvoiceId, invoice.InvoiceId)
+        tryDo
+            <| fun context ->
+                let invoice = ToFromRecord.mapToEntity<InvoiceJson, Invoice> cache LearnInvoiceId invoiceJson
+                context.Invoices.Add(invoice) |> ignore
+                context |> saveChanges
+                cache.AddInvoiceId(invoiceJson.InvoiceId, invoice.InvoiceId)
     let saveInvoiceItem json =
-        use context = new DeadfileContext()
-        let entity = ToFromRecord.mapToEntity<InvoiceItemJson, InvoiceItem> cache RetrieveAll json
-        context.InvoiceItems.Add(entity) |> ignore
-        context |> saveChanges
+        tryDo
+            <| fun context ->
+                let entity = ToFromRecord.mapToEntity<InvoiceItemJson, InvoiceItem> cache RetrieveAll json
+                context.InvoiceItems.Add(entity) |> ignore
+                context |> saveChanges
     let saveQuotation json =
-        use context = new DeadfileContext()
-        let entity = ToFromRecord.mapToEntity<QuotationJson, Quotation> cache RetrieveAll json
-        context.Quotations.Add(entity) |> ignore
-        context |> saveChanges
+        tryDo
+            <| fun context ->
+                let entity = ToFromRecord.mapToEntity<QuotationJson, Quotation> cache RetrieveAll json
+                context.Quotations.Add(entity) |> ignore
+                context |> saveChanges
     let saveJobTask json =
-        use context = new DeadfileContext()
-        let entity = ToFromRecord.mapToEntity<JobTaskJson, JobTask> cache RetrieveAll json
-        context.JobTasks.Add(entity) |> ignore
-        context |> saveChanges
+        tryDo
+            <| fun context ->
+                let entity = ToFromRecord.mapToEntity<JobTaskJson, JobTask> cache RetrieveAll json
+                context.JobTasks.Add(entity) |> ignore
+                context |> saveChanges
     let saveApplication json =
-        use context = new DeadfileContext()
-        let entity = ToFromRecord.mapToEntity<ApplicationJson, Application> cache RetrieveAll json
-        context.Applications.Add(entity) |> ignore
-        context |> saveChanges
+        tryDo
+            <| fun context ->
+                let entity = ToFromRecord.mapToEntity<ApplicationJson, Application> cache RetrieveAll json
+                context.Applications.Add(entity) |> ignore
+                context |> saveChanges
     let saveExpense json =
-        use context = new DeadfileContext()
-        let entity = ToFromRecord.mapToEntity<ExpenseJson, Expense> cache RetrieveAll json
-        context.Expenses.Add(entity) |> ignore
-        context |> saveChanges
+        tryDo
+            <| fun context ->
+                let entity = ToFromRecord.mapToEntity<ExpenseJson, Expense> cache RetrieveAll json
+                context.Expenses.Add(entity) |> ignore
+                context |> saveChanges
     let saveBillableHour json =
-        use context = new DeadfileContext()
-        let entity = ToFromRecord.mapToEntity<BillableHourJson, BillableHour> cache RetrieveAll json
-        context.BillableHours.Add(entity) |> ignore
-        context |> saveChanges
+        tryDo
+            <| fun context ->
+                let entity = ToFromRecord.mapToEntity<BillableHourJson, BillableHour> cache RetrieveAll json
+                context.BillableHours.Add(entity) |> ignore
+                context |> saveChanges
     let saveLocalAuthority json =
-        use context = new DeadfileContext()
-        let entity = ToFromRecord.mapToEntity<LocalAuthorityJson, LocalAuthority> cache RetrieveAll json
-        context.LocalAuthorities.Add(entity) |> ignore
-        context |> saveChanges
+        tryDo
+            <| fun context ->
+                let entity = ToFromRecord.mapToEntity<LocalAuthorityJson, LocalAuthority> cache RetrieveAll json
+                context.LocalAuthorities.Add(entity) |> ignore
+                context |> saveChanges
     member __.ExportToJsonFile(jsonFile:FileInfo) =
         let clients =
             repository.GetBrowserItems(BrowserSettings(IncludeInactiveEnabled = true, Mode = BrowserMode.Client))

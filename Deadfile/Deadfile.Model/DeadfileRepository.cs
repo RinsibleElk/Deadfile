@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.EntityClient;
 using System.Data.Entity.Validation;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,9 +33,57 @@ namespace Deadfile.Model
             _rng = rng;
         }
 
+        private static string _connectionString = null;
+        public static string UserId = "NotMyName";
+        public static string Password = "ObviouslyNotARealPassword";
+        public static string ServerName = @".\SQLEXPRESS";
+        public static string DatabaseName = "Deadfile";
+        private static bool MakeConnectionString()
+        {
+            var sqlBuilder = new SqlConnectionStringBuilder
+            {
+                DataSource = ServerName,
+                InitialCatalog = DatabaseName,
+                IntegratedSecurity = false,
+                Authentication = SqlAuthenticationMethod.SqlPassword,
+                UserID = UserId,
+                Password = Password,
+                TrustServerCertificate = true,
+                MultipleActiveResultSets = true
+            };
+            var providerString = sqlBuilder.ToString();
+            try
+            {
+                using (var context = new DeadfileContext(providerString))
+                {
+                    var ids = context.Clients.Select((c) => c.ClientId).ToArray();
+                    _connectionString = providerString;
+                }
+            }
+            catch (Exception e)
+            {
+                _connectionString = null;
+            }
+            return !String.IsNullOrEmpty(_connectionString);
+        }
+
+        public static bool RebuildConnectionString()
+        {
+            return MakeConnectionString();
+        }
+
+        private static bool HasConnectionString()
+        {
+            if (String.IsNullOrEmpty(_connectionString))
+                return MakeConnectionString();
+            return true;
+        }
+
         public IEnumerable<ClientModel> GetClients()
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return new ClientModel[0];
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var li = new List<ClientModel>();
                 foreach (var client in (from client in dbContext.Clients
@@ -47,7 +97,9 @@ namespace Deadfile.Model
 
         public IEnumerable<ApplicationModel> GetApplicationsForJob(int jobId, string filter)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return new ApplicationModel[0];
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var li = new List<ApplicationModel>();
                 foreach (var application in (from application in dbContext.Applications
@@ -64,7 +116,9 @@ namespace Deadfile.Model
 
         public IEnumerable<BillableHourModel> GetBillableHoursForJob(int jobId, string filter)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return new BillableHourModel[0];
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var li = new List<BillableHourModel>();
                 foreach (var billableHour in (from billableHour in dbContext.BillableHours
@@ -79,7 +133,9 @@ namespace Deadfile.Model
 
         public IEnumerable<ExpenseModel> GetExpensesForJob(int jobId, string filter)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return new ExpenseModel[0];
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var li = new List<ExpenseModel>();
                 foreach (var expense in (from expense in dbContext.Expenses
@@ -94,7 +150,9 @@ namespace Deadfile.Model
 
         public IEnumerable<LocalAuthorityModel> GetLocalAuthorities(string filter)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return new LocalAuthorityModel[0];
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var li = new List<LocalAuthorityModel>();
                 foreach (var localAuthority in (from localAuthority in dbContext.LocalAuthorities
@@ -110,7 +168,9 @@ namespace Deadfile.Model
 
         public IEnumerable<ClientModel> GetFilteredClients(string filter)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return new ClientModel[0];
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var li = new List<ClientModel>();
                 foreach (var client in (from client in dbContext.Clients
@@ -130,11 +190,13 @@ namespace Deadfile.Model
         /// <returns></returns>
         public IEnumerable<BrowserModel> GetBrowserItems(BrowserSettings settings)
         {
+            if (!HasConnectionString())
+                return new BrowserModel[0];
             switch (settings.Mode)
             {
                 case BrowserMode.Client:
                     var clients = new List<BrowserClient>();
-                    using (var dbContext = new DeadfileContext())
+                    using (var dbContext = new DeadfileContext(_connectionString))
                     {
                         foreach (var client in (from client in dbContext.Clients
                             where
@@ -168,7 +230,7 @@ namespace Deadfile.Model
                     return clients;
                 case BrowserMode.Job:
                     var jobs = new List<BrowserJob>();
-                    using (var dbContext = new DeadfileContext())
+                    using (var dbContext = new DeadfileContext(_connectionString))
                     {
                         foreach (var job in (from job in dbContext.Jobs
                             where
@@ -193,7 +255,7 @@ namespace Deadfile.Model
                     return jobs;
                 case BrowserMode.Invoice:
                     var invoices = new List<BrowserInvoice>();
-                    using (var dbContext = new DeadfileContext())
+                    using (var dbContext = new DeadfileContext(_connectionString))
                     {
                         foreach (var invoice in (from invoice in dbContext.Invoices
                             where
@@ -234,7 +296,9 @@ namespace Deadfile.Model
             int clientId)
         {
             var li = new List<BrowserJob>();
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return li;
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 foreach (var job in (from job in dbContext.Jobs
                     where job.ClientId == clientId
@@ -270,7 +334,9 @@ namespace Deadfile.Model
         {
             var invoiceIdSet = new HashSet<int>();
             var li = new List<BrowserInvoice>();
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return li;
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 foreach (var invoiceId in (from billable in dbContext.Expenses
                     where billable.InvoiceId.HasValue
@@ -306,40 +372,12 @@ namespace Deadfile.Model
             return li;
         }
 
-        public void SetUpFakeData()
-        {
-            var addInvoices = false;
-            using (var dbContext = new DeadfileContext())
-            {
-                if ((from client in dbContext.Clients select client).FirstOrDefault() == null)
-                {
-                    addInvoices = true;
-                    foreach (var clientModel in FakeData.GetFakeClients())
-                    {
-                        dbContext.Clients.Add(_modelEntityMapper.Mapper.Map<Client>(clientModel));
-                    }
-                    FakeData.AddFakeQuotations(dbContext);
-                    dbContext.SaveChanges();
-                    FakeData.AddFakeJobs(dbContext);
-                    dbContext.SaveChanges();
-                    FakeData.AddFakeLocalAuthorities(dbContext);
-                    dbContext.SaveChanges();
-                    FakeData.AddFakeApplications(dbContext);
-                    dbContext.SaveChanges();
-                    FakeData.AddFakeExpenses(dbContext);
-                    dbContext.SaveChanges();
-                    FakeData.AddFakeBillableHours(dbContext);
-                    dbContext.SaveChanges();
-                }
-            }
-            if (addInvoices)
-                FakeData.AddFakeInvoices();
-        }
-
         public IEnumerable<QuotationModel> GetQuotations(string filterText)
         {
             var li = new List<QuotationModel>();
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return li;
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 foreach (var quotation in (from quotation in dbContext.Quotations
                                            where (filterText == null || quotation.Author.Contains(filterText) || quotation.Phrase.Contains(filterText))
@@ -354,7 +392,9 @@ namespace Deadfile.Model
 
         public QuotationModel GetRandomQuotation()
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return new QuotationModel {Author = "Rinsible Elk", Phrase = "Please Log In"};
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var quotations = (from quotation in dbContext.Quotations select quotation).ToArray();
                 if (quotations.Length == 0)
@@ -366,7 +406,9 @@ namespace Deadfile.Model
 
         public ClientModel GetClientById(int clientId)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var client = dbContext.Clients.Find(new object[1] {clientId});
                 return _modelEntityMapper.Mapper.Map<ClientModel>(client);
@@ -375,7 +417,9 @@ namespace Deadfile.Model
 
         public JobModel GetJobById(int jobId)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var job = dbContext.Jobs.Find(new object[1] {jobId});
                 return _modelEntityMapper.Mapper.Map<JobModel>(job);
@@ -385,15 +429,17 @@ namespace Deadfile.Model
         public InvoiceModel GetInvoiceById(int invoiceId)
         {
             // Get the invoice model.
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
             InvoiceModel invoiceModel;
-            using (var dbContext = new DeadfileContext())
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var invoice = dbContext.Invoices.Find(invoiceId);
                 invoiceModel = _modelEntityMapper.Mapper.Map<InvoiceModel>(invoice);
             }
 
             // Get the active items.
-            using (var dbContext = new DeadfileContext())
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 foreach (var invoiceItem in (from invoiceItem in dbContext.InvoiceItems
                     where invoiceItem.InvoiceId == invoiceId
@@ -408,7 +454,9 @@ namespace Deadfile.Model
 
         public InvoiceModel GetFirstActiveInvoiceForClient(int clientId)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var activeInvoice = (from invoice in dbContext.Invoices
                                      where invoice.ClientId == clientId
@@ -426,9 +474,11 @@ namespace Deadfile.Model
         /// <param name="clientModel"></param>
         public void SaveClient(ClientModel clientModel)
         {
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
             try
             {
-                using (var dbContext = new DeadfileContext())
+                using (var dbContext = new DeadfileContext(_connectionString))
                 {
                     Client client;
                     if (clientModel.ClientId == ModelBase.NewModelId)
@@ -468,10 +518,12 @@ namespace Deadfile.Model
         public void SaveInvoice(InvoiceModel invoiceModel, IEnumerable<BillableJob> billableJobs)
         {
             int invoiceId;
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
             if (invoiceModel.InvoiceId == ModelBase.NewModelId)
             {
                 // Add
-                using (var dbContext = new DeadfileContext())
+                using (var dbContext = new DeadfileContext(_connectionString))
                 {
                     var invoice = _modelEntityMapper.Mapper.Map<InvoiceModel, Invoice>(invoiceModel);
                     dbContext.Invoices.Add(invoice);
@@ -488,7 +540,7 @@ namespace Deadfile.Model
             {
                 invoiceId = invoiceModel.InvoiceId;
                 // Edit
-                using (var dbContext = new DeadfileContext())
+                using (var dbContext = new DeadfileContext(_connectionString))
                 {
                     var invoice = dbContext.Invoices.Find(new object[1] {invoiceModel.InvoiceId});
                     _modelEntityMapper.Mapper.Map<InvoiceModel, Invoice>(invoiceModel, invoice);
@@ -516,7 +568,7 @@ namespace Deadfile.Model
             foreach (var invoiceItemModel in invoiceModel.ChildrenList)
             {
                 invoiceItemModel.InvoiceId = invoiceId;
-                using (var dbContext = new DeadfileContext())
+                using (var dbContext = new DeadfileContext(_connectionString))
                 {
                     if (invoiceItemModel.InvoiceItemId == ModelBase.NewModelId)
                     {
@@ -542,9 +594,11 @@ namespace Deadfile.Model
 
         private void SetInvoiceForBillable(BillableModel billableModel, int? invoiceId, InvoiceStatus invoiceStatus)
         {
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
             if (billableModel.ModelType == BillableModelType.Expense)
             {
-                using (var dbContext = new DeadfileContext())
+                using (var dbContext = new DeadfileContext(_connectionString))
                 {
                     var billable = dbContext.Expenses.Find(new object[] { billableModel.Id });
                     billable.InvoiceId = invoiceId;
@@ -570,7 +624,7 @@ namespace Deadfile.Model
             }
             else if (billableModel.ModelType == BillableModelType.BillableHour)
             {
-                using (var dbContext = new DeadfileContext())
+                using (var dbContext = new DeadfileContext(_connectionString))
                 {
                     var billable = dbContext.BillableHours.Find(new object[] { billableModel.Id });
                     billable.InvoiceId = invoiceId;
@@ -598,8 +652,10 @@ namespace Deadfile.Model
 
         public bool HasUniqueInvoiceReference(InvoiceModel invoiceModel, int invoiceReference)
         {
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
             if (invoiceReference == 0) return invoiceModel.Status == InvoiceStatus.Cancelled;
-            using (var dbContext = new DeadfileContext())
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 return !(from invoice in dbContext.Invoices
                            where invoice.Company == invoiceModel.Company
@@ -613,8 +669,10 @@ namespace Deadfile.Model
 
         public int[] GetSuggestedInvoiceReferenceIdsForCompany(Company company)
         {
+            if (!HasConnectionString())
+                return new int[0];
             List<int> usedInvoiceIds;
-            using (var dbContext = new DeadfileContext())
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 usedInvoiceIds = new List<int>(from invoice in dbContext.Invoices
                     where invoice.Company == company
@@ -649,7 +707,9 @@ namespace Deadfile.Model
 
         public int GetNextSuggestedJobNumber()
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return 1;
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var jobNumber = dbContext.Jobs.OrderByDescending((j) => j.JobNumber).FirstOrDefault()?.JobNumber;
                 return jobNumber + 1 ?? 1;
@@ -658,7 +718,9 @@ namespace Deadfile.Model
 
         public IEnumerable<JobTaskModel> GetJobTasksForJob(int jobId, string filter)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return new JobTaskModel[0];
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var li = new List<JobTaskModel>();
                 foreach (var jobTask in (from jobTask in dbContext.JobTasks
@@ -688,7 +750,9 @@ namespace Deadfile.Model
 
         public void SaveJobTask(JobTaskModel jobTaskModel)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 if (jobTaskModel.JobTaskId == ModelBase.NewModelId)
                 {
@@ -707,7 +771,9 @@ namespace Deadfile.Model
 
         public void SaveQuotation(QuotationModel quotationModel)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 Quotation quotation;
                 if (quotationModel.QuotationId == ModelBase.NewModelId)
@@ -729,8 +795,10 @@ namespace Deadfile.Model
 
         public IEnumerable<UnbilledJobModel> GetUnbilledJobs(string filterText)
         {
+            if (!HasConnectionString())
+                return new UnbilledJobModel[0];
             var d = new Dictionary<int, UnbilledJobModel>();
-            using (var dbContext = new DeadfileContext())
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 foreach (var expense in (from expense in dbContext.Expenses
                                          where expense.Job.Status == JobStatus.Active
@@ -833,7 +901,9 @@ namespace Deadfile.Model
         public IEnumerable<JobTaskModel> GetJobTasks(DateTime startDate, DateTime endDate, string filter, bool includeInactive)
         {
             var li = new List<JobTaskModel>();
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return new JobTaskModel[0];
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 foreach (var jobTask in (from jobTask in dbContext.JobTasks
                                          where (includeInactive || jobTask.State == JobTaskState.Active)
@@ -865,7 +935,9 @@ namespace Deadfile.Model
 
         public void DeleteJobTask(JobTaskModel jobTaskModel)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var jobTask = dbContext.JobTasks.Find(new object[1] {jobTaskModel.Id});
                 dbContext.JobTasks.Remove(jobTask);
@@ -875,7 +947,9 @@ namespace Deadfile.Model
 
         public void DeleteExpense(ExpenseModel expenseModel)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var expense = dbContext.Expenses.Find(new object[1] { expenseModel.Id });
                 dbContext.Expenses.Remove(expense);
@@ -885,7 +959,9 @@ namespace Deadfile.Model
 
         public void DeleteLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var localAuthority = dbContext.LocalAuthorities.Find(new object[1] { localAuthorityModel.Id });
                 dbContext.LocalAuthorities.Remove(localAuthority);
@@ -895,7 +971,9 @@ namespace Deadfile.Model
 
         public void DeleteQuotation(QuotationModel quotationModel)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var quotation = dbContext.Quotations.Find(new object[1] { quotationModel.Id });
                 dbContext.Quotations.Remove(quotation);
@@ -906,7 +984,9 @@ namespace Deadfile.Model
         public IEnumerable<InvoiceModel> GetUnpaidInvoices(string filter)
         {
             var li = new List<InvoiceModel>();
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return new InvoiceModel[0];
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 foreach (var invoice in (from invoice in dbContext.Invoices
                                          where invoice.Status == InvoiceStatus.Created
@@ -922,7 +1002,9 @@ namespace Deadfile.Model
         public IEnumerable<CurrentApplicationModel> GetCurrentApplications(string filter)
         {
             var li = new List<CurrentApplicationModel>();
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                return new CurrentApplicationModel[0];
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 foreach (var application in (from application in dbContext.Applications
                                              where application.State == ApplicationState.Current
@@ -940,9 +1022,16 @@ namespace Deadfile.Model
             return li;
         }
 
+        /// <summary>
+        /// The current connection string.
+        /// </summary>
+        public string ConnectionString => _connectionString;
+
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 if (localAuthorityModel.LocalAuthorityId == ModelBase.NewModelId)
                 {
@@ -961,7 +1050,9 @@ namespace Deadfile.Model
 
         public void SaveApplication(ApplicationModel applicationModel)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 if (applicationModel.ApplicationId == ModelBase.NewModelId)
                 {
@@ -980,7 +1071,9 @@ namespace Deadfile.Model
 
         public void SaveExpense(ExpenseModel expenseModel)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 if (expenseModel.ExpenseId == ModelBase.NewModelId)
                 {
@@ -999,7 +1092,9 @@ namespace Deadfile.Model
 
         public void SaveBillableHour(BillableHourModel billableHourModel)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 if (billableHourModel.BillableHourId == ModelBase.NewModelId)
                 {
@@ -1018,7 +1113,9 @@ namespace Deadfile.Model
 
         public BrowserModel GetBrowserClientById(BrowserMode mode, bool includeInactiveEnabled, int clientId)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 var client = dbContext.Clients.Find(new object[1] { clientId });
                 var model = new BrowserClient()
@@ -1037,9 +1134,11 @@ namespace Deadfile.Model
 
         public IEnumerable<BrowserModel> GetBrowserJobsForInvoice(BrowserMode mode, bool includeInactiveEnabled, int invoiceId)
         {
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
             var jobIdSet = new HashSet<int>();
             var li = new List<BrowserJob>();
-            using (var dbContext = new DeadfileContext())
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 foreach (var jobId in (from billable in dbContext.Expenses
                                        where billable.InvoiceId.HasValue
@@ -1114,7 +1213,9 @@ namespace Deadfile.Model
         /// <param name="jobModel"></param>
         public void SaveJob(JobModel jobModel)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 Job job;
                 if (jobModel.JobId == ModelBase.NewModelId)
@@ -1143,7 +1244,9 @@ namespace Deadfile.Model
         public IEnumerable<BillableModel> GetBillableModelsForClientAndInvoice(int clientId, int invoiceId)
         {
             var li2 = new List<BillableJob>();
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 foreach (var job in (from job in dbContext.Jobs
                     where job.ClientId == clientId
@@ -1200,7 +1303,9 @@ namespace Deadfile.Model
             ref bool hasClaimed, ref bool hasExcluded, ref bool hasIncluded, ref double totalAmount,
             ref double includedAmount)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 foreach (var billableHour in (from billableHour in dbContext.BillableHours
                     where billableHour.JobId == job.JobId
@@ -1231,7 +1336,9 @@ namespace Deadfile.Model
         private static void AddExpensesForJob(int invoiceId, BillableJob job, ref bool hasClaimed,
             ref bool hasExcluded, ref bool hasIncluded, ref double totalAmount, ref double includedAmount)
         {
-            using (var dbContext = new DeadfileContext())
+            if (!HasConnectionString())
+                throw new ApplicationException("Log in corrupted");
+            using (var dbContext = new DeadfileContext(_connectionString))
             {
                 foreach (var expense in (from expense in dbContext.Expenses
                     where expense.JobId == job.JobId

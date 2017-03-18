@@ -53,14 +53,6 @@ namespace Deadfile.Model.Interfaces
         IEnumerable<LocalAuthorityModel> GetLocalAuthorities(string filter);
 
         /// <summary>
-        /// Naughty method to seed the repository with fake data. Run at initialization time and only changes the database if it's totally empty.
-        /// </summary>
-        /// <remarks>
-        /// This is for use in testing. It means that users can drop the whole database, run the application, and it will have put some data there.
-        /// </remarks>
-        void SetUpFakeData();
-
-        /// <summary>
         /// Get all quotations that satisfy a filter (which may be null).
         /// </summary>
         /// <param name="filterText"></param>
@@ -294,5 +286,10 @@ namespace Deadfile.Model.Interfaces
         /// <param name="filter"></param>
         /// <returns></returns>
         IEnumerable<CurrentApplicationModel> GetCurrentApplications(string filter);
+
+        /// <summary>
+        /// The connection string currently in use.
+        /// </summary>
+        string ConnectionString { get; }
     }
 }
