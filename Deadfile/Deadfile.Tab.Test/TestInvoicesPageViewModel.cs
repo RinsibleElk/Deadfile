@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Castle.Components.DictionaryAdapter;
 using Deadfile.Entity;
 using Deadfile.Infrastructure.Converters;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using Deadfile.Model.Billable;
 using Deadfile.Model.Interfaces;
+using Deadfile.Model.Utils;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
 using Deadfile.Tab.Invoices;
@@ -24,10 +26,12 @@ namespace Deadfile.Tab.Test
         private class Host : IDisposable
         {
             private readonly TabIdentity _tabIdentity = new TabIdentity(1);
+            private InvoicesPageState _pageState = 0;
             private readonly Mock<IPrintService> _printServiceMock = new Mock<IPrintService>();
             private readonly Mock<IEventAggregator> _eventAggregatorMock = new Mock<IEventAggregator>();
             private readonly Mock<IDeadfileRepository> _deadfileRepositoryMock = new Mock<IDeadfileRepository>();
             private readonly Mock<IDeadfileDialogCoordinator> _dialogCoordinatorMock = new Mock<IDeadfileDialogCoordinator>();
+
             public readonly InvoicesPageViewModel ViewModel;
             public readonly ClientModel RinsibleElk;
             public readonly InvoiceModel RinsibleElkInvoice;
@@ -35,6 +39,7 @@ namespace Deadfile.Tab.Test
             private readonly UndoEvent _undoEvent = new UndoEvent();
             private readonly DeleteEvent _deleteEvent = new DeleteEvent();
             private readonly EditActionEvent _editActionEvent = new EditActionEvent();
+            private readonly List<string> _receivedDisplayNameMessages = new List<string>();
             private readonly DisplayNameEvent _displayNameEvent = new DisplayNameEvent();
             private readonly PageStateEvent<InvoicesPageState> _pageStateEvent = new PageStateEvent<InvoicesPageState>();
             private readonly SaveEvent _saveEvent = new SaveEvent();
@@ -46,9 +51,12 @@ namespace Deadfile.Tab.Test
 
             public Host()
             {
-                ViewModel = new InvoicesPageViewModel(_tabIdentity, _printServiceMock.Object, _deadfileRepositoryMock.Object, _eventAggregatorMock.Object, _dialogCoordinatorMock.Object);
+                ViewModel = new InvoicesPageViewModel(_tabIdentity, _printServiceMock.Object,
+                    _deadfileRepositoryMock.Object, _eventAggregatorMock.Object, _dialogCoordinatorMock.Object);
                 RinsibleElk = MakeRinsibleElk();
                 RinsibleElkInvoice = MakeRinsibleElkInvoiceModel();
+                _pageStateEvent.Subscribe((s) => _pageState = s);
+                _displayNameEvent.Subscribe((n) => _receivedDisplayNameMessages.Add(n));
             }
 
             public void NavigateToExisting(ClientModel clientModel, InvoiceModel model)
@@ -88,45 +96,15 @@ namespace Deadfile.Tab.Test
                     .Setup((ea) => ea.GetEvent<DisplayNameEvent>())
                     .Returns(_displayNameEvent)
                     .Verifiable();
-                _deadfileRepositoryMock
-                    .Setup((r) => r.GetClientById(model.ClientId))
-                    .Returns(clientModel)
-                    .Verifiable();
                 ViewModel.OnNavigatedTo(new ClientAndInvoiceNavigationKey(model.ClientId, model.Id));
-                VerifyAll();
-            }
-
-            public void NavigateToNew(ClientModel client)
-            {
-                _eventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<UndoEvent>())
-                    .Returns(_undoEvent)
-                    .Verifiable();
-                _eventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<DeleteEvent>())
-                    .Returns(_deleteEvent)
-                    .Verifiable();
-                _eventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<EditActionEvent>())
-                    .Returns(_editActionEvent)
-                    .Verifiable();
-                _eventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<PrintEvent>())
-                    .Returns(_printEvent)
-                    .Verifiable();
-                _eventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<PaidEvent>())
-                    .Returns(_paidEvent)
-                    .Verifiable();
-                _deadfileRepositoryMock
-                    .Setup((dr) => dr.GetClientById(client.ClientId))
-                    .Returns(client)
-                    .Verifiable();
-                _eventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<DisplayNameEvent>())
-                    .Returns(_displayNameEvent)
-                    .Verifiable();
-                ViewModel.OnNavigatedTo(new ClientAndInvoiceNavigationKey(client.ClientId, ModelBase.NewModelId));
+                ViewModel.CompleteNavigation();
+                Assert.Equal(InvoicesPageState.CanDelete | InvoicesPageState.CanEdit, _pageState);
+                Assert.Equal(InvoicesPageState.CanDelete | InvoicesPageState.CanEdit, ViewModel.State);
+                Assert.Equal(1, _receivedDisplayNameMessages.Count);
+                Assert.Equal(CompanyUtils.GetShortName(model.Company) + " " + model.InvoiceReference, _receivedDisplayNameMessages[0]);
+                Assert.Equal(Experience.Invoices, ViewModel.Experience);
+                Assert.False(ViewModel.UnderEdit);
+                _receivedDisplayNameMessages.Clear();
                 VerifyAll();
             }
 
@@ -152,10 +130,68 @@ namespace Deadfile.Tab.Test
             public void RegisterRinsibleElkBillables()
             {
                 var l = new List<BillableModel>();
-                l.Add(new BillableJob
+                var job1Expense1 = new BillableExpense
                 {
-                    
-                });
+                    NetAmount = 100,
+                    Description = "Expense 1 for 1 Dummy Job Address",
+                    State = BillableModelState.FullyIncluded,
+                    ExpenseId = 1451,
+                    InvoiceId = 115
+                };
+                var job1Expense2 = new BillableExpense
+                {
+                    NetAmount = 200,
+                    Description = "Expense 2 for 1 Dummy Job Address",
+                    State = BillableModelState.Claimed,
+                    ExpenseId = 1452,
+                    InvoiceId = 65
+                };
+                var job1Expense3 = new BillableExpense
+                {
+                    NetAmount = 300,
+                    Description = "Expense 3 for 1 Dummy Job Address",
+                    State = BillableModelState.Excluded,
+                    ExpenseId = 1453,
+                    InvoiceId = null
+                };
+                var job1Hours1 = new BillableBillableHour
+                {
+                    Hours = 5,
+                    Description = "Hours 1 for 1 Dummy Job Address",
+                    State = BillableModelState.Excluded,
+                    BillableHourId = 1451,
+                    InvoiceId = null
+                };
+                var job1Hours2 = new BillableExpense
+                {
+                    Hours = 2,
+                    Description = "Hours 2 for 1 Dummy Job Address",
+                    State = BillableModelState.FullyIncluded,
+                    ExpenseId = 1452,
+                    InvoiceId = 115
+                };
+                var job1 = new BillableJob
+                {
+                    FullAddress = "1 Dummy Job Address",
+                    JobId = 145,
+                    TotalPossibleHours = 7,
+                    Hours = 2,
+                    TotalPossibleNetAmount = 400,
+                    NetAmount = 100,
+                    State = BillableModelState.PartiallyIncluded
+                };
+                job1.Children.Add(job1Expense1);
+                job1.Children.Add(job1Expense2);
+                job1.Children.Add(job1Expense3);
+                job1.Children.Add(job1Hours1);
+                job1.Children.Add(job1Hours2);
+                var job2 = new BillableJob {FullAddress = "2 Dummy Job Address", JobId = 156};
+                l.Add(job1);
+                l.Add(job2);
+                _deadfileRepositoryMock
+                    .Setup((r) => r.GetBillableModelsForClientAndInvoice(116, 115))
+                    .Returns(l)
+                    .Verifiable();
             }
 
             private InvoiceModel MakeRinsibleElkInvoiceModel()
@@ -202,6 +238,11 @@ namespace Deadfile.Tab.Test
 
             public void VerifyAll()
             {
+                _eventAggregatorMock.VerifyAll();
+                _deadfileRepositoryMock.VerifyAll();
+                _printServiceMock.VerifyAll();
+                _dialogCoordinatorMock.VerifyAll();
+                Assert.Empty(_receivedDisplayNameMessages);
             }
 
             public void Dispose()
@@ -209,75 +250,10 @@ namespace Deadfile.Tab.Test
                 VerifyAll();
             }
 
-            public void StartEditing()
+            public void NavigateAway()
             {
-                _eventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<SaveEvent>())
-                    .Returns(_saveEvent)
-                    .Verifiable();
-                _eventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<DiscardChangesEvent>())
-                    .Returns(_discardChangesEvent)
-                    .Verifiable();
-                _eventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<PageStateEvent<InvoicesPageState>>())
-                    .Returns(_pageStateEvent)
-                    .Verifiable();
-                _eventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
-                    .Returns(_lockedForEditingEvent)
-                    .Verifiable();
-                _eventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<CanUndoEvent>())
-                    .Returns(_canUndoEvent)
-                    .Verifiable();
-                _editActionEvent.Publish(EditActionMessage.StartEditing);
-            }
-
-            public void SetBillablesForClient(int clientId, int invoiceId, IEnumerable<BillableJob> billables)
-            {
-                _deadfileRepositoryMock
-                    .Setup((r) => r.GetBillableModelsForClientAndInvoice(clientId, invoiceId))
-                    .Returns(billables)
-                    .Verifiable();
-            }
-            public void SetBillables(Company company, int[] suggestedInvoiceReferences)
-            {
-                _deadfileRepositoryMock
-                    .Setup((r) => r.HasUniqueInvoiceReference(ViewModel.SelectedItem, suggestedInvoiceReferences[0]))
-                    .Returns(true)
-                    .Verifiable();
-                _deadfileRepositoryMock
-                    .Setup((r) => r.GetSuggestedInvoiceReferenceIdsForCompany(company))
-                    .Returns(suggestedInvoiceReferences)
-                    .Verifiable();
-                ViewModel.SetBillableItems();
-            }
-
-            public void SetAcceptableInvoiceReference(int invoiceReference)
-            {
-                _deadfileRepositoryMock
-                    .Setup((r) => r.HasUniqueInvoiceReference(ViewModel.SelectedItem, invoiceReference))
-                    .Returns(true)
-                    .Verifiable();
-                ViewModel.SelectedItem.InvoiceReferenceString = invoiceReference.ToString();
-            }
-
-            public void SaveAndEndEditing(int idToSet)
-            {
-                _deadfileRepositoryMock
-                    .Setup((r) => r.SaveInvoice(ViewModel.SelectedItem, It.IsAny<IEnumerable<BillableJob>>()))
-                    .Callback(() =>
-                    {
-                        if (ViewModel.SelectedItem.Id == ModelBase.NewModelId) ViewModel.SelectedItem.Id = idToSet;
-                    })
-                    .Verifiable();
-                _eventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<PageStateEvent<InvoicesPageState>>())
-                    .Returns(_pageStateEvent)
-                    .Verifiable();
-                _saveEvent.Publish(SaveMessage.Save);
-                _editActionEvent.Publish(EditActionMessage.EndEditing);
+                ViewModel.OnNavigatedFrom();
+                VerifyAll();
             }
         }
 
@@ -299,130 +275,14 @@ namespace Deadfile.Tab.Test
         }
 
         [Fact]
-        public void TestNavigateToNewInvoice_SetBillables()
+        public void TestNavigateAwayFromExistingInvoice()
         {
             using (var host = new Host())
             {
-                var billables = new List<BillableJob>();
-                billables.Add(MakeBillableJob1());
-                host.SetBillablesForClient(0, ModelBase.NewModelId, billables);
                 host.NavigateToExisting(host.RinsibleElk, host.RinsibleElkInvoice);
-                host.ViewModel.Jobs[0].State = BillableModelState.FullyIncluded;
-                Assert.Equal(190.0, host.ViewModel.NetAmount);
+                host.NavigateAway();
             }
-        }
-
-        [Fact]
-        public void TestCreateNewValidInvoice_CanSave()
-        {
-            using (var host = new Host())
-            {
-                var billables = new List<BillableJob>();
-                billables.Add(MakeBillableJob1());
-                host.SetBillablesForClient(0, ModelBase.NewModelId, billables);
-                host.NavigateToNew(new ClientModel { ClientId = 0, FirstName = "Rinsible", LastName = "Elk", AddressFirstLine = "1 A Road", AddressPostCode = "N1 1AA" });
-                host.StartEditing();
-                Assert.True(host.ViewModel.CanSetBillableItems);
-                Assert.False(host.ViewModel.InvoiceEditable);
-                host.ViewModel.Jobs[0].State = BillableModelState.FullyIncluded;
-                host.ViewModel.SelectedItem.Description = "Some description";
-                Assert.Equal(0, host.ViewModel.SelectedItem.ChildrenList.Count);
-                host.SetBillables(Company.Imagine3DLtd, new int[1] { 57 });
-                Assert.Equal(1, host.ViewModel.SelectedItem.ChildrenList.Count);
-                Assert.True(host.ViewModel.InvoiceEditable);
-                host.ViewModel.SelectedItem.Description = "Hello world";
-                host.ViewModel.SelectedItem.Project = "Various";
-                // Until the child is given a description, cannot save.
-                Assert.Equal(1, host.ViewModel.Errors.Count);
-                Assert.False(host.ViewModel.CanSave);
-
-                // Should receive a message saying that we can save when no errors.
-                var stateMessages = new List<InvoicesPageState>();
-//                host.PageStateEvent.Subscribe((message) => stateMessages.Add(message));
-                host.ViewModel.SelectedItem.ChildrenList[0].Description = "Some description";
-                // Nooooow we can save.
-                Assert.Equal(0, host.ViewModel.Errors.Count);
-                Assert.True(host.ViewModel.CanSave);
-                Assert.Equal(1, stateMessages.Count);
-                Assert.True(stateMessages[0].HasFlag(InvoicesPageState.CanSave));
-            }
-        }
-
-        [Fact]
-        public void TestSaveNewValidInvoice_CannotSave()
-        {
-            using (var host = new Host())
-            {
-                var li = new List<InvoicesPageState>();
-//                host.PageStateEvent.Subscribe((message) => li.Add(message));
-                var billables = new List<BillableJob>();
-                billables.Add(MakeBillableJob1());
-                host.SetBillablesForClient(0, ModelBase.NewModelId, billables);
-                host.NavigateToNew(new ClientModel { ClientId = 0, FirstName = "Rinsible", LastName = "Elk", AddressFirstLine = "1 A Road", AddressPostCode = "N1 1AA" });
-                host.StartEditing();
-                Assert.True(host.ViewModel.CanSetBillableItems);
-                Assert.False(host.ViewModel.InvoiceEditable);
-                host.ViewModel.Jobs[0].State = BillableModelState.FullyIncluded;
-                host.ViewModel.SelectedItem.Description = "Some description";
-                Assert.Equal(0, host.ViewModel.SelectedItem.ChildrenList.Count);
-                host.SetBillables(Company.Imagine3DLtd, new int[1] { 57 });
-                Assert.Equal(1, host.ViewModel.SelectedItem.ChildrenList.Count);
-                Assert.True(host.ViewModel.InvoiceEditable);
-                host.ViewModel.SelectedItem.Description = "Hello world";
-                host.ViewModel.SelectedItem.ChildrenList[0].Description = "Some description";
-                host.ViewModel.SelectedItem.Project = "Various";
-                Assert.Equal(0, host.ViewModel.Errors.Count);
-                Assert.True(host.ViewModel.CanSave);
-                host.SaveAndEndEditing(65);
-                Assert.Equal(6, li.Count);
-                Assert.False(li[5].HasFlag(InvoicesPageState.CanSave));
-            }
-        }
-
-        private BillableJob MakeBillableJob1()
-        {
-            var billableJob = new BillableJob
-            {
-                FullAddress = "1 Some AddressFirstLine Road",
-                JobId = 0,
-                InvoiceId = ModelBase.NewModelId
-            };
-            var billableItem1 = new BillableExpense
-            {
-                InvoiceId = null,
-                ExpenseId = 0,
-                NetAmount = 100.0,
-                State = BillableModelState.Excluded
-            };
-            billableJob.Children.Add(billableItem1);
-            var billableItem2 = new BillableExpense
-            {
-                InvoiceId = null,
-                ExpenseId = 1,
-                Description = "Expense Description",
-                NetAmount = 50.0,
-                State = BillableModelState.Excluded
-            };
-            billableJob.Children.Add(billableItem2);
-            var billableItem3 = new BillableBillableHour
-            {
-                InvoiceId = null,
-                BillableHourId = 0,
-                Description = "Billable Hour Description",
-                NetAmount = 40.0,
-                State = BillableModelState.Excluded
-            };
-            billableJob.Children.Add(billableItem3);
-            var billableItem4 = new BillableBillableHour
-            {
-                InvoiceId = 27,
-                BillableHourId = 1,
-                Description = "Billable Hour Description",
-                NetAmount = 35.0,
-                State = BillableModelState.Claimed
-            };
-            billableJob.Children.Add(billableItem4);
-            return billableJob;
         }
     }
 }
+
