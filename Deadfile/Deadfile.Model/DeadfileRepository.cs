@@ -1282,6 +1282,8 @@ namespace Deadfile.Model
             ref bool hasClaimed,
             ref bool hasExcluded,
             ref bool hasIncluded,
+            ref double totalHours,
+            ref double includedHours,
             ref double totalAmount,
             ref double includedAmount)
         {
@@ -1292,10 +1294,13 @@ namespace Deadfile.Model
                     break;
                 case BillableModelState.Excluded:
                     hasExcluded = true;
+                    totalHours += billable.Hours;
                     totalAmount += billable.NetAmount;
                     break;
                 default:
                     hasIncluded = true;
+                    includedHours += billable.Hours;
+                    totalHours += billable.Hours;
                     includedAmount += billable.NetAmount;
                     totalAmount += billable.NetAmount;
                     break;
@@ -1362,6 +1367,8 @@ namespace Deadfile.Model
                 var hasClaimed = false;
                 var hasIncluded = false;
                 var hasExcluded = false;
+                double includedHours = 0;
+                double totalHours = 0;
                 double includedAmount = 0;
                 double totalAmount = 0;
 
@@ -1369,7 +1376,7 @@ namespace Deadfile.Model
                 AddExpensesForJob(invoiceId, job, ref hasClaimed, ref hasExcluded, ref hasIncluded, ref totalAmount, ref includedAmount);
 
                 // Find all billable hours for this job.
-                AddBillableHoursForJob(invoiceId, job, ref hasClaimed, ref hasExcluded, ref hasIncluded, ref totalAmount, ref includedAmount);
+                AddBillableHoursForJob(invoiceId, job, ref hasClaimed, ref hasExcluded, ref hasIncluded, ref totalHours, ref includedHours);
 
                 // Calculate the job state based on the billable items that are included.
                 if (hasIncluded)
@@ -1390,24 +1397,28 @@ namespace Deadfile.Model
                 }
                 job.NetAmount = includedAmount;
                 job.TotalPossibleNetAmount = totalAmount;
+                job.Hours = includedHours;
+                job.TotalPossibleHours = totalHours;
                 li.Add(job);
             }
             return li;
         }
 
         private static void AddBillableHoursForJob(int invoiceId, BillableJob job,
-            ref bool hasClaimed, ref bool hasExcluded, ref bool hasIncluded, ref double totalAmount,
-            ref double includedAmount)
+            ref bool hasClaimed, ref bool hasExcluded, ref bool hasIncluded, ref double totalHours,
+            ref double includedHours)
         {
             if (!HasConnectionString())
                 throw new ApplicationException("Log in corrupted");
+            var totalAmount = 0.0;
+            var includedAmount = 0.0;
             using (var dbContext = new DeadfileContext(_connectionString))
             {
                 foreach (var billableHour in (from billableHour in dbContext.BillableHours
                     where billableHour.JobId == job.JobId
                     select new BillableBillableHour()
                     {
-                        NetAmount = billableHour.NetAmount,
+                        Hours = billableHour.HoursWorked,
                         Description = billableHour.Description,
                         State =
                             (invoiceId == ModelBase.NewModelId)
@@ -1423,6 +1434,8 @@ namespace Deadfile.Model
                     }))
                 {
                     AddBillableToJob(job, billableHour, ref hasClaimed, ref hasExcluded, ref hasIncluded,
+                        ref totalHours,
+                        ref includedHours,
                         ref totalAmount,
                         ref includedAmount);
                 }
@@ -1432,6 +1445,8 @@ namespace Deadfile.Model
         private static void AddExpensesForJob(int invoiceId, BillableJob job, ref bool hasClaimed,
             ref bool hasExcluded, ref bool hasIncluded, ref double totalAmount, ref double includedAmount)
         {
+            var totalHours = 0.0;
+            var includedHours = 0.0;
             if (!HasConnectionString())
                 throw new ApplicationException("Log in corrupted");
             using (var dbContext = new DeadfileContext(_connectionString))
@@ -1453,7 +1468,9 @@ namespace Deadfile.Model
                         ExpenseId = expense.ExpenseId
                     }))
                 {
-                    AddBillableToJob(job, expense, ref hasClaimed, ref hasExcluded, ref hasIncluded, ref totalAmount,
+                    AddBillableToJob(job, expense, ref hasClaimed, ref hasExcluded, ref hasIncluded, ref totalHours,
+                        ref includedHours,
+                        ref totalAmount,
                         ref includedAmount);
                 }
             }

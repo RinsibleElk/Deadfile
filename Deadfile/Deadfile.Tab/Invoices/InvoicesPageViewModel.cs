@@ -119,11 +119,13 @@ namespace Deadfile.Tab.Invoices
             // Listen for changes to job state (whether selected as a billed item in this invoice).
             int index = 0;
             NetAmount = 0;
+            Hours = 0;
             foreach (var job in jobs)
             {
                 job.Index = index++;
                 job.Parent = this;
                 NetAmount += job.NetAmount;
+                Hours += job.Hours;
                 int subIndex = 0;
                 foreach (var child in job.Children)
                 {
@@ -383,10 +385,10 @@ namespace Deadfile.Tab.Invoices
             NotifyOfPropertyChange(nameof(InvoiceEditable));
         }
 
-        private double _netAmount;
         private SubscriptionToken _printEventSubscriptionToken = null;
         private SubscriptionToken _paidEventSubscriptionToken = null;
 
+        private double _netAmount;
         public double NetAmount
         {
             get { return _netAmount; }
@@ -395,6 +397,18 @@ namespace Deadfile.Tab.Invoices
                 if (value.Equals(_netAmount)) return;
                 _netAmount = value;
                 NotifyOfPropertyChange(() => NetAmount);
+            }
+        }
+
+        private double _hours;
+        public double Hours
+        {
+            get { return _hours; }
+            set
+            {
+                if (value.Equals(_hours)) return;
+                _hours = value;
+                NotifyOfPropertyChange(() => Hours);
             }
         }
 
@@ -432,9 +446,11 @@ namespace Deadfile.Tab.Invoices
         public void NetAmountChanged(int index)
         {
             NetAmount = 0;
+            Hours = 0;
             foreach (var job in Jobs)
             {
                 NetAmount += job.NetAmount;
+                Hours += job.Hours;
             }
         }
     }

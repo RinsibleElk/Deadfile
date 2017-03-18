@@ -93,7 +93,7 @@
                                             IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             IsTodayHighlighted="True" />
                                 <controls:NumericUpDown Grid.Row="2"
-                                                        Value="{Binding NetAmount}"
+                                                        Value="{Binding HoursWorked}"
                                                         IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                 <TextBox Grid.Row="3"
                                          IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"

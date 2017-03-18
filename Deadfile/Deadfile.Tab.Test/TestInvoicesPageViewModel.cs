@@ -23,20 +23,20 @@ namespace Deadfile.Tab.Test
     {
         private class Host : IDisposable
         {
-            public readonly ClientModel[] Clients;
-
-            public readonly TabIdentity TabIdentity = new TabIdentity(1);
-            public readonly Mock<IPrintService> PrintServiceMock = new Mock<IPrintService>();
-            public readonly Mock<IEventAggregator> EventAggregatorMock = new Mock<IEventAggregator>();
-            public readonly Mock<IDeadfileRepository> DeadfileRepositoryMock = new Mock<IDeadfileRepository>();
-            public readonly Mock<IDeadfileDialogCoordinator> DialogCoordinatorMock = new Mock<IDeadfileDialogCoordinator>();
+            private readonly TabIdentity _tabIdentity = new TabIdentity(1);
+            private readonly Mock<IPrintService> _printServiceMock = new Mock<IPrintService>();
+            private readonly Mock<IEventAggregator> _eventAggregatorMock = new Mock<IEventAggregator>();
+            private readonly Mock<IDeadfileRepository> _deadfileRepositoryMock = new Mock<IDeadfileRepository>();
+            private readonly Mock<IDeadfileDialogCoordinator> _dialogCoordinatorMock = new Mock<IDeadfileDialogCoordinator>();
             public readonly InvoicesPageViewModel ViewModel;
+            public readonly ClientModel RinsibleElk;
+            public readonly InvoiceModel RinsibleElkInvoice;
 
             private readonly UndoEvent _undoEvent = new UndoEvent();
             private readonly DeleteEvent _deleteEvent = new DeleteEvent();
             private readonly EditActionEvent _editActionEvent = new EditActionEvent();
             private readonly DisplayNameEvent _displayNameEvent = new DisplayNameEvent();
-            public readonly PageStateEvent<InvoicesPageState> PageStateEvent = new PageStateEvent<InvoicesPageState>();
+            private readonly PageStateEvent<InvoicesPageState> _pageStateEvent = new PageStateEvent<InvoicesPageState>();
             private readonly SaveEvent _saveEvent = new SaveEvent();
             private readonly PrintEvent _printEvent = new PrintEvent();
             private readonly PaidEvent _paidEvent = new PaidEvent();
@@ -46,63 +46,51 @@ namespace Deadfile.Tab.Test
 
             public Host()
             {
-                var clients = new List<ClientModel>();
-                clients.Add(new ClientModel()
-                {
-                    ClientId = 0,
-                    Title = "Herr",
-                    FirstName = "Herman",
-                    LastName = "German",
-                    AddressFirstLine = "1 Yemen Road",
-                    AddressSecondLine = "Yemen",
-                    AddressPostCode = "AB1 2CD",
-                    PhoneNumber1 = "01234567890"
-                });
-                Clients = clients.ToArray();
-
-                ViewModel = new InvoicesPageViewModel(TabIdentity, PrintServiceMock.Object, DeadfileRepositoryMock.Object, EventAggregatorMock.Object, DialogCoordinatorMock.Object);
+                ViewModel = new InvoicesPageViewModel(_tabIdentity, _printServiceMock.Object, _deadfileRepositoryMock.Object, _eventAggregatorMock.Object, _dialogCoordinatorMock.Object);
+                RinsibleElk = MakeRinsibleElk();
+                RinsibleElkInvoice = MakeRinsibleElkInvoiceModel();
             }
 
-            public void NavigateTo(InvoiceModel model)
+            public void NavigateToExisting(ClientModel clientModel, InvoiceModel model)
             {
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<UndoEvent>())
-                        .Returns(_undoEvent)
-                        .Verifiable();
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<DeleteEvent>())
-                        .Returns(_deleteEvent)
-                        .Verifiable();
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<EditActionEvent>())
-                        .Returns(_editActionEvent)
-                        .Verifiable();
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<PrintEvent>())
-                        .Returns(_printEvent)
-                        .Verifiable();
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<PaidEvent>())
-                        .Returns(_paidEvent)
-                        .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<UndoEvent>())
+                    .Returns(_undoEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DeleteEvent>())
+                    .Returns(_deleteEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<EditActionEvent>())
+                    .Returns(_editActionEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<PrintEvent>())
+                    .Returns(_printEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<PaidEvent>())
+                    .Returns(_paidEvent)
+                    .Verifiable();
                 if (model.Id != ModelBase.NewModelId)
                 {
-                        EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<PageStateEvent<InvoicesPageState>>())
-                            .Returns(PageStateEvent)
-                            .Verifiable();
-                    DeadfileRepositoryMock
+                    _eventAggregatorMock
+                        .Setup((ea) => ea.GetEvent<PageStateEvent<InvoicesPageState>>())
+                        .Returns(_pageStateEvent)
+                        .Verifiable();
+                    _deadfileRepositoryMock
                         .Setup((dr) => dr.GetInvoiceById(model.Id))
                         .Returns(model)
                         .Verifiable();
                 }
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<DisplayNameEvent>())
                     .Returns(_displayNameEvent)
                     .Verifiable();
-                DeadfileRepositoryMock
+                _deadfileRepositoryMock
                     .Setup((r) => r.GetClientById(model.ClientId))
-                    .Returns(Clients[model.ClientId])
+                    .Returns(clientModel)
                     .Verifiable();
                 ViewModel.OnNavigatedTo(new ClientAndInvoiceNavigationKey(model.ClientId, model.Id));
                 VerifyAll();
@@ -110,36 +98,106 @@ namespace Deadfile.Tab.Test
 
             public void NavigateToNew(ClientModel client)
             {
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<UndoEvent>())
                     .Returns(_undoEvent)
                     .Verifiable();
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<DeleteEvent>())
                     .Returns(_deleteEvent)
                     .Verifiable();
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<EditActionEvent>())
                     .Returns(_editActionEvent)
                     .Verifiable();
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<PrintEvent>())
                     .Returns(_printEvent)
                     .Verifiable();
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<PaidEvent>())
                     .Returns(_paidEvent)
                     .Verifiable();
-                DeadfileRepositoryMock
+                _deadfileRepositoryMock
                     .Setup((dr) => dr.GetClientById(client.ClientId))
                     .Returns(client)
                     .Verifiable();
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<DisplayNameEvent>())
                     .Returns(_displayNameEvent)
                     .Verifiable();
                 ViewModel.OnNavigatedTo(new ClientAndInvoiceNavigationKey(client.ClientId, ModelBase.NewModelId));
                 VerifyAll();
+            }
+
+            private ClientModel MakeRinsibleElk()
+            {
+                return new ClientModel
+                {
+                    ClientId = 116,
+                    AddressFirstLine = "1 Dummy Road",
+                    AddressSecondLine = "London",
+                    AddressPostCode = "N1 1AA",
+                    Company = "RinsibleElk",
+                    EmailAddress = "rinsible.elk@gmail.com",
+                    Title = "Sir",
+                    FirstName = "Rinsible",
+                    LastName = "Elk",
+                    PhoneNumber1 = "07193265784",
+                    Status = ClientStatus.Active,
+                    Id = 116
+                };
+            }
+
+            public void RegisterRinsibleElkBillables()
+            {
+                var l = new List<BillableModel>();
+                l.Add(new BillableJob
+                {
+                    
+                });
+            }
+
+            private InvoiceModel MakeRinsibleElkInvoiceModel()
+            {
+                var model = new InvoiceModel
+                {
+                    ClientId = 116,
+                    InvoiceId = 115,
+                    Project = "1 Dummy Project Road",
+                    ClientAddressFirstLine = "1 Dummy Road",
+                    ClientAddressSecondLine = "London",
+                    ClientAddressPostCode = "N1 1AA",
+                    ClientName = "Rinsible Elk",
+                    CreatedDate = new DateTime(2016, 12, 17),
+                    Description = "Various work",
+                    ChildrenList = new List<InvoiceItemModel>(),
+                    NetAmount = 700,
+                    Company = Company.Imagine3DLtd,
+                    GrossAmount = 700,
+                    VatRate = 0,
+                    VatValue = 0,
+                    InvoiceReference = 52,
+                    InvoiceReferenceString = "52",
+                    Status = InvoiceStatus.Created,
+                    Repository = _deadfileRepositoryMock.Object
+                };
+                model.ChildrenList.Add(MakeRinsibleElkInvoiceItem());
+                model.ChildrenUpdated();
+                return model;
+            }
+
+            private InvoiceItemModel MakeRinsibleElkInvoiceItem()
+            {
+                return new InvoiceItemModel
+                {
+                    Context = 0,
+                    InvoiceId = 115,
+                    Description = "Some work what we done",
+                    InvoiceItemId = 165,
+                    NetAmount = 700,
+                    ParentId = 115
+                };
             }
 
             public void VerifyAll()
@@ -153,23 +211,23 @@ namespace Deadfile.Tab.Test
 
             public void StartEditing()
             {
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<SaveEvent>())
                     .Returns(_saveEvent)
                     .Verifiable();
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<DiscardChangesEvent>())
                     .Returns(_discardChangesEvent)
                     .Verifiable();
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<PageStateEvent<InvoicesPageState>>())
-                    .Returns(PageStateEvent)
+                    .Returns(_pageStateEvent)
                     .Verifiable();
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
                     .Returns(_lockedForEditingEvent)
                     .Verifiable();
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<CanUndoEvent>())
                     .Returns(_canUndoEvent)
                     .Verifiable();
@@ -178,18 +236,18 @@ namespace Deadfile.Tab.Test
 
             public void SetBillablesForClient(int clientId, int invoiceId, IEnumerable<BillableJob> billables)
             {
-                DeadfileRepositoryMock
+                _deadfileRepositoryMock
                     .Setup((r) => r.GetBillableModelsForClientAndInvoice(clientId, invoiceId))
                     .Returns(billables)
                     .Verifiable();
             }
             public void SetBillables(Company company, int[] suggestedInvoiceReferences)
             {
-                DeadfileRepositoryMock
+                _deadfileRepositoryMock
                     .Setup((r) => r.HasUniqueInvoiceReference(ViewModel.SelectedItem, suggestedInvoiceReferences[0]))
                     .Returns(true)
                     .Verifiable();
-                DeadfileRepositoryMock
+                _deadfileRepositoryMock
                     .Setup((r) => r.GetSuggestedInvoiceReferenceIdsForCompany(company))
                     .Returns(suggestedInvoiceReferences)
                     .Verifiable();
@@ -198,7 +256,7 @@ namespace Deadfile.Tab.Test
 
             public void SetAcceptableInvoiceReference(int invoiceReference)
             {
-                DeadfileRepositoryMock
+                _deadfileRepositoryMock
                     .Setup((r) => r.HasUniqueInvoiceReference(ViewModel.SelectedItem, invoiceReference))
                     .Returns(true)
                     .Verifiable();
@@ -207,16 +265,16 @@ namespace Deadfile.Tab.Test
 
             public void SaveAndEndEditing(int idToSet)
             {
-                DeadfileRepositoryMock
+                _deadfileRepositoryMock
                     .Setup((r) => r.SaveInvoice(ViewModel.SelectedItem, It.IsAny<IEnumerable<BillableJob>>()))
                     .Callback(() =>
                     {
                         if (ViewModel.SelectedItem.Id == ModelBase.NewModelId) ViewModel.SelectedItem.Id = idToSet;
                     })
                     .Verifiable();
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<PageStateEvent<InvoicesPageState>>())
-                    .Returns(PageStateEvent)
+                    .Returns(_pageStateEvent)
                     .Verifiable();
                 _saveEvent.Publish(SaveMessage.Save);
                 _editActionEvent.Publish(EditActionMessage.EndEditing);
@@ -232,12 +290,11 @@ namespace Deadfile.Tab.Test
         }
 
         [Fact]
-        public void TestNavigateToNewInvoice()
+        public void TestNavigateToExistingInvoice()
         {
             using (var host = new Host())
             {
-                host.SetBillablesForClient(0, ModelBase.NewModelId, new BillableJob[0]);
-                host.NavigateTo(new InvoiceModel() { ClientId = 0 });
+                host.NavigateToExisting(host.RinsibleElk, host.RinsibleElkInvoice);
             }
         }
 
@@ -249,7 +306,7 @@ namespace Deadfile.Tab.Test
                 var billables = new List<BillableJob>();
                 billables.Add(MakeBillableJob1());
                 host.SetBillablesForClient(0, ModelBase.NewModelId, billables);
-                host.NavigateTo(new InvoiceModel() {ClientId = 0});
+                host.NavigateToExisting(host.RinsibleElk, host.RinsibleElkInvoice);
                 host.ViewModel.Jobs[0].State = BillableModelState.FullyIncluded;
                 Assert.Equal(190.0, host.ViewModel.NetAmount);
             }
@@ -281,7 +338,7 @@ namespace Deadfile.Tab.Test
 
                 // Should receive a message saying that we can save when no errors.
                 var stateMessages = new List<InvoicesPageState>();
-                host.PageStateEvent.Subscribe((message) => stateMessages.Add(message));
+//                host.PageStateEvent.Subscribe((message) => stateMessages.Add(message));
                 host.ViewModel.SelectedItem.ChildrenList[0].Description = "Some description";
                 // Nooooow we can save.
                 Assert.Equal(0, host.ViewModel.Errors.Count);
@@ -297,7 +354,7 @@ namespace Deadfile.Tab.Test
             using (var host = new Host())
             {
                 var li = new List<InvoicesPageState>();
-                host.PageStateEvent.Subscribe((message) => li.Add(message));
+//                host.PageStateEvent.Subscribe((message) => li.Add(message));
                 var billables = new List<BillableJob>();
                 billables.Add(MakeBillableJob1());
                 host.SetBillablesForClient(0, ModelBase.NewModelId, billables);

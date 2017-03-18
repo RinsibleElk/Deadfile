@@ -19,10 +19,7 @@ namespace Deadfile.Model.Billable
             set { SetProperty(ref _billableHourId, value); }
         }
 
-        public override BillableModelType ModelType
-        {
-            get { return BillableModelType.BillableHour; }
-        }
+        public override BillableModelType ModelType => BillableModelType.BillableHour;
 
         private string _description;
 
@@ -36,7 +33,7 @@ namespace Deadfile.Model.Billable
             }
         }
 
-        public override string Text { get { return Description + " (" + NetAmount + ")"; } }
+        public override string Text => $"{Description} ({Hours} hours)";
 
         public override int Id
         {

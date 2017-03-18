@@ -21,6 +21,7 @@ namespace Deadfile.Tab.Invoices
         bool CanSetBillableItems { get; }
         bool InvoiceEditable { get; }
         double NetAmount { get; set; }
+        double Hours { get; set; }
         ICommand AddItemCommand { get; }
         ObservableCollection<string> SuggestedInvoiceReferences { get; set; }
     }
