@@ -46,8 +46,13 @@ namespace Deadfile.Tab.Invoices
             }
         }
 
-        public bool CanPrintItem => CanSaveItem || CanEditItem;
-
+        public bool CanPrintItem => CanPrintItemInner();
+        private bool CanPrintItemInner()
+        {
+            if (PageState.HasFlag(InvoicesPageState.UnderEdit))
+                return CanSaveItem;
+            return CanEditItem;
+        }
         public override bool CanSaveItem => PageState.HasFlag(InvoicesPageState.CanSave);
         public override bool SaveItemIsVisible => PageState.HasFlag(InvoicesPageState.UnderEdit);
         public override bool CanDeleteItem => PageState.HasFlag(InvoicesPageState.CanDelete);

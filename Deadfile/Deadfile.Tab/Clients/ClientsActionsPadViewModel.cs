@@ -16,7 +16,6 @@ namespace Deadfile.Tab.Clients
         public ClientsActionsPadViewModel(TabIdentity tabIdentity,
             IEventAggregator eventAggregator) : base(tabIdentity, eventAggregator)
         {
-            AddItemCommand = new DelegateCommand(AddItem, () => CanAddItem);
         }
 
         public bool CanAddItem => !PageState.HasFlag(ClientsPageState.UnderEdit);
@@ -38,7 +37,5 @@ namespace Deadfile.Tab.Clients
             Logger.Info("Event|AddClientEvent|Send|{0}|{1}", TabIdentity.TabIndex, AddClientMessage.AddClient);
             EventAggregator.GetEvent<AddClientEvent>().Publish(AddClientMessage.AddClient);
         }
-
-        public ICommand AddItemCommand { get; }
     }
 }

@@ -98,7 +98,7 @@
                     <HierarchicalDataTemplate DataType="{x:Type browsermodel:BrowserInvoice}" ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal">
                             <Image Name="imgIcon"  Height="16" Width="16" Source="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab.png" />
-                            <TextBlock Padding="4,0,0,0" Text="{Binding InvoiceReference}" />
+                            <TextBlock Padding="4,0,0,0" Text="{Binding DisplayName}" />
                         </StackPanel>
                         <HierarchicalDataTemplate.Triggers>
                             <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:InvoiceStatus.Created}">

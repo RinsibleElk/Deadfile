@@ -197,8 +197,11 @@ namespace Deadfile.Model
                     {
                         foreach (var invoice in (from invoice in dbContext.Invoices
                             where
-                            ((settings.FilterText == null || settings.FilterText == "") ||
-                             invoice.InvoiceReference.ToString().StartsWith(settings.FilterText))
+                            ((  settings.FilterText == null ||
+                                settings.FilterText == "") ||
+                                invoice.InvoiceReference.ToString().Contains(settings.FilterText) ||
+                                invoice.ClientName.Contains(settings.FilterText) ||
+                                invoice.Project.Contains(settings.FilterText))
                             where
                             ((settings.IncludeInactiveEnabled) || invoice.Status == InvoiceStatus.Created)
                             orderby
@@ -212,7 +215,9 @@ namespace Deadfile.Model
                                 Id = invoice.InvoiceId,
                                 ParentId = invoice.ClientId,
                                 InvoiceReference = invoice.InvoiceReference,
-                                Status = invoice.Status
+                                Status = invoice.Status,
+                                ClientName = invoice.ClientName,
+                                Project = invoice.Project
                             }))
                         {
                             invoice.SetRepository(settings.Mode, settings.IncludeInactiveEnabled, false, this);
@@ -290,7 +295,9 @@ namespace Deadfile.Model
                             InvoiceReference = invoiceEntity.InvoiceReference,
                             Id = invoiceEntity.InvoiceId,
                             ParentId = invoiceEntity.ClientId,
-                            Status = invoiceEntity.Status
+                            Status = invoiceEntity.Status,
+                            ClientName = invoiceEntity.ClientName,
+                            Project = invoiceEntity.Project
                         };
                     invoice.SetRepository(mode, includeInactiveEnabled, true, this);
                     li.Add(invoice);

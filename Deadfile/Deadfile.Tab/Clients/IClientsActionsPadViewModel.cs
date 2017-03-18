@@ -13,6 +13,5 @@ namespace Deadfile.Tab.Clients
         void AddItem();
         bool CanAddItem { get; }
         bool AddItemIsVisible { get; }
-        ICommand AddItemCommand { get; }
     }
 }
