@@ -57,10 +57,6 @@ namespace Deadfile.Tab.Invoices
         public List<string> Errors { get; } = new List<string>();
         public string FilterText { get; set; } = "";
         public ObservableCollection<BillableModel> Jobs { get; set; }
-        public void SetCompany()
-        {
-            throw new NotImplementedException();
-        }
         public void SetBillableItems()
         {
             throw new NotImplementedException();

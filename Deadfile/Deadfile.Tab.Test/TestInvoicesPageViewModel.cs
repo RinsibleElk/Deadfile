@@ -36,6 +36,7 @@ namespace Deadfile.Tab.Test
             public readonly ClientModel RinsibleElk;
             public readonly InvoiceModel RinsibleElkInvoice;
 
+            private readonly List<CanUndoMessage> _receivedCanUndoMessages = new List<CanUndoMessage>();
             private readonly UndoEvent _undoEvent = new UndoEvent();
             private readonly DeleteEvent _deleteEvent = new DeleteEvent();
             private readonly EditActionEvent _editActionEvent = new EditActionEvent();
@@ -46,8 +47,11 @@ namespace Deadfile.Tab.Test
             private readonly PrintEvent _printEvent = new PrintEvent();
             private readonly PaidEvent _paidEvent = new PaidEvent();
             private readonly DiscardChangesEvent _discardChangesEvent = new DiscardChangesEvent();
+            private readonly List<LockedForEditingMessage> _receivedLockedForEditingMessages = new List<LockedForEditingMessage>();
             private readonly LockedForEditingEvent _lockedForEditingEvent = new LockedForEditingEvent();
             private readonly CanUndoEvent _canUndoEvent = new CanUndoEvent();
+            private readonly List<NavigateFallBackMessage> _receivedNavigateFallBackMessages = new List<NavigateFallBackMessage>();
+            private readonly NavigateFallBackEvent _navigateFallBackEvent = new NavigateFallBackEvent();
 
             public Host()
             {
@@ -57,6 +61,75 @@ namespace Deadfile.Tab.Test
                 RinsibleElkInvoice = MakeRinsibleElkInvoiceModel();
                 _pageStateEvent.Subscribe((s) => _pageState = s);
                 _displayNameEvent.Subscribe((n) => _receivedDisplayNameMessages.Add(n));
+                _lockedForEditingEvent.Subscribe((m) => _receivedLockedForEditingMessages.Add(m));
+                _canUndoEvent.Subscribe((m) => _receivedCanUndoMessages.Add(m));
+                _navigateFallBackEvent.Subscribe((m) => _receivedNavigateFallBackMessages.Add(m));
+            }
+
+            public void NavigateToNew(ClientModel clientModel)
+            {
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<UndoEvent>())
+                    .Returns(_undoEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DeleteEvent>())
+                    .Returns(_deleteEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<EditActionEvent>())
+                    .Returns(_editActionEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<PrintEvent>())
+                    .Returns(_printEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<PaidEvent>())
+                    .Returns(_paidEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<PageStateEvent<InvoicesPageState>>())
+                    .Returns(_pageStateEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DisplayNameEvent>())
+                    .Returns(_displayNameEvent)
+                    .Verifiable();
+                _deadfileRepositoryMock
+                    .Setup((dr) => dr.GetClientById(clientModel.Id))
+                    .Returns(clientModel)
+                    .Verifiable();
+                if (clientModel == RinsibleElk)
+                {
+                    RegisterRinsibleElkBillables(true);
+                }
+                ViewModel.OnNavigatedTo(new ClientAndInvoiceNavigationKey(clientModel.ClientId, ModelBase.NewModelId));
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<SaveEvent>())
+                    .Returns(_saveEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DiscardChangesEvent>())
+                    .Returns(_discardChangesEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
+                    .Returns(_lockedForEditingEvent)
+                    .Verifiable();
+                ViewModel.CompleteNavigation();
+                Assert.Equal(InvoicesPageState.CanDiscard | InvoicesPageState.UnderEdit, _pageState);
+                Assert.Equal(InvoicesPageState.CanDiscard | InvoicesPageState.UnderEdit, ViewModel.State);
+                Assert.Equal(1, _receivedDisplayNameMessages.Count);
+                Assert.Equal("New Invoice", _receivedDisplayNameMessages[0]);
+                _receivedDisplayNameMessages.Clear();
+                Assert.Equal(1, _receivedLockedForEditingMessages.Count);
+                Assert.True(_receivedLockedForEditingMessages[0].IsLocked);
+                _receivedLockedForEditingMessages.Clear();
+                Assert.Equal(Experience.Invoices, ViewModel.Experience);
+                Assert.True(ViewModel.UnderEdit);
+                Assert.False(ViewModel.CanDelete);
+                VerifyAll();
             }
 
             public void NavigateToExisting(ClientModel clientModel, InvoiceModel model)
@@ -81,16 +154,17 @@ namespace Deadfile.Tab.Test
                     .Setup((ea) => ea.GetEvent<PaidEvent>())
                     .Returns(_paidEvent)
                     .Verifiable();
-                if (model.Id != ModelBase.NewModelId)
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<PageStateEvent<InvoicesPageState>>())
+                    .Returns(_pageStateEvent)
+                    .Verifiable();
+                _deadfileRepositoryMock
+                    .Setup((dr) => dr.GetInvoiceById(model.Id))
+                    .Returns(model)
+                    .Verifiable();
+                if (model == RinsibleElkInvoice)
                 {
-                    _eventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<PageStateEvent<InvoicesPageState>>())
-                        .Returns(_pageStateEvent)
-                        .Verifiable();
-                    _deadfileRepositoryMock
-                        .Setup((dr) => dr.GetInvoiceById(model.Id))
-                        .Returns(model)
-                        .Verifiable();
+                    RegisterRinsibleElkBillables(false);
                 }
                 _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<DisplayNameEvent>())
@@ -104,6 +178,7 @@ namespace Deadfile.Tab.Test
                 Assert.Equal(CompanyUtils.GetShortName(model.Company) + " " + model.InvoiceReference, _receivedDisplayNameMessages[0]);
                 Assert.Equal(Experience.Invoices, ViewModel.Experience);
                 Assert.False(ViewModel.UnderEdit);
+                Assert.True(ViewModel.CanDelete);
                 _receivedDisplayNameMessages.Clear();
                 VerifyAll();
             }
@@ -127,14 +202,14 @@ namespace Deadfile.Tab.Test
                 };
             }
 
-            public void RegisterRinsibleElkBillables()
+            private void RegisterRinsibleElkBillables(bool isNew)
             {
                 var l = new List<BillableModel>();
                 var job1Expense1 = new BillableExpense
                 {
                     NetAmount = 100,
                     Description = "Expense 1 for 1 Dummy Job Address",
-                    State = BillableModelState.FullyIncluded,
+                    State = (isNew ? BillableModelState.Claimed : BillableModelState.FullyIncluded),
                     ExpenseId = 1451,
                     InvoiceId = 115
                 };
@@ -166,7 +241,7 @@ namespace Deadfile.Tab.Test
                 {
                     Hours = 2,
                     Description = "Hours 2 for 1 Dummy Job Address",
-                    State = BillableModelState.FullyIncluded,
+                    State = (isNew ? BillableModelState.Claimed : BillableModelState.FullyIncluded),
                     ExpenseId = 1452,
                     InvoiceId = 115
                 };
@@ -174,11 +249,11 @@ namespace Deadfile.Tab.Test
                 {
                     FullAddress = "1 Dummy Job Address",
                     JobId = 145,
-                    TotalPossibleHours = 7,
-                    Hours = 2,
-                    TotalPossibleNetAmount = 400,
-                    NetAmount = 100,
-                    State = BillableModelState.PartiallyIncluded
+                    TotalPossibleHours = (isNew ? 5 : 7),
+                    Hours = (isNew ? 0 : 2),
+                    TotalPossibleNetAmount = (isNew ? 300 : 400),
+                    NetAmount = (isNew ? 0 : 100),
+                    State = (isNew ? BillableModelState.Excluded : BillableModelState.PartiallyIncluded)
                 };
                 job1.Children.Add(job1Expense1);
                 job1.Children.Add(job1Expense2);
@@ -189,7 +264,7 @@ namespace Deadfile.Tab.Test
                 l.Add(job1);
                 l.Add(job2);
                 _deadfileRepositoryMock
-                    .Setup((r) => r.GetBillableModelsForClientAndInvoice(116, 115))
+                    .Setup((r) => r.GetBillableModelsForClientAndInvoice(116, (isNew ? ModelBase.NewModelId : 115)))
                     .Returns(l)
                     .Verifiable();
             }
@@ -243,6 +318,9 @@ namespace Deadfile.Tab.Test
                 _printServiceMock.VerifyAll();
                 _dialogCoordinatorMock.VerifyAll();
                 Assert.Empty(_receivedDisplayNameMessages);
+                Assert.Empty(_receivedLockedForEditingMessages);
+                Assert.Empty(_receivedCanUndoMessages);
+                Assert.Empty(_receivedNavigateFallBackMessages);
             }
 
             public void Dispose()
@@ -253,6 +331,90 @@ namespace Deadfile.Tab.Test
             public void NavigateAway()
             {
                 ViewModel.OnNavigatedFrom();
+                VerifyAll();
+            }
+
+            public void Edit()
+            {
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<SaveEvent>())
+                    .Returns(_saveEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DiscardChangesEvent>())
+                    .Returns(_discardChangesEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
+                    .Returns(_lockedForEditingEvent)
+                    .Verifiable();
+                _deadfileRepositoryMock
+                    .Setup((dr) => dr.HasUniqueInvoiceReference(ViewModel.SelectedItem, ViewModel.SelectedItem.InvoiceReference))
+                    .Returns(true)
+                    .Verifiable();
+                _editActionEvent.Publish(EditActionMessage.StartEditing);
+                Assert.True(ViewModel.CanSave);
+                Assert.True(ViewModel.CanEdit);
+                Assert.True(ViewModel.State.HasFlag(InvoicesPageState.CanDiscard));
+                Assert.True(ViewModel.UnderEdit);
+                Assert.Equal(1, _receivedLockedForEditingMessages.Count);
+                Assert.True(_receivedLockedForEditingMessages[0].IsLocked);
+                Assert.False(ViewModel.InvoiceEditable);
+                Assert.True(ViewModel.Editable);
+                Assert.True(ViewModel.CanSetBillableItems);
+                Assert.Equal(InvoiceCreationState.DefineBillables, ViewModel.SelectedItem.CreationState);
+                _receivedLockedForEditingMessages.Clear();
+                VerifyAll();
+            }
+
+            public void Discard(ClientAndInvoiceNavigationKey? navigationKey)
+            {
+                _discardChangesEvent.Publish(DiscardChangesMessage.Discard);
+                _editActionEvent.Publish(EditActionMessage.EndEditing);
+                Assert.Equal(1, _receivedLockedForEditingMessages.Count);
+                Assert.False(_receivedLockedForEditingMessages[0].IsLocked);
+                if (navigationKey != null)
+                {
+                    var key = (ClientAndInvoiceNavigationKey)_receivedLockedForEditingMessages[0].NewParameters;
+                    Assert.Equal(navigationKey, key);
+                }
+                else
+                {
+                    Assert.Equal(null, _receivedLockedForEditingMessages[0].NewParameters);
+                }
+                _receivedLockedForEditingMessages.Clear();
+                VerifyAll();
+            }
+
+            public void SetBillableItems(bool registerCanUndo)
+            {
+                if (registerCanUndo)
+                {
+                    _eventAggregatorMock
+                        .Setup((ea) => ea.GetEvent<CanUndoEvent>())
+                        .Returns(_canUndoEvent)
+                        .Verifiable();
+                }
+                ViewModel.SetBillableItems();
+                if (registerCanUndo)
+                {
+                    Assert.Equal(1, _receivedCanUndoMessages.Count);
+                    Assert.Equal(CanUndoMessage.CanUndo, _receivedCanUndoMessages[0]);
+                    _receivedCanUndoMessages.Clear();
+                }
+                Assert.Equal(InvoiceCreationState.DefineInvoice, ViewModel.SelectedItem.CreationState);
+                VerifyAll();
+            }
+
+            public void Undo(CanUndoMessage[] expectedCanUndoMessages)
+            {
+                _undoEvent.Publish(UndoMessage.Undo);
+                Assert.Equal(expectedCanUndoMessages.Length, _receivedCanUndoMessages.Count);
+                for (int i = 0; i < expectedCanUndoMessages.Length; i++)
+                {
+                    Assert.Equal(expectedCanUndoMessages[i], _receivedCanUndoMessages[i]);
+                }
+                _receivedCanUndoMessages.Clear();
                 VerifyAll();
             }
         }
@@ -281,6 +443,124 @@ namespace Deadfile.Tab.Test
             {
                 host.NavigateToExisting(host.RinsibleElk, host.RinsibleElkInvoice);
                 host.NavigateAway();
+            }
+        }
+
+        [Fact]
+        public void TestStartEditingExistingInvoice()
+        {
+            using (var host = new Host())
+            {
+                host.NavigateToExisting(host.RinsibleElk, host.RinsibleElkInvoice);
+                host.Edit();
+            }
+        }
+
+        [Fact]
+        public void TestDiscardExistingInvoice()
+        {
+            using (var host = new Host())
+            {
+                host.NavigateToExisting(host.RinsibleElk, host.RinsibleElkInvoice);
+                host.Edit();
+                host.Discard(new ClientAndInvoiceNavigationKey(host.RinsibleElk.ClientId, host.RinsibleElkInvoice.InvoiceId));
+            }
+        }
+
+        [Fact]
+        public void TestStartEditingExistingInvoice_SetBillableItems()
+        {
+            using (var host = new Host())
+            {
+                host.NavigateToExisting(host.RinsibleElk, host.RinsibleElkInvoice);
+                host.Edit();
+                host.SetBillableItems(true);
+            }
+        }
+
+        [Fact]
+        public void TestStartEditingExistingInvoice_SetBillableItems_Undo()
+        {
+            using (var host = new Host())
+            {
+                host.NavigateToExisting(host.RinsibleElk, host.RinsibleElkInvoice);
+                host.Edit();
+                host.SetBillableItems(true);
+                host.Undo(new CanUndoMessage[2] { CanUndoMessage.CannotUndo, CanUndoMessage.CanRedo });
+            }
+        }
+
+        [Fact]
+        public void TestStartEditingExistingInvoice_SetBillableItems_SetCompany_Undo()
+        {
+            using (var host = new Host())
+            {
+                host.NavigateToExisting(host.RinsibleElk, host.RinsibleElkInvoice);
+                host.Edit();
+                host.SetBillableItems(true);
+                host.ViewModel.SelectedItem.Company = Company.PaulSamsonCharteredSurveyorLtd;
+                host.Undo(new CanUndoMessage[1] {CanUndoMessage.CanRedo});
+                Assert.Equal(Company.Imagine3DLtd, host.ViewModel.SelectedItem.Company);
+                Assert.Equal(InvoiceCreationState.DefineInvoice, host.ViewModel.SelectedItem.CreationState);
+            }
+        }
+
+        [Theory]
+        [InlineData(nameof(InvoiceModel.InvoiceReferenceString), "abcde")]
+        [InlineData(nameof(InvoiceModel.ClientName), "")]
+        // Over 100 characters long
+        [InlineData(nameof(InvoiceModel.ClientName), "abcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcde")]
+        [InlineData(nameof(InvoiceModel.Project), "")]
+        // Over 200 characters long
+        [InlineData(nameof(InvoiceModel.Project), "abcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcde")]
+        [InlineData(nameof(InvoiceModel.Description), "")]
+        // Over 200 characters long
+        [InlineData(nameof(InvoiceModel.Description), "abcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcde")]
+        [InlineData(nameof(InvoiceModel.ClientAddressFirstLine), "")]
+        // Over 200 characters long
+        [InlineData(nameof(InvoiceModel.ClientAddressFirstLine), "abcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcde")]
+        [InlineData(nameof(InvoiceModel.ClientAddressSecondLine), "abcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcde")]
+        [InlineData(nameof(InvoiceModel.ClientAddressThirdLine), "abcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcde")]
+        // Over 20 characters long
+        [InlineData(nameof(InvoiceModel.ClientAddressPostCode), "abcdefabcdefabcdefabcdefabcdef")]
+        public void TestEditSetInvalidValue_CantSave(string propertyName, object value)
+        {
+            using (var host = new Host())
+            {
+                host.NavigateToExisting(host.RinsibleElk, host.RinsibleElkInvoice);
+                host.Edit();
+                host.SetBillableItems(true);
+                typeof(InvoiceModel).GetProperty(propertyName).SetValue(host.ViewModel.SelectedItem, value);
+                Assert.False(host.ViewModel.CanSave);
+            }
+        }
+
+        [Theory]
+        [InlineData(nameof(InvoiceModel.ClientName), "Mickey Mouse")]
+        [InlineData(nameof(InvoiceModel.Project), "4 Privet Drive")]
+        [InlineData(nameof(InvoiceModel.Description), "Some work that was done")]
+        [InlineData(nameof(InvoiceModel.ClientAddressFirstLine), "4 Privet Drive")]
+        [InlineData(nameof(InvoiceModel.ClientAddressSecondLine), "Berkshire")]
+        [InlineData(nameof(InvoiceModel.ClientAddressThirdLine), "London")]
+        [InlineData(nameof(InvoiceModel.ClientAddressPostCode), "N1 1AA")]
+        public void TestEditSetValidValue_CanSave(string propertyName, object value)
+        {
+            using (var host = new Host())
+            {
+                host.NavigateToExisting(host.RinsibleElk, host.RinsibleElkInvoice);
+                host.Edit();
+                host.SetBillableItems(true);
+                typeof(InvoiceModel).GetProperty(propertyName).SetValue(host.ViewModel.SelectedItem, value);
+                Assert.True(host.ViewModel.CanSave);
+            }
+        }
+
+        [Fact]
+        public void TestAddNewInvoice()
+        {
+            using (var host = new Host())
+            {
+                host.NavigateToNew(host.RinsibleElk);
             }
         }
     }

@@ -313,14 +313,21 @@ namespace Deadfile.Tab.Test
                 VerifyAll();
             }
 
-            public void Discard(ClientNavigationKey navigationKey)
+            public void Discard(ClientNavigationKey? navigationKey)
             {
                 _discardChangesEvent.Publish(DiscardChangesMessage.Discard);
                 _editActionEvent.Publish(EditActionMessage.EndEditing);
                 Assert.Equal(1, _receivedLockedForEditingMessages.Count);
                 Assert.True(!_receivedLockedForEditingMessages[0].IsLocked);
-                var key = (ClientNavigationKey)_receivedLockedForEditingMessages[0].NewParameters;
-                Assert.Equal(navigationKey, key);
+                if (navigationKey != null)
+                {
+                    var key = (ClientNavigationKey) _receivedLockedForEditingMessages[0].NewParameters;
+                    Assert.Equal(navigationKey, key);
+                }
+                else
+                {
+                    Assert.Equal(null, _receivedLockedForEditingMessages[0].NewParameters);
+                }
                 _receivedLockedForEditingMessages.Clear();
             }
         }

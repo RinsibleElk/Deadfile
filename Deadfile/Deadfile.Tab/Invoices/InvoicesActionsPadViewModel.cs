@@ -14,7 +14,6 @@ namespace Deadfile.Tab.Invoices
     /// </summary>
     class InvoicesActionsPadViewModel : ActionsPadViewModel<InvoicesPageState>, IInvoicesActionsPadViewModel
     {
-        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private bool _canPaidItem = true;
         private bool _paidItemIsVisible = true;
 

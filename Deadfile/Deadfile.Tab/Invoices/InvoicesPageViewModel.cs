@@ -372,12 +372,6 @@ namespace Deadfile.Tab.Invoices
             }
         }
 
-        public void SetCompany()
-        {
-            SelectedItem.CreationState = InvoiceCreationState.DefineBillables;
-            NotifyOfPropertyChange(nameof(CanSetBillableItems));
-        }
-
         public void SetBillableItems()
         {
             SelectedItem.CreationState = InvoiceCreationState.DefineInvoice;
