@@ -153,11 +153,11 @@ namespace Deadfile
             Properties.Settings.Default.Username = _username;
             Properties.Settings.Default.Server = _server;
             Properties.Settings.Default.Password = _password;
-            DeadfileRepository.DatabaseName = _database;
-            DeadfileRepository.UserId = _username;
-            DeadfileRepository.ServerName = _server;
-            DeadfileRepository.Password = _password;
-            DeadfileRepository.RebuildConnectionString();
+            DeadfileContextAbstraction.DatabaseName = _database;
+            DeadfileContextAbstraction.UserId = _username;
+            DeadfileContextAbstraction.ServerName = _server;
+            DeadfileContextAbstraction.Password = _password;
+            DeadfileContextAbstraction.RebuildConnectionString();
             Properties.Settings.Default.Save();
             SettingsIsOpen = false;
         }
@@ -169,16 +169,16 @@ namespace Deadfile
             get
             {
                 if (DebugAcceptAnything) return true;
-                DeadfileRepository.DatabaseName = _database;
-                DeadfileRepository.UserId = _username;
-                DeadfileRepository.ServerName = _server;
-                DeadfileRepository.Password = _password;
-                var result = DeadfileRepository.RebuildConnectionString();
-                DeadfileRepository.DatabaseName = Properties.Settings.Default.Database;
-                DeadfileRepository.UserId = Properties.Settings.Default.Username;
-                DeadfileRepository.ServerName = Properties.Settings.Default.Server;
-                DeadfileRepository.Password = Properties.Settings.Default.Password;
-                DeadfileRepository.RebuildConnectionString();
+                DeadfileContextAbstraction.DatabaseName = _database;
+                DeadfileContextAbstraction.UserId = _username;
+                DeadfileContextAbstraction.ServerName = _server;
+                DeadfileContextAbstraction.Password = _password;
+                var result = DeadfileContextAbstraction.RebuildConnectionString();
+                DeadfileContextAbstraction.DatabaseName = Properties.Settings.Default.Database;
+                DeadfileContextAbstraction.UserId = Properties.Settings.Default.Username;
+                DeadfileContextAbstraction.ServerName = Properties.Settings.Default.Server;
+                DeadfileContextAbstraction.Password = Properties.Settings.Default.Password;
+                DeadfileContextAbstraction.RebuildConnectionString();
                 return result;
             }
         }

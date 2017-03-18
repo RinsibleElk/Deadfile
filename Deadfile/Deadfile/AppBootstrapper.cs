@@ -28,10 +28,10 @@ namespace Deadfile
         public AppBootstrapper()
         {
             Initialize();
-            DeadfileRepository.UserId = Properties.Settings.Default.Username;
-            DeadfileRepository.ServerName = Properties.Settings.Default.Server;
-            DeadfileRepository.Password = Properties.Settings.Default.Password;
-            DeadfileRepository.DatabaseName = Properties.Settings.Default.Database;
+            DeadfileContextAbstraction.UserId = Properties.Settings.Default.Username;
+            DeadfileContextAbstraction.ServerName = Properties.Settings.Default.Server;
+            DeadfileContextAbstraction.Password = Properties.Settings.Default.Password;
+            DeadfileContextAbstraction.DatabaseName = Properties.Settings.Default.Database;
         }
 
         /// <summary>
@@ -62,6 +62,7 @@ namespace Deadfile
 
             // Data.
             ContainerInstance.RegisterSingleton(typeof(IRandomNumberGenerator), nameof(RandomNumberGenerator), typeof(RandomNumberGenerator));
+            ContainerInstance.RegisterSingleton(typeof(IDeadfileContextAbstractionFactory), nameof(DeadfileContextAbstractionFactory), typeof(DeadfileContextAbstractionFactory));
             ContainerInstance.RegisterSingleton(typeof(IDeadfileRepository), nameof(DeadfileRepository), typeof(DeadfileRepository));
             ContainerInstance.RegisterSingleton(typeof(IModelEntityMapper), nameof(ModelEntityMapper), typeof(ModelEntityMapper));
 
@@ -71,10 +72,6 @@ namespace Deadfile
 
             // Navigation to external browser.
             ContainerInstance.RegisterSingleton(typeof(IUrlNavigationService), nameof(UrlNavigationService), typeof(UrlNavigationService));
-
-            // For testing. If the database is empty, populate it with fake data.
-//            var repo = ContainerInstance.GetInstance<IDeadfileRepository>();
-//            repo.SetUpFakeData();
 
             // We have a module for each tab. This creates the local environment for each tab. For instance, navigation and messaging are local within each tab.
             ContainerInstance.RegisterPerRequest(typeof(TabModule), nameof(TabModule), typeof(TabModule));

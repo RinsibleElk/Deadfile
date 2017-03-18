@@ -244,14 +244,14 @@ type EntireDb() =
     static member Make data = EntireDb(Version1Data = Some data)
 
 [<Sealed>]
-type JsonImporter(repository:IDeadfileRepository) =
+type JsonImporter(abstractionDactory:IDeadfileContextAbstractionFactory, repository:IDeadfileRepository) =
     let cache = IdCache()
-    let tryDo (f:DeadfileContext -> unit) =
-        if (not (String.IsNullOrEmpty repository.ConnectionString)) then
-            use context = new DeadfileContext(repository.ConnectionString)
-            f context
+    let tryDo (f:IDeadfileContextAbstraction -> unit) =
+        if (DeadfileContextAbstraction.HasConnectionString()) then
+            use abstraction = abstractionDactory.GetAbstraction()
+            f abstraction
         else ()
-    let saveChanges (context:DeadfileContext) =
+    let saveChanges (context:IDeadfileContextAbstraction) =
         try
             context.SaveChanges() |> ignore
         with e ->
@@ -264,69 +264,71 @@ type JsonImporter(repository:IDeadfileRepository) =
                         |> Seq.iter
                             (fun ve ->
                                 failwithf "%s: %s" ve.PropertyName ve.ErrorMessage))
-            failwithf "%A" e
+                failwithf "%A" e
+            | _ ->
+                failwithf "%A" e
     let saveClient clientJson =
         tryDo
             <| fun context ->
                 let client = ToFromRecord.mapToEntity<ClientJson, Client> cache LearnClientId clientJson
-                context.Clients.Add(client) |> ignore
+                context.AddClient(client) |> ignore
                 context |> saveChanges
                 cache.AddClientId(clientJson.ClientId, client.ClientId)
     let saveJob jobJson =
         tryDo
             <| fun context ->
                 let job = ToFromRecord.mapToEntity<JobJson, Job> cache LearnJobId jobJson
-                context.Jobs.Add(job) |> ignore
+                context.AddJob(job) |> ignore
                 context |> saveChanges
                 cache.AddJobId(jobJson.JobId, job.JobId)
     let saveInvoice invoiceJson =
         tryDo
             <| fun context ->
                 let invoice = ToFromRecord.mapToEntity<InvoiceJson, Invoice> cache LearnInvoiceId invoiceJson
-                context.Invoices.Add(invoice) |> ignore
+                context.AddInvoice(invoice) |> ignore
                 context |> saveChanges
                 cache.AddInvoiceId(invoiceJson.InvoiceId, invoice.InvoiceId)
     let saveInvoiceItem json =
         tryDo
             <| fun context ->
                 let entity = ToFromRecord.mapToEntity<InvoiceItemJson, InvoiceItem> cache RetrieveAll json
-                context.InvoiceItems.Add(entity) |> ignore
+                context.AddInvoiceItem(entity) |> ignore
                 context |> saveChanges
     let saveQuotation json =
         tryDo
             <| fun context ->
                 let entity = ToFromRecord.mapToEntity<QuotationJson, Quotation> cache RetrieveAll json
-                context.Quotations.Add(entity) |> ignore
+                context.AddQuotation(entity) |> ignore
                 context |> saveChanges
     let saveJobTask json =
         tryDo
             <| fun context ->
                 let entity = ToFromRecord.mapToEntity<JobTaskJson, JobTask> cache RetrieveAll json
-                context.JobTasks.Add(entity) |> ignore
+                context.AddJobTask(entity) |> ignore
                 context |> saveChanges
     let saveApplication json =
         tryDo
             <| fun context ->
                 let entity = ToFromRecord.mapToEntity<ApplicationJson, Application> cache RetrieveAll json
-                context.Applications.Add(entity) |> ignore
+                context.AddApplication(entity) |> ignore
                 context |> saveChanges
     let saveExpense json =
         tryDo
             <| fun context ->
                 let entity = ToFromRecord.mapToEntity<ExpenseJson, Expense> cache RetrieveAll json
-                context.Expenses.Add(entity) |> ignore
+                context.AddExpense(entity) |> ignore
                 context |> saveChanges
     let saveBillableHour json =
         tryDo
             <| fun context ->
                 let entity = ToFromRecord.mapToEntity<BillableHourJson, BillableHour> cache RetrieveAll json
-                context.BillableHours.Add(entity) |> ignore
+                context.AddBillableHour(entity) |> ignore
                 context |> saveChanges
     let saveLocalAuthority json =
         tryDo
             <| fun context ->
                 let entity = ToFromRecord.mapToEntity<LocalAuthorityJson, LocalAuthority> cache RetrieveAll json
-                context.LocalAuthorities.Add(entity) |> ignore
+                context.AddLocalAuthority(entity) |> ignore
                 context |> saveChanges
     member __.ExportToJsonFile(jsonFile:FileInfo) =
         let clients =

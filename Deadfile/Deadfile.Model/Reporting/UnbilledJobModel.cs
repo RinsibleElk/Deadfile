@@ -65,6 +65,16 @@ namespace Deadfile.Model.Reporting
             set { SetProperty(ref _unbilledAmount, value); }
         }
 
-        public string HeaderString => $"{FullName} ({UnbilledAmount.ToString("C", CultureInfo.CurrentCulture)})";
+        private double _unbilledHours;
+        /// <summary>
+        /// Hours uninvoiced for this client.
+        /// </summary>
+        public double UnbilledHours
+        {
+            get { return _unbilledHours; }
+            set { SetProperty(ref _unbilledHours, value); }
+        }
+
+        public string HeaderString => $"{FullName} ({UnbilledAmount.ToString("C", CultureInfo.CurrentCulture)}, {UnbilledHours} hours)";
     }
 }

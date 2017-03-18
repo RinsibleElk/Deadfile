@@ -286,10 +286,5 @@ namespace Deadfile.Model.Interfaces
         /// <param name="filter"></param>
         /// <returns></returns>
         IEnumerable<CurrentApplicationModel> GetCurrentApplications(string filter);
-
-        /// <summary>
-        /// The connection string currently in use.
-        /// </summary>
-        string ConnectionString { get; }
     }
 }

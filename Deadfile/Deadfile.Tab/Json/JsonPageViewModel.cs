@@ -23,11 +23,12 @@ namespace Deadfile.Tab.Json
         private readonly IEventAggregator _eventAggregator;
         private readonly IDialogCoordinator _dialogCoordinator;
 
-        public JsonPageViewModel(IDeadfileRepository repository,
+        public JsonPageViewModel(IDeadfileContextAbstractionFactory contextAbstractionFactory,
+            IDeadfileRepository repository,
             IEventAggregator eventAggregator,
             IDialogCoordinator dialogCoordinator)
         {
-            _jsonImporter = new JsonImporter(repository);
+            _jsonImporter = new JsonImporter(contextAbstractionFactory, repository);
             _eventAggregator = eventAggregator;
             _dialogCoordinator = dialogCoordinator;
             BrowseJson = new DelegateCommand(BrowseJsonAction);

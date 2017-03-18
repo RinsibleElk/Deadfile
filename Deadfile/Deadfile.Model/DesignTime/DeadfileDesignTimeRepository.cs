@@ -204,11 +204,6 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
-        public string ConnectionString
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
             throw new NotImplementedException();
