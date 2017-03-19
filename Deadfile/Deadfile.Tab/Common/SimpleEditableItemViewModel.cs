@@ -171,8 +171,7 @@ namespace Deadfile.Tab.Common
             // Populate the table.
             // We always add one more, to represent the user wanting to add a new one.
             var value = new T() { JobId = _jobId, ClientId = _clientId };
-            Items = new ObservableCollection<T>(GetModelsForJobId(_jobId, _filter));
-            Items.Add(value);
+            Items = new ObservableCollection<T>(GetModelsForJobId(_jobId, _filter)) {value};
             SelectedItem = value;
         }
 
@@ -241,10 +240,7 @@ namespace Deadfile.Tab.Common
         /// <summary>
         /// Provides access to the parent job to perform undos.
         /// </summary>
-        IUndoTracker ISimpleEditableItemViewModel.UndoTracker
-        {
-            get { return UndoTracker; }
-        }
+        IUndoTracker ISimpleEditableItemViewModel.UndoTracker => UndoTracker;
 
         /// <summary>
         /// The user is navigating away.
@@ -278,8 +274,7 @@ namespace Deadfile.Tab.Common
 
             // Bin the table.
             SelectedItem = new T() {JobId = _jobId, ClientId = _clientId};
-            Items = new ObservableCollection<T>();
-            Items.Add(SelectedItem);
+            Items = new ObservableCollection<T> {SelectedItem};
 
             // Same again.
             _filter = null;

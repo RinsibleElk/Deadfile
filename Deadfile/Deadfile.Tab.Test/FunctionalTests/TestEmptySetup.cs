@@ -121,5 +121,58 @@ namespace Deadfile.Tab.Test.FunctionalTests
             Assert.False(setup.DefineQuotationsPageViewModel.Editable);
             Assert.Equal(1, setup.DefineQuotationsPageViewModel.Items.Count);
         }
+
+        [Fact]
+        public void TestAddLocalAuthority_CanSave()
+        {
+            var setup = new MockSetup();
+            setup.HomePageViewModel.LocalAuthorities();
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.LocalAuthoritiesPageViewModel));
+            Assert.Equal(null, setup.TabViewModel.ActionsPad);
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
+            Assert.False(setup.TabViewModel.BrowserAndActionsAreVisible);
+            Assert.Equal("Local Authorities", setup.TabViewModel.DisplayName);
+            Assert.Equal(1, setup.LocalAuthoritiesPageViewModel.Items.Count);
+            Assert.Equal(ModelBase.NewModelId, setup.LocalAuthoritiesPageViewModel.Items[0].LocalAuthorityId);
+            Assert.False(setup.LocalAuthoritiesPageViewModel.Editable);
+            Assert.True(setup.LocalAuthoritiesPageViewModel.EditCommand.CanExecute(null));
+            setup.LocalAuthoritiesPageViewModel.EditCommand.Execute(null);
+            Assert.True(setup.LocalAuthoritiesPageViewModel.Editable);
+            Assert.False(setup.LocalAuthoritiesPageViewModel.SaveCommand.CanExecute(null));
+            setup.LocalAuthoritiesPageViewModel.Items[0].Name = "London Borough of Enfield";
+            Assert.True(setup.LocalAuthoritiesPageViewModel.SaveCommand.CanExecute(null));
+            setup.LocalAuthoritiesPageViewModel.Items[0].Url = "http://enfield.gov.uk";
+            Assert.True(setup.LocalAuthoritiesPageViewModel.SaveCommand.CanExecute(null));
+            setup.LocalAuthoritiesPageViewModel.SaveCommand.Execute(null);
+            Assert.False(setup.LocalAuthoritiesPageViewModel.Editable);
+            Assert.Equal(1, setup.Repository.GetLocalAuthorities(null).Count());
+            Assert.Equal(2, setup.LocalAuthoritiesPageViewModel.Items.Count);
+        }
+
+        [Fact]
+        public void TestAddLocalAuthority_Discard()
+        {
+            var setup = new MockSetup();
+            setup.HomePageViewModel.LocalAuthorities();
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.LocalAuthoritiesPageViewModel));
+            Assert.Equal(null, setup.TabViewModel.ActionsPad);
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
+            Assert.False(setup.TabViewModel.BrowserAndActionsAreVisible);
+            Assert.Equal("Local Authorities", setup.TabViewModel.DisplayName);
+            Assert.Equal(1, setup.LocalAuthoritiesPageViewModel.Items.Count);
+            Assert.Equal(ModelBase.NewModelId, setup.LocalAuthoritiesPageViewModel.Items[0].LocalAuthorityId);
+            Assert.False(setup.LocalAuthoritiesPageViewModel.Editable);
+            Assert.True(setup.LocalAuthoritiesPageViewModel.EditCommand.CanExecute(null));
+            setup.LocalAuthoritiesPageViewModel.EditCommand.Execute(null);
+            Assert.True(setup.LocalAuthoritiesPageViewModel.Editable);
+            Assert.True(setup.LocalAuthoritiesPageViewModel.DiscardCommand.CanExecute(null));
+            setup.LocalAuthoritiesPageViewModel.Items[0].Name = "London Borough of Enfield";
+            Assert.True(setup.LocalAuthoritiesPageViewModel.DiscardCommand.CanExecute(null));
+            setup.LocalAuthoritiesPageViewModel.Items[0].Url = "http://enfield.gov.uk";
+            Assert.True(setup.LocalAuthoritiesPageViewModel.DiscardCommand.CanExecute(null));
+            setup.LocalAuthoritiesPageViewModel.DiscardCommand.Execute(null);
+            Assert.False(setup.LocalAuthoritiesPageViewModel.Editable);
+            Assert.Equal(1, setup.LocalAuthoritiesPageViewModel.Items.Count);
+        }
     }
 }
