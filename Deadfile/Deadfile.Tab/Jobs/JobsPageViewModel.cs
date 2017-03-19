@@ -241,7 +241,7 @@ namespace Deadfile.Tab.Jobs
             }
         }
 
-        protected override async void PerformSave(SaveMessage message)
+        protected override async Task PerformSave(bool andPrint)
         {
             await ActuallySave();
         }

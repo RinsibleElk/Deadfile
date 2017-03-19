@@ -199,7 +199,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
 
         public void AddClient(Client client)
         {
-            client.ClientId = _factory.Clients.Count;
+            client.ClientId = _factory.Clients.Count + 1;
             _factory.Clients.Add(client);
         }
 
@@ -209,13 +209,13 @@ namespace Deadfile.Tab.Test.FunctionalTests
 
         public void AddInvoice(Invoice invoice)
         {
-            invoice.InvoiceId = _factory.Invoices.Count;
+            invoice.InvoiceId = _factory.Invoices.Count + 1;
             _factory.Invoices.Add(invoice);
         }
 
         public void AddInvoiceItem(InvoiceItem invoiceItem)
         {
-            invoiceItem.InvoiceItemId = _factory.InvoiceItems.Count;
+            invoiceItem.InvoiceItemId = _factory.InvoiceItems.Count + 1;
             _factory.InvoiceItems.Add(invoiceItem);
         }
 
@@ -286,7 +286,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
 
         public void AddJobTask(JobTask jobTask)
         {
-            jobTask.JobTaskId = _factory.JobTasks.Count;
+            jobTask.JobTaskId = _factory.JobTasks.Count + 1;
             _factory.JobTasks.Add(jobTask);
         }
 
@@ -297,7 +297,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
 
         public void AddQuotation(Quotation quotation)
         {
-            quotation.QuotationId = _factory.Quotations.Count;
+            quotation.QuotationId = _factory.Quotations.Count + 1;
             _factory.Quotations.Add(quotation);
         }
 
@@ -396,13 +396,13 @@ namespace Deadfile.Tab.Test.FunctionalTests
 
         public void AddLocalAuthority(LocalAuthority localAuthority)
         {
-            localAuthority.LocalAuthorityId = _factory.LocalAuthorities.Count;
+            localAuthority.LocalAuthorityId = _factory.LocalAuthorities.Count + 1;
             _factory.LocalAuthorities.Add(localAuthority);
         }
 
         public void AddApplication(Application application)
         {
-            application.ApplicationId = _factory.Applications.Count;
+            application.ApplicationId = _factory.Applications.Count + 1;
             _factory.Applications.Add(application);
         }
 
@@ -413,19 +413,19 @@ namespace Deadfile.Tab.Test.FunctionalTests
 
         public void AddExpense(Expense expense)
         {
-            expense.ExpenseId = _factory.Expenses.Count;
+            expense.ExpenseId = _factory.Expenses.Count + 1;
             _factory.Expenses.Add(expense);
         }
 
         public void AddBillableHour(BillableHour billableHour)
         {
-            billableHour.BillableHourId = _factory.BillableHours.Count;
+            billableHour.BillableHourId = _factory.BillableHours.Count + 1;
             _factory.BillableHours.Add(billableHour);
         }
 
         public void AddJob(Job job)
         {
-            job.JobId = _factory.Jobs.Count;
+            job.JobId = _factory.Jobs.Count + 1;
             _factory.Jobs.Add(job);
         }
     }

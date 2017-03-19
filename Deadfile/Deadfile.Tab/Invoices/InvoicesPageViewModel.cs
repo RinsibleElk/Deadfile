@@ -303,19 +303,19 @@ namespace Deadfile.Tab.Invoices
             return actuallySave;
         }
 
-        protected override async void PerformSave(SaveMessage message)
+        protected override async Task PerformSave(bool andPrint)
         {
             try
             {
                 var saved = await PerformSave();
-                if (saved && message == SaveMessage.SaveAndPrint)
+                if (saved && andPrint)
                 {
                     PerformPrint(PrintMessage.Print);
                 }
             }
             catch (Exception e)
             {
-                Logger.Fatal(e, "Exception while saving {0}, {1}, {2}, {3}, {4}", _tabIdentity, SelectedItem, message, e, e.StackTrace);
+                Logger.Fatal(e, "Exception while saving {0}, {1}, {2}, {3}, {4}", _tabIdentity, SelectedItem, andPrint, e, e.StackTrace);
                 throw;
             }
         }

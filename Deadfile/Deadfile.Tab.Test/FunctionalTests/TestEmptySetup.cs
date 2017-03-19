@@ -258,5 +258,21 @@ namespace Deadfile.Tab.Test.FunctionalTests
             Assert.False(setup.TabViewModel.BrowserAndActionsAreVisible);
             Assert.Equal("Local Authorities", setup.TabViewModel.DisplayName);
         }
+
+        [Fact]
+        public void TestPopulateEntireDatabaseFromGui()
+        {
+            var setup = new MockSetup();
+            Assert.Equal("Oliver Samson", setup.QuotesBarViewModel.Quotation.Author);
+            Assert.Equal("No Quotations defined. Soz.", setup.QuotesBarViewModel.Quotation.Phrase);
+            MockData.SetUpQuotations(setup);
+            Assert.Equal(4, setup.Repository.GetQuotations(null).Count());
+            setup.TimerService.FireCallback();
+            Assert.Equal("Homer Simpson", setup.QuotesBarViewModel.Quotation.Author);
+            Assert.Equal("You tried your best and you failed miserably. The lesson is, never try.", setup.QuotesBarViewModel.Quotation.Phrase);
+            MockData.SetUpLocalAuthorities(setup);
+            MockData.SetUpClients(setup);
+            MockData.SetUpJobs(setup);
+        }
     }
 }

@@ -226,7 +226,20 @@ namespace Deadfile.Tab.Common
             }
         }
 
-        protected abstract void PerformSave(SaveMessage message);
+        private async void PerformSave(SaveMessage message)
+        {
+            var isAnAdd = SelectedItem.Id == ModelBase.NewModelId;
+            await PerformSave(message == SaveMessage.SaveAndPrint);
+
+            if (isAnAdd)
+            {
+                // Notify the browser that something has changed.
+                Logger.Info("Event|RefreshBrowserEvent|Send|{0}|{1}", _tabIdentity, RefreshBrowserMessage.Refresh);
+                EventAggregator.GetEvent<RefreshBrowserEvent>().Publish(RefreshBrowserMessage.Refresh);
+            }
+        }
+
+        protected abstract Task PerformSave(bool andPrint);
 
         protected abstract Task<bool> PerformDelete();
 

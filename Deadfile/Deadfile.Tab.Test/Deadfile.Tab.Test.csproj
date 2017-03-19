@@ -106,6 +106,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="FunctionalTests\MockData.cs" />
     <Compile Include="FunctionalTests\MockDeadfileContextAbstractionFactory.cs" />
     <Compile Include="FunctionalTests\MockDeadfileDialogCoordinator.cs" />
     <Compile Include="FunctionalTests\MockDeadfileDispatcherTimerService.cs" />
