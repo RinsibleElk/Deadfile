@@ -123,6 +123,43 @@ namespace Deadfile.Tab.Test.FunctionalTests
         }
 
         [Fact]
+        public void TestAddQuotation_Undo()
+        {
+            var setup = new MockSetup();
+            setup.HomePageViewModel.DefineQuotations();
+            setup.DefineQuotationsPageViewModel.EditCommand.Execute(null);
+            setup.DefineQuotationsPageViewModel.Items[0].Author = "Rinsible Elk";
+            setup.DefineQuotationsPageViewModel.Items[0].Phrase = "This is a test";
+            Assert.True(setup.DefineQuotationsPageViewModel.SaveCommand.CanExecute(null));
+            Assert.True(setup.NavigationBarViewModel.CanUndo);
+            Assert.False(setup.NavigationBarViewModel.CanRedo);
+            setup.NavigationBarViewModel.Undo();
+            Assert.Equal("Rinsible Elk", setup.DefineQuotationsPageViewModel.Items[0].Author);
+            Assert.Equal(null, setup.DefineQuotationsPageViewModel.Items[0].Phrase);
+            Assert.False(setup.DefineQuotationsPageViewModel.SaveCommand.CanExecute(null));
+            Assert.True(setup.NavigationBarViewModel.CanUndo);
+            Assert.True(setup.NavigationBarViewModel.CanRedo);
+            setup.NavigationBarViewModel.Undo();
+            Assert.Equal(null, setup.DefineQuotationsPageViewModel.Items[0].Author);
+            Assert.Equal(null, setup.DefineQuotationsPageViewModel.Items[0].Phrase);
+            Assert.False(setup.DefineQuotationsPageViewModel.SaveCommand.CanExecute(null));
+            Assert.False(setup.NavigationBarViewModel.CanUndo);
+            Assert.True(setup.NavigationBarViewModel.CanRedo);
+            setup.NavigationBarViewModel.Redo();
+            Assert.Equal("Rinsible Elk", setup.DefineQuotationsPageViewModel.Items[0].Author);
+            Assert.Equal(null, setup.DefineQuotationsPageViewModel.Items[0].Phrase);
+            Assert.False(setup.DefineQuotationsPageViewModel.SaveCommand.CanExecute(null));
+            Assert.True(setup.NavigationBarViewModel.CanUndo);
+            Assert.True(setup.NavigationBarViewModel.CanRedo);
+            setup.NavigationBarViewModel.Redo();
+            Assert.Equal("Rinsible Elk", setup.DefineQuotationsPageViewModel.Items[0].Author);
+            Assert.Equal("This is a test", setup.DefineQuotationsPageViewModel.Items[0].Phrase);
+            Assert.True(setup.DefineQuotationsPageViewModel.SaveCommand.CanExecute(null));
+            Assert.True(setup.NavigationBarViewModel.CanUndo);
+            Assert.False(setup.NavigationBarViewModel.CanRedo);
+        }
+
+        [Fact]
         public void TestAddLocalAuthority_CanSave()
         {
             var setup = new MockSetup();
