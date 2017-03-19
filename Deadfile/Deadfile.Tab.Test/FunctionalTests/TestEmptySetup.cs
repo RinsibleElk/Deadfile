@@ -211,5 +211,52 @@ namespace Deadfile.Tab.Test.FunctionalTests
             Assert.False(setup.LocalAuthoritiesPageViewModel.Editable);
             Assert.Equal(1, setup.LocalAuthoritiesPageViewModel.Items.Count);
         }
+
+        [Fact]
+        public void TestDefineQuotations_Back()
+        {
+            var setup = new MockSetup();
+            setup.HomePageViewModel.DefineQuotations();
+            Assert.True(setup.NavigationBarViewModel.CanBack);
+            Assert.False(setup.NavigationBarViewModel.CanForward);
+            setup.NavigationBarViewModel.Back();
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.HomePageViewModel));
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ActionsPad, setup.HomeActionsPadViewModel));
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.BrowserPane, setup.BrowserPaneViewModel));
+            Assert.True(setup.TabViewModel.BrowserAndActionsAreVisible);
+            Assert.Equal("Home", setup.TabViewModel.DisplayName);
+            Assert.False(setup.NavigationBarViewModel.CanBack);
+            Assert.True(setup.NavigationBarViewModel.CanForward);
+            setup.NavigationBarViewModel.Forward();
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.DefineQuotationsPageViewModel));
+            Assert.Equal(null, setup.TabViewModel.ActionsPad);
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
+            Assert.False(setup.TabViewModel.BrowserAndActionsAreVisible);
+            Assert.Equal("Define Quotations", setup.TabViewModel.DisplayName);
+        }
+
+        [Fact]
+        public void TestLocalAuthorities_Back()
+        {
+            var setup = new MockSetup();
+            setup.HomePageViewModel.LocalAuthorities();
+            Assert.True(setup.NavigationBarViewModel.CanBack);
+            setup.NavigationBarViewModel.Back();
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.HomePageViewModel));
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ActionsPad, setup.HomeActionsPadViewModel));
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.BrowserPane, setup.BrowserPaneViewModel));
+            Assert.True(setup.TabViewModel.BrowserAndActionsAreVisible);
+            Assert.Equal("Home", setup.TabViewModel.DisplayName);
+            Assert.False(setup.NavigationBarViewModel.CanBack);
+            Assert.True(setup.NavigationBarViewModel.CanForward);
+            setup.NavigationBarViewModel.Forward();
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.LocalAuthoritiesPageViewModel));
+            Assert.Equal(null, setup.TabViewModel.ActionsPad);
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
+            Assert.False(setup.TabViewModel.BrowserAndActionsAreVisible);
+            Assert.Equal("Local Authorities", setup.TabViewModel.DisplayName);
+        }
     }
 }
