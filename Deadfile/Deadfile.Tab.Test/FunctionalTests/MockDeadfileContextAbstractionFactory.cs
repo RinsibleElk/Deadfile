@@ -308,32 +308,56 @@ namespace Deadfile.Tab.Test.FunctionalTests
 
         public IEnumerable<ExpenseWithJobAndClient> GetActiveExpenses(string filter)
         {
-            return (from expense in _factory.Expenses
-                    where expense.Job.Status == JobStatus.Active
-                    where (filter == null || filter == "" || expense.Job.AddressFirstLine.Contains(filter))
-                    where expense.State == BillableState.Active
-                    where expense.NetAmount > 0
-                    select new ExpenseWithJobAndClient
-                    {
-                        Expense = expense,
-                        Job = expense.Job,
-                        Client = expense.Job.Client
-                    });
+            foreach (var expense in (from expense in _factory.Expenses
+                join job in _factory.Jobs on expense.JobId equals job.JobId
+                join client in _factory.Clients on job.ClientId equals client.ClientId
+                where job.Status == JobStatus.Active
+                where (filter == null || filter == "" || job.AddressFirstLine.Contains(filter))
+                where expense.State == BillableState.Active
+                where expense.NetAmount > 0
+                select new ExpenseWithJobAndClient
+                {
+                    Expense = expense,
+                    Job = job,
+                    Client = client
+                }))
+            {
+                expense.Expense.Job = expense.Job;
+                expense.Job.Client = expense.Client;
+                yield return new ExpenseWithJobAndClient
+                {
+                    Expense = expense.Expense,
+                    Job = expense.Job,
+                    Client = expense.Client
+                };
+            }
         }
 
         public IEnumerable<BillableHourWithJobAndClient> GetActiveBillableHours(string filter)
         {
-            return (from expense in _factory.BillableHours
-                    where expense.Job.Status == JobStatus.Active
-                    where (filter == null || filter == "" || expense.Job.AddressFirstLine.Contains(filter))
-                    where expense.State == BillableState.Active
-                    where expense.HoursWorked > 0
-                    select new BillableHourWithJobAndClient
-                    {
-                        BillableHour = expense,
-                        Job = expense.Job,
-                        Client = expense.Job.Client
-                    });
+            foreach (var expense in (from expense in _factory.BillableHours
+                join job in _factory.Jobs on expense.JobId equals job.JobId
+                join client in _factory.Clients on job.ClientId equals client.ClientId
+                where job.Status == JobStatus.Active
+                where (filter == null || filter == "" || job.AddressFirstLine.Contains(filter))
+                where expense.State == BillableState.Active
+                where expense.HoursWorked > 0
+                select new BillableHourWithJobAndClient
+                {
+                    BillableHour = expense,
+                    Job = job,
+                    Client = client
+                }))
+            {
+                expense.BillableHour.Job = expense.Job;
+                expense.Job.Client = expense.Client;
+                yield return new BillableHourWithJobAndClient
+                {
+                    BillableHour = expense.BillableHour,
+                    Job = expense.Job,
+                    Client = expense.Client
+                };
+            }
         }
 
         public IEnumerable<JobTaskWithProperty> GetJobTasksWithPropertiesForDateRange(DateTime startDate, DateTime endDate, string filter,
