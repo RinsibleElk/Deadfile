@@ -273,6 +273,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
             MockData.SetUpLocalAuthorities(setup);
             MockData.SetUpClients(setup);
             MockData.SetUpJobs(setup);
+            MockData.SetupJobChildren(setup);
         }
     }
 }

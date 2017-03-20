@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Entity;
 using Deadfile.Model;
 using Deadfile.Model.Browser;
 using Deadfile.Model.Interfaces;
+using Deadfile.Tab.JobChildren;
 using Xunit;
 
 namespace Deadfile.Tab.Test.FunctionalTests
@@ -194,6 +196,24 @@ namespace Deadfile.Tab.Test.FunctionalTests
             setup.ClientsActionsPadViewModel.SaveItem();
         }
 
+        private static void BrowseToJob(MockSetup setup, string jobNameMatch)
+        {
+            foreach (var browserModel in setup.BrowserPaneViewModel.Items)
+            {
+                if (browserModel.ModelType != BrowserModelType.Job)
+                    Assert.False(true, "Not in right mode to navigate to Job");
+                var job = browserModel as BrowserJob;
+                Assert.NotNull(job);
+                if (job.FullAddress.Contains(jobNameMatch))
+                {
+                    setup.BrowserPaneViewModel.SelectedItem = job;
+                    break;
+                }
+            }
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.JobsPageViewModel));
+            Assert.True(setup.JobsPageViewModel.SelectedItem.AddressFirstLine.Contains(jobNameMatch));
+        }
+
         private static void BrowseToClient(MockSetup setup, string name)
         {
             foreach (var browserModel in setup.BrowserPaneViewModel.Items)
@@ -215,19 +235,21 @@ namespace Deadfile.Tab.Test.FunctionalTests
         public static void SetUpJobs(MockSetup setup)
         {
             Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.HomePageViewModel));
-            BrowseToClient(setup, "Rinsible Elk");
-            SetUpCemeteryRidge(setup);
-            SetUpWayneManor(setup);
-            BrowseToClient(setup, "Libby Dean");
-            SetUpWebfootWalk(setup);
-            SetUpPrivetDrive(setup);
+            SetUpJobForExistingClient(setup, "Rinsible Elk", "Cemetery Ridge", "U.S.A.", null, null, "Some works for the Addams Family");
+            SetUpJobForExistingClient(setup, "Rinsible Elk", "Wayne Manor", "Gotham City", "U.S.A.", null, "Building some sort of cave");
+            SetUpJobForExistingClient(setup, "Libby Dean", "1313 Webfoot Walk", "Duckburg", "Calisota", null, "Some work for Donald");
+            SetUpJobForExistingClient(setup, "Libby Dean", "4 Privet Drive", "Berkshire", null, null, "Repairs to cupboard under stairs");
+            SetUpJobForExistingClient(setup, "Nicole Bryant", "221B Baker Street", "London", null, null, "Fill bullet holes in walls");
+            SetUpJobForExistingClient(setup, "Nicole Bryant", "32 Windsor Gardens", "London", null, null, "Bear Proofing");
             Assert.True(setup.NavigationBarViewModel.CanHome);
             setup.NavigationBarViewModel.Home();
             Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.HomePageViewModel));
         }
 
-        private static void SetUpPrivetDrive(MockSetup setup)
+        private static void SetUpJobForExistingClient(MockSetup setup, string clientNameMatch,
+            string addressFirstLine, string addressSecondLine, string addressThirdLine, string addressPostCode, string description)
         {
+            BrowseToClient(setup, clientNameMatch);
             Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.ClientsPageViewModel));
             Assert.True(setup.ClientsPageViewModel.CanAddNewJob);
             setup.ClientsPageViewModel.AddNewJob();
@@ -236,92 +258,85 @@ namespace Deadfile.Tab.Test.FunctionalTests
             var j = setup.JobsPageViewModel.SelectedItem;
             Assert.NotEqual(ModelBase.NewModelId, j.ClientId);
             Assert.Equal(ModelBase.NewModelId, j.JobId);
-            j.AddressFirstLine = "4 Privet Drive";
-            j.AddressSecondLine = "Berkshire";
-            j.Description = "Repairs to cupboard under stairs";
+            j.AddressFirstLine = addressFirstLine;
+            j.AddressSecondLine = addressSecondLine;
+            if (addressThirdLine != null) j.AddressThirdLine = addressThirdLine;
+            if (addressPostCode != null) j.AddressPostCode = addressPostCode;
+            j.Description = description;
             // Check it has a decent suggested job number.
             Assert.True(j.JobNumber >= 1);
             Assert.True(setup.JobsPageViewModel.CanSave);
             Assert.True(setup.JobsActionsPadViewModel.CanSaveItem);
+            Assert.True(setup.JobsActionsPadViewModel.SaveItemIsVisible);
             setup.JobsActionsPadViewModel.SaveItem();
             Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.JobsPageViewModel));
+            Assert.False(setup.JobsActionsPadViewModel.SaveItemIsVisible);
             Assert.True(setup.NavigationBarViewModel.CanBack);
             setup.NavigationBarViewModel.Back();
             Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.ClientsPageViewModel));
         }
 
-        private static void SetUpWebfootWalk(MockSetup setup)
+        public static void SetupJobChildren(MockSetup setup)
         {
-            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.ClientsPageViewModel));
-            Assert.True(setup.ClientsPageViewModel.CanAddNewJob);
-            setup.ClientsPageViewModel.AddNewJob();
-            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.JobsPageViewModel));
-            Assert.True(setup.JobsPageViewModel.UnderEdit);
-            var j = setup.JobsPageViewModel.SelectedItem;
-            Assert.NotEqual(ModelBase.NewModelId, j.ClientId);
-            Assert.Equal(ModelBase.NewModelId, j.JobId);
-            j.AddressFirstLine = "1313 Webfoot Walk";
-            j.AddressSecondLine = "Duckburg";
-            j.AddressThirdLine = "Calisota";
-            j.Description = "Some work for Donald";
-            // Check it has a decent suggested job number.
-            Assert.True(j.JobNumber >= 1);
-            Assert.True(setup.JobsPageViewModel.CanSave);
-            Assert.True(setup.JobsActionsPadViewModel.CanSaveItem);
-            setup.JobsActionsPadViewModel.SaveItem();
-            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.JobsPageViewModel));
-            Assert.True(setup.NavigationBarViewModel.CanBack);
-            setup.NavigationBarViewModel.Back();
-            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.ClientsPageViewModel));
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.HomePageViewModel));
+            setup.BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Job;
+            Assert.Equal(6, setup.BrowserPaneViewModel.Items.Count);
+            SetUpBillableHoursForExistingJob(setup, "Wayne Manor", "Some work that was done", 5);
+            SetUpBillableHoursForExistingJob(setup, "221B Baker Street", "Drawing plans", 2);
+            SetUpExpenseForExistingJob(setup, "Wayne Manor", ExpenseType.ApplicationFees, "Planning Application", 500);
+            SetUpExpenseForExistingJob(setup, "32 Windsor Gardens", ExpenseType.TitleDeedsOrPlans, "Title Deeds", 250);
+            Assert.True(setup.NavigationBarViewModel.CanHome);
+            setup.NavigationBarViewModel.Home();
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.HomePageViewModel));
         }
 
-        private static void SetUpCemeteryRidge(MockSetup setup)
+        private static void SetUpBillableHoursForExistingJob(MockSetup setup, string jobNameMatch, string description, int numHoursWorked)
         {
-            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.ClientsPageViewModel));
-            Assert.True(setup.ClientsPageViewModel.CanAddNewJob);
-            setup.ClientsPageViewModel.AddNewJob();
+            BrowseToJob(setup, jobNameMatch);
             Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.JobsPageViewModel));
-            Assert.True(setup.JobsPageViewModel.UnderEdit);
-            var j = setup.JobsPageViewModel.SelectedItem;
-            Assert.NotEqual(ModelBase.NewModelId, j.ClientId);
-            Assert.Equal(ModelBase.NewModelId, j.JobId);
-            j.AddressFirstLine = "Cemetery Ridge";
-            j.AddressSecondLine = "U.S.A.";
-            j.Description = "Some works for the Addams Family";
-            // Check it has a decent suggested job number.
-            Assert.True(j.JobNumber >= 1);
-            Assert.True(setup.JobsPageViewModel.CanSave);
-            Assert.True(setup.JobsActionsPadViewModel.CanSaveItem);
-            setup.JobsActionsPadViewModel.SaveItem();
-            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.JobsPageViewModel));
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ActionsPad, setup.JobsActionsPadViewModel));
+            setup.JobsPageViewModel.SelectedJobChild = JobChildExperience.BillableHours;
+            Assert.True(Object.ReferenceEquals(setup.JobsPageViewModel.JobChildViewModel, setup.BillableHoursJobChildViewModel));
+            Assert.True(setup.BillableHoursJobChildViewModel.EditCommand.CanExecute(null));
+            setup.BillableHoursJobChildViewModel.EditCommand.Execute(null);
+            Assert.False(setup.NavigationBarViewModel.CanBack);
+            Assert.False(setup.NavigationBarViewModel.CanForward);
+            Assert.False(setup.JobsActionsPadViewModel.CanEditItem);
+            Assert.False(setup.JobsActionsPadViewModel.SaveItemIsVisible);
+            Assert.Equal(ModelBase.NewModelId, setup.BillableHoursJobChildViewModel.SelectedItem.BillableHourId);
+            setup.BillableHoursJobChildViewModel.SelectedItem.Description = description;
+            setup.BillableHoursJobChildViewModel.SelectedItem.HoursWorked = numHoursWorked;
+            Assert.True(setup.BillableHoursJobChildViewModel.SaveCommand.CanExecute(null));
+            setup.BillableHoursJobChildViewModel.SaveCommand.Execute(null);
             Assert.True(setup.NavigationBarViewModel.CanBack);
-            setup.NavigationBarViewModel.Back();
-            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.ClientsPageViewModel));
+            Assert.False(setup.NavigationBarViewModel.CanForward);
+            Assert.True(setup.JobsActionsPadViewModel.CanEditItem);
+            Assert.False(setup.JobsActionsPadViewModel.SaveItemIsVisible);
         }
 
-        private static void SetUpWayneManor(MockSetup setup)
+        private static void SetUpExpenseForExistingJob(MockSetup setup, string jobNameMatch, ExpenseType expenseType, string description, double netAmount)
         {
-            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.ClientsPageViewModel));
-            Assert.True(setup.ClientsPageViewModel.CanAddNewJob);
-            setup.ClientsPageViewModel.AddNewJob();
+            BrowseToJob(setup, jobNameMatch);
             Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.JobsPageViewModel));
-            Assert.True(setup.JobsPageViewModel.UnderEdit);
-            var j = setup.JobsPageViewModel.SelectedItem;
-            Assert.NotEqual(ModelBase.NewModelId, j.ClientId);
-            Assert.Equal(ModelBase.NewModelId, j.JobId);
-            j.AddressFirstLine = "Wayne Manor";
-            j.AddressSecondLine = "Gotham City";
-            j.AddressThirdLine = "U.S.A.";
-            j.Description = "Building some sort of cave";
-            // Check it has a decent suggested job number.
-            Assert.True(j.JobNumber >= 1);
-            Assert.True(setup.JobsPageViewModel.CanSave);
-            Assert.True(setup.JobsActionsPadViewModel.CanSaveItem);
-            setup.JobsActionsPadViewModel.SaveItem();
-            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.JobsPageViewModel));
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ActionsPad, setup.JobsActionsPadViewModel));
+            setup.JobsPageViewModel.SelectedJobChild = JobChildExperience.Expenses;
+            Assert.True(Object.ReferenceEquals(setup.JobsPageViewModel.JobChildViewModel, setup.ExpensesJobChildViewModel));
+            Assert.True(setup.ExpensesJobChildViewModel.EditCommand.CanExecute(null));
+            setup.ExpensesJobChildViewModel.EditCommand.Execute(null);
+            Assert.False(setup.NavigationBarViewModel.CanBack);
+            Assert.False(setup.NavigationBarViewModel.CanForward);
+            Assert.False(setup.JobsActionsPadViewModel.CanEditItem);
+            Assert.False(setup.JobsActionsPadViewModel.SaveItemIsVisible);
+            Assert.Equal(ModelBase.NewModelId, setup.ExpensesJobChildViewModel.SelectedItem.ExpenseId);
+            setup.ExpensesJobChildViewModel.SelectedItem.Type = expenseType;
+            setup.ExpensesJobChildViewModel.SelectedItem.Description = description;
+            setup.ExpensesJobChildViewModel.SelectedItem.NetAmount = netAmount;
+            Assert.True(setup.ExpensesJobChildViewModel.SaveCommand.CanExecute(null));
+            setup.ExpensesJobChildViewModel.SaveCommand.Execute(null);
             Assert.True(setup.NavigationBarViewModel.CanBack);
-            setup.NavigationBarViewModel.Back();
-            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.ClientsPageViewModel));
+            Assert.False(setup.NavigationBarViewModel.CanForward);
+            Assert.True(setup.JobsActionsPadViewModel.CanEditItem);
+            Assert.False(setup.JobsActionsPadViewModel.SaveItemIsVisible);
         }
     }
 }

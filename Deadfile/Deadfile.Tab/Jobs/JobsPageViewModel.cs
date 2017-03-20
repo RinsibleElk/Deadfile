@@ -298,9 +298,15 @@ namespace Deadfile.Tab.Jobs
                 ChildIsEditable = value;
 
                 if (_jobChildIsEditable)
-                    State = State & ~JobsPageState.CanDiscard;
+                {
+                    CanEdit = false;
+                    CanDelete = false;
+                }
                 else
-                    State = State.HasFlag(JobsPageState.UnderEdit) ? State | JobsPageState.CanDiscard : State & ~JobsPageState.CanDiscard;
+                {
+                    CanEdit = true;
+                    CanDelete = true;
+                }
             }
         }
 
