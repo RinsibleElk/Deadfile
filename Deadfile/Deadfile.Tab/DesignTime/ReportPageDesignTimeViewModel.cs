@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using Deadfile.Model;
 using Deadfile.Tab.Common;
 
@@ -13,6 +14,7 @@ namespace Deadfile.Tab.DesignTime
         public DateTime StartDate { get; set; } = DateTime.Today;
         public DateTime EndDate { get; set; } = DateTime.Today.AddDays(7);
         public bool IncludeInactive { get; set; } = false;
+        public Visual Visual { get; } = null;
         public void Print()
         {
             throw new NotImplementedException();

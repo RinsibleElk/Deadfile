@@ -11,6 +11,7 @@ using Deadfile.Model;
 using Deadfile.Model.Billable;
 using Deadfile.Model.Interfaces;
 using Deadfile.Model.Utils;
+using Deadfile.Pdf;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
 using Deadfile.Tab.Invoices;
@@ -52,11 +53,12 @@ namespace Deadfile.Tab.Test
             private readonly CanUndoEvent _canUndoEvent = new CanUndoEvent();
             private readonly List<NavigateFallBackMessage> _receivedNavigateFallBackMessages = new List<NavigateFallBackMessage>();
             private readonly NavigateFallBackEvent _navigateFallBackEvent = new NavigateFallBackEvent();
+            private readonly Mock<IInvoiceGenerator> _invoiceGeneratorMock = new Mock<IInvoiceGenerator>();
 
             public Host()
             {
                 ViewModel = new InvoicesPageViewModel(_tabIdentity, _printServiceMock.Object,
-                    _deadfileRepositoryMock.Object, _eventAggregatorMock.Object, _dialogCoordinatorMock.Object);
+                    _deadfileRepositoryMock.Object, _eventAggregatorMock.Object, _invoiceGeneratorMock.Object, _dialogCoordinatorMock.Object);
                 RinsibleElk = MakeRinsibleElk();
                 RinsibleElkInvoice = MakeRinsibleElkInvoiceModel();
                 _pageStateEvent.Subscribe((s) => _pageState = s);

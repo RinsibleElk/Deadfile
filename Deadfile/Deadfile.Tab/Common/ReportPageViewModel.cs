@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using MahApps.Metro.Controls.Dialogs;
@@ -61,8 +62,6 @@ namespace Deadfile.Tab.Common
         }
 
         private bool _includeInactive;
-        private DataGrid _visual;
-
         public bool IncludeInactive
         {
             get { return _includeInactive; }
@@ -76,9 +75,12 @@ namespace Deadfile.Tab.Common
             }
         }
 
+        private DataGrid _visual;
+        public Visual Visual => _visual;
+
         public void Print()
         {
-            _printService.PrintVisual(_visual);
+            _printService.PrintVisual(this);
         }
 
         protected sealed override void PerformDelete()

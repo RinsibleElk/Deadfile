@@ -41,7 +41,17 @@ namespace Deadfile.Pdf
         private const double VerticalMargin = 30.0;
         private const double ProjectPaddingWidth = 5.0;
 
-        public FixedDocument GenerateDocument(InvoiceModel invoiceModel)
+        private sealed class Imagine3DInvoiceDocumentPresenter : IDocumentPresenter
+        {
+            public Imagine3DInvoiceDocumentPresenter(FixedDocument document)
+            {
+                Document = document;
+            }
+
+            public FixedDocument Document { get; }
+        }
+
+        public IDocumentPresenter GenerateDocument(InvoiceModel invoiceModel)
         {
             // Create a FixedDocument.
             var doc = new FixedDocument();
@@ -278,7 +288,7 @@ namespace Deadfile.Pdf
             var pageContent = new PageContent();
             ((IAddChild) pageContent).AddChild(page);
             doc.Pages.Add(pageContent);
-            return doc;
+            return new Imagine3DInvoiceDocumentPresenter(doc);
         }
 
         private static Stream GetImagine3DLogoStream()

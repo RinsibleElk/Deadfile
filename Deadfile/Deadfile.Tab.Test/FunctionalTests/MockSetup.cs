@@ -7,6 +7,7 @@ using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Infrastructure.Services;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
+using Deadfile.Pdf;
 using Deadfile.Tab.Browser;
 using Deadfile.Tab.Clients;
 using Deadfile.Tab.Events;
@@ -42,6 +43,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
         public readonly MockRandomNumberGenerator RandomNumberGenerator = new MockRandomNumberGenerator(42);
         public readonly MockDeadfileContextAbstractionFactory DbContext;
         public readonly DeadfileRepository Repository;
+        public readonly MockInvoiceGenerator InvoiceGenerator = new MockInvoiceGenerator();
         public readonly ModelEntityMapper Mapper = new ModelEntityMapper();
         public readonly MockQuotationsTimerService TimerService = new MockQuotationsTimerService();
         public readonly MockDeadfileDispatcherTimerService DispatcherTimerService = new MockDeadfileDispatcherTimerService();
@@ -96,7 +98,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
             ImportPageViewModel = new ImportPageViewModel(Repository, EventAggregator.Object, DeadfileDialogCoordinator);
             JsonPageViewModel = new JsonPageViewModel(factory, Repository, EventAggregator.Object, DeadfileDialogCoordinator);
             DefineQuotationsPageViewModel = new DefineQuotationsPageViewModel(DeadfileDialogCoordinator, Repository, EventAggregator.Object);
-            InvoicesPageViewModel = new InvoicesPageViewModel(TabIdentity, PrintService, Repository, EventAggregator.Object, DeadfileDialogCoordinator);
+            InvoicesPageViewModel = new InvoicesPageViewModel(TabIdentity, PrintService, Repository, EventAggregator.Object, InvoiceGenerator, DeadfileDialogCoordinator);
             JobTasksJobChildViewModel = new JobTasksJobChildViewModel(DispatcherTimerService, DeadfileDialogCoordinator, Repository, EventAggregator.Object);
             ApplicationsJobChildViewModel = new ApplicationsJobChildViewModel(DispatcherTimerService, DeadfileDialogCoordinator, Repository, EventAggregator.Object);
             ExpensesJobChildViewModel = new ExpensesJobChildViewModel(DispatcherTimerService, DeadfileDialogCoordinator, Repository, EventAggregator.Object);

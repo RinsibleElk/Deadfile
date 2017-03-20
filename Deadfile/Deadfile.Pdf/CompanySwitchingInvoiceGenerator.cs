@@ -20,7 +20,7 @@ namespace Deadfile.Pdf
         /// </summary>
         /// <param name="invoiceModel"></param>
         /// <returns></returns>
-        public FixedDocument GenerateDocument(InvoiceModel invoiceModel)
+        public IDocumentPresenter GenerateDocument(InvoiceModel invoiceModel)
         {
             var invoiceGenerator = (invoiceModel.Company == Company.Imagine3DLtd)
                 ? (IInvoiceGenerator)(new Imagine3DInvoiceGenerator())

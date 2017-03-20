@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Media;
+using Deadfile.Pdf;
 
 namespace Deadfile.Infrastructure.Interfaces
 {
@@ -17,12 +18,12 @@ namespace Deadfile.Infrastructure.Interfaces
         /// Print a fixed document.
         /// </summary>
         /// <param name="document"></param>
-        void PrintDocument(FixedDocument document);
+        void PrintDocument(IDocumentPresenter document);
 
         /// <summary>
         /// Print a visual.
         /// </summary>
         /// <param name="visual"></param>
-        void PrintVisual(Visual visual);
+        void PrintVisual(IVisualPresenter visual);
     }
 }

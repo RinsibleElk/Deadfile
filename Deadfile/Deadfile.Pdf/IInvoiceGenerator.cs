@@ -19,6 +19,6 @@ namespace Deadfile.Pdf
         /// </summary>
         /// <param name="invoiceModel"></param>
         /// <returns></returns>
-        FixedDocument GenerateDocument(InvoiceModel invoiceModel);
+        IDocumentPresenter GenerateDocument(InvoiceModel invoiceModel);
     }
 }

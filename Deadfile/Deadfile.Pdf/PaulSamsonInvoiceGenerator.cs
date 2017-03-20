@@ -31,7 +31,17 @@ namespace Deadfile.Pdf
         private static readonly Brush SecondaryColorBrush = new SolidColorBrush(SecondaryColor);
         private static readonly FontFamily Calibri = new FontFamily("Calibri");
 
-        public FixedDocument GenerateDocument(InvoiceModel invoiceModel)
+        private sealed class PaulSamsonInvoiceDocumentPresenter : IDocumentPresenter
+        {
+            public PaulSamsonInvoiceDocumentPresenter(FixedDocument document)
+            {
+                Document = document;
+            }
+
+            public FixedDocument Document { get; }
+        }
+
+        public IDocumentPresenter GenerateDocument(InvoiceModel invoiceModel)
         {
             // Create a FixedDocument.
             var doc = new FixedDocument();
@@ -319,7 +329,7 @@ namespace Deadfile.Pdf
             var pageContent = new PageContent();
             ((IAddChild) pageContent).AddChild(page);
             doc.Pages.Add(pageContent);
-            return doc;
+            return new PaulSamsonInvoiceDocumentPresenter(doc);
         }
 
         private static Stream GetPaulSamsonLogoStream()

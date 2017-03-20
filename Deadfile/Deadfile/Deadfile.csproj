@@ -166,6 +166,10 @@
       <Project>{790F6F95-333F-4CD3-BB57-3E745A1C3224}</Project>
       <Name>Deadfile.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Deadfile.Pdf\Deadfile.Pdf.csproj">
+      <Project>{678021de-2632-4ea3-bfe1-c837e1b60702}</Project>
+      <Name>Deadfile.Pdf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Deadfile.Tab\Deadfile.Tab.csproj">
       <Project>{25d5d05c-a35d-4e53-96ac-f960edadda99}</Project>
       <Name>Deadfile.Tab</Name>

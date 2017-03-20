@@ -368,7 +368,20 @@ namespace Deadfile.Tab.Test.FunctionalTests
             Assert.False(setup.InvoicesActionsPadViewModel.CanPrintItem);
             Assert.False(setup.InvoicesActionsPadViewModel.CanPaidItem);
             Assert.Equal(1, setup.InvoicesPageViewModel.SelectedItem.ClientId);
-
+            Assert.Equal(1, setup.InvoicesPageViewModel.SelectedItem.ChildrenList.Count);
+            Assert.True(String.IsNullOrEmpty(setup.InvoicesPageViewModel.SelectedItem.ChildrenList[0].Description));
+            Assert.Equal(500, setup.InvoicesPageViewModel.SelectedItem.ChildrenList[0].NetAmount);
+            setup.InvoicesPageViewModel.SelectedItem.ChildrenList[0].Description = "Some work that I did";
+            Assert.False(setup.InvoicesActionsPadViewModel.CanSaveItem);
+            Assert.False(setup.InvoicesActionsPadViewModel.CanPrintItem);
+            setup.InvoicesPageViewModel.SelectedItem.ChildrenList[0].NetAmount = 600;
+            Assert.False(setup.InvoicesActionsPadViewModel.CanSaveItem);
+            Assert.False(setup.InvoicesActionsPadViewModel.CanPrintItem);
+            setup.InvoicesPageViewModel.SelectedItem.Description = "A description for this new invoice";
+            Assert.True(setup.InvoicesActionsPadViewModel.CanSaveItem);
+            Assert.True(setup.InvoicesActionsPadViewModel.SaveItemIsVisible);
+            Assert.True(setup.InvoicesActionsPadViewModel.CanPrintItem);
+            setup.InvoicesActionsPadViewModel.PrintItem();
             Assert.True(setup.NavigationBarViewModel.CanHome);
             setup.NavigationBarViewModel.Home();
             Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.HomePageViewModel));

@@ -10,6 +10,7 @@ using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Infrastructure.Services;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
+using Deadfile.Pdf;
 using Deadfile.Tab;
 using Dragablz;
 using MahApps.Metro.Controls.Dialogs;
@@ -65,6 +66,9 @@ namespace Deadfile
             ContainerInstance.RegisterSingleton(typeof(IDeadfileContextAbstractionFactory), nameof(DeadfileContextAbstractionFactory), typeof(DeadfileContextAbstractionFactory));
             ContainerInstance.RegisterSingleton(typeof(IDeadfileRepository), nameof(DeadfileRepository), typeof(DeadfileRepository));
             ContainerInstance.RegisterSingleton(typeof(IModelEntityMapper), nameof(ModelEntityMapper), typeof(ModelEntityMapper));
+
+            // Invoices.
+            ContainerInstance.RegisterSingleton(typeof(IInvoiceGenerator), nameof(CompanySwitchingInvoiceGenerator), typeof(CompanySwitchingInvoiceGenerator));
 
             // Timers.
             ContainerInstance.RegisterSingleton(typeof(IQuotationsTimerService), nameof(QuotationsTimerService), typeof(QuotationsTimerService));

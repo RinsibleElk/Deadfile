@@ -67,8 +67,6 @@
       <HintPath>..\packages\NLog.4.3.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="Prism, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.6.3.0-pre1\lib\net45\Prism.dll</HintPath>
       <Private>True</Private>
@@ -78,8 +76,6 @@
       <HintPath>..\packages\MahApps.Metro.1.4.0-ALPHA036\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\packages\xunit.abstractions.2.0.1\lib\net35\xunit.abstractions.dll</HintPath>
       <Private>True</Private>
@@ -110,6 +106,7 @@
     <Compile Include="FunctionalTests\MockDeadfileContextAbstractionFactory.cs" />
     <Compile Include="FunctionalTests\MockDeadfileDialogCoordinator.cs" />
     <Compile Include="FunctionalTests\MockDeadfileDispatcherTimerService.cs" />
+    <Compile Include="FunctionalTests\MockInvoiceGenerator.cs" />
     <Compile Include="FunctionalTests\MockNavigationContainer.cs" />
     <Compile Include="FunctionalTests\MockPrintService.cs" />
     <Compile Include="FunctionalTests\MockQuotationsTimerService.cs" />
@@ -144,6 +141,10 @@
     <ProjectReference Include="..\Deadfile.Model\Deadfile.Model.csproj">
       <Project>{790f6f95-333f-4cd3-bb57-3e745a1c3224}</Project>
       <Name>Deadfile.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Deadfile.Pdf\Deadfile.Pdf.csproj">
+      <Project>{678021de-2632-4ea3-bfe1-c837e1b60702}</Project>
+      <Name>Deadfile.Pdf</Name>
     </ProjectReference>
     <ProjectReference Include="..\Deadfile.Tab\Deadfile.Tab.csproj">
       <Project>{25d5d05c-a35d-4e53-96ac-f960edadda99}</Project>

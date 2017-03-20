@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompanySwitchingInvoiceGenerator.cs" />
+    <Compile Include="IDocumentPresenter.cs" />
     <Compile Include="IInvoiceGenerator.cs" />
     <Compile Include="Imagine3DInvoiceGenerator.cs" />
     <Compile Include="PaulSamsonInvoiceGenerator.cs" />

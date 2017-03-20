@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using Deadfile.Infrastructure.Interfaces;
+using Deadfile.Pdf;
 
 namespace Deadfile.Infrastructure.Services
 {
@@ -15,20 +16,20 @@ namespace Deadfile.Infrastructure.Services
     /// </summary>
     public class PrintService : IPrintService
     {
-        public void PrintDocument(FixedDocument document)
+        public void PrintDocument(IDocumentPresenter document)
         {
             var printDlg = new PrintDialog();
             var result = printDlg.ShowDialog();
             if (result.Value)
-                printDlg.PrintDocument(((IDocumentPaginatorSource)document).DocumentPaginator, "Invoice");
+                printDlg.PrintDocument(((IDocumentPaginatorSource)document.Document).DocumentPaginator, "Invoice");
         }
 
-        public void PrintVisual(Visual visual)
+        public void PrintVisual(IVisualPresenter visual)
         {
             var printDlg = new PrintDialog();
             var result = printDlg.ShowDialog();
             if (result.Value)
-                printDlg.PrintVisual(visual, "Report");
+                printDlg.PrintVisual(visual.Visual, "Report");
         }
     }
 }

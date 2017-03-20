@@ -37,16 +37,19 @@ namespace Deadfile.Tab.Invoices
         private readonly TabIdentity _tabIdentity;
         private readonly IPrintService _printService;
         private readonly IDeadfileRepository _repository;
+        private readonly IInvoiceGenerator _invoiceGenerator;
 
         public InvoicesPageViewModel(TabIdentity tabIdentity,
             IPrintService printService,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator,
+            IInvoiceGenerator invoiceGenerator,
             IDeadfileDialogCoordinator dialogCoordinator) : base(tabIdentity, eventAggregator, dialogCoordinator, new ParentUndoTracker<InvoiceModel, InvoiceItemModel>())
         {
             _tabIdentity = tabIdentity;
             _printService = printService;
             _repository = repository;
+            _invoiceGenerator = invoiceGenerator;
             AddItemCommand = new DelegateCommand(AddItemAction);
         }
 
@@ -322,8 +325,7 @@ namespace Deadfile.Tab.Invoices
 
         private void PerformPrint(PrintMessage print)
         {
-            var invoiceGenerator = new CompanySwitchingInvoiceGenerator();
-            var fixedDocument = invoiceGenerator.GenerateDocument(SelectedItem);
+            var fixedDocument = _invoiceGenerator.GenerateDocument(SelectedItem);
             _printService.PrintDocument(fixedDocument);
         }
 
