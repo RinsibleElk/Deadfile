@@ -16,6 +16,7 @@ namespace Deadfile.Tab.DesignTime
         public ObservableCollection<T> Items { get; set; }
         public T SelectedItem { get; set; }
         public bool Editable { get; }
+        public bool CanDeleteItem { get; }
         public List<string> Errors { get; }
         public string Filter { get; set; }
         public ICommand EditCommand { get; } = null;

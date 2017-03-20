@@ -89,6 +89,7 @@
     <Compile Include="Converters\ExpenseTypeToStringConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\ModelIdToEditCommandNameConverter.cs" />
     <Compile Include="Converters\SwitchConverter.cs" />
     <Compile Include="DesignTime\DesignTimeResourceDictionary.cs" />
     <Compile Include="Interfaces\IDeadfileDialogCoordinator.cs" />

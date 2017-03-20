@@ -126,9 +126,9 @@
                                 <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right">
                                     <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             Command="{Binding Path=DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
-                                        Edit
+                                        <TextBlock Text="{Binding Path=DataContext.SelectedItem.Id, Converter={StaticResource ModelIdToEditCommandName}, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </Button>
-                                    <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    <Button Visibility="{Binding Path=DataContext.CanDeleteItem, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             Command="{Binding Path=DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                         Delete
                                     </Button>

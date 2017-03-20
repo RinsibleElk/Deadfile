@@ -3,6 +3,7 @@
                     xmlns:converters="clr-namespace:Deadfile.Infrastructure.Converters"
                     xmlns:entity="clr-namespace:Deadfile.Entity;assembly=Deadfile.Entity">
     <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
+    <converters:ModelIdToEditCommandNameConverter x:Key="ModelIdToEditCommandName"/>
     <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibility"/>
     <converters:InverseBooleanConverter x:Key="InverseBoolean"/>
     <converters:ApplicationTypeToStringConverter x:Key="ApplicationTypeToString"/>

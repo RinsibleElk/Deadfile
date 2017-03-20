@@ -9,9 +9,18 @@
              xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:templates="clr-namespace:Deadfile.Infrastructure.Templates;assembly=Deadfile.Infrastructure"
+             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:LocalAuthoritiesPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <designTime:DesignTimeResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Converters.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </designTime:DesignTimeResourceDictionary>
+    </UserControl.Resources>
     <DockPanel LastChildFill="True" Background="{StaticResource ContentBackgroundBrush}">
         <DockPanel.Resources>
             <DataTemplate x:Key="ExpanderHeaderTemplate" DataType="model:LocalAuthorityModel">
@@ -75,9 +84,9 @@
                                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
                                     <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             Command="{Binding Path=DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
-                                        Edit
+                                        <TextBlock Text="{Binding Path=DataContext.SelectedItem.Id, Converter={StaticResource ModelIdToEditCommandName}, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </Button>
-                                    <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    <Button Visibility="{Binding Path=DataContext.CanDeleteItem, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             Command="{Binding Path=DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                         Delete
                                     </Button>
@@ -87,7 +96,9 @@
                                     </Button>
                                     <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             IsEnabled="{Binding Path=HasErrors, Converter={StaticResource InverseBoolean}}"
-                                            Command="{Binding Path=DataContext.SaveCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">Save</Button>
+                                            Command="{Binding Path=DataContext.SaveCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                        Save
+                                    </Button>
                                 </StackPanel>
                             </Grid>
                         </Expander>

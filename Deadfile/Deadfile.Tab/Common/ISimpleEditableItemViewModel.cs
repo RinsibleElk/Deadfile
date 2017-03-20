@@ -44,6 +44,11 @@ namespace Deadfile.Tab.Common
         bool Editable { get; }
 
         /// <summary>
+        /// Whether the selected item can be deleted.
+        /// </summary>
+        bool CanDeleteItem { get; }
+
+        /// <summary>
         /// The current errors.
         /// </summary>
         List<string> Errors { get; }

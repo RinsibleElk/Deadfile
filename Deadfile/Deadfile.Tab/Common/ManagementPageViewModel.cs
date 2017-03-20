@@ -86,7 +86,7 @@ namespace Deadfile.Tab.Common
 
         protected abstract void PerformDelete();
 
-        private bool CanDeleteItem
+        public bool CanDeleteItem
         {
             get { return _canDeleteItem; }
             set
@@ -94,6 +94,7 @@ namespace Deadfile.Tab.Common
                 if (_canDeleteItem != value)
                 {
                     _canDeleteItem = value;
+                    NotifyOfPropertyChange(() => CanDeleteItem);
                     _deleteCommand.RaiseCanExecuteChanged();
                 }
             }
@@ -215,7 +216,7 @@ namespace Deadfile.Tab.Common
                     EditingStatusChanged(_editable);
 
                     // Allow deletion.
-                    CanDeleteItem = _allowAdds && (SelectedItem != null) && !Editable;
+                    CanDeleteItem = _allowAdds && (SelectedItem != null) && (SelectedItem.Id != ModelBase.NewModelId) && !Editable;
 
                     // Allow save.
                     CanSaveItem = (SelectedItem != null) && Editable && !SelectedItem.HasErrors;
@@ -291,7 +292,7 @@ namespace Deadfile.Tab.Common
                 NotifyOfPropertyChange(() => SelectedItem);
 
                 // Allow deletion.
-                CanDeleteItem = _allowAdds && (SelectedItem != null) && !Editable;
+                CanDeleteItem = _allowAdds && (SelectedItem != null) && (SelectedItem.Id != ModelBase.NewModelId) && !Editable;
             }
         }
 
