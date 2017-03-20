@@ -20,7 +20,7 @@ namespace Deadfile.Tab.JobChildren.Expenses
         private readonly IDeadfileRepository _repository;
 
         public ExpensesJobChildViewModel(IDeadfileDispatcherTimerService timerService,
-            IDialogCoordinator dialogCoordinator,
+            IDeadfileDialogCoordinator dialogCoordinator,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator) : base(timerService, dialogCoordinator, eventAggregator)
         {

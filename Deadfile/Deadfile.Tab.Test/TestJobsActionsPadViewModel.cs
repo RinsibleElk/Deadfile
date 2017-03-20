@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Castle.Components.DictionaryAdapter;
 using Deadfile.Tab.Events;
 using Deadfile.Tab.Jobs;
 using Moq;
@@ -13,51 +15,86 @@ namespace Deadfile.Tab.Test
         private static readonly TabIdentity TabIdentity = new TabIdentity(1);
         private class Host : IDisposable
         {
-            public readonly Mock<IEventAggregator> EventAggregatorMock;
-            public readonly Mock<EditActionEvent> EditActionEventMock;
+            private readonly Mock<IEventAggregator> _eventAggregatorMock;
+            private readonly List<EditActionMessage> _receivedEditActionMessages = new EditableList<EditActionMessage>();
+            private readonly EditActionEvent _editActionEvent = new EditActionEvent();
             public readonly JobsActionsPadViewModel ViewModel;
-            public readonly LockedForEditingEvent LockedForEditingEvent;
-            public readonly CanDiscardEvent CanDiscardEvent;
-            public readonly CanDeleteEvent CanDeleteEvent;
-            public readonly CanSaveEvent CanSaveEvent;
-            public readonly CanEditEvent CanEditEvent;
+            private readonly PageStateEvent<JobsPageState> _pageStateEvent = new PageStateEvent<JobsPageState>();
             public Host()
             {
-                EventAggregatorMock = new Mock<IEventAggregator>();
-                EditActionEventMock = new Mock<EditActionEvent>();
-                ViewModel = new JobsActionsPadViewModel(TabIdentity, EventAggregatorMock.Object);
-                LockedForEditingEvent = new LockedForEditingEvent();
-                CanSaveEvent = new CanSaveEvent();
-                CanDeleteEvent = new CanDeleteEvent();
-                CanDiscardEvent = new CanDiscardEvent();
-                CanEditEvent = new CanEditEvent();
-                EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
-                    .Returns(LockedForEditingEvent)
+                _eventAggregatorMock = new Mock<IEventAggregator>();
+                _editActionEvent.Subscribe((m) => _receivedEditActionMessages.Add(m));
+                ViewModel = new JobsActionsPadViewModel(TabIdentity, _eventAggregatorMock.Object);
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<PageStateEvent<JobsPageState>>())
+                    .Returns(_pageStateEvent)
                     .Verifiable();
-                EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<CanSaveEvent>())
-                    .Returns(CanSaveEvent)
-                    .Verifiable();
-                EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
-                    .Returns(CanDeleteEvent)
-                    .Verifiable();
-                EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<CanDiscardEvent>())
-                    .Returns(CanDiscardEvent)
-                    .Verifiable();
-                EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<CanEditEvent>())
-                    .Returns(CanEditEvent)
-                    .Verifiable();
+
+                // Navigate to it.
                 ViewModel.OnNavigatedTo(null);
+
+                // Initial state.
+                _pageStateEvent.Publish(JobsPageState.CanDelete | JobsPageState.CanEdit);
             }
 
             public void Dispose()
             {
-                EventAggregatorMock.VerifyAll();
-                EditActionEventMock.VerifyAll();
+                _eventAggregatorMock.VerifyAll();
+                Assert.Equal(0, _receivedEditActionMessages.Count);
+            }
+
+            public void Edit()
+            {
+                Assert.True(ViewModel.PageState.HasFlag(JobsPageState.CanEdit));
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<EditActionEvent>())
+                    .Returns(_editActionEvent)
+                    .Verifiable();
+                ViewModel.EditItem();
+                Assert.Equal(1, _receivedEditActionMessages.Count);
+                Assert.Equal(EditActionMessage.StartEditing, _receivedEditActionMessages[0]);
+                _receivedEditActionMessages.Clear();
+            }
+
+            public void LockForEditing()
+            {
+                _pageStateEvent.Publish(JobsPageState.CanSave | JobsPageState.CanDelete | JobsPageState.CanEdit);
+                _pageStateEvent.Publish(JobsPageState.CanSave | JobsPageState.CanEdit);
+                _pageStateEvent.Publish(JobsPageState.CanSave | JobsPageState.CanEdit | JobsPageState.CanDiscard);
+                _pageStateEvent.Publish(JobsPageState.CanSave | JobsPageState.CanEdit | JobsPageState.CanDiscard | JobsPageState.UnderEdit);
+            }
+
+            public void UnlockForEditing()
+            {
+                _pageStateEvent.Publish(JobsPageState.CanSave | JobsPageState.CanDelete | JobsPageState.CanEdit | JobsPageState.CanDiscard | JobsPageState.UnderEdit);
+                _pageStateEvent.Publish(JobsPageState.CanSave | JobsPageState.CanDelete | JobsPageState.CanEdit | JobsPageState.UnderEdit);
+                _pageStateEvent.Publish(JobsPageState.CanSave | JobsPageState.CanDelete | JobsPageState.CanEdit);
+                _pageStateEvent.Publish(JobsPageState.CanDelete | JobsPageState.CanEdit);
+            }
+
+            public void CannotSave()
+            {
+                _pageStateEvent.Publish(ViewModel.PageState & ~JobsPageState.CanSave);
+            }
+
+            public void CannotDiscard()
+            {
+                _pageStateEvent.Publish(ViewModel.PageState & ~JobsPageState.CanDiscard);
+            }
+        }
+
+        [Fact]
+        public void TestDefaultButtonVisibilities()
+        {
+            // Setup.
+            using (var host = new Host())
+            {
+                // Checks.
+                Assert.True(host.ViewModel.EditItemIsVisible);
+                Assert.False(host.ViewModel.SaveItemIsVisible);
+                Assert.True(host.ViewModel.DeleteItemIsVisible);
+                Assert.False(host.ViewModel.CanDiscardItem);
+                Assert.False(host.ViewModel.DiscardItemIsVisible);
             }
         }
 
@@ -67,34 +104,8 @@ namespace Deadfile.Tab.Test
             // Setup.
             using (var host = new Host())
             {
-                // Hit the Edit button.
-                host.EventAggregatorMock
-                    .Setup((eventAggregator) => eventAggregator.GetEvent<EditActionEvent>())
-                    .Returns(host.EditActionEventMock.Object)
-                    .Verifiable();
-                host.EditActionEventMock
-                    .Setup((ev) => ev.Publish(EditActionMessage.StartEditing))
-                    .Verifiable();
-                host.ViewModel.EditItem();
-
-                // Checks.
+                host.Edit();
             }
-        }
-
-        [Fact]
-        public void TestDefaultButtonVisibilities()
-        {
-            // Setup.
-            var eventAggregatorMock = new Mock<IEventAggregator>();
-            var viewModel = new JobsActionsPadViewModel(TabIdentity, eventAggregatorMock.Object);
-
-            // Checks.
-            Assert.True(viewModel.EditItemIsVisible);
-            Assert.False(viewModel.SaveItemIsVisible);
-            Assert.True(viewModel.DeleteItemIsVisible);
-            Assert.True(viewModel.CanDiscardItem);
-            Assert.False(viewModel.DiscardItemIsVisible);
-            eventAggregatorMock.VerifyAll();
         }
 
         [Fact]
@@ -104,15 +115,8 @@ namespace Deadfile.Tab.Test
             using (var host = new Host())
             {
                 // Act.
-                host.EventAggregatorMock
-                    .Setup((eventAggregator) => eventAggregator.GetEvent<EditActionEvent>())
-                    .Returns(host.EditActionEventMock.Object)
-                    .Verifiable();
-                host.EditActionEventMock
-                    .Setup((ev) => ev.Publish(EditActionMessage.StartEditing))
-                    .Verifiable();
-                host.ViewModel.EditItem();
-                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = true});
+                host.Edit();
+                host.LockForEditing();
 
                 // Checks.
                 Assert.False(host.ViewModel.EditItemIsVisible);
@@ -130,22 +134,15 @@ namespace Deadfile.Tab.Test
             using (var host = new Host())
             {
                 // Act.
-                host.EventAggregatorMock
-                    .Setup((eventAggregator) => eventAggregator.GetEvent<EditActionEvent>())
-                    .Returns(host.EditActionEventMock.Object)
-                    .Verifiable();
-                host.EditActionEventMock
-                    .Setup((ev) => ev.Publish(EditActionMessage.StartEditing))
-                    .Verifiable();
-                host.ViewModel.EditItem();
-                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = true});
-                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() {IsLocked = false});
+                host.Edit();
+                host.LockForEditing();
+                host.UnlockForEditing();
 
                 // Checks.
                 Assert.True(host.ViewModel.EditItemIsVisible);
                 Assert.False(host.ViewModel.SaveItemIsVisible);
                 Assert.True(host.ViewModel.DeleteItemIsVisible);
-                Assert.True(host.ViewModel.CanDiscardItem);
+                Assert.False(host.ViewModel.CanDiscardItem);
                 Assert.False(host.ViewModel.DiscardItemIsVisible);
             }
         }
@@ -157,16 +154,9 @@ namespace Deadfile.Tab.Test
             using (var host = new Host())
             {
                 // Act.
-                host.EventAggregatorMock
-                    .Setup((eventAggregator) => eventAggregator.GetEvent<EditActionEvent>())
-                    .Returns(host.EditActionEventMock.Object)
-                    .Verifiable();
-                host.EditActionEventMock
-                    .Setup((ev) => ev.Publish(EditActionMessage.StartEditing))
-                    .Verifiable();
-                host.ViewModel.EditItem();
-                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() { IsLocked = true });
-                host.CanSaveEvent.Publish(CanSaveMessage.CannotSave);
+                host.Edit();
+                host.LockForEditing();
+                host.CannotSave();
 
                 // Checks.
                 Assert.True(host.ViewModel.SaveItemIsVisible);
@@ -181,8 +171,10 @@ namespace Deadfile.Tab.Test
             using (var host = new Host())
             {
                 // Act.
-                host.LockedForEditingEvent.Publish(new LockedForEditingMessage() { IsLocked = true });
-                host.CanDiscardEvent.Publish(CanDiscardMessage.CannotDiscard);
+                host.Edit();
+                host.LockForEditing();
+                host.CannotSave();
+                host.CannotDiscard();
 
                 // Checks.
                 Assert.True(host.ViewModel.SaveItemIsVisible);

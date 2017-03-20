@@ -32,10 +32,6 @@ namespace Deadfile.Tab.Tab
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
             DisplayName = "Home";
-            navigationService.RequestNavigate(this, nameof(NavigationBar), "NavigationBar", null);
-            navigationService.RequestNavigate(this, nameof(ContentArea), "HomePage", null);
-            navigationService.RequestNavigate(this, nameof(BrowserPane), "BrowserPane", null);
-            navigationService.RequestNavigate(this, nameof(QuotesBar), "QuotesBar", null);
         }
 
         private void AddClientAction(AddClientMessage addClientAction)
@@ -139,6 +135,11 @@ namespace Deadfile.Tab.Tab
             Logger.Info("Activated tab {0}", _tabIdentity.TabIndex);
 
             base.OnActivate();
+
+            _navigationService.RequestNavigate(this, nameof(NavigationBar), "NavigationBar", null);
+            _navigationService.RequestNavigate(this, nameof(ContentArea), "HomePage", null);
+            _navigationService.RequestNavigate(this, nameof(BrowserPane), "BrowserPane", null);
+            _navigationService.RequestNavigate(this, nameof(QuotesBar), "QuotesBar", null);
 
             _navigateEventSubscriptionToken = _eventAggregator.GetEvent<NavigateEvent>().Subscribe(NavigateAction);
             _displayNameEventSubscriptionToken = _eventAggregator.GetEvent<DisplayNameEvent>().Subscribe(DisplayNameChanged);

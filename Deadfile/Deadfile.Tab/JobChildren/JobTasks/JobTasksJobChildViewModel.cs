@@ -24,7 +24,7 @@ namespace Deadfile.Tab.JobChildren.JobTasks
         private readonly DelegateCommand _togglePriorityCommand;
 
         public JobTasksJobChildViewModel(IDeadfileDispatcherTimerService timerService,
-            IDialogCoordinator dialogCoordinator,
+            IDeadfileDialogCoordinator dialogCoordinator,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator) : base(timerService, dialogCoordinator, eventAggregator)
         {

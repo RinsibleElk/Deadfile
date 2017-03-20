@@ -41,8 +41,18 @@ namespace Deadfile.Model.Billable
                     OnPropertyChanged(nameof(Text));
             }
         }
+        private double _totalPossibleHours;
+        public double TotalPossibleHours
+        {
+            get { return _totalPossibleHours; }
+            set
+            {
+                if (SetProperty(ref _totalPossibleHours, value))
+                    OnPropertyChanged(nameof(Text));
+            }
+        }
 
-        public override string Text { get { return FullAddress + " (" + NetAmount + "/" + TotalPossibleNetAmount + ")"; } }
+        public override string Text => $"{FullAddress} ({NetAmount:C}/{TotalPossibleNetAmount:C}, {Hours} hours/{TotalPossibleHours} hours)";
 
         public override int Id
         {
@@ -54,11 +64,13 @@ namespace Deadfile.Model.Billable
         public void StateChanged(int index)
         {
             NetAmount = 0;
+            Hours = 0;
             foreach (var child in Children)
             {
                 if (child.State == BillableModelState.FullyIncluded)
                 {
                     NetAmount += child.NetAmount;
+                    Hours += child.Hours;
                     Parent?.NetAmountChanged(Index);
                 }
             }

@@ -57,10 +57,6 @@ namespace Deadfile.Tab.Invoices
         public List<string> Errors { get; } = new List<string>();
         public string FilterText { get; set; } = "";
         public ObservableCollection<BillableModel> Jobs { get; set; }
-        public void SetCompany()
-        {
-            throw new NotImplementedException();
-        }
         public void SetBillableItems()
         {
             throw new NotImplementedException();
@@ -69,6 +65,7 @@ namespace Deadfile.Tab.Invoices
         public bool CanSetBillableItems { get; } = false;
         public bool InvoiceEditable { get; } = false;
         public double NetAmount { get; set; } = 365.0;
+        public double Hours { get; set; } = 7.0;
         public ICommand AddItemCommand { get; } = null;
 
         public ObservableCollection<string> SuggestedInvoiceReferences { get; set; } =

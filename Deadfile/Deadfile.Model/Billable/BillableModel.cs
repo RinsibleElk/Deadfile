@@ -60,6 +60,17 @@ namespace Deadfile.Model.Billable
             }
         }
 
+        private double _hours;
+        public double Hours
+        {
+            get { return _hours; }
+            set
+            {
+                if (SetProperty(ref _hours, value))
+                    OnPropertyChanged(nameof(Text));
+            }
+        }
+
         public abstract string Text { get; }
 
         private bool _isExpanded = false;

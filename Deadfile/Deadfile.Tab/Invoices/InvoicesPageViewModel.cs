@@ -32,9 +32,8 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Invoices
 {
-    class InvoicesPageViewModel : EditableItemViewModel<ClientAndInvoiceNavigationKey, InvoiceModel>, IInvoicesPageViewModel, IBillableModelContainer
+    class InvoicesPageViewModel : EditableItemViewModel<ClientAndInvoiceNavigationKey, InvoiceModel, InvoicesPageState>, IInvoicesPageViewModel, IBillableModelContainer
     {
-        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly TabIdentity _tabIdentity;
         private readonly IPrintService _printService;
         private readonly IDeadfileRepository _repository;
@@ -49,6 +48,54 @@ namespace Deadfile.Tab.Invoices
             _printService = printService;
             _repository = repository;
             AddItemCommand = new DelegateCommand(AddItemAction);
+        }
+
+        internal override bool CanEdit
+        {
+            get { return State.HasFlag(InvoicesPageState.CanEdit); }
+            set
+            {
+                if (value)
+                    State = State | InvoicesPageState.CanEdit;
+                else
+                    State = State & ~InvoicesPageState.CanEdit;
+            }
+        }
+
+        internal override bool CanDelete
+        {
+            get { return State.HasFlag(InvoicesPageState.CanDelete); }
+            set
+            {
+                if (value)
+                    State = State | InvoicesPageState.CanDelete;
+                else
+                    State = State & ~InvoicesPageState.CanDelete;
+            }
+        }
+
+        internal override bool CanSave
+        {
+            get { return State.HasFlag(InvoicesPageState.CanSave); }
+            set
+            {
+                if (value)
+                    State = State | InvoicesPageState.CanSave;
+                else
+                    State = State & ~InvoicesPageState.CanSave;
+            }
+        }
+
+        internal override bool UnderEdit
+        {
+            get { return State.HasFlag(InvoicesPageState.UnderEdit); }
+            set
+            {
+                if (value)
+                    State = State | InvoicesPageState.UnderEdit;
+                else
+                    State = State & ~InvoicesPageState.UnderEdit;
+            }
         }
 
         private void AddItemAction()
@@ -72,11 +119,13 @@ namespace Deadfile.Tab.Invoices
             // Listen for changes to job state (whether selected as a billed item in this invoice).
             int index = 0;
             NetAmount = 0;
+            Hours = 0;
             foreach (var job in jobs)
             {
                 job.Index = index++;
                 job.Parent = this;
                 NetAmount += job.NetAmount;
+                Hours += job.Hours;
                 int subIndex = 0;
                 foreach (var child in job.Children)
                 {
@@ -228,17 +277,12 @@ namespace Deadfile.Tab.Invoices
         {
             NotifyOfPropertyChange(nameof(CanSetBillableItems));
             NotifyOfPropertyChange(nameof(InvoiceEditable));
+            State = editable ? State | InvoicesPageState.CanDiscard : State & ~InvoicesPageState.CanDiscard;
         }
 
-        public bool CanSetBillableItems
-        {
-            get { return Editable && SelectedItem.CreationState == InvoiceCreationState.DefineBillables; }
-        }
+        public bool CanSetBillableItems => Editable && SelectedItem.CreationState == InvoiceCreationState.DefineBillables;
 
-        public bool InvoiceEditable
-        {
-            get { return Editable && SelectedItem.CreationState == InvoiceCreationState.DefineInvoice; }
-        }
+        public bool InvoiceEditable => Editable && SelectedItem.CreationState == InvoiceCreationState.DefineInvoice;
 
         private async Task<bool> PerformSave()
         {
@@ -259,19 +303,19 @@ namespace Deadfile.Tab.Invoices
             return actuallySave;
         }
 
-        protected override async void PerformSave(SaveMessage message)
+        protected override async Task PerformSave(bool andPrint)
         {
             try
             {
                 var saved = await PerformSave();
-                if (saved && message == SaveMessage.SaveAndPrint)
+                if (saved && andPrint)
                 {
                     PerformPrint(PrintMessage.Print);
                 }
             }
             catch (Exception e)
             {
-                Logger.Fatal(e, "Exception while saving {0}, {1}, {2}, {3}, {4}", _tabIdentity, SelectedItem, message, e, e.StackTrace);
+                Logger.Fatal(e, "Exception while saving {0}, {1}, {2}, {3}, {4}", _tabIdentity, SelectedItem, andPrint, e, e.StackTrace);
                 throw;
             }
         }
@@ -302,8 +346,7 @@ namespace Deadfile.Tab.Invoices
         }
 
 
-        public Experience Experience { get; } = Experience.Invoices;
-        public bool ShowActionsPad { get; } = true;
+        public override Experience Experience { get; } = Experience.Invoices;
 
         private string _filterText = "";
         public string FilterText
@@ -329,12 +372,6 @@ namespace Deadfile.Tab.Invoices
             }
         }
 
-        public void SetCompany()
-        {
-            SelectedItem.CreationState = InvoiceCreationState.DefineBillables;
-            NotifyOfPropertyChange(nameof(CanSetBillableItems));
-        }
-
         public void SetBillableItems()
         {
             SelectedItem.CreationState = InvoiceCreationState.DefineInvoice;
@@ -342,10 +379,10 @@ namespace Deadfile.Tab.Invoices
             NotifyOfPropertyChange(nameof(InvoiceEditable));
         }
 
-        private double _netAmount;
         private SubscriptionToken _printEventSubscriptionToken = null;
         private SubscriptionToken _paidEventSubscriptionToken = null;
 
+        private double _netAmount;
         public double NetAmount
         {
             get { return _netAmount; }
@@ -354,6 +391,18 @@ namespace Deadfile.Tab.Invoices
                 if (value.Equals(_netAmount)) return;
                 _netAmount = value;
                 NotifyOfPropertyChange(() => NetAmount);
+            }
+        }
+
+        private double _hours;
+        public double Hours
+        {
+            get { return _hours; }
+            set
+            {
+                if (value.Equals(_hours)) return;
+                _hours = value;
+                NotifyOfPropertyChange(() => Hours);
             }
         }
 
@@ -391,9 +440,11 @@ namespace Deadfile.Tab.Invoices
         public void NetAmountChanged(int index)
         {
             NetAmount = 0;
+            Hours = 0;
             foreach (var job in Jobs)
             {
                 NetAmount += job.NetAmount;
+                Hours += job.Hours;
             }
         }
     }

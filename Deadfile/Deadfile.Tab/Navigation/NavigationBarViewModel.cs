@@ -94,7 +94,7 @@ namespace Deadfile.Tab.Navigation
 
         public void Undo()
         {
-            Logger.Info("Event,UndoEvent,Send,{0},{1}", _tabIdentity.TabIndex, UndoMessage.Undo);
+            Logger.Info("Event|UndoEvent|Send|{0}|{1}", _tabIdentity.TabIndex, UndoMessage.Undo);
             _eventAggregator.GetEvent<UndoEvent>().Publish(UndoMessage.Undo);
         }
 

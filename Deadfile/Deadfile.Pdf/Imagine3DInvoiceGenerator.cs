@@ -37,8 +37,8 @@ namespace Deadfile.Pdf
         private const double LogoImageWidth = 145.0;
         private const double PageWidth = 793.92;
         private const double PageHeight = 1122.24;
-        private const double SideMargin = 45.0;
-        private const double VerticalMargin = 100.0;
+        private const double SideMargin = 30.0;
+        private const double VerticalMargin = 30.0;
         private const double ProjectPaddingWidth = 5.0;
 
         public FixedDocument GenerateDocument(InvoiceModel invoiceModel)
@@ -48,10 +48,12 @@ namespace Deadfile.Pdf
             doc.DocumentPaginator.PageSize = new Size(PageWidth, PageHeight);
 
             // Single page doc.
-            var page = new FixedPage();
-            page.Width = doc.DocumentPaginator.PageSize.Width;
-            page.Height = doc.DocumentPaginator.PageSize.Height;
-            page.Margin = new Thickness(SideMargin, VerticalMargin, SideMargin, VerticalMargin);
+            var page = new FixedPage
+            {
+                Width = doc.DocumentPaginator.PageSize.Width,
+                Height = doc.DocumentPaginator.PageSize.Height,
+                Margin = new Thickness(SideMargin, VerticalMargin, SideMargin, VerticalMargin)
+            };
             var pageStackPanel = new StackPanel();
 
             // At the top, there's a stack panel.
@@ -62,10 +64,12 @@ namespace Deadfile.Pdf
             logoBitmap.BeginInit();
             logoBitmap.StreamSource = GetImagine3DLogoStream();
             logoBitmap.EndInit();
-            var logoImage = new Image();
-            logoImage.Source = logoBitmap;
-            logoImage.Width = LogoImageWidth;
-            logoImage.Stretch = Stretch.Uniform;
+            var logoImage = new Image
+            {
+                Source = logoBitmap,
+                Width = LogoImageWidth,
+                Stretch = Stretch.Uniform
+            };
             headerStackPanel.Children.Add(logoImage);
 
             // Then there's a vertical stack panel.
@@ -79,18 +83,20 @@ namespace Deadfile.Pdf
             danielBitmap.BeginInit();
             danielBitmap.StreamSource = GetImagine3DTextStream();
             danielBitmap.EndInit();
-            var danielImage = new Image();
-            danielImage.Source = danielBitmap;
             var danielImageWidth = 145.0;
-            danielImage.Width = danielImageWidth;
-            danielImage.Stretch = Stretch.Uniform;
+            var danielImage = new Image
+            {
+                Source = danielBitmap,
+                Width = danielImageWidth,
+                Stretch = Stretch.Uniform
+            };
             var danielImageStackPanel = new StackPanel {Orientation = Orientation.Horizontal};
             danielImageStackPanel.Children.Add(danielImage);
             header.Children.Add(danielImageStackPanel);
 
             headerStackPanel.Children.Add(header);
 
-            var addressesSectionHeight = 200.0;
+            var addressesSectionHeight = 210.0;
             var addressesStackPanel = new StackPanel
             {
                 Height = addressesSectionHeight,
@@ -151,7 +157,7 @@ namespace Deadfile.Pdf
             }
             addressesStackPanel.Children.Add(detailsStackPanel);
 
-            var projectHeight = 75.0;
+            var projectHeight = 85.0;
             var projectStackPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
@@ -194,7 +200,7 @@ namespace Deadfile.Pdf
                 Width = detailsWidth
             });
 
-            var itemListHeight = 250.0;
+            var itemListHeight = 370.0;
             var itemListStackPanel = new StackPanel
             {
                 Width = itemListWidth,
@@ -250,7 +256,7 @@ namespace Deadfile.Pdf
 
             var footerStackPanel = new StackPanel
             {
-                Margin = new Thickness(0, 20, 0, 0)
+                Margin = new Thickness(0, 30, 0, 0)
             };
             footerStackPanel.Children.Add(
                 new Imagine3DTsAndCsTextBlock(
@@ -317,7 +323,7 @@ namespace Deadfile.Pdf
             {
                 Text = text;
                 FontWeight = FontWeights.Bold;
-                FontSize = 13;
+                FontSize = 14;
             }
         }
 
@@ -328,7 +334,7 @@ namespace Deadfile.Pdf
                 Text = text;
                 Foreground = PrimaryColorBrush;
                 FontWeight = FontWeights.Bold;
-                FontSize = 12;
+                FontSize = 13;
                 HorizontalAlignment = HorizontalAlignment.Right;
             }
         }
@@ -338,7 +344,7 @@ namespace Deadfile.Pdf
             public Imagine3DDetailsValuesTextBlock(string text) : base()
             {
                 Text = text;
-                FontSize = 12;
+                FontSize = 13;
             }
         }
 
@@ -347,7 +353,7 @@ namespace Deadfile.Pdf
             public Imagine3DAddressLineTextBlock(string text) : base()
             {
                 Text = text;
-                FontSize = 13;
+                FontSize = 14;
             }
         }
 
@@ -356,7 +362,7 @@ namespace Deadfile.Pdf
             public Imagine3DProjectTitlesTextBlock(string text) : base()
             {
                 Text = text;
-                FontSize = 16;
+                FontSize = 17;
                 FontWeight = FontWeights.Bold;
                 Foreground = PrimaryColorBrush;
                 HorizontalAlignment = HorizontalAlignment.Right;
@@ -371,7 +377,7 @@ namespace Deadfile.Pdf
                 Text = text;
                 FontWeight = FontWeights.Bold;
                 Margin = new Thickness(0, 4, 0, 0);
-                FontSize = 13;
+                FontSize = 14;
             }
         }
 
@@ -381,7 +387,7 @@ namespace Deadfile.Pdf
             {
                 Text = text;
                 Foreground = Brushes.White;
-                FontSize = 16;
+                FontSize = 17;
             }
         }
 
@@ -390,7 +396,7 @@ namespace Deadfile.Pdf
             public Imagine3DItemListItemsTextBlock(string text) : base()
             {
                 Text = text;
-                FontSize = 12;
+                FontSize = 14;
             }
         }
 
@@ -400,7 +406,7 @@ namespace Deadfile.Pdf
             {
                 Text = text;
                 TextAlignment = TextAlignment.Center;
-                FontSize = 11;
+                FontSize = 12;
             }
         }
 
@@ -410,7 +416,7 @@ namespace Deadfile.Pdf
             {
                 Text = text;
                 FontWeight = FontWeights.Bold;
-                FontSize = 18;
+                FontSize = 19;
             }
         }
     }

@@ -18,9 +18,8 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Clients
 {
-    class ClientsPageViewModel : EditableItemViewModel<ClientNavigationKey, ClientModel>, IClientsPageViewModel
+    class ClientsPageViewModel : EditableItemViewModel<ClientNavigationKey, ClientModel, ClientsPageState>, IClientsPageViewModel
     {
-        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly TabIdentity _tabIdentity;
         private readonly IDeadfileRepository _repository;
         private readonly IUrlNavigationService _urlNavigationService;
@@ -42,7 +41,7 @@ namespace Deadfile.Tab.Clients
         public void AddNewJob()
         {
             // Navigate to the Jobs page with the specified Client and no job given.
-            Logger.Info("Event,AddNewJobEvent,Send,{0},{1}", _tabIdentity.TabIndex, SelectedItem.ClientId);
+            Logger.Info("Event|AddNewJobEvent|Send|{0}|{1}", _tabIdentity.TabIndex, SelectedItem.ClientId);
             EventAggregator.GetEvent<AddNewJobEvent>().Publish(SelectedItem.ClientId);
         }
 
@@ -52,7 +51,7 @@ namespace Deadfile.Tab.Clients
         public void InvoiceClient()
         {
             // Navigate to the Invoices page with the specified Client and no invoice given.
-            Logger.Info("Event,InvoiceClientEvent,Send,{0},{1}", _tabIdentity.TabIndex, SelectedItem.ClientId);
+            Logger.Info("Event|InvoiceClientEvent|Send|{0}|{1}", _tabIdentity.TabIndex, SelectedItem.ClientId);
             EventAggregator.GetEvent<InvoiceClientEvent>().Publish(SelectedItem.ClientId);
         }
 
@@ -134,7 +133,7 @@ namespace Deadfile.Tab.Clients
                 else
                     DisplayName = clientModel.FullName;
             }
-            Logger.Info("Event,DisplayNameEvent,Send,{0},{1}", _tabIdentity.TabIndex, DisplayName);
+            Logger.Info("Event|DisplayNameEvent|Send|{0}|{1}", _tabIdentity.TabIndex, DisplayName);
             EventAggregator.GetEvent<DisplayNameEvent>().Publish(DisplayName);
             return clientModel;
         }
@@ -142,6 +141,54 @@ namespace Deadfile.Tab.Clients
         protected override bool ShouldEditOnNavigate(ClientNavigationKey key)
         {
             return key.ClientId == ModelBase.NewModelId;
+        }
+
+        internal override bool CanEdit
+        {
+            get { return State.HasFlag(ClientsPageState.CanEdit); }
+            set
+            {
+                if (value)
+                    State = State | ClientsPageState.CanEdit;
+                else
+                    State = State & ~ClientsPageState.CanEdit;
+            }
+        }
+
+        internal override bool CanDelete
+        {
+            get { return State.HasFlag(ClientsPageState.CanDelete); }
+            set
+            {
+                if (value)
+                    State = State | ClientsPageState.CanDelete;
+                else
+                    State = State & ~ClientsPageState.CanDelete;
+            }
+        }
+
+        internal override bool CanSave
+        {
+            get { return State.HasFlag(ClientsPageState.CanSave); }
+            set
+            {
+                if (value)
+                    State = State | ClientsPageState.CanSave;
+                else
+                    State = State & ~ClientsPageState.CanSave;
+            }
+        }
+
+        internal override bool UnderEdit
+        {
+            get { return State.HasFlag(ClientsPageState.UnderEdit); }
+            set
+            {
+                if (value)
+                    State = State | ClientsPageState.UnderEdit;
+                else
+                    State = State & ~ClientsPageState.UnderEdit;
+            }
         }
 
         protected override ClientNavigationKey GetLookupParameters()
@@ -155,6 +202,7 @@ namespace Deadfile.Tab.Clients
             CanInvoiceClient = (!Editable) && (SelectedItem.ClientId != ModelBase.NewModelId);
             CanEmailClient = (!Editable) && (SelectedItem.ClientId != ModelBase.NewModelId) &&
                  (!String.IsNullOrWhiteSpace(SelectedItem.EmailAddress));
+            State = editable ? State | ClientsPageState.CanDiscard : State & ~ClientsPageState.CanDiscard;
         }
 
         private async Task<bool> ActuallySave()
@@ -215,7 +263,7 @@ namespace Deadfile.Tab.Clients
             }
         }
 
-        protected override async void PerformSave(SaveMessage message)
+        protected override async Task PerformSave(bool andPrint)
         {
             await ActuallySave();
         }
@@ -231,8 +279,6 @@ namespace Deadfile.Tab.Clients
             return saved;
         }
 
-        public Experience Experience => Experience.Clients;
-
-        public bool ShowActionsPad { get; } = true;
+        public override Experience Experience => Experience.Clients;
     }
 }

@@ -80,8 +80,10 @@
   <ItemGroup>
     <Compile Include="ApplicationInvoiceMappingModel.cs" />
     <Compile Include="ApplicationModel.cs" />
+    <Compile Include="ApplicationWithJob.cs" />
     <Compile Include="BillableHourInvoiceMappingModel.cs" />
     <Compile Include="BillableHourModel.cs" />
+    <Compile Include="BillableHourWithJobAndClient.cs" />
     <Compile Include="Billable\BillableBillableHour.cs" />
     <Compile Include="Billable\BillableExpense.cs" />
     <Compile Include="Billable\BillableJob.cs" />
@@ -100,11 +102,16 @@
     <Compile Include="ChildModelBase.cs" />
     <Compile Include="ChildModelValidator.cs" />
     <Compile Include="ClientModel.cs" />
+    <Compile Include="DeadfileContextAbstraction.cs" />
+    <Compile Include="DeadfileContextAbstractionFactory.cs" />
     <Compile Include="DeadfileRepository.cs" />
     <Compile Include="DesignTime\DeadfileDesignTimeRepository.cs" />
     <Compile Include="DesignTime\FakeData.cs" />
     <Compile Include="ExpenseInvoiceMappingModel.cs" />
     <Compile Include="ExpenseModel.cs" />
+    <Compile Include="ExpenseWithJobAndClient.cs" />
+    <Compile Include="Interfaces\IDeadfileContextAbstraction.cs" />
+    <Compile Include="Interfaces\IDeadfileContextAbstractionFactory.cs" />
     <Compile Include="Interfaces\IDeadfileRepository.cs" />
     <Compile Include="Interfaces\IModelEntityMapper.cs" />
     <Compile Include="Interfaces\IRandomNumberGenerator.cs" />
@@ -114,6 +121,7 @@
     <Compile Include="InvoiceModelInvoiceReferenceValidator.cs" />
     <Compile Include="JobChildModelBase.cs" />
     <Compile Include="JobModel.cs" />
+    <Compile Include="JobTaskWithProperty.cs" />
     <Compile Include="LocalAuthorityModel.cs" />
     <Compile Include="ModelBase.cs" />
     <Compile Include="ModelEntityMapper.cs" />

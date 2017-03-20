@@ -43,7 +43,7 @@ namespace Deadfile.Model.Billable
             }
         }
 
-        public override string Text => Type + " - " + Description + " (" + NetAmount + ")";
+        public override string Text => $"{Type} - {Description} ({NetAmount:C})";
 
         public override int Id
         {

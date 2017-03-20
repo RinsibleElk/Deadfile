@@ -9,6 +9,7 @@ using Caliburn.Micro;
 using Deadfile.Tab.Events;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Infrastructure.UndoRedo;
 using Deadfile.Model;
 using Deadfile.Tab.Navigation;
@@ -24,7 +25,7 @@ namespace Deadfile.Tab.Common
     /// </summary>
     public abstract class ManagementPageViewModel<T> : Screen, IManagementViewModel<T> where T : ModelBase, new()
     {
-        private readonly IDialogCoordinator _dialogCoordinator;
+        private readonly IDeadfileDialogCoordinator _dialogCoordinator;
         protected readonly IEventAggregator EventAggregator;
         private readonly bool _allowAdds;
         private ObservableCollection<T> _items;
@@ -45,7 +46,7 @@ namespace Deadfile.Tab.Common
         /// <param name="dialogCoordinator"></param>
         /// <param name="eventAggregator"></param>
         /// <param name="allowAdds"></param>
-        protected ManagementPageViewModel(IDialogCoordinator dialogCoordinator, IEventAggregator eventAggregator, bool allowAdds)
+        protected ManagementPageViewModel(IDeadfileDialogCoordinator dialogCoordinator, IEventAggregator eventAggregator, bool allowAdds)
         {
             _dialogCoordinator = dialogCoordinator;
             EventAggregator = eventAggregator;
@@ -53,12 +54,26 @@ namespace Deadfile.Tab.Common
             _editCommand = new DelegateCommand(StartEditing);
             _discardCommand = new DelegateCommand(DiscardEdits);
             _deleteCommand = new DelegateCommand(DeleteItem, () => CanDeleteItem);
-            _saveCommand = new DelegateCommand(PerformSaveAction);
+            _saveCommand = new DelegateCommand(PerformSaveAction, () => CanSaveItem);
+        }
+
+        private bool _canSaveItem = false;
+        private bool CanSaveItem
+        {
+            get { return _canSaveItem; }
+            set
+            {
+                if (_canSaveItem != value)
+                {
+                    _canSaveItem = value;
+                    _saveCommand.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         private async void DeleteItem()
         {
-            var result = await _dialogCoordinator.ShowMessageAsync(this, "Confirm Deletion", "Are you sure? This action is permanent.", MessageDialogStyle.AffirmativeAndNegative);
+            var result = await _dialogCoordinator.ConfirmDeleteAsync(this, "Confirm Deletion", "Are you sure? This action is permanent.");
             // Open a dialog to ask the user if they are sure.
             if (result == MessageDialogResult.Affirmative)
             {
@@ -192,12 +207,18 @@ namespace Deadfile.Tab.Common
                         _undoTracker.PropertyChanged -= UndoTrackerPropertyChanged;
                         _selectedItem.ErrorsChanged -= SelectedItemErrorsChanged;
                         _selectedItem.ClearAllErrors();
+
+                        // Refresh the observable collection.
+                        RefreshModels();
                     }
 
                     EditingStatusChanged(_editable);
 
                     // Allow deletion.
                     CanDeleteItem = _allowAdds && (SelectedItem != null) && !Editable;
+
+                    // Allow save.
+                    CanSaveItem = (SelectedItem != null) && Editable && !SelectedItem.HasErrors;
 
                     // Only fire when it changes.
                     EventAggregator.GetEvent<LockedForEditingEvent>()
@@ -223,6 +244,7 @@ namespace Deadfile.Tab.Common
         private void SelectedItemErrorsChanged(object sender, DataErrorsChangedEventArgs e)
         {
             Errors = FlattenErrors();
+            CanSaveItem = (SelectedItem != null) && Editable && !SelectedItem.HasErrors;
         }
 
         private List<string> FlattenErrors()

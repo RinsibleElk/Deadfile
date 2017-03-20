@@ -30,10 +30,7 @@ namespace Deadfile.Tab.Clients
         public ClientModel SelectedItem { get; set; } = new ClientModel() {FirstName = "Oliver", LastName = "Samson"};
         public bool Editable { get; } = true;
         public List<string> Errors { get; } = new List<string>();
-        public override Experience Experience
-        {
-            get { return Experience.Clients; }
-        }
+        public override Experience Experience => Experience.Clients;
 
         public override bool ShowActionsPad { get; } = true;
     }

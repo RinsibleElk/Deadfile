@@ -25,7 +25,7 @@ namespace Deadfile.Entity
         public int HoursWorked { get; set; } = 0;
 
         [Required(ErrorMessage = "A BillableHour must have an amount associated")]
-        public double NetAmount { get; set; }
+        public double NetAmount { get; set; } = 0.0;
 
         [MaxLength(500, ErrorMessage = "The free notes for a BillableHour must be less than 500 characters long.")]
         public string Notes { get; set; }

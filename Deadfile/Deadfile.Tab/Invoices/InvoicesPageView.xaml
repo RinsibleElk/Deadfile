@@ -561,10 +561,20 @@
                       IsEditable="False"
                       SelectedItem="{Binding Mode=TwoWay, Path=SelectedItem.Status}"
                       IsEnabled="{Binding InvoiceEditable}" />
-            <StackPanel Grid.Row="5" Orientation="Horizontal">
-                <TextBlock Text="Total: "/>
-                <TextBlock Text="{Binding NetAmount, StringFormat=C}"/>
-            </StackPanel>
+            <Grid Grid.Row="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Total Amount:"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding NetAmount, StringFormat=C}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Total Hours:"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Hours}"/>
+            </Grid>
         </Grid>
         <ContentControl Grid.Column="1"
                         Content="{Binding}"

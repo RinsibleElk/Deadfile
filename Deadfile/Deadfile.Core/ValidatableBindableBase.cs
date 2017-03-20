@@ -32,10 +32,7 @@ namespace Deadfile.Core
                 return null;
         }
 
-        public bool HasErrors
-        {
-            get { return Errors.Count > 0; }
-        }
+        public bool HasErrors => Errors.Count > 0;
 
         public Dictionary<string, List<string>> GetAllErrors()
         {

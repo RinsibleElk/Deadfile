@@ -30,7 +30,7 @@ namespace Deadfile.Tab.Management.DefineQuotations
         /// <param name="dialogCoordinator"></param>
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
-        public DefineQuotationsPageViewModel(IDialogCoordinator dialogCoordinator,
+        public DefineQuotationsPageViewModel(IDeadfileDialogCoordinator dialogCoordinator,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator) : base(dialogCoordinator, eventAggregator, true)
         {

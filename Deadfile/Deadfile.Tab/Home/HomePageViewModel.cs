@@ -24,55 +24,55 @@ namespace Deadfile.Tab.Home
 
         public void AddClient()
         {
-            Logger.Info("Event,AddClientEvent,Send,{0}", _tabIdentity.TabIndex);
+            Logger.Info("Event|AddClientEvent|Send|{0}", _tabIdentity.TabIndex);
             _eventAggregator.GetEvent<AddClientEvent>().Publish(new AddClientMessage());
         }
 
         public void LocalAuthorities()
         {
-            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.LocalAuthorities);
+            Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.LocalAuthorities);
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.LocalAuthorities));
         }
 
         public void DefineQuotations()
         {
-            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.DefineQuotations);
+            Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.DefineQuotations);
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.DefineQuotations));
         }
 
         public void UnbilledJobs()
         {
-            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.UnbilledJobs);
+            Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.UnbilledJobs);
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.UnbilledJobs));
         }
 
         public void Import()
         {
-            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.Import);
+            Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.Import);
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.Import));
         }
 
         public void TodoReport()
         {
-            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.TodoReport);
+            Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.TodoReport);
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.TodoReport));
         }
 
         public void ImportExportToJson()
         {
-            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.Json);
+            Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.Json);
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.Json));
         }
 
         public void UnpaidInvoices()
         {
-            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.UnpaidInvoices);
+            Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.UnpaidInvoices);
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.UnpaidInvoices));
         }
 
         public void CurrentApplications()
         {
-            Logger.Info("Event,NavigateEvent,Send,{0},{1}", _tabIdentity.TabIndex, Experience.CurrentApplications);
+            Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.CurrentApplications);
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.CurrentApplications));
         }
 
@@ -89,7 +89,7 @@ namespace Deadfile.Tab.Home
         public void OnNavigatedTo(object parameters)
         {
             Logger.Info("Navigated to Home {0}", _tabIdentity.TabIndex);
-            Logger.Info("Event,DisplayNameEvent,Send,{0},{1}", _tabIdentity.TabIndex, "Home");
+            Logger.Info("Event|DisplayNameEvent|Send|{0}|{1}", _tabIdentity.TabIndex, "Home");
             _eventAggregator.GetEvent<DisplayNameEvent>().Publish("Home");
         }
 

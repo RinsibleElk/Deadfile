@@ -10,13 +10,6 @@ namespace Deadfile.Model.Browser
 {
     public sealed class BrowserInvoice : BrowserModel
     {
-        private int _invoiceReference;
-        public int InvoiceReference
-        {
-            get { return _invoiceReference; }
-            set { SetProperty(ref _invoiceReference, value); }
-        }
-
         protected override void LoadChildren()
         {
             if (Mode == BrowserMode.Invoice)
@@ -27,10 +20,7 @@ namespace Deadfile.Model.Browser
             }
         }
 
-        public override BrowserModelType ModelType
-        {
-            get { return BrowserModelType.Invoice; }
-        }
+        public override BrowserModelType ModelType => BrowserModelType.Invoice;
 
         private InvoiceStatus _status = InvoiceStatus.Created;
         public InvoiceStatus Status
@@ -44,6 +34,48 @@ namespace Deadfile.Model.Browser
         {
             get { return _company; }
             set { SetProperty(ref _company, value); }
+        }
+
+        public string DisplayName => $"{InvoiceReference} ({ClientName}, {Project})";
+
+        private int _invoiceReference;
+        public int InvoiceReference
+        {
+            get { return _invoiceReference; }
+            set
+            {
+                if (SetProperty(ref _invoiceReference, value))
+                    OnPropertyChanged(nameof(DisplayName));
+            }
+        }
+
+        private string _clientName = "";
+        public string ClientName
+        {
+            get { return _clientName; }
+            set
+            {
+                if (SetProperty(ref _clientName, value))
+                    OnPropertyChanged(nameof(DisplayName));
+            }
+        }
+
+        private string _project = "";
+        public string Project
+        {
+            get { return _project; }
+            set
+            {
+                if (SetProperty(ref _project, value))
+                    OnPropertyChanged(nameof(DisplayName));
+            }
+        }
+
+        private DateTime _createdDate = DateTime.Today;
+        public DateTime CreatedDate
+        {
+            get { return _createdDate; }
+            set { SetProperty(ref _createdDate, value); }
         }
     }
 }

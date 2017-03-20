@@ -15,7 +15,7 @@ namespace Deadfile.Tab.Common
     {
         private readonly IPrintService _printService;
         protected ReportPageViewModel(IPrintService printService,
-            IDialogCoordinator dialogCoordinator,
+            IDeadfileDialogCoordinator dialogCoordinator,
             IEventAggregator eventAggregator,
             bool allowAdds)
             : base(dialogCoordinator, eventAggregator, allowAdds)

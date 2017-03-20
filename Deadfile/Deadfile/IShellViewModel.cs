@@ -17,5 +17,12 @@ namespace Deadfile
         ICommand OpenNewTab { get; }
         ICommand OpenNewTabToBrowserModelCommand { get; }
         ICommand OpenNewTabToNewClientCommand { get; }
+        string Server { get; set; }
+        string Database { get; set; }
+        string Username { get; set; }
+        string Password { get; set; }
+        ICommand AcceptCommand { get; }
+        ICommand CancelCommand { get; }
+        bool SettingsIsOpen { get; set; }
     }
 }

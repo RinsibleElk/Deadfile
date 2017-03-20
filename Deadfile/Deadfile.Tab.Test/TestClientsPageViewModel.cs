@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Components.DictionaryAdapter;
 using Deadfile.Entity;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
@@ -22,363 +23,388 @@ namespace Deadfile.Tab.Test
 
         private class Host : IDisposable
         {
-            public readonly Mock<IEventAggregator> EventAggregatorMock = new Mock<IEventAggregator>();
-            public readonly Mock<IDeadfileRepository> DeadfileRepositoryMock = new Mock<IDeadfileRepository>();
-            public readonly Mock<IUrlNavigationService> UrlNavigationServiceMock = new Mock<IUrlNavigationService>();
-            public readonly Mock<LockedForEditingEvent> LockedForEditingMock = new Mock<LockedForEditingEvent>();
-            public readonly Mock<CanUndoEvent> CanUndoEventMock = new Mock<CanUndoEvent>();
-            public readonly Mock<DisplayNameEvent> DisplayNameEventMock = new Mock<DisplayNameEvent>();
+            private readonly Mock<IEventAggregator> _eventAggregatorMock = new Mock<IEventAggregator>();
+            private readonly Mock<IDeadfileRepository> _deadfileRepositoryMock = new Mock<IDeadfileRepository>();
+            private readonly Mock<IUrlNavigationService> _urlNavigationServiceMock = new Mock<IUrlNavigationService>();
+            private readonly Mock<IDeadfileDialogCoordinator> _dialogCoordinatorMock = new Mock<IDeadfileDialogCoordinator>();
+
             public readonly ClientsPageViewModel ViewModel;
 
-            public readonly UndoEvent UndoEvent = new UndoEvent();
-            public readonly DeleteEvent DeleteEvent = new DeleteEvent();
-            public readonly EditActionEvent EditActionEvent = new EditActionEvent();
-            public readonly CanEditEvent CanEditEvent = new CanEditEvent();
-            public readonly CanDeleteEvent CanDeleteEvent = new CanDeleteEvent();
-            public readonly CanSaveEvent CanSaveEvent = new CanSaveEvent();
-            public readonly SaveEvent SaveEvent = new SaveEvent();
-            public readonly DiscardChangesEvent DiscardChangesEvent = new DiscardChangesEvent();
-            public readonly RefreshBrowserEvent RefreshBrowserEvent = new RefreshBrowserEvent();
-            public readonly AddNewJobEvent AddNewJobEvent = new AddNewJobEvent();
+            private readonly UndoEvent _undoEvent = new UndoEvent();
+            private readonly DeleteEvent _deleteEvent = new DeleteEvent();
+            private readonly EditActionEvent _editActionEvent = new EditActionEvent();
+            private ClientsPageState _currentState = 0;
+            private readonly PageStateEvent<ClientsPageState> _pageStateEvent = new PageStateEvent<ClientsPageState>();
+            private readonly List<CanUndoMessage> _receivedCanUndoMessages = new List<CanUndoMessage>();
+            private readonly CanUndoEvent _canUndoEvent = new CanUndoEvent();
+            private readonly SaveEvent _saveEvent = new SaveEvent();
+            private readonly DiscardChangesEvent _discardChangesEvent = new DiscardChangesEvent();
+            private readonly List<RefreshBrowserMessage> _receivedRefreshBrowserMessages = new List<RefreshBrowserMessage>();
+            private readonly RefreshBrowserEvent _refreshBrowserEvent = new RefreshBrowserEvent();
+            private readonly AddNewJobEvent _addNewJobEvent = new AddNewJobEvent();
+            private readonly List<string> _receivedDisplayNames = new List<string>();
+            private readonly DisplayNameEvent _displayNameEvent = new DisplayNameEvent();
+            private readonly List<LockedForEditingMessage> _receivedLockedForEditingMessages = new List<LockedForEditingMessage>();
+            private readonly LockedForEditingEvent _lockedForEditingEvent = new LockedForEditingEvent();
+            private readonly List<int> _receivedInvoiceClientMessages = new List<int>();
+            private readonly InvoiceClientEvent _invoiceClientEvent = new InvoiceClientEvent();
 
-            public readonly Mock<UndoEvent> UndoEventMock = new Mock<UndoEvent>();
-            public readonly Mock<DeleteEvent> DeleteEventMock = new Mock<DeleteEvent>();
-            public readonly Mock<EditActionEvent> EditActionEventMock = new Mock<EditActionEvent>();
-            public readonly Mock<CanDeleteEvent> CanDeleteEventMock = new Mock<CanDeleteEvent>();
-            public readonly Mock<CanEditEvent> CanEditEventMock = new Mock<CanEditEvent>();
-            public readonly Mock<CanSaveEvent> CanSaveEventMock = new Mock<CanSaveEvent>();
-            public readonly Mock<SaveEvent> SaveEventMock = new Mock<SaveEvent>();
-
-            public readonly SubscriptionToken EditActionEventSubscriptionToken = new SubscriptionToken((a) => { });
-            public readonly SubscriptionToken UndoEventSubscriptionToken = new SubscriptionToken((a) => { });
-            public readonly SubscriptionToken DeleteEventSubscriptionToken = new SubscriptionToken((a) => { });
-
-            public readonly Mock<IDeadfileDialogCoordinator> DialogCoordinatorMock = new Mock<IDeadfileDialogCoordinator>();
-
-            private readonly bool _useRealEvents;
-
-            public Host(bool useRealEvents)
+            public Host()
             {
-                _useRealEvents = useRealEvents;
-                ViewModel = new ClientsPageViewModel(TabIdentity, EventAggregatorMock.Object, DeadfileRepositoryMock.Object, DialogCoordinatorMock.Object, UrlNavigationServiceMock.Object);
+                ViewModel = new ClientsPageViewModel(TabIdentity, _eventAggregatorMock.Object, _deadfileRepositoryMock.Object, _dialogCoordinatorMock.Object, _urlNavigationServiceMock.Object);
+                _displayNameEvent.Subscribe((m) => _receivedDisplayNames.Add(m));
+                _refreshBrowserEvent.Subscribe((m) => _receivedRefreshBrowserMessages.Add(m));
+                _lockedForEditingEvent.Subscribe((m) => _receivedLockedForEditingMessages.Add(m));
+                _pageStateEvent.Subscribe((m) => _currentState = m);
+                _canUndoEvent.Subscribe((m) => _receivedCanUndoMessages.Add(m));
+                _invoiceClientEvent.Subscribe((m) => _receivedInvoiceClientMessages.Add(m));
             }
 
-            public void NavigateTo(ClientModel model)
+            public void NavigateToExisting(ClientModel model)
             {
-                if (_useRealEvents)
-                {
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<UndoEvent>())
-                        .Returns(UndoEvent)
-                        .Verifiable();
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<DeleteEvent>())
-                        .Returns(DeleteEvent)
-                        .Verifiable();
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<EditActionEvent>())
-                        .Returns(EditActionEvent)
-                        .Verifiable();
-                }
-                else
-                {
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<UndoEvent>())
-                        .Returns(UndoEventMock.Object)
-                        .Verifiable();
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<DeleteEvent>())
-                        .Returns(DeleteEventMock.Object)
-                        .Verifiable();
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<EditActionEvent>())
-                        .Returns(EditActionEventMock.Object)
-                        .Verifiable();
-                }
-                if (model.Id != ModelBase.NewModelId)
-                {
-                    if (_useRealEvents)
-                    {
-                        EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<CanEditEvent>())
-                            .Returns(CanEditEvent)
-                            .Verifiable();
-                        EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
-                            .Returns(CanDeleteEvent)
-                            .Verifiable();
-                    }
-                    else
-                    {
-                        EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<CanEditEvent>())
-                            .Returns(CanEditEventMock.Object)
-                            .Verifiable();
-                        EventAggregatorMock
-                            .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
-                            .Returns(CanDeleteEventMock.Object)
-                            .Verifiable();
-                    }
-                    DeadfileRepositoryMock
-                        .Setup((dr) => dr.GetClientById(model.Id))
-                        .Returns(model)
-                        .Verifiable();
-                }
-                EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<DisplayNameEvent>())
-                    .Returns(DisplayNameEventMock.Object)
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<UndoEvent>())
+                    .Returns(_undoEvent)
                     .Verifiable();
-                DisplayNameEventMock
-                    .Setup((ev) => ev.Publish(""))
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DeleteEvent>())
+                    .Returns(_deleteEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<EditActionEvent>())
+                    .Returns(_editActionEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<PageStateEvent<ClientsPageState>>())
+                    .Returns(_pageStateEvent)
+                    .Verifiable();
+                _deadfileRepositoryMock
+                    .Setup((dr) => dr.GetClientById(model.Id))
+                    .Returns(model)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DisplayNameEvent>())
+                    .Returns(_displayNameEvent)
                     .Verifiable();
                 ViewModel.OnNavigatedTo(new ClientNavigationKey(model.Id));
+                ViewModel.CompleteNavigation();
+                VerifyDisplayName(model.FullName);
+                Assert.True(ViewModel.CanInvoiceClient);
+                VerifyAll();
+            }
+
+            public void NavigateToNewClient()
+            {
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<UndoEvent>())
+                    .Returns(_undoEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DeleteEvent>())
+                    .Returns(_deleteEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<EditActionEvent>())
+                    .Returns(_editActionEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<PageStateEvent<ClientsPageState>>())
+                    .Returns(_pageStateEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DisplayNameEvent>())
+                    .Returns(_displayNameEvent)
+                    .Verifiable();
+                ViewModel.OnNavigatedTo(new ClientNavigationKey(Int32.MinValue));
+                // He'll subscribe to the save event and discard changes event.
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<SaveEvent>())
+                    .Returns(_saveEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DiscardChangesEvent>())
+                    .Returns(_discardChangesEvent)
+                    .Verifiable();
+                // And he'll publish that we're locked for editing.
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
+                    .Returns(_lockedForEditingEvent)
+                    .Verifiable();
+                // And he'll publish that it is allowed to save.
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<PageStateEvent<ClientsPageState>>())
+                    .Returns(_pageStateEvent)
+                    .Verifiable();
+                ViewModel.CompleteNavigation();
+                VerifyDisplayName("New Client");
+                Assert.Equal(1, _receivedLockedForEditingMessages.Count);
+                Assert.True(_receivedLockedForEditingMessages[0].IsLocked);
+                _receivedLockedForEditingMessages.Clear();
+                Assert.True(ViewModel.UnderEdit);
+                Assert.False(ViewModel.CanInvoiceClient);
                 VerifyAll();
             }
 
             public void NavigateFrom()
             {
-                if (!_useRealEvents)
-                {
-                    EventAggregatorMock
-                        .Setup((ev) => ev.GetEvent<UndoEvent>())
-                        .Returns(UndoEventMock.Object)
-                        .Verifiable();
-                    EventAggregatorMock
-                        .Setup((ev) => ev.GetEvent<DeleteEvent>())
-                        .Returns(DeleteEventMock.Object)
-                        .Verifiable();
-                    EventAggregatorMock
-                        .Setup((ev) => ev.GetEvent<EditActionEvent>())
-                        .Returns(EditActionEventMock.Object)
-                        .Verifiable();
-                }
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<EditActionEvent>())
+                    .Returns(_editActionEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<UndoEvent>())
+                    .Returns(_undoEvent)
+                    .Verifiable();
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<DeleteEvent>())
+                    .Returns(_deleteEvent)
+                    .Verifiable();
                 ViewModel.OnNavigatedFrom();
                 VerifyAll();
+            }
+
+            private void VerifyDisplayName(string expected)
+            {
+                Assert.Equal(1, _receivedDisplayNames.Count);
+                Assert.Equal(expected, _receivedDisplayNames[0]);
+                _receivedDisplayNames.Clear();
             }
 
             public void StartEditing()
             {
                 // He'll subscribe to the save event and discard changes event.
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<SaveEvent>())
-                    .Returns(SaveEvent)
+                    .Returns(_saveEvent)
                     .Verifiable();
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<DiscardChangesEvent>())
-                    .Returns(DiscardChangesEvent)
+                    .Returns(_discardChangesEvent)
                     .Verifiable();
                 // And he'll publish that we're locked for editing.
-                EventAggregatorMock
+                _eventAggregatorMock
                     .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
-                    .Returns(LockedForEditingMock.Object)
-                    .Verifiable();
-                LockedForEditingMock
-                    .Setup((ev) => ev.Publish(new LockedForEditingMessage() { IsLocked = true }))
+                    .Returns(_lockedForEditingEvent)
                     .Verifiable();
                 // And he'll publish that it is allowed to save.
-                if (_useRealEvents)
-                {
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<CanSaveEvent>())
-                        .Returns(CanSaveEvent)
-                        .Verifiable();
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
-                        .Returns(CanDeleteEvent)
-                        .Verifiable();
-                }
-                else
-                {
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<CanDeleteEvent>())
-                        .Returns(CanDeleteEventMock.Object)
-                        .Verifiable();
-                    EventAggregatorMock
-                        .Setup((ea) => ea.GetEvent<CanSaveEvent>())
-                        .Returns(CanSaveEventMock.Object)
-                        .Verifiable();
-                }
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<PageStateEvent<ClientsPageState>>())
+                    .Returns(_pageStateEvent)
+                    .Verifiable();
                 // only makes sense if using real events
-                Assert.True(_useRealEvents);
-                EditActionEvent.Publish(EditActionMessage.StartEditing);
+                _editActionEvent.Publish(EditActionMessage.StartEditing);
+                Assert.Equal(1, _receivedLockedForEditingMessages.Count);
+                Assert.True(_receivedLockedForEditingMessages[0].IsLocked);
+                _receivedLockedForEditingMessages.Clear();
+                Assert.True(ViewModel.UnderEdit);
+            }
+
+            public void ExpectCanUndoPublish()
+            {
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<CanUndoEvent>())
+                    .Returns(_canUndoEvent)
+                    .Verifiable();
+            }
+
+            public void ExpectCanUndo(bool canUndo)
+            {
+                Assert.NotEmpty(_receivedCanUndoMessages);
+                Assert.Equal((canUndo ? CanUndoMessage.CanUndo : CanUndoMessage.CannotUndo), _receivedCanUndoMessages[0]);
+                _receivedCanUndoMessages.RemoveAt(0);
+            }
+
+            public void ExpectCanRedo(bool canRedo)
+            {
+                Assert.NotEmpty(_receivedCanUndoMessages);
+                Assert.Equal((canRedo ? CanUndoMessage.CanRedo : CanUndoMessage.CannotRedo), _receivedCanUndoMessages[0]);
+                _receivedCanUndoMessages.RemoveAt(0);
             }
 
             public void DeleteClient(MessageDialogResult dialogResult)
             {
                 Assert.True(ViewModel.CanDelete);
-                DialogCoordinatorMock
+                _dialogCoordinatorMock
                     .Setup((dc) => dc.ConfirmDeleteAsync(ViewModel, It.IsAny<string>(), It.IsAny<string>()))
                     .Returns(Task.FromResult(dialogResult))
                     .Verifiable();
                 if (dialogResult == MessageDialogResult.Affirmative)
                 {
-                    EventAggregatorMock
+                    _eventAggregatorMock
                         .Setup((ea) => ea.GetEvent<RefreshBrowserEvent>())
-                        .Returns(RefreshBrowserEvent)
+                        .Returns(_refreshBrowserEvent)
+                        .Verifiable();
+                    _deadfileRepositoryMock
+                        .Setup((repository) => repository.SaveClient(ViewModel.SelectedItem))
                         .Verifiable();
                 }
-                DeleteEvent.Publish(DeleteMessage.Delete);
+                _deleteEvent.Publish(DeleteMessage.Delete);
+                if (dialogResult == MessageDialogResult.Affirmative)
+                {
+                    Assert.Equal(1, _receivedRefreshBrowserMessages.Count);
+                    Assert.Equal(RefreshBrowserMessage.Refresh, _receivedRefreshBrowserMessages[0]);
+                    _receivedRefreshBrowserMessages.Clear();
+                }
+                VerifyAll();
             }
 
-            public void VerifyAll()
+            private void VerifyAll()
             {
-                EventAggregatorMock.VerifyAll();
-                DeadfileRepositoryMock.VerifyAll();
-                LockedForEditingMock.VerifyAll();
-                CanUndoEventMock.VerifyAll();
-                EventAggregatorMock.Reset();
-                DeadfileRepositoryMock.Reset();
-                LockedForEditingMock.Reset();
-                CanUndoEventMock.Reset();
-                if (!_useRealEvents)
-                {
-                    UndoEventMock.VerifyAll();
-                    DeleteEventMock.VerifyAll();
-                    EditActionEventMock.VerifyAll();
-                    CanEditEventMock.VerifyAll();
-                    CanDeleteEventMock.VerifyAll();
-                    CanSaveEventMock.VerifyAll();
-                    SaveEventMock.VerifyAll();
-                    UndoEventMock.Reset();
-                    DeleteEventMock.Reset();
-                    EditActionEventMock.Reset();
-                    CanEditEventMock.Reset();
-                    CanDeleteEventMock.Reset();
-                    CanSaveEventMock.Reset();
-                    SaveEventMock.Reset();
-                }
+                _eventAggregatorMock.VerifyAll();
+                _deadfileRepositoryMock.VerifyAll();
+                _eventAggregatorMock.Reset();
+                _deadfileRepositoryMock.Reset();
+                Assert.Equal(0, _receivedDisplayNames.Count);
+                Assert.Equal(0, _receivedRefreshBrowserMessages.Count);
+                Assert.Equal(0, _receivedLockedForEditingMessages.Count);
+                Assert.Equal(0, _receivedInvoiceClientMessages.Count);
+            }
+
+            public void EmailClient()
+            {
+                Assert.True(ViewModel.CanEmailClient);
+                _urlNavigationServiceMock
+                    .Setup((uns) => uns.SendEmail(ViewModel.SelectedItem.EmailAddress))
+                    .Verifiable();
+                ViewModel.EmailClient();
+            }
+
+            public void InvoiceClient()
+            {
+                Assert.True(ViewModel.CanInvoiceClient);
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<InvoiceClientEvent>())
+                    .Returns(_invoiceClientEvent)
+                    .Verifiable();
+                ViewModel.InvoiceClient();
+                Assert.Equal(1, _receivedInvoiceClientMessages.Count);
+                Assert.Equal(ViewModel.SelectedItem.ClientId, _receivedInvoiceClientMessages[0]);
+                _receivedInvoiceClientMessages.Clear();
+            }
+
+            public void AddNewJob()
+            {
+                Assert.True(ViewModel.CanAddNewJob);
+                var li = new List<int>();
+                _addNewJobEvent.Subscribe((clientId) => li.Add(clientId));
+                _eventAggregatorMock
+                    .Setup((ea) => ea.GetEvent<AddNewJobEvent>())
+                    .Returns(_addNewJobEvent)
+                    .Verifiable();
+                ViewModel.AddNewJob();
+                Assert.Equal(1, li.Count);
+                Assert.Equal(ViewModel.SelectedItem.ClientId, li[0]);
+            }
+
+            public bool CanSave => ViewModel.State.HasFlag(ClientsPageState.CanSave);
+
+            public void Undo()
+            {
+                _undoEvent.Publish(UndoMessage.Undo);
+            }
+
+            public void Redo()
+            {
+                _undoEvent.Publish(UndoMessage.Redo);
             }
 
             public void Dispose()
             {
                 VerifyAll();
             }
+
+            public void Discard(ClientNavigationKey? navigationKey)
+            {
+                _discardChangesEvent.Publish(DiscardChangesMessage.Discard);
+                _editActionEvent.Publish(EditActionMessage.EndEditing);
+                Assert.Equal(1, _receivedLockedForEditingMessages.Count);
+                Assert.True(!_receivedLockedForEditingMessages[0].IsLocked);
+                if (navigationKey != null)
+                {
+                    var key = (ClientNavigationKey) _receivedLockedForEditingMessages[0].NewParameters;
+                    Assert.Equal(navigationKey, key);
+                }
+                else
+                {
+                    Assert.Equal(null, _receivedLockedForEditingMessages[0].NewParameters);
+                }
+                _receivedLockedForEditingMessages.Clear();
+            }
         }
 
         [Fact]
         public void TestCreation()
         {
-            using (var host = new Host(true))
+            using (var host = new Host())
             {
             }
         }
 
-        [Fact]
-        public void TestNavigateToNewClient()
+        private ClientModel MakeRinsibleElk()
         {
-            using (var host = new Host(true))
+            return new ClientModel
             {
-                host.NavigateTo(new ClientModel());
+                ClientId = 116,
+                AddressFirstLine = "1 Dummy Road",
+                AddressSecondLine = "London",
+                AddressPostCode = "N1 1AA",
+                Company = "RinsibleElk",
+                EmailAddress = "rinsible.elk@gmail.com",
+                Title = "Sir",
+                FirstName = "Rinsible",
+                LastName = "Elk",
+                PhoneNumber1 = "07193265784",
+                Status = ClientStatus.Active,
+                Id = 116
+            };
+        }
+
+        [Fact]
+        public void TestNavigateToExistingClient()
+        {
+            using (var host = new Host())
+            {
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
                 Assert.Equal(Experience.Clients, host.ViewModel.Experience);
                 Assert.True(host.ViewModel.ShowActionsPad);
-            }
-        }
-
-        [Fact]
-        public void TestNavigateToExistingClient_SendsCanEditMessageToActionsPad()
-        {
-            using (var host = new Host(true))
-            {
-                Assert.False(host.ViewModel.CanEdit);
-                var a = 0;
-                var c = 0;
-                var ce = CanEditMessage.CannotEdit;
-                var cs = CanSaveMessage.CannotSave;
-                host.CanEditEvent.Subscribe((b) =>
-                {
-                    ++a;
-                    ce = b;
-                });
-                host.CanSaveEvent.Subscribe((b) =>
-                {
-                    ++c;
-                    cs = b;
-                });
-                host.NavigateTo(
-                    new ClientModel()
-                    {
-                        ClientId = 1,
-                        AddressFirstLine = "1 Yemen Road",
-                        LastName = "Johnson",
-                        PhoneNumber1 = "07544454514"
-                    });
-                Assert.Equal(1, a);
-                Assert.Equal(0, c);
-                Assert.Equal(CanEditMessage.CanEdit, ce);
-                Assert.Equal(CanSaveMessage.CannotSave, cs);
-                Assert.True(host.ViewModel.CanEdit);
-                Assert.False(host.ViewModel.CanEmailClient);
+                Assert.Equal(ClientsPageState.CanEdit | ClientsPageState.CanDelete, host.ViewModel.State);
             }
         }
 
         [Fact]
         public void TestEmailExistingClient()
         {
-            using (var host = new Host(true))
+            using (var host = new Host())
             {
                 Assert.False(host.ViewModel.CanEdit);
-                var client = new ClientModel
-                {
-                    ClientId = 1,
-                    AddressFirstLine = "1 Yemen Road",
-                    LastName = "Johnson",
-                    PhoneNumber1 = "07544454514",
-                    EmailAddress = "john.johnson@yahoo.co.uk"
-                };
-                host.NavigateTo(client);
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
                 Assert.True(host.ViewModel.CanEdit);
-                Assert.True(host.ViewModel.CanEmailClient);
-                host.UrlNavigationServiceMock
-                    .Setup((uns) => uns.SendEmail(client.EmailAddress))
-                    .Verifiable();
-                host.ViewModel.EmailClient();
+                host.EmailClient();
             }
         }
 
         [Fact]
         public void TestExistingClient_AddNewJob_SendsAddNewJobEvent()
         {
-            using (var host = new Host(true))
+            using (var host = new Host())
             {
                 Assert.False(host.ViewModel.CanEdit);
-                var client = new ClientModel
-                {
-                    ClientId = 1,
-                    AddressFirstLine = "1 Yemen Road",
-                    LastName = "Johnson",
-                    PhoneNumber1 = "07544454514",
-                    EmailAddress = "john.johnson@yahoo.co.uk"
-                };
-                host.NavigateTo(client);
-                Assert.True(host.ViewModel.CanAddNewJob);
-                var li = new List<int>();
-                host.AddNewJobEvent.Subscribe((clientId) => li.Add(clientId));
-                host.EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<AddNewJobEvent>())
-                    .Returns(host.AddNewJobEvent)
-                    .Verifiable();
-                host.ViewModel.AddNewJob();
-                Assert.Equal(1, li.Count);
-                Assert.Equal(client.ClientId, li[0]);
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
+                host.AddNewJob();
             }
         }
 
         [Fact]
         public void TestDeleteExistingClient_UserSaysYes()
         {
-            using (var host = new Host(true))
+            using (var host = new Host())
             {
                 Assert.False(host.ViewModel.CanDelete);
-                var client = new ClientModel
-                {
-                    ClientId = 1,
-                    AddressFirstLine = "1 Yemen Road",
-                    LastName = "Johnson",
-                    PhoneNumber1 = "07544454514",
-                    EmailAddress = "john.johnson@yahoo.co.uk",
-                    Status = ClientStatus.Active
-                };
-                host.NavigateTo(client);
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
                 host.DeleteClient(MessageDialogResult.Affirmative);
             }
         }
@@ -386,20 +412,23 @@ namespace Deadfile.Tab.Test
         [Fact]
         public void TestDeleteExistingClient_UserSaysNo()
         {
-            using (var host = new Host(true))
+            using (var host = new Host())
             {
                 Assert.False(host.ViewModel.CanDelete);
-                var client = new ClientModel
-                {
-                    ClientId = 1,
-                    AddressFirstLine = "1 Yemen Road",
-                    LastName = "Johnson",
-                    PhoneNumber1 = "07544454514",
-                    EmailAddress = "john.johnson@yahoo.co.uk",
-                    Status = ClientStatus.Active
-                };
-                host.NavigateTo(client);
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
                 host.DeleteClient(MessageDialogResult.Negative);
+            }
+        }
+
+        [Fact]
+        public void TestStartEditingExistingClient()
+        {
+            using (var host = new Host())
+            {
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
+                host.StartEditing();
             }
         }
 
@@ -413,41 +442,42 @@ namespace Deadfile.Tab.Test
         [InlineData("PhoneNumber3", "abcde")]
         public void TestInvalidInput_SendsCannotSave(string propertyName, object newValue)
         {
-            using (var host = new Host(true))
+            using (var host = new Host())
             {
-                host.NavigateTo(
-                    new ClientModel()
-                    {
-                        ClientId = 1,
-                        AddressFirstLine = "1 Yemen Road",
-                        LastName = "Johnson",
-                        PhoneNumber1 = "07544454514"
-                    });
-                var c = 0;
-                var m = CanSaveMessage.CannotSave;
-                host.CanSaveEvent.Subscribe((message) =>
-                {
-                    ++c;
-                    m = message;
-                });
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
                 host.StartEditing();
-                Assert.Equal(1, c);
-                Assert.Equal(m, CanSaveMessage.CanSave);
-                host.EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<CanSaveEvent>())
-                    .Returns(host.CanSaveEvent)
-                    .Verifiable();
-                host.EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<CanUndoEvent>())
-                    .Returns(host.CanUndoEventMock.Object)
-                    .Verifiable();
-                host.CanUndoEventMock
-                    .Setup((cu) => cu.Publish(CanUndoMessage.CanUndo))
-                    .Verifiable();
+                host.ExpectCanUndoPublish();
                 typeof(ClientModel).GetProperty(propertyName)
                     .SetMethod.Invoke(host.ViewModel.SelectedItem, new object[1] { newValue });
-                Assert.Equal(2, c);
-                Assert.Equal(m, CanSaveMessage.CannotSave);
+                host.ExpectCanUndo(true);
+                Assert.Equal(ClientsPageState.CanEdit | ClientsPageState.CanDiscard | ClientsPageState.UnderEdit, host.ViewModel.State);
+                Assert.False(host.CanSave);
+                Assert.False(host.ViewModel.CanSave);
+            }
+        }
+
+        [Theory]
+        [InlineData("LastName", "Moose")]
+        [InlineData("AddressFirstLine", "1 Yemen Road")]
+        [InlineData("EmailAddress", "jack.bauer@yahoo.com")]
+        [InlineData("PhoneNumber1", "07192567842")]
+        [InlineData("PhoneNumber2", "07192567842")]
+        [InlineData("PhoneNumber3", "07192567842")]
+        public void TestValidInput_CanSave(string propertyName, object newValue)
+        {
+            using (var host = new Host())
+            {
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
+                host.StartEditing();
+                host.ExpectCanUndoPublish();
+                typeof(ClientModel).GetProperty(propertyName)
+                    .SetMethod.Invoke(host.ViewModel.SelectedItem, new object[1] { newValue });
+                host.ExpectCanUndo(true);
+                Assert.Equal(ClientsPageState.CanSave | ClientsPageState.CanEdit | ClientsPageState.CanDiscard | ClientsPageState.UnderEdit, host.ViewModel.State);
+                Assert.True(host.CanSave);
+                Assert.True(host.ViewModel.CanSave);
             }
         }
 
@@ -455,69 +485,115 @@ namespace Deadfile.Tab.Test
         [InlineData("LastName", "")]
         [InlineData("AddressFirstLine", "")]
         [InlineData("EmailAddress", "jack.bauer@@@yahoo.com")]
-        [InlineData("PhoneNumber1", "dfg")]
+        [InlineData("PhoneNumber1", "asbgg")]
         [InlineData("PhoneNumber1", "dfgdf")]
         [InlineData("PhoneNumber2", "edbdj")]
         [InlineData("PhoneNumber3", "abcde")]
         public void TestUndoAfterInvalidInput_SendsCanSaveCannotUndoAndCanRedo(string propertyName, object newValue)
         {
-            using (var host = new Host(true))
+            using (var host = new Host())
             {
-                host.NavigateTo(
-                    new ClientModel()
-                    {
-                        ClientId = 1,
-                        AddressFirstLine = "1 Yemen Road",
-                        LastName = "Johnson",
-                        PhoneNumber1 = "07544454514"
-                    });
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
                 host.StartEditing();
-                var c = 0;
-                var m = CanSaveMessage.CanSave;
-                host.CanSaveEvent.Subscribe((message) =>
-                {
-                    ++c;
-                    m = message;
-                });
-                host.EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<CanSaveEvent>())
-                    .Returns(host.CanSaveEvent)
-                    .Verifiable();
-                host.EventAggregatorMock
-                    .Setup((ea) => ea.GetEvent<CanUndoEvent>())
-                    .Returns(host.CanUndoEventMock.Object)
-                    .Verifiable();
-                host.CanUndoEventMock
-                    .Setup((cu) => cu.Publish(CanUndoMessage.CanUndo))
-                    .Verifiable();
+                host.ExpectCanUndoPublish();
                 typeof(ClientModel).GetProperty(propertyName)
                     .SetMethod.Invoke(host.ViewModel.SelectedItem, new object[1] { newValue });
-                host.CanUndoEventMock
-                    .Setup((cu) => cu.Publish(CanUndoMessage.CannotUndo))
-                    .Verifiable();
-                host.CanUndoEventMock
-                    .Setup((cu) => cu.Publish(CanUndoMessage.CanRedo))
-                    .Verifiable();
-                host.UndoEvent.Publish(UndoMessage.Undo);
-                Assert.Equal(2, c);
-                Assert.Equal(m, CanSaveMessage.CanSave);
+                host.ExpectCanUndo(true);
+                host.ExpectCanUndoPublish();
+                host.Undo();
+                host.ExpectCanUndo(false);
+                host.ExpectCanRedo(true);
+                Assert.True(host.CanSave);
+            }
+        }
+
+        [Theory]
+        [InlineData("LastName", "Moose")]
+        [InlineData("AddressFirstLine", "1 Yemen Road")]
+        [InlineData("EmailAddress", "jack.bauer@yahoo.com")]
+        [InlineData("PhoneNumber1", "07192567842")]
+        [InlineData("PhoneNumber2", "07192567842")]
+        [InlineData("PhoneNumber3", "07192567842")]
+        public void TestUndoAfterValidInput_SendsCanSaveCannotUndoAndCanRedo(string propertyName, object newValue)
+        {
+            using (var host = new Host())
+            {
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
+                host.StartEditing();
+                host.ExpectCanUndoPublish();
+                typeof(ClientModel).GetProperty(propertyName)
+                    .SetMethod.Invoke(host.ViewModel.SelectedItem, new object[1] { newValue });
+                host.ExpectCanUndo(true);
+                host.ExpectCanUndoPublish();
+                host.Undo();
+                host.ExpectCanUndo(false);
+                host.ExpectCanRedo(true);
+                Assert.True(host.CanSave);
+            }
+        }
+
+        [Fact]
+        public void TestDiscardNoChanges()
+        {
+            using (var host = new Host())
+            {
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
+                host.StartEditing();
+                host.Discard(new ClientNavigationKey(rinsibleElk.ClientId));
+            }
+        }
+
+        [Theory]
+        [InlineData("LastName", "Moose", "AddressFirstLine", "1 Yemen Road")]
+        [InlineData("EmailAddress", "jack.bauer@yahoo.com", "PhoneNumber1", "07192567842")]
+        [InlineData("PhoneNumber2", "07192567842", "PhoneNumber3", "07192567842")]
+        public void TestDiscardAfterChanges(string property1, object value1, string property2, object value2)
+        {
+            using (var host = new Host())
+            {
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
+                host.StartEditing();
+                host.ExpectCanUndoPublish();
+                typeof(ClientModel).GetProperty(property1).SetMethod.Invoke(host.ViewModel.SelectedItem, new object[1] { value1 });
+                host.ExpectCanUndo(true);
+                typeof(ClientModel).GetProperty(property2).SetMethod.Invoke(host.ViewModel.SelectedItem, new object[1] { value2 });
+                Assert.True(host.CanSave);
+                host.Discard(new ClientNavigationKey(rinsibleElk.ClientId));
             }
         }
 
         [Fact]
         public void TestUnsubscribeFromEventsOnNavigatedFrom()
         {
-            using (var host = new Host(false))
+            using (var host = new Host())
             {
-                host.NavigateTo(
-                    new ClientModel()
-                    {
-                        ClientId = 1,
-                        AddressFirstLine = "1 Yemen Road",
-                        LastName = "Johnson",
-                        PhoneNumber1 = "07544454514"
-                    });
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
                 host.NavigateFrom();
+            }
+        }
+
+        [Fact]
+        public void TestNavigateToNewClient()
+        {
+            using (var host = new Host())
+            {
+                host.NavigateToNewClient();
+            }
+        }
+
+        [Fact]
+        public void TestInvoiceClient()
+        {
+            using (var host = new Host())
+            {
+                var rinsibleElk = MakeRinsibleElk();
+                host.NavigateToExisting(rinsibleElk);
+                host.InvoiceClient();
             }
         }
     }

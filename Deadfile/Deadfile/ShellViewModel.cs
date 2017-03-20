@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Deadfile.Infrastructure;
+using Deadfile.Model;
 using Deadfile.Model.Browser;
 using Deadfile.Tab;
 using Dragablz;
@@ -21,6 +23,12 @@ namespace Deadfile
     {
         private readonly SimpleContainer _container;
         private static bool _isFirst = true;
+        private string _server;
+        private string _database;
+        private string _username;
+        private string _password;
+        private readonly DelegateCommand _acceptCommand;
+        private readonly DelegateCommand _cancelCommand;
 
         /// <summary>
         /// Invoked by SimpleContainer.
@@ -29,6 +37,12 @@ namespace Deadfile
         /// <param name="interTabClient"></param>
         public ShellViewModel(SimpleContainer container, IInterTabClient interTabClient)
         {
+            _server = Properties.Settings.Default.Server;
+            _database = Properties.Settings.Default.Database;
+            _username = Properties.Settings.Default.Username;
+            _password = Properties.Settings.Default.Password;
+            _acceptCommand = new DelegateCommand(Accept, () => CanAccept);
+            _cancelCommand = new DelegateCommand(Cancel);
             ClosingItemActionCallback = new ItemActionCallback((dataContext) =>
             {
                 CloseItem((Screen)dataContext.DragablzItem.DataContext);
@@ -37,7 +51,7 @@ namespace Deadfile
             InterTabClient = interTabClient;
             OpenNewTab = new DelegateCommand(OpenTab);
             OpenNewTabToBrowserModelCommand = new DelegateCommand<BrowserModel>(OpenTabToBrowserItem);
-            OpenNewTabToNewClientCommand=new DelegateCommand(OpenNewTabToNewClient);
+            OpenNewTabToNewClientCommand = new DelegateCommand(OpenNewTabToNewClient);
             if (_isFirst)
             {
                 OpenTab();
@@ -83,13 +97,105 @@ namespace Deadfile
         public ICommand OpenNewTabToBrowserModelCommand { get; }
 
         public ICommand OpenNewTabToNewClientCommand { get; }
-
-        private TabablzControl _tabablz = null;
-        protected override void OnViewAttached(object view, object context)
+        public string Server
         {
-            base.OnViewAttached(view, context);
+            get { return _server; }
+            set
+            {
+                _server = value;
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(Server)));
+                _acceptCommand.RaiseCanExecuteChanged();
+            }
+        }
 
-            _tabablz = ((ShellView) view).Items;
+        public string Database
+        {
+            get { return _database; }
+            set
+            {
+                _database = value;
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(Database)));
+                _acceptCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public string Username
+        {
+            get { return _username; }
+            set
+            {
+                _username = value;
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(Username)));
+                _acceptCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        // Ridiculously naughty...
+        public string Password
+        {
+            get { return _password; }
+            set
+            {
+                _password = value;
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(Password)));
+                _acceptCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private void Cancel()
+        {
+            SettingsIsOpen = false;
+        }
+
+        private void Accept()
+        {
+            Properties.Settings.Default.Database = _database;
+            Properties.Settings.Default.Username = _username;
+            Properties.Settings.Default.Server = _server;
+            Properties.Settings.Default.Password = _password;
+            DeadfileContextAbstraction.DatabaseName = _database;
+            DeadfileContextAbstraction.UserId = _username;
+            DeadfileContextAbstraction.ServerName = _server;
+            DeadfileContextAbstraction.Password = _password;
+            DeadfileContextAbstraction.RebuildConnectionString();
+            Properties.Settings.Default.Save();
+            SettingsIsOpen = false;
+        }
+
+        private static bool DebugAcceptAnything = false;
+
+        private bool CanAccept
+        {
+            get
+            {
+                if (DebugAcceptAnything) return true;
+                DeadfileContextAbstraction.DatabaseName = _database;
+                DeadfileContextAbstraction.UserId = _username;
+                DeadfileContextAbstraction.ServerName = _server;
+                DeadfileContextAbstraction.Password = _password;
+                var result = DeadfileContextAbstraction.RebuildConnectionString();
+                DeadfileContextAbstraction.DatabaseName = Properties.Settings.Default.Database;
+                DeadfileContextAbstraction.UserId = Properties.Settings.Default.Username;
+                DeadfileContextAbstraction.ServerName = Properties.Settings.Default.Server;
+                DeadfileContextAbstraction.Password = Properties.Settings.Default.Password;
+                DeadfileContextAbstraction.RebuildConnectionString();
+                return result;
+            }
+        }
+
+        public ICommand AcceptCommand => _acceptCommand;
+        public ICommand CancelCommand => _cancelCommand;
+        private bool _settingsIsOpen = false;
+
+        public bool SettingsIsOpen
+        {
+            get { return _settingsIsOpen; }
+            set
+            {
+                if (value == _settingsIsOpen) return;
+                _settingsIsOpen = value;
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(SettingsIsOpen)));
+            }
         }
     }
 }

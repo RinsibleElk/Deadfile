@@ -17,7 +17,7 @@ namespace Deadfile.Model.Browser
     {
         private static readonly ObservableCollection<BrowserSort> ClientSorts = new ObservableCollection<BrowserSort>(new[] { BrowserSort.ClientFirstName, BrowserSort.ClientLastName });
         private static readonly ObservableCollection<BrowserSort> JobSorts = new ObservableCollection<BrowserSort>(new[] { BrowserSort.JobAddress });
-        private static readonly ObservableCollection<BrowserSort> InvoiceSorts = new ObservableCollection<BrowserSort>(new[] {BrowserSort.InvoiceCreationDate, BrowserSort.InvoiceReference});
+        private static readonly ObservableCollection<BrowserSort> InvoiceSorts = new ObservableCollection<BrowserSort>(new[] {BrowserSort.InvoiceCreationDate, BrowserSort.InvoiceReference, BrowserSort.InvoiceAddress, BrowserSort.InvoiceClient });
         private static readonly EventArgs EventArgs = new EventArgs();
         private bool _disableEvent = false;
 

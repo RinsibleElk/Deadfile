@@ -24,7 +24,7 @@ namespace Deadfile.Tab.Common
     /// <typeparam name="T"></typeparam>
     abstract class SimpleEditableItemViewModel<T> : ParameterisedViewModel<ClientAndJobNavigationKey>, ISimpleEditableItemViewModel<T> where T : JobChildModelBase, new()
     {
-        private readonly IDialogCoordinator _dialogCoordinator;
+        private readonly IDeadfileDialogCoordinator _dialogCoordinator;
         private readonly IEventAggregator _eventAggregator;
         private readonly DelegateCommand _editCommand;
         private readonly DelegateCommand _discardCommand;
@@ -34,7 +34,7 @@ namespace Deadfile.Tab.Common
         private List<string> _errors;
 
         public SimpleEditableItemViewModel(IDeadfileDispatcherTimerService timerService,
-            IDialogCoordinator dialogCoordinator,
+            IDeadfileDialogCoordinator dialogCoordinator,
             IEventAggregator eventAggregator)
         {
             _maintainSelectionTimer = timerService.CreateTimer(TimeSpan.FromMilliseconds(10), SetSelectedIndex);
@@ -66,7 +66,7 @@ namespace Deadfile.Tab.Common
 
         private async void DeleteItem()
         {
-            var result = await _dialogCoordinator.ShowMessageAsync(this, "Confirm Deletion", "Are you sure? This action is permanent.", MessageDialogStyle.AffirmativeAndNegative);
+            var result = await _dialogCoordinator.ConfirmDeleteAsync(this, "Confirm Deletion", "Are you sure? This action is permanent.");
             // Open a dialog to ask the user if they are sure.
             if (result == MessageDialogResult.Affirmative)
             {
@@ -171,8 +171,7 @@ namespace Deadfile.Tab.Common
             // Populate the table.
             // We always add one more, to represent the user wanting to add a new one.
             var value = new T() { JobId = _jobId, ClientId = _clientId };
-            Items = new ObservableCollection<T>(GetModelsForJobId(_jobId, _filter));
-            Items.Add(value);
+            Items = new ObservableCollection<T>(GetModelsForJobId(_jobId, _filter)) {value};
             SelectedItem = value;
         }
 
@@ -241,10 +240,7 @@ namespace Deadfile.Tab.Common
         /// <summary>
         /// Provides access to the parent job to perform undos.
         /// </summary>
-        IUndoTracker ISimpleEditableItemViewModel.UndoTracker
-        {
-            get { return UndoTracker; }
-        }
+        IUndoTracker ISimpleEditableItemViewModel.UndoTracker => UndoTracker;
 
         /// <summary>
         /// The user is navigating away.
@@ -278,8 +274,7 @@ namespace Deadfile.Tab.Common
 
             // Bin the table.
             SelectedItem = new T() {JobId = _jobId, ClientId = _clientId};
-            Items = new ObservableCollection<T>();
-            Items.Add(SelectedItem);
+            Items = new ObservableCollection<T> {SelectedItem};
 
             // Same again.
             _filter = null;
