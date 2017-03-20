@@ -14,9 +14,6 @@ namespace Deadfile.Tab.Invoices
     /// </summary>
     class InvoicesActionsPadViewModel : ActionsPadViewModel<InvoicesPageState>, IInvoicesActionsPadViewModel
     {
-        private bool _canPaidItem = true;
-        private bool _paidItemIsVisible = true;
-
         public InvoicesActionsPadViewModel(TabIdentity tabIdentity,
             IEventAggregator eventAggregator) : base(tabIdentity, eventAggregator)
         {
@@ -63,6 +60,7 @@ namespace Deadfile.Tab.Invoices
         protected override void PageStateChanged(InvoicesPageState state)
         {
             NotifyOfPropertyChange(() => CanPrintItem);
+            NotifyOfPropertyChange(() => CanPaidItem);
         }
 
         public void PaidItem()
@@ -71,28 +69,7 @@ namespace Deadfile.Tab.Invoices
             EventAggregator.GetEvent<PaidEvent>().Publish(PaidMessage.Paid);
         }
 
-        public bool CanPaidItem
-        {
-            get { return _canPaidItem; }
-            set
-            {
-                if (value == _canPaidItem) return;
-                _canPaidItem = value;
-                NotifyOfPropertyChange(() => CanPaidItem);
-            }
-        }
-
-        public bool PaidItemIsVisible
-        {
-            get { return _paidItemIsVisible; }
-            set
-            {
-                if (value == _paidItemIsVisible) return;
-                _paidItemIsVisible = value;
-                NotifyOfPropertyChange(() => PaidItemIsVisible);
-            }
-        }
+        public bool CanPaidItem => !PageState.HasFlag(InvoicesPageState.UnderEdit);
     }
-
 }
 

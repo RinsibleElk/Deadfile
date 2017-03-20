@@ -34,20 +34,17 @@ namespace Deadfile.Tab.Browser
             RefreshBrowser();
         }
 
+        private bool _ignoreSelectionChange;
         private void RefreshBrowser()
         {
+            _ignoreSelectionChange = true;
             Items = new ObservableCollection<BrowserModel>(_repository.GetBrowserItems(BrowserSettings));
+            _ignoreSelectionChange = false;
         }
 
         private void LockedForEditingAction(LockedForEditingMessage message)
         {
             BrowsingEnabled = (!message.IsLocked);
-
-            // if browsing is enabled, then we have to
-            // - deselect
-            // - refresh the entire browser (or preferably just this bit but hey)
-            // - reselect if possible
-
         }
 
         private void RefreshBrowserAction(RefreshBrowserMessage message)
@@ -61,11 +58,14 @@ namespace Deadfile.Tab.Browser
             get { return _selectedItem; }
             set
             {
-                if (_selectedItem == value) return;
-                _selectedItem = value;
-                NotifyOfPropertyChange(() => SelectedItem);
-                if (_selectedItem != null)
-                    _eventAggregator.GetEvent<SelectedItemEvent>().Publish(new SelectedItemPacket(_selectedItem.ModelType, _selectedItem.ParentId, _selectedItem.Id));
+                if (!_ignoreSelectionChange)
+                {
+                    if (_selectedItem == value) return;
+                    _selectedItem = value;
+                    NotifyOfPropertyChange(() => SelectedItem);
+                    if (_selectedItem != null)
+                        _eventAggregator.GetEvent<SelectedItemEvent>().Publish(new SelectedItemPacket(_selectedItem.ModelType, _selectedItem.ParentId, _selectedItem.Id));
+                }
             }
         }
 

@@ -813,7 +813,7 @@ namespace Deadfile.Model
                 foreach (var expense in dbContext.GetActiveBillableHours(filterText))
                 {
                     var billable = expense.BillableHour;
-                    if ((billable.State == BillableState.Active) && (billable.NetAmount > 0))
+                    if ((billable.State == BillableState.Active) && (billable.HoursWorked > 0))
                     {
                         var job = expense.Job;
                         var client = expense.Client;

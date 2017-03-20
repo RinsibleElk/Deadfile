@@ -22,6 +22,6 @@
         <Button x:Name="SaveItem" Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource SaveButton}" ToolTip="Save changes to this Invoice." />
         <Button x:Name="DiscardItem" Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" IsCancel="True" Style="{StaticResource DiscardButton}" ToolTip="Discard changes to this Invoice." />
         <Button x:Name="DeleteItem" Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource DeleteButton}" ToolTip="Delete this Invoice (Cancel it). This is not permanent." />
-        <Button x:Name="PaidItem" Visibility="{Binding PaidItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource PaidButton}" ToolTip="Mark this Invoice as Paid. This is not permanent." />
+        <Button x:Name="PaidItem" Visibility="{Binding CanPaidItem, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource PaidButton}" ToolTip="Mark this Invoice as Paid. This is not permanent." />
     </StackPanel>
 </UserControl>

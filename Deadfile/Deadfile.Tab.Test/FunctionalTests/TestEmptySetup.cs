@@ -274,8 +274,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
             MockData.SetUpClients(setup);
             MockData.SetUpJobs(setup);
             MockData.SetupJobChildren(setup);
-            setup.HomePageViewModel.UnbilledJobs();
-            var x = setup.UnbilledJobsPageViewModel.Items.Count;
+            MockData.SetUpInvoices(setup);
         }
     }
 }

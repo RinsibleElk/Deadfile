@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Entity;
 using Deadfile.Model;
+using Deadfile.Model.Billable;
 using Deadfile.Model.Browser;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.JobChildren;
@@ -270,6 +271,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
             Assert.True(setup.JobsActionsPadViewModel.SaveItemIsVisible);
             setup.JobsActionsPadViewModel.SaveItem();
             Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.JobsPageViewModel));
+            Assert.True(setup.BrowserPaneViewModel.BrowsingEnabled);
             Assert.False(setup.JobsActionsPadViewModel.SaveItemIsVisible);
             Assert.True(setup.NavigationBarViewModel.CanBack);
             setup.NavigationBarViewModel.Back();
@@ -337,6 +339,39 @@ namespace Deadfile.Tab.Test.FunctionalTests
             Assert.False(setup.NavigationBarViewModel.CanForward);
             Assert.True(setup.JobsActionsPadViewModel.CanEditItem);
             Assert.False(setup.JobsActionsPadViewModel.SaveItemIsVisible);
+        }
+
+        public static void SetUpInvoices(MockSetup setup)
+        {
+            // Just invoice Rinsible Elk.
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.HomePageViewModel));
+            setup.BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Client;
+            BrowseToClient(setup, "Rinsible Elk");
+            Assert.True(setup.ClientsPageViewModel.CanInvoiceClient);
+            setup.ClientsPageViewModel.InvoiceClient();
+            Assert.False(setup.NavigationBarViewModel.CanHome);
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.InvoicesPageViewModel));
+            Assert.True(setup.InvoicesPageViewModel.Editable);
+            Assert.False(setup.InvoicesPageViewModel.InvoiceEditable);
+            // Select all of Rinsible's billables.
+            Assert.Equal(2, setup.InvoicesPageViewModel.Jobs.Count);
+            foreach (var job in setup.InvoicesPageViewModel.Jobs)
+            {
+                job.State = BillableModelState.FullyIncluded;
+            }
+            Assert.True(setup.InvoicesPageViewModel.CanSetBillableItems);
+            setup.InvoicesPageViewModel.SetBillableItems();
+            Assert.Equal(500, setup.InvoicesPageViewModel.NetAmount);
+            Assert.Equal(5, setup.InvoicesPageViewModel.Hours);
+            Assert.True(setup.InvoicesPageViewModel.InvoiceEditable);
+            Assert.False(setup.InvoicesActionsPadViewModel.CanSaveItem);
+            Assert.False(setup.InvoicesActionsPadViewModel.CanPrintItem);
+            Assert.False(setup.InvoicesActionsPadViewModel.CanPaidItem);
+            Assert.Equal(1, setup.InvoicesPageViewModel.SelectedItem.ClientId);
+
+            Assert.True(setup.NavigationBarViewModel.CanHome);
+            setup.NavigationBarViewModel.Home();
+            Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.HomePageViewModel));
         }
     }
 }
