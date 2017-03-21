@@ -27,32 +27,30 @@ namespace Deadfile.Tab.Browser
             _repository = repository;
             _eventAggregator = eventAggregator;
             Items = new ObservableCollection<BrowserModel>(_repository.GetBrowserItems(BrowserSettings));
-            BrowserSettings.Refresh += BrowserSettingsRefresh;
-        }
-
-        private void BrowserSettingsRefresh(object sender, EventArgs e)
-        {
-            RefreshBrowser();
+            BrowserSettings.Refresh += RefreshBrowser;
         }
 
         private bool _ignoreSelectionChange;
-        private void RefreshBrowser()
+        private void RefreshBrowser(bool maintainExpanded)
         {
             _ignoreSelectionChange = true;
             var expandedCache = new Dictionary<int, HashSet<int>>();
-            foreach (var browserModel in Items)
-            {
-                if (!browserModel.IsExpanded) continue;
-                var d = new HashSet<int>();
-                foreach (var browserModelChild in browserModel.Children)
-                {
-                    if (browserModelChild.IsExpanded)
-                        d.Add(browserModelChild.Id);
-                }
-                expandedCache.Add(browserModel.Id, d);
-            }
             var selectedType = SelectedItem?.ModelType ?? BrowserModelType.Dummy;
             var selectedId = SelectedItem?.Id ?? ModelBase.NewModelId;
+            if (maintainExpanded)
+            {
+                foreach (var browserModel in Items)
+                {
+                    if (!browserModel.IsExpanded) continue;
+                    var d = new HashSet<int>();
+                    foreach (var browserModelChild in browserModel.Children)
+                    {
+                        if (browserModelChild.IsExpanded)
+                            d.Add(browserModelChild.Id);
+                    }
+                    expandedCache.Add(browserModel.Id, d);
+                }
+            }
             Items = new ObservableCollection<BrowserModel>(_repository.GetBrowserItems(BrowserSettings));
             foreach (var browserModel in Items)
             {
@@ -94,7 +92,7 @@ namespace Deadfile.Tab.Browser
 
         private void RefreshBrowserAction(RefreshBrowserMessage message)
         {
-            RefreshBrowser();
+            RefreshBrowser(true);
         }
 
         private BrowserModel _selectedItem;

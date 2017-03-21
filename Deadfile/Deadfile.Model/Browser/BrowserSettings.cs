@@ -18,7 +18,6 @@ namespace Deadfile.Model.Browser
         private static readonly ObservableCollection<BrowserSort> ClientSorts = new ObservableCollection<BrowserSort>(new[] { BrowserSort.ClientFirstName, BrowserSort.ClientLastName });
         private static readonly ObservableCollection<BrowserSort> JobSorts = new ObservableCollection<BrowserSort>(new[] { BrowserSort.JobAddress });
         private static readonly ObservableCollection<BrowserSort> InvoiceSorts = new ObservableCollection<BrowserSort>(new[] {BrowserSort.InvoiceCreationDate, BrowserSort.InvoiceReference, BrowserSort.InvoiceAddress, BrowserSort.InvoiceClient });
-        private static readonly EventArgs EventArgs = new EventArgs();
         private bool _disableEvent = false;
 
         public BrowserSettings()
@@ -37,7 +36,7 @@ namespace Deadfile.Model.Browser
             set
             {
                 if (SetProperty(ref _filterText, value) && !_disableEvent)
-                    Refresh?.Invoke(this, EventArgs);
+                    Refresh?.Invoke(false);
             }
         }
 
@@ -51,7 +50,7 @@ namespace Deadfile.Model.Browser
             set
             {
                 if (SetProperty(ref _includeInactiveEnabled, value) && !_disableEvent)
-                    Refresh?.Invoke(this, EventArgs);
+                    Refresh?.Invoke(false);
             }
         }
 
@@ -86,7 +85,7 @@ namespace Deadfile.Model.Browser
                             Sort = BrowserSort.InvoiceCreationDate;
                             break;
                     }
-                    Refresh?.Invoke(this, EventArgs);
+                    Refresh?.Invoke(false);
                     _disableEvent = false;
                 }
             }
@@ -106,10 +105,10 @@ namespace Deadfile.Model.Browser
             set
             {
                 if (SetProperty(ref _sort, value) && !_disableEvent)
-                    Refresh?.Invoke(this, EventArgs);
+                    Refresh?.Invoke(false);
             }
         }
 
-        public event EventHandler Refresh;
+        public event Action<bool> Refresh;
     }
 }

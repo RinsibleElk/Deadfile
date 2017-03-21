@@ -12,7 +12,7 @@ namespace Deadfile.Model.Test
         {
             var numTimesRefreshCalled = 0;
             var browserSettings = new BrowserSettings();
-            browserSettings.Refresh += (s, e) => ++numTimesRefreshCalled;
+            browserSettings.Refresh += (_) => ++numTimesRefreshCalled;
             browserSettings.FilterText = "Bru";
             Assert.Equal(1, numTimesRefreshCalled);
         }
@@ -22,7 +22,7 @@ namespace Deadfile.Model.Test
         {
             var numTimesRefreshCalled = 0;
             var browserSettings = new BrowserSettings();
-            browserSettings.Refresh += (s, e) => ++numTimesRefreshCalled;
+            browserSettings.Refresh += (_) => ++numTimesRefreshCalled;
             browserSettings.Mode = BrowserMode.Invoice;
             Assert.Equal(1, numTimesRefreshCalled);
         }
@@ -32,7 +32,7 @@ namespace Deadfile.Model.Test
         {
             var numTimesRefreshCalled = 0;
             var browserSettings = new BrowserSettings();
-            browserSettings.Refresh += (s, e) => ++numTimesRefreshCalled;
+            browserSettings.Refresh += (_) => ++numTimesRefreshCalled;
             browserSettings.Sort = BrowserSort.ClientLastName;
             Assert.Equal(1, numTimesRefreshCalled);
         }
