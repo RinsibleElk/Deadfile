@@ -317,7 +317,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 // Navigate to the invoice via the browser.
                 setup.BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Client;
                 Assert.Equal(6, setup.BrowserPaneViewModel.Items.Count);
-                var rinsibleElk = setup.BrowserPaneViewModel.Items.First((b) => ((BrowserClient) b).FullName.Contains("Rinsible Elk"));
+                var rinsibleElk = setup.BrowserPaneViewModel.Items.First((b) => ((BrowserClient)b).FullName.Contains("Rinsible Elk"));
                 rinsibleElk.IsExpanded = true;
                 Assert.Equal(2, rinsibleElk.Children.Count);
                 var secondJob = rinsibleElk.Children[1];
@@ -330,6 +330,32 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 setup.InvoicesActionsPadViewModel.PaidItem();
                 Assert.Equal(InvoiceStatus.Paid, setup.InvoicesPageViewModel.SelectedItem.Status);
                 Assert.Equal(InvoiceStatus.Paid, setup.Repository.GetInvoiceById(setup.InvoicesPageViewModel.SelectedItem.InvoiceId).Status);
+            }
+        }
+
+        [Fact]
+        public void TestCancelInvoice()
+        {
+            using (var setup = new MockSetup())
+            {
+                PopulateEntireDatabaseFromGui(setup);
+                // Navigate to the invoice via the browser.
+                setup.BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Client;
+                Assert.Equal(6, setup.BrowserPaneViewModel.Items.Count);
+                var rinsibleElk = setup.BrowserPaneViewModel.Items.First((b) => ((BrowserClient)b).FullName.Contains("Rinsible Elk"));
+                rinsibleElk.IsExpanded = true;
+                Assert.Equal(2, rinsibleElk.Children.Count);
+                var secondJob = rinsibleElk.Children[1];
+                secondJob.IsExpanded = true;
+                var invoice = secondJob.Children[0];
+                setup.BrowserPaneViewModel.SelectedItem = invoice;
+                Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.InvoicesPageViewModel));
+                Assert.True(Object.ReferenceEquals(setup.TabViewModel.ActionsPad, setup.InvoicesActionsPadViewModel));
+                Assert.True(setup.InvoicesActionsPadViewModel.CanDeleteItem);
+                Assert.True(setup.InvoicesActionsPadViewModel.DeleteItemIsVisible);
+                setup.InvoicesActionsPadViewModel.DeleteItem();
+                Assert.Equal(InvoiceStatus.Cancelled, setup.InvoicesPageViewModel.SelectedItem.Status);
+                Assert.Equal(InvoiceStatus.Cancelled, setup.Repository.GetInvoiceById(setup.InvoicesPageViewModel.SelectedItem.InvoiceId).Status);
             }
         }
     }
