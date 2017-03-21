@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using Deadfile.Core;
 using Deadfile.Infrastructure.Interfaces;
+using Deadfile.Model;
 using Deadfile.Model.Browser;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Events;
@@ -38,7 +39,51 @@ namespace Deadfile.Tab.Browser
         private void RefreshBrowser()
         {
             _ignoreSelectionChange = true;
+            var expandedCache = new Dictionary<int, HashSet<int>>();
+            foreach (var browserModel in Items)
+            {
+                if (!browserModel.IsExpanded) continue;
+                var d = new HashSet<int>();
+                foreach (var browserModelChild in browserModel.Children)
+                {
+                    if (browserModelChild.IsExpanded)
+                        d.Add(browserModelChild.Id);
+                }
+                expandedCache.Add(browserModel.Id, d);
+            }
+            var selectedType = SelectedItem?.ModelType ?? BrowserModelType.Dummy;
+            var selectedId = SelectedItem?.Id ?? ModelBase.NewModelId;
             Items = new ObservableCollection<BrowserModel>(_repository.GetBrowserItems(BrowserSettings));
+            foreach (var browserModel in Items)
+            {
+                if ((selectedType == browserModel.ModelType) && (selectedId == browserModel.Id))
+                {
+                    SelectedItem = browserModel;
+                    selectedId = ModelBase.NewModelId;
+                    selectedType = BrowserModelType.Dummy;
+                }
+                if (!expandedCache.ContainsKey(browserModel.Id)) continue;
+                var d = expandedCache[browserModel.Id];
+                browserModel.IsExpanded = true;
+                foreach (var browserModelChild in browserModel.Children)
+                {
+                    if ((selectedType == browserModelChild.ModelType) && (selectedId == browserModelChild.Id))
+                    {
+                        SelectedItem = browserModelChild;
+                        selectedId = ModelBase.NewModelId;
+                        selectedType = BrowserModelType.Dummy;
+                    }
+                    if (!d.Contains(browserModelChild.Id)) continue;
+                    browserModelChild.IsExpanded = true;
+                    foreach (var model in browserModelChild.Children)
+                    {
+                        if ((selectedType != model.ModelType) || (selectedId != model.Id)) continue;
+                        SelectedItem = model;
+                        selectedId = ModelBase.NewModelId;
+                        selectedType = BrowserModelType.Dummy;
+                    }
+                }
+            }
             _ignoreSelectionChange = false;
         }
 
