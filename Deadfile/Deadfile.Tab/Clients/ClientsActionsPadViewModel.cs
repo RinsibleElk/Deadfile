@@ -30,6 +30,8 @@ namespace Deadfile.Tab.Clients
         public override bool DiscardItemIsVisible => PageState.HasFlag(ClientsPageState.UnderEdit);
         protected override void PageStateChanged(ClientsPageState state)
         {
+            NotifyOfPropertyChange(() => CanAddItem);
+            NotifyOfPropertyChange(() => AddItemIsVisible);
         }
 
         public void AddItem()

@@ -36,7 +36,7 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Test.FunctionalTests
 {
-    class MockSetup
+    class MockSetup : IDisposable
     {
         public readonly Dictionary<string, object> ViewModels = new Dictionary<string, object>();
         public readonly TabIdentity TabIdentity = new TabIdentity(1);
@@ -157,6 +157,11 @@ namespace Deadfile.Tab.Test.FunctionalTests
 
         public MockSetup() : this(new MockDeadfileContextAbstractionFactory())
         {
+        }
+
+        public void Dispose()
+        {
+            TabViewModel.TestOnlyOnDeactivate(true);
         }
     }
 }
