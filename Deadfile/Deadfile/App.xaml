@@ -10,9 +10,9 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
 <!--                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" /> -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Red.xaml" />
                 <!-- Accent and AppTheme setting -->
-                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/DeadfileTheme.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/DeadfileAccent.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Fonts.xaml" />
                 <!-- Dragablz -->
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/MahApps.xaml" />

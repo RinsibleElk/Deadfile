@@ -16,8 +16,8 @@
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Button x:Name="EditItem" Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource EditButton}" ToolTip="Edit this Job." />
-        <Button x:Name="SaveItem" Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" IsDefault="True" Style="{StaticResource SaveButton}" ToolTip="Save changes to this Job." />
+        <Button x:Name="EditItem" IsDefault="{Binding CanEditItem}" Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource EditButton}" ToolTip="Edit this Job." />
+        <Button x:Name="SaveItem" IsDefault="{Binding CanEditItem, Converter={StaticResource InverseBoolean}}" Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource SaveButton}" ToolTip="Save changes to this Job." />
         <Button x:Name="DiscardItem" Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" IsCancel="True" Style="{StaticResource DiscardButton}" ToolTip="Discard changes to this Job." />
         <Button x:Name="DeleteItem" Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource DeleteButton}" ToolTip="Delete this Job. This is not permanent." />
     </StackPanel>

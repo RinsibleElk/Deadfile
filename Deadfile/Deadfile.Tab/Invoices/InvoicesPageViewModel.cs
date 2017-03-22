@@ -26,7 +26,6 @@ using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
-using PdfSharp.Drawing;
 using Prism.Commands;
 using Prism.Events;
 
@@ -290,6 +289,10 @@ namespace Deadfile.Tab.Invoices
         private async Task<bool> PerformSave()
         {
             var actuallySave = true;
+
+            SelectedItem.DisableUndoTracking = true;
+            SelectedItem.CreationState = InvoiceCreationState.DefineBillables;
+            SelectedItem.DisableUndoTracking = false;
 
             // Raise a dialog if being deleted.
             if (SelectedItem.IsBeingDeleted())

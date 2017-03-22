@@ -197,7 +197,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
             setup.ClientsActionsPadViewModel.SaveItem();
         }
 
-        private static void BrowseToJob(MockSetup setup, string jobNameMatch)
+        public static void BrowseToJob(MockSetup setup, string jobNameMatch)
         {
             foreach (var browserModel in setup.BrowserPaneViewModel.Items)
             {
@@ -215,7 +215,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
             Assert.True(setup.JobsPageViewModel.SelectedItem.AddressFirstLine.Contains(jobNameMatch));
         }
 
-        private static void BrowseToClient(MockSetup setup, string name)
+        public static void BrowseToClient(MockSetup setup, string name)
         {
             foreach (var browserModel in setup.BrowserPaneViewModel.Items)
             {

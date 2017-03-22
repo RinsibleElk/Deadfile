@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Castle.Components.DictionaryAdapter;
 using Deadfile.Entity;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
@@ -451,7 +450,7 @@ namespace Deadfile.Tab.Test
                 typeof(ClientModel).GetProperty(propertyName)
                     .SetMethod.Invoke(host.ViewModel.SelectedItem, new object[1] { newValue });
                 host.ExpectCanUndo(true);
-                Assert.Equal(ClientsPageState.CanEdit | ClientsPageState.CanDiscard | ClientsPageState.UnderEdit, host.ViewModel.State);
+                Assert.Equal(ClientsPageState.CanDiscard | ClientsPageState.UnderEdit, host.ViewModel.State);
                 Assert.False(host.CanSave);
                 Assert.False(host.ViewModel.CanSave);
             }
@@ -475,7 +474,7 @@ namespace Deadfile.Tab.Test
                 typeof(ClientModel).GetProperty(propertyName)
                     .SetMethod.Invoke(host.ViewModel.SelectedItem, new object[1] { newValue });
                 host.ExpectCanUndo(true);
-                Assert.Equal(ClientsPageState.CanSave | ClientsPageState.CanEdit | ClientsPageState.CanDiscard | ClientsPageState.UnderEdit, host.ViewModel.State);
+                Assert.Equal(ClientsPageState.CanSave | ClientsPageState.CanDiscard | ClientsPageState.UnderEdit, host.ViewModel.State);
                 Assert.True(host.CanSave);
                 Assert.True(host.ViewModel.CanSave);
             }

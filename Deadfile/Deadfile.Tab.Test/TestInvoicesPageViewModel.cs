@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Castle.Components.DictionaryAdapter;
 using Deadfile.Entity;
 using Deadfile.Infrastructure.Converters;
 using Deadfile.Infrastructure.Interfaces;
@@ -356,7 +355,7 @@ namespace Deadfile.Tab.Test
                     .Verifiable();
                 _editActionEvent.Publish(EditActionMessage.StartEditing);
                 Assert.True(ViewModel.CanSave);
-                Assert.True(ViewModel.CanEdit);
+                Assert.False(ViewModel.CanEdit);
                 Assert.True(ViewModel.State.HasFlag(InvoicesPageState.CanDiscard));
                 Assert.True(ViewModel.UnderEdit);
                 Assert.Equal(1, _receivedLockedForEditingMessages.Count);

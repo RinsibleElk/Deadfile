@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Deadfile.Infrastructure.Styles;
 using Deadfile.Model.Browser;
 using Dragablz;
 
@@ -24,5 +25,7 @@ namespace Deadfile
         ICommand AcceptCommand { get; }
         ICommand CancelCommand { get; }
         bool SettingsIsOpen { get; set; }
+        Theme ThemeToUse { get; set; }
+        Accent AccentToUse { get; set; }
     }
 }

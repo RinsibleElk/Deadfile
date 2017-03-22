@@ -126,6 +126,8 @@
     <Compile Include="Services\PrintService.cs" />
     <Compile Include="Services\QuotationsTimerService.cs" />
     <Compile Include="Services\UrlNavigationService.cs" />
+    <Compile Include="Styles\Accent.cs" />
+    <Compile Include="Styles\Theme.cs" />
     <Compile Include="Templates\InvoiceTemplateSelector.cs" />
     <Compile Include="Templates\LocalAuthorityHyperlinkHeaderTemplateSelector.cs" />
     <Compile Include="Templates\ModelTemplateSelector.cs" />
@@ -337,14 +339,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Styles\Converters.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\DeadfileAccent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\DeadfileTheme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

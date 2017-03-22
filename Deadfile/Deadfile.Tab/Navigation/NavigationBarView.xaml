@@ -4,10 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Deadfile.Tab.Navigation"
+             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:NavigationBarDesignTimeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Orientation="Horizontal" Background="Transparent">
+    <UserControl.Resources>
+        <designTime:DesignTimeResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Converters.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </designTime:DesignTimeResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel Orientation="Horizontal" >
         <Button Height="32" Width="32" Margin="3" x:Name="Home" Style="{StaticResource HomeButton}" />
         <Button Height="32" Width="32" Margin="3" x:Name="Back" Style="{StaticResource BackButton}" />
         <Button Height="32" Width="32" Margin="3" x:Name="Forward" Style="{StaticResource ForwardButton}" />

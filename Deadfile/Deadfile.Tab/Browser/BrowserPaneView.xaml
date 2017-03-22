@@ -22,104 +22,101 @@
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
-    <Border Style="{StaticResource BrowserBorder}">
-        <Grid
-            Background="{StaticResource BrowserBackground}">
+    <Grid Background="{StaticResource BrowserBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <CheckBox Grid.Row="0" Grid.Column="0" IsEnabled="{Binding BrowsingEnabled}" IsChecked="{Binding BrowserSettings.IncludeInactiveEnabled, Mode=TwoWay}">Inactive</CheckBox>
-                <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding BrowserSettings.Modes}" IsEnabled="{Binding BrowsingEnabled}" IsEditable="False" SelectedItem="{Binding BrowserSettings.Mode}" />
-                <Label Grid.Row="1" Grid.Column="0">Sort:</Label>
-                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding BrowserSettings.Sorts}" IsEnabled="{Binding BrowsingEnabled}" IsEditable="False" SelectedItem="{Binding BrowserSettings.Sort}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Converter={StaticResource BrowserSortToString}}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" controls:TextBoxHelper.Watermark="Filter" IsEnabled="{Binding BrowsingEnabled}" Text="{Binding BrowserSettings.FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            </Grid>
-            <TreeView Grid.Row="1"
-                      IsEnabled="{Binding BrowsingEnabled}"
-                      ItemsSource="{Binding Items}"
-                      Style="{StaticResource TreeViewTransparentBackground}">
-                <i:Interaction.Behaviors>
-                    <behaviors:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
-                </i:Interaction.Behaviors>
-                <TreeView.Resources>
-                    <ContextMenu x:Key="OpenInNewTabMenu">
-                        <MenuItem Header="Open In New Tab..."
-                                  Command="{Binding RelativeSource={RelativeSource AncestorType=controls:MetroWindow}, Path=DataContext.OpenNewTabToBrowserModelCommand}"
-                                  CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
-                    </ContextMenu>
-                    <HierarchicalDataTemplate DataType="{x:Type browsermodel:BrowserClient}" ItemsSource="{Binding Children}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image x:Name="imgIcon" Height="16" Width="16" Source="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png" />
-                            <TextBlock Padding="4,0,0,0" Text="{Binding FullName}" />
-                        </StackPanel>
-                        <HierarchicalDataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:ClientStatus.Active}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:ClientStatus.Inactive}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab-dead.png"/>
-                            </DataTrigger>
-                        </HierarchicalDataTemplate.Triggers>
-                    </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type browsermodel:BrowserJob}" ItemsSource="{Binding Children}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image x:Name="imgIcon" Height="16" Width="16" Source="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab.png" />
-                            <TextBlock Padding="4,0,0,0" Text="{Binding FullAddress}" />
-                        </StackPanel>
-                        <HierarchicalDataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:JobStatus.Active}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab.png"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:JobStatus.Cancelled}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab-cancelled.png"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:JobStatus.Completed}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab-completed.png"/>
-                            </DataTrigger>
-                        </HierarchicalDataTemplate.Triggers>
-                    </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type browsermodel:BrowserInvoice}" ItemsSource="{Binding Children}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Name="imgIcon"  Height="16" Width="16" Source="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab.png" />
-                            <TextBlock Padding="4,0,0,0" Text="{Binding DisplayName}" />
-                        </StackPanel>
-                        <HierarchicalDataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:InvoiceStatus.Created}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab.png"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:InvoiceStatus.Cancelled}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab-cancelled.png"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:InvoiceStatus.Paid}">
-                                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab-completed.png"/>
-                            </DataTrigger>
-                        </HierarchicalDataTemplate.Triggers>
-                    </HierarchicalDataTemplate>
-                </TreeView.Resources>
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="{x:Type TreeViewItem}">
-                        <Setter Property="ContextMenu" Value="{StaticResource OpenInNewTabMenu}"/>
-                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                    </Style>
-                </TreeView.ItemContainerStyle>
-            </TreeView>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <CheckBox Grid.Row="0" Grid.Column="0" IsEnabled="{Binding BrowsingEnabled}" IsChecked="{Binding BrowserSettings.IncludeInactiveEnabled, Mode=TwoWay}">Inactive</CheckBox>
+            <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding BrowserSettings.Modes}" IsEnabled="{Binding BrowsingEnabled}" IsEditable="False" SelectedItem="{Binding BrowserSettings.Mode}" />
+            <Label Grid.Row="1" Grid.Column="0">Sort:</Label>
+            <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding BrowserSettings.Sorts}" IsEnabled="{Binding BrowsingEnabled}" IsEditable="False" SelectedItem="{Binding BrowserSettings.Sort}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource BrowserSortToString}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" controls:TextBoxHelper.Watermark="Filter" IsEnabled="{Binding BrowsingEnabled}" Text="{Binding BrowserSettings.FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         </Grid>
-    </Border>
+        <TreeView Grid.Row="1"
+                    IsEnabled="{Binding BrowsingEnabled}"
+                    ItemsSource="{Binding Items}"
+                    Style="{StaticResource TreeViewTransparentBackground}">
+            <i:Interaction.Behaviors>
+                <behaviors:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
+            </i:Interaction.Behaviors>
+            <TreeView.Resources>
+                <ContextMenu x:Key="OpenInNewTabMenu">
+                    <MenuItem Header="Open In New Tab..."
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=controls:MetroWindow}, Path=DataContext.OpenNewTabToBrowserModelCommand}"
+                                CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
+                </ContextMenu>
+                <HierarchicalDataTemplate DataType="{x:Type browsermodel:BrowserClient}" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image x:Name="imgIcon" Height="16" Width="16" Source="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png" />
+                        <TextBlock Padding="4,0,0,0" Text="{Binding FullName}" />
+                    </StackPanel>
+                    <HierarchicalDataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:ClientStatus.Active}">
+                            <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:ClientStatus.Inactive}">
+                            <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab-dead.png"/>
+                        </DataTrigger>
+                    </HierarchicalDataTemplate.Triggers>
+                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type browsermodel:BrowserJob}" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image x:Name="imgIcon" Height="16" Width="16" Source="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab.png" />
+                        <TextBlock Padding="4,0,0,0" Text="{Binding FullAddress}" />
+                    </StackPanel>
+                    <HierarchicalDataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:JobStatus.Active}">
+                            <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:JobStatus.Cancelled}">
+                            <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab-cancelled.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:JobStatus.Completed}">
+                            <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab-completed.png"/>
+                        </DataTrigger>
+                    </HierarchicalDataTemplate.Triggers>
+                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type browsermodel:BrowserInvoice}" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Name="imgIcon"  Height="16" Width="16" Source="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab.png" />
+                        <TextBlock Padding="4,0,0,0" Text="{Binding DisplayName}" />
+                    </StackPanel>
+                    <HierarchicalDataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:InvoiceStatus.Created}">
+                            <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:InvoiceStatus.Cancelled}">
+                            <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab-cancelled.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:InvoiceStatus.Paid}">
+                            <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab-completed.png"/>
+                        </DataTrigger>
+                    </HierarchicalDataTemplate.Triggers>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="ContextMenu" Value="{StaticResource OpenInNewTabMenu}"/>
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+    </Grid>
 </UserControl>

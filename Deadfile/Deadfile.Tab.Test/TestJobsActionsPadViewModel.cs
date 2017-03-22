@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Components.DictionaryAdapter;
 using Deadfile.Tab.Events;
 using Deadfile.Tab.Jobs;
 using Moq;
@@ -16,7 +15,7 @@ namespace Deadfile.Tab.Test
         private class Host : IDisposable
         {
             private readonly Mock<IEventAggregator> _eventAggregatorMock;
-            private readonly List<EditActionMessage> _receivedEditActionMessages = new EditableList<EditActionMessage>();
+            private readonly List<EditActionMessage> _receivedEditActionMessages = new List<EditActionMessage>();
             private readonly EditActionEvent _editActionEvent = new EditActionEvent();
             public readonly JobsActionsPadViewModel ViewModel;
             private readonly PageStateEvent<JobsPageState> _pageStateEvent = new PageStateEvent<JobsPageState>();

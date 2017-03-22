@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:Deadfile.Infrastructure.Converters"
-                    xmlns:entity="clr-namespace:Deadfile.Entity;assembly=Deadfile.Entity">
+                    xmlns:entity="clr-namespace:Deadfile.Entity;assembly=Deadfile.Entity"
+                    xmlns:infra="clr-namespace:Deadfile.Infrastructure.Styles">
     <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
     <converters:ModelIdToEditCommandNameConverter x:Key="ModelIdToEditCommandName"/>
     <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibility"/>
@@ -13,6 +14,34 @@
     <converters:JobTaskStateToNullableBooleanConverter x:Key="JobTaskStateToBoolean" />
     <converters:ExpenseTypeToStringConverter x:Key="ExpenseTypeToString" />
     <converters:BrowserSortToStringConverter x:Key="BrowserSortToString" />
+    <converters:SwitchConverter x:Key="ExperienceToImage">
+        <converters:SwitchConverterCase When="Clients" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png" />
+        <converters:SwitchConverterCase When="Jobs" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab.png" />
+        <converters:SwitchConverterCase When="Invoices" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab.png" />
+        <converters:SwitchConverterCase When="Home" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/home-tab.png" />
+        <converters:SwitchConverterCase When="LocalAuthorities" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/localauthority-tab.png" />
+        <converters:SwitchConverterCase When="DefineQuotations" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/definequotations-tab.png" />
+        <converters:SwitchConverterCase When="Import" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-tab.png" />
+        <converters:SwitchConverterCase When="Json" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-export-tab.png" />
+        <converters:SwitchConverterCase When="TodoReport" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/todo-report-tab.png" />
+        <converters:SwitchConverterCase When="UnbilledJobs" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unbilled-jobs-tab.png" />
+        <converters:SwitchConverterCase When="UnpaidInvoices" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unpaid-invoices-tab.png" />
+        <converters:SwitchConverterCase When="CurrentApplications" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/current-applications-tab.png" />
+    </converters:SwitchConverter>
+    <ObjectDataProvider MethodName="GetValues"
+                ObjectType="{x:Type infra:Theme}"
+                x:Key="ThemeValues">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="infra:Theme" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider MethodName="GetValues"
+                ObjectType="{x:Type infra:Accent}"
+                x:Key="AccentValues">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="infra:Accent" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
     <ObjectDataProvider MethodName="GetValues"
                 ObjectType="{x:Type entity:ApplicationState}"
                 x:Key="ApplicationStateValues">

@@ -6,24 +6,32 @@
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
              d:DataContext="{d:DesignInstance Type=local:TabDesignTimeViewModel, IsDesignTimeCreatable=True}"
              xmlns:local="clr-namespace:Deadfile.Tab.Tab"
+             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Grid.Resources>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
-        </Grid.Resources>
+    <UserControl.Resources>
+        <designTime:DesignTimeResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Red.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Converters.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </designTime:DesignTimeResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="{StaticResource ContentBackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="5"></ColumnDefinition>
-            <ColumnDefinition Width="Auto" MaxWidth="300" MinWidth="100"></ColumnDefinition>
+            <ColumnDefinition Width="2"></ColumnDefinition>
+            <ColumnDefinition Width="Auto" MaxWidth="400" MinWidth="100"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <GridSplitter Grid.RowSpan="3" Grid.Row="0" Grid.Column="1" Width="5" HorizontalAlignment="Stretch" Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
-        <ContentControl Grid.Row="0" Grid.Column="0" x:Name="NavigationBar" />
+        <GridSplitter Grid.RowSpan="3" Grid.Row="0" Grid.Column="1" Width="2" Foreground="{DynamicResource GrayBrush10}" HorizontalAlignment="Stretch" Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
+        <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" x:Name="NavigationBar" Background="{DynamicResource ControlBackgroundBrush}" />
         <metro:TransitioningContentControl x:Name="ContentArea" Grid.Row="1" Grid.Column="0" Transition="Default" />
         <ContentControl Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" x:Name="BrowserPane" Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
         <ContentControl Grid.Row="2" Grid.Column="0" x:Name="QuotesBar" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Deadfile.Infrastructure.Styles;
 using Dragablz;
 
 namespace Deadfile
@@ -22,5 +23,7 @@ namespace Deadfile
         public ICommand AcceptCommand { get; } = null;
         public ICommand CancelCommand { get; } = null;
         public bool SettingsIsOpen { get; set; } = false;
+        public Theme ThemeToUse { get; set; } = Theme.BaseDark;
+        public Accent AccentToUse { get; set; } = Accent.Red;
     }
 }

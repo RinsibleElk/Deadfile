@@ -4,13 +4,8 @@
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:entity="clr-namespace:Deadfile.Entity;assembly=Deadfile.Entity">
-
-    <LinearGradientBrush x:Key="ContentBackgroundBrush" StartPoint="0.47,0" EndPoint="0.53,1">
-        <GradientStop Color="#FFFFFFFF" Offset="0.1" />
-        <GradientStop Color="#FFABFFFF" Offset="0.3" />
-        <GradientStop Color="#FF00AFFF" Offset="0.9" />
-    </LinearGradientBrush>
+    xmlns:entity="clr-namespace:Deadfile.Entity;assembly=Deadfile.Entity"
+    xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz">
 
     <Style TargetType="{x:Type DatePickerTextBox}" BasedOn="{StaticResource {x:Type DatePickerTextBox}}">
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -25,7 +20,7 @@
     </Style>
 
     <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource {x:Type DataGrid}}">
-        <Setter Property="AlternatingRowBackground" Value="LightGray" />
+        <Setter Property="AlternatingRowBackground" Value="{DynamicResource GrayBrush10}" />
         <Setter Property="AlternationCount" Value="2" />
     </Style>
 
@@ -84,27 +79,53 @@
         <GradientStop Color="#33555555" Offset="0.085"/>
     </LinearGradientBrush>
 
+    <VisualBrush x:Key="ContentBackgroundBrush" TileMode="Tile" Viewport="0,0,10,10" ViewportUnits="Absolute" Viewbox="0,0,10,10" ViewboxUnits="Absolute">
+        <VisualBrush.Visual>
+            <Grid>
+                <Path Data="M 0 10 L 10 0" Stroke="#22777777" />
+                <Path Data="M 0 0 L 10 10" Stroke="#22777777" />
+            </Grid>
+        </VisualBrush.Visual>
+    </VisualBrush>
+
     <LinearGradientBrush x:Key="BrowserBackground" EndPoint="0.5,1" StartPoint="0.5,0">
-        <GradientStop Color="#33FFFFFF" Offset="0"/>
-        <GradientStop Color="#33000000" Offset="0.992"/>
-        <GradientStop Color="#33000000" Offset="0.085"/>
+        <GradientStop Color="#33DDDDDD" Offset="0"/>
+        <GradientStop Color="#33DDDDDD" Offset="0.085"/>
+        <GradientStop Color="#33000000" Offset="0.985"/>
+        <GradientStop Color="#33000000" Offset="1"/>
     </LinearGradientBrush>
 
     <Style x:Key="PksTextBlock" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="DarkBlue" />
+        <Setter Property="Background" Value="White" />
         <Setter Property="Margin" Value="0,20,0,20" />
+    </Style>
+    <Style x:Key="Imagine3DTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontFamily" Value="Calibri"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+    </Style>
+    <Style x:Key="Imagine3DTermsTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
     </Style>
     <Style x:Key="InvoiceTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="Width" Value="150" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontFamily" Value="Calibri" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Background" Value="White" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
     <Style x:Key="InvoiceTextBoxFullWidth" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontFamily" Value="Calibri" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Background" Value="White" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
     <Style x:Key="PksTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
@@ -112,36 +133,44 @@
         <Setter Property="Margin" Value="0,15,0,15" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontFamily" Value="Calibri" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Background" Value="White" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
-    <Style x:Key="PksTextBoxFullWidth" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+    <Style x:Key="PksTextBoxFullWidth" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="Margin" Value="0,15,0,15" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontFamily" Value="Calibri" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Background" Value="White" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
-    <Style x:Key="InvoiceDatePicker" TargetType="DatePicker">
+    <Style x:Key="Imagine3DDatePicker" TargetType="{x:Type DatePicker}" BasedOn="{StaticResource {x:Type DatePicker}}">
         <Setter Property="Width" Value="150" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontFamily" Value="Calibri" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Background" Value="White" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
-    <Style x:Key="PksDatePicker" TargetType="DatePicker">
+    <Style x:Key="PksDatePicker" TargetType="{x:Type DatePicker}" BasedOn="{StaticResource {x:Type DatePicker}}">
         <Setter Property="Width" Value="150" />
         <Setter Property="Margin" Value="0,15,0,15" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontFamily" Value="Calibri" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Background" Value="White" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
 
-    <Style x:Key="TreeViewTransparentBackground" TargetType="TreeView">
+    <Style x:Key="TreeViewTransparentBackground" TargetType="{x:Type TreeView}" BasedOn="{StaticResource {x:Type TreeView}}">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="TreeView">
+                <ControlTemplate TargetType="{x:Type TreeView}">
                     <Border Name="Border" CornerRadius="1" BorderThickness="1">
                         <Border.BorderBrush>
                             <SolidColorBrush Color="Transparent" />
@@ -158,30 +187,24 @@
         </Setter>
     </Style>
 
-    <Style x:Key="QuotationPhrase" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+    <Style x:Key="QuotationPhrase" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontFamily" Value="Harlow"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
     </Style>
 
-    <Style x:Key="QuotationAuthor" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+    <Style x:Key="QuotationAuthor" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="DarkBlue"/>
         <Setter Property="FontFamily" Value="Harlow"/>
         <Setter Property="FontWeight" Value="Bold"/>
-    </Style>
-
-    <Style x:Key="BrowserBorder" TargetType="Border">
-        <Setter Property="BorderBrush" Value="DarkGray"/>
-        <Setter Property="BorderThickness" Value="1"/>
     </Style>
 
     <ImageBrush x:Key="HomeButtonImageBrush" ImageSource="../Resources/home.png" Stretch="Uniform"/>
     <ImageBrush x:Key="HomeInactiveButtonImageBrush" ImageSource="../Resources/home-inactive.png" Stretch="Uniform"/>
     <ImageBrush x:Key="HomeHoverButtonImageBrush" ImageSource="../Resources/home-hover.png" Stretch="Uniform"/>
 
-    <Style x:Key="HomeButton" TargetType="{x:Type Button}">
+    <Style x:Key="HomeButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Background" Value="{StaticResource HomeButtonImageBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -206,7 +229,7 @@
     <ImageBrush x:Key="BackInactiveButtonImageBrush" ImageSource="../Resources/back-inactive.png" Stretch="Uniform"/>
     <ImageBrush x:Key="BackHoverButtonImageBrush" ImageSource="../Resources/back-hover.png" Stretch="Uniform"/>
 
-    <Style x:Key="BackButton" TargetType="{x:Type Button}">
+    <Style x:Key="BackButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Background" Value="{StaticResource BackButtonImageBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -231,7 +254,7 @@
     <ImageBrush x:Key="ForwardInactiveButtonImageBrush" ImageSource="../Resources/forward-inactive.png" Stretch="Uniform"/>
     <ImageBrush x:Key="ForwardHoverButtonImageBrush" ImageSource="../Resources/forward-hover.png" Stretch="Uniform"/>
 
-    <Style x:Key="ForwardButton" TargetType="{x:Type Button}">
+    <Style x:Key="ForwardButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Background" Value="{StaticResource ForwardButtonImageBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -256,7 +279,7 @@
     <ImageBrush x:Key="UndoInactiveButtonImageBrush" ImageSource="../Resources/undo-inactive.png" Stretch="Uniform"/>
     <ImageBrush x:Key="UndoHoverButtonImageBrush" ImageSource="../Resources/undo-hover.png" Stretch="Uniform"/>
 
-    <Style x:Key="UndoButton" TargetType="{x:Type Button}">
+    <Style x:Key="UndoButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Background" Value="{StaticResource UndoButtonImageBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -281,7 +304,7 @@
     <ImageBrush x:Key="RedoInactiveButtonImageBrush" ImageSource="../Resources/redo-inactive.png" Stretch="Uniform"/>
     <ImageBrush x:Key="RedoHoverButtonImageBrush" ImageSource="../Resources/redo-hover.png" Stretch="Uniform"/>
 
-    <Style x:Key="RedoButton" TargetType="{x:Type Button}">
+    <Style x:Key="RedoButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Background" Value="{StaticResource RedoButtonImageBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -311,7 +334,7 @@
     <system:Double x:Key="HomePageButtonSize">128</system:Double>
     <system:Double x:Key="HomePageButtonLabelHeight">26</system:Double>
 
-    <Style x:Key="AddTabButton" TargetType="{x:Type Button}">
+    <Style x:Key="AddTabButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -347,7 +370,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="DeleteMiniButton" TargetType="{x:Type Button}">
+    <Style x:Key="DeleteMiniButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -383,7 +406,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="AddButton" TargetType="{x:Type Button}">
+    <Style x:Key="AddButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -441,7 +464,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="PrintButton" TargetType="{x:Type Button}">
+    <Style x:Key="PrintButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -499,7 +522,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="SaveButton" TargetType="{x:Type Button}">
+    <Style x:Key="SaveButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -557,7 +580,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="EditButton" TargetType="{x:Type Button}">
+    <Style x:Key="EditButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -617,7 +640,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="PaidButton" TargetType="{x:Type Button}">
+    <Style x:Key="PaidButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -677,7 +700,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="DeleteButton" TargetType="{x:Type Button}">
+    <Style x:Key="DeleteButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -732,7 +755,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="DiscardButton" TargetType="{x:Type Button}">
+    <Style x:Key="DiscardButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -789,15 +812,12 @@
 
     <SolidColorBrush x:Key="HomeButtonBackground" Color="#22D3D3D3" />
     <SolidColorBrush x:Key="HomeButtonBackgroundHover" Color="#77D3D3D3" />
-    <SolidColorBrush x:Key="HomeButtonBorder" Color="Gray" />
-    <SolidColorBrush x:Key="HomeButtonBorderHover" Color="DarkGray" />
 
-    <Style x:Key="DefineQuotationsButton" TargetType="{x:Type Button}">
+    <Style x:Key="DefineQuotationsButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderThickness="1"
-                            BorderBrush="{StaticResource HomeButtonBorder}"
                             Background="{StaticResource HomeButtonBackground}"
                             Height="{StaticResource HomePageButtonHeight}"
                             Width="{StaticResource HomePageButtonSize}">
@@ -820,7 +840,6 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border BorderThickness="1"
-                                    BorderBrush="{StaticResource HomeButtonBorderHover}"
                                     Background="{StaticResource HomeButtonBackgroundHover}"
                                     Height="{StaticResource HomePageButtonHeight}"
                                     Width="{StaticResource HomePageButtonSize}">
@@ -842,12 +861,11 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="AddClientButton" TargetType="{x:Type Button}">
+    <Style x:Key="AddClientButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderThickness="1"
-                            BorderBrush="{StaticResource HomeButtonBorder}"
                             Background="{StaticResource HomeButtonBackground}"
                             Height="{StaticResource HomePageButtonHeight}"
                             Width="{StaticResource HomePageButtonSize}">
@@ -870,7 +888,6 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border BorderThickness="1"
-                                    BorderBrush="{StaticResource HomeButtonBorderHover}"
                                     Background="{StaticResource HomeButtonBackgroundHover}"
                                     Height="{StaticResource HomePageButtonHeight}"
                                     Width="{StaticResource HomePageButtonSize}">
@@ -892,12 +909,11 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="UnbilledJobsButton" TargetType="{x:Type Button}">
+    <Style x:Key="UnbilledJobsButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderThickness="1"
-                            BorderBrush="{StaticResource HomeButtonBorder}"
                             Background="{StaticResource HomeButtonBackground}"
                             Height="{StaticResource HomePageButtonHeight}"
                             Width="{StaticResource HomePageButtonSize}">
@@ -920,7 +936,6 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border BorderThickness="1"
-                                    BorderBrush="{StaticResource HomeButtonBorderHover}"
                                     Background="{StaticResource HomeButtonBackgroundHover}"
                                     Height="{StaticResource HomePageButtonHeight}"
                                     Width="{StaticResource HomePageButtonSize}">
@@ -942,12 +957,11 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="UnpaidInvoicesButton" TargetType="{x:Type Button}">
+    <Style x:Key="UnpaidInvoicesButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderThickness="1"
-                            BorderBrush="{StaticResource HomeButtonBorder}"
                             Background="{StaticResource HomeButtonBackground}"
                             Height="{StaticResource HomePageButtonHeight}"
                             Width="{StaticResource HomePageButtonSize}">
@@ -970,7 +984,6 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border BorderThickness="1"
-                                    BorderBrush="{StaticResource HomeButtonBorderHover}"
                                     Background="{StaticResource HomeButtonBackgroundHover}"
                                     Height="{StaticResource HomePageButtonHeight}"
                                     Width="{StaticResource HomePageButtonSize}">
@@ -992,12 +1005,11 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="TodoReportButton" TargetType="{x:Type Button}">
+    <Style x:Key="TodoReportButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderThickness="1"
-                            BorderBrush="{StaticResource HomeButtonBorder}"
                             Background="{StaticResource HomeButtonBackground}"
                             Height="{StaticResource HomePageButtonHeight}"
                             Width="{StaticResource HomePageButtonSize}">
@@ -1020,7 +1032,6 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border BorderThickness="1"
-                                    BorderBrush="{StaticResource HomeButtonBorderHover}"
                                     Background="{StaticResource HomeButtonBackgroundHover}"
                                     Height="{StaticResource HomePageButtonHeight}"
                                     Width="{StaticResource HomePageButtonSize}">
@@ -1042,12 +1053,11 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="CurrentApplicationsButton" TargetType="{x:Type Button}">
+    <Style x:Key="CurrentApplicationsButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderThickness="1"
-                            BorderBrush="{StaticResource HomeButtonBorder}"
                             Background="{StaticResource HomeButtonBackground}"
                             Height="{StaticResource HomePageButtonHeight}"
                             Width="{StaticResource HomePageButtonSize}">
@@ -1070,7 +1080,6 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border BorderThickness="1"
-                                    BorderBrush="{StaticResource HomeButtonBorderHover}"
                                     Background="{StaticResource HomeButtonBackgroundHover}"
                                     Height="{StaticResource HomePageButtonHeight}"
                                     Width="{StaticResource HomePageButtonSize}">
@@ -1092,12 +1101,11 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="LocalAuthoritiesButton" TargetType="{x:Type Button}">
+    <Style x:Key="LocalAuthoritiesButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderThickness="1"
-                            BorderBrush="{StaticResource HomeButtonBorder}"
                             Background="{StaticResource HomeButtonBackground}"
                             Height="{StaticResource HomePageButtonHeight}"
                             Width="{StaticResource HomePageButtonSize}">
@@ -1120,7 +1128,6 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border BorderThickness="1"
-                                    BorderBrush="{StaticResource HomeButtonBorderHover}"
                                     Background="{StaticResource HomeButtonBackgroundHover}"
                                     Height="{StaticResource HomePageButtonHeight}"
                                     Width="{StaticResource HomePageButtonSize}">
@@ -1142,12 +1149,11 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="ImportButton" TargetType="{x:Type Button}">
+    <Style x:Key="ImportButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderThickness="1"
-                            BorderBrush="{StaticResource HomeButtonBorder}"
                             Background="{StaticResource HomeButtonBackground}"
                             Height="{StaticResource HomePageButtonHeight}"
                             Width="{StaticResource HomePageButtonSize}">
@@ -1170,7 +1176,6 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border BorderThickness="1"
-                                    BorderBrush="{StaticResource HomeButtonBorderHover}"
                                     Background="{StaticResource HomeButtonBackgroundHover}"
                                     Height="{StaticResource HomePageButtonHeight}"
                                     Width="{StaticResource HomePageButtonSize}">
@@ -1192,12 +1197,11 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="ImportExportButton" TargetType="{x:Type Button}">
+    <Style x:Key="ImportExportButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderThickness="1"
-                            BorderBrush="{StaticResource HomeButtonBorder}"
                             Background="{StaticResource HomeButtonBackground}"
                             Height="{StaticResource HomePageButtonHeight}"
                             Width="{StaticResource HomePageButtonSize}">
@@ -1220,7 +1224,6 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border BorderThickness="1"
-                                    BorderBrush="{StaticResource HomeButtonBorderHover}"
                                     Background="{StaticResource HomeButtonBackgroundHover}"
                                     Height="{StaticResource HomePageButtonHeight}"
                                     Width="{StaticResource HomePageButtonSize}">
@@ -1246,7 +1249,7 @@
     <ImageBrush x:Key="QuoteInactiveButtonImageBrush" ImageSource="../Resources/quote.png" Stretch="Uniform"/>
     <ImageBrush x:Key="QuoteHoverButtonImageBrush" ImageSource="../Resources/quote-hover.png" Stretch="Uniform"/>
 
-    <Style x:Key="QuoteButton" TargetType="{x:Type Button}">
+    <Style x:Key="QuoteButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Background" Value="{StaticResource QuoteButtonImageBrush}"/>
         <Setter Property="Template">
             <Setter.Value>

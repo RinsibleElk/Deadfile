@@ -21,7 +21,7 @@
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
-    <DockPanel LastChildFill="True" Background="{StaticResource ContentBackgroundBrush}">
+    <DockPanel LastChildFill="True">
         <DockPanel.Resources>
             <DataTemplate x:Key="ExpanderHeaderTemplate" DataType="model:QuotationModel">
                 <Border Height="24">

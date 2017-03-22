@@ -170,15 +170,19 @@ namespace Deadfile.Tab.Common
                     // Only fire when it changes.
                     if (_editable)
                     {
+                        CanSave = _errors.Count == 0;
+                        CanEdit = false;
+                        CanDelete = false;
                         EventAggregator.GetEvent<LockedForEditingEvent>()
                             .Publish(new LockedForEditingMessage() {IsLocked = _editable});
-                        CanSave = _errors.Count == 0;
                     }
                     else
                     {
+                        CanSave = false;
+                        CanEdit = true;
+                        CanDelete = true;
                         EventAggregator.GetEvent<LockedForEditingEvent>()
                             .Publish(new LockedForEditingMessage() { IsLocked = _editable, NewParameters = GetLookupParameters() });
-                        CanSave = false;
                         // This implies that changes for a new model have been discarded. Best behaviour is to move back off the page and drop the resulting "Forward" action.
                         if (SelectedItem.Id == ModelBase.NewModelId)
                         {

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Castle.Components.DictionaryAdapter;
 using Deadfile.Entity;
 using Deadfile.Model;
+using Deadfile.Model.Billable;
 using Deadfile.Model.Browser;
 using Xunit;
 
@@ -356,6 +358,42 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 setup.InvoicesActionsPadViewModel.DeleteItem();
                 Assert.Equal(InvoiceStatus.Cancelled, setup.InvoicesPageViewModel.SelectedItem.Status);
                 Assert.Equal(InvoiceStatus.Cancelled, setup.Repository.GetInvoiceById(setup.InvoicesPageViewModel.SelectedItem.InvoiceId).Status);
+            }
+        }
+
+        [Fact]
+        public void TestAddNewInvoice_Save_StaysOnPageButCanEdit()
+        {
+            using (var setup = new MockSetup())
+            {
+                PopulateEntireDatabaseFromGui(setup);
+                setup.BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Client;
+                MockData.BrowseToClient(setup, "Nicole Bryant");
+                Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.ClientsPageViewModel));
+                Assert.True(setup.ClientsPageViewModel.CanInvoiceClient);
+                setup.ClientsPageViewModel.InvoiceClient();
+                Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.InvoicesPageViewModel));
+                Assert.True(Object.ReferenceEquals(setup.TabViewModel.ActionsPad, setup.InvoicesActionsPadViewModel));
+                Assert.True(setup.InvoicesPageViewModel.UnderEdit);
+                Assert.False(setup.InvoicesActionsPadViewModel.CanSaveItem);
+                Assert.False(setup.InvoicesActionsPadViewModel.CanPrintItem);
+                foreach (var job in setup.InvoicesPageViewModel.Jobs)
+                {
+                    job.State = BillableModelState.FullyIncluded;
+                }
+                Assert.True(setup.InvoicesPageViewModel.CanSetBillableItems);
+                setup.InvoicesPageViewModel.SetBillableItems();
+                Assert.False(setup.InvoicesActionsPadViewModel.CanSaveItem);
+                setup.InvoicesPageViewModel.SelectedItem.ChildrenList[0].Description = "Some description";
+                setup.InvoicesPageViewModel.SelectedItem.Description = "Some description";
+                Assert.True(setup.InvoicesPageViewModel.CanSave);
+                Assert.True(setup.InvoicesActionsPadViewModel.CanSaveItem);
+                Assert.True(setup.InvoicesActionsPadViewModel.CanPrintItem);
+                setup.InvoicesActionsPadViewModel.SaveItem();
+                Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.InvoicesPageViewModel));
+                Assert.True(Object.ReferenceEquals(setup.TabViewModel.ActionsPad, setup.InvoicesActionsPadViewModel));
+                Assert.False(setup.InvoicesPageViewModel.UnderEdit);
+                Assert.True(setup.InvoicesActionsPadViewModel.CanEditItem);
             }
         }
     }

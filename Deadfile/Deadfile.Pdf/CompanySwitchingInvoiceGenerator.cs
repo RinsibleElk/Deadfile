@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows.Documents;
 using Deadfile.Entity;
 using Deadfile.Model;
-using PdfSharp.Pdf;
 
 namespace Deadfile.Pdf
 {

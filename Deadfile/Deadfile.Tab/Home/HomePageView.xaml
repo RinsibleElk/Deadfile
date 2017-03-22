@@ -17,8 +17,7 @@
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Visible">
-        <Grid Margin="5"
-              Background="{StaticResource ContentBackgroundBrush}">
+        <Grid Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />

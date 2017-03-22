@@ -4,14 +4,18 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Deadfile.Infrastructure;
+using Deadfile.Infrastructure.Styles;
 using Deadfile.Model;
 using Deadfile.Model.Browser;
 using Deadfile.Tab;
 using Dragablz;
+using MahApps.Metro;
 using Prism.Commands;
+using Accent = Deadfile.Infrastructure.Styles.Accent;
 using LogManager = NLog.LogManager;
 
 namespace Deadfile
@@ -41,6 +45,18 @@ namespace Deadfile
             _database = Properties.Settings.Default.Database;
             _username = Properties.Settings.Default.Username;
             _password = Properties.Settings.Default.Password;
+            if (!Enum.TryParse(Properties.Settings.Default.Theme, out _themeToUse))
+            {
+                _themeToUse = Theme.BaseDark;
+                Properties.Settings.Default.Theme = _themeToUse.ToString();
+                Properties.Settings.Default.Save();
+            }
+            if (!Enum.TryParse(Properties.Settings.Default.Accent, out _accentToUse))
+            {
+                _accentToUse = Accent.Red;
+                Properties.Settings.Default.Accent = _accentToUse.ToString();
+                Properties.Settings.Default.Save();
+            }
             _acceptCommand = new DelegateCommand(Accept, () => CanAccept);
             _cancelCommand = new DelegateCommand(Cancel);
             ClosingItemActionCallback = new ItemActionCallback((dataContext) =>
@@ -195,6 +211,40 @@ namespace Deadfile
                 if (value == _settingsIsOpen) return;
                 _settingsIsOpen = value;
                 OnPropertyChanged(new PropertyChangedEventArgs(nameof(SettingsIsOpen)));
+            }
+        }
+
+        private Theme _themeToUse;
+        public Theme ThemeToUse
+        {
+            get { return _themeToUse; }
+            set
+            {
+                if (value == _themeToUse) return;
+                _themeToUse = value;
+                Properties.Settings.Default.Theme = _themeToUse.ToString();
+                Properties.Settings.Default.Save();
+                ThemeManager.ChangeAppStyle(Application.Current,
+                                            ThemeManager.GetAccent(_accentToUse.ToString()),
+                                            ThemeManager.GetAppTheme(_themeToUse.ToString()));
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(ThemeToUse)));
+            }
+        }
+
+        private Accent _accentToUse;
+        public Accent AccentToUse
+        {
+            get { return _accentToUse; }
+            set
+            {
+                if (value == _accentToUse) return;
+                _accentToUse = value;
+                Properties.Settings.Default.Accent = _accentToUse.ToString();
+                Properties.Settings.Default.Save();
+                ThemeManager.ChangeAppStyle(Application.Current,
+                                            ThemeManager.GetAccent(_accentToUse.ToString()),
+                                            ThemeManager.GetAppTheme(_themeToUse.ToString()));
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(AccentToUse)));
             }
         }
     }

@@ -136,10 +136,14 @@ namespace Deadfile.Tab.Tab
 
             base.OnActivate();
 
-            _navigationService.RequestNavigate(this, nameof(NavigationBar), "NavigationBar", null);
-            _navigationService.RequestNavigate(this, nameof(ContentArea), "HomePage", null);
-            _navigationService.RequestNavigate(this, nameof(BrowserPane), "BrowserPane", null);
-            _navigationService.RequestNavigate(this, nameof(QuotesBar), "QuotesBar", null);
+            if (_closed)
+            {
+                _navigationService.RequestNavigate(this, nameof(NavigationBar), "NavigationBar", null);
+                _navigationService.RequestNavigate(this, nameof(ContentArea), "HomePage", null);
+                _navigationService.RequestNavigate(this, nameof(BrowserPane), "BrowserPane", null);
+                _navigationService.RequestNavigate(this, nameof(QuotesBar), "QuotesBar", null);
+                _closed = false;
+            }
 
             _navigateEventSubscriptionToken = _eventAggregator.GetEvent<NavigateEvent>().Subscribe(NavigateAction);
             _displayNameEventSubscriptionToken = _eventAggregator.GetEvent<DisplayNameEvent>().Subscribe(DisplayNameChanged);
@@ -195,6 +199,7 @@ namespace Deadfile.Tab.Tab
             //TODO for some reason these don't all actually get freed - what the hell is holding on to these damn things????!!
             if (close)
             {
+                _closed = true;
                 _navigationService.RequestDeactivate(this, nameof(ContentArea));
                 _navigationService.RequestDeactivate(this, nameof(BrowserPane));
                 _navigationService.RequestDeactivate(this, nameof(ActionsPad));
@@ -217,6 +222,7 @@ namespace Deadfile.Tab.Tab
         private SubscriptionToken _navigateEventSubscriptionToken = null;
         private SubscriptionToken _displayNameEventSubscriptionToken;
         private SubscriptionToken _addClientEventSubscriptionToken;
+        private bool _closed = true;
 
         private void NavigateToExperience(SelectedItemPacket packet)
         {

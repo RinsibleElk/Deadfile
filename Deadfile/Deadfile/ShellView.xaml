@@ -13,14 +13,16 @@
              xmlns:converters="clr-namespace:Deadfile.Infrastructure.Converters;assembly=Deadfile.Infrastructure"
              xmlns:behaviors="clr-namespace:Deadfile.Infrastructure.Behaviors;assembly=Deadfile.Infrastructure"
              xmlns:tab="clr-namespace:Deadfile.Tab.Tab;assembly=Deadfile.Tab"
-             Background="Black"
-             GlowBrush="Black"
-             BorderThickness="0"
+             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
+             BorderThickness="0" 
+             GlowBrush="{DynamicResource AccentColorBrush}"
+             ResizeMode="CanResizeWithGrip"
              TitleCharacterCasing="Lower"
              x:Name="Deadfile"
              Title="deadfile"
              Icon="Resources/logo.png"
              WindowStartupLocation="CenterScreen"
+             Background="{DynamicResource AccentColorBrush3}"
              mc:Ignorable="d"
              FocusManager.FocusedElement="{Binding ElementName=Items}"
              d:DataContext="{d:DesignInstance Type=local:ShellDesignTimeViewModel, IsDesignTimeCreatable=True}"
@@ -33,6 +35,14 @@
                     Key="N"
                     Command="{Binding OpenNewTabToNewClientCommand}"></KeyBinding>
     </Window.InputBindings>
+    <Window.Resources>
+        <designTime:DesignTimeResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Converters.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </designTime:DesignTimeResourceDictionary>
+    </Window.Resources>
     <controls:MetroWindow.TitleTemplate>
         <DataTemplate>
             <StackPanel Orientation="Horizontal">
@@ -75,6 +85,7 @@
                              Header="Settings"
                              Position="Right"
                              Width="500"
+                             Theme="Accent"
                              IsOpen="{Binding SettingsIsOpen, Mode=TwoWay}"
                              DataContext="{Binding}"
                              CloseCommand="{Binding CancelCommand}">
@@ -84,6 +95,9 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -99,6 +113,11 @@
                     <TextBlock Margin="5" Grid.Row="3" Grid.Column="0">Password:</TextBlock>
                     <PasswordBox Margin="5" Grid.Row="3" Grid.Column="1" PasswordChar="*" behaviors:PasswordHelper.Attach="True" behaviors:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" />
                     <Button Margin="5" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding Path=AcceptCommand}">OK</Button>
+                    <Separator Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" />
+                    <TextBlock Margin="5" Grid.Row="6" Grid.Column="0">Theme:</TextBlock>
+                    <ComboBox Margin="5" Grid.Row="6" Grid.Column="1" ItemsSource="{Binding Source={StaticResource ThemeValues}}" SelectedItem="{Binding ThemeToUse}"/>
+                    <TextBlock Margin="5" Grid.Row="7" Grid.Column="0">Accent:</TextBlock>
+                    <ComboBox Margin="5" Grid.Row="7" Grid.Column="1" ItemsSource="{Binding Source={StaticResource AccentValues}}" SelectedItem="{Binding AccentToUse}"/>
                 </Grid>
             </controls:Flyout>
         </controls:FlyoutsControl>
@@ -111,33 +130,19 @@
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
     <DockPanel>
-        <DockPanel.Resources>
-            <converters:SwitchConverter x:Key="ExperienceToImage">
-                <converters:SwitchConverterCase When="Clients" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png" />
-                <converters:SwitchConverterCase When="Jobs" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab.png" />
-                <converters:SwitchConverterCase When="Invoices" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab.png" />
-                <converters:SwitchConverterCase When="Home" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/home-tab.png" />
-                <converters:SwitchConverterCase When="LocalAuthorities" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/localauthority-tab.png" />
-                <converters:SwitchConverterCase When="DefineQuotations" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/definequotations-tab.png" />
-                <converters:SwitchConverterCase When="Import" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-tab.png" />
-                <converters:SwitchConverterCase When="Json" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-export-tab.png" />
-                <converters:SwitchConverterCase When="TodoReport" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/todo-report-tab.png" />
-                <converters:SwitchConverterCase When="UnbilledJobs" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unbilled-jobs-tab.png" />
-                <converters:SwitchConverterCase When="UnpaidInvoices" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unpaid-invoices-tab.png" />
-                <converters:SwitchConverterCase When="CurrentApplications" Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/current-applications-tab.png" />
-            </converters:SwitchConverter>
-        </DockPanel.Resources>
         <dragablz:TabablzControl
             x:Name="Items"
             ShowDefaultCloseButton="True"
             ClosingItemCallback="{Binding ClosingItemActionCallback}"
-            ItemContainerStyle="{StaticResource TrapezoidDragableTabItemStyle}"
+            ItemContainerStyle="{StaticResource MahAppsTrapezoidDragableTabItemStyle}"
             Focusable="True"
+            BorderThickness="0"
+            Background="{DynamicResource ControlBackgroundBrush}"
             AdjacentHeaderItemOffset="-10">
             <dragablz:TabablzControl.HeaderItemTemplate>
                 <DataTemplate DataType="tab:TabViewModel">
                     <StackPanel Orientation="Horizontal">
-                        <Image Height="16" Width="16" Source="{Binding ContentArea.Experience, Converter={StaticResource ExperienceToImage}}"></Image>
+                        <Image Height="16" Width="16" Source="{Binding ContentArea.Experience, Converter={StaticResource ExperienceToImage}}" />
                         <TextBlock Text="{Binding DisplayName}" />
                     </StackPanel>
                 </DataTemplate>

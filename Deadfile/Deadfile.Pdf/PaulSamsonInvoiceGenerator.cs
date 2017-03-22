@@ -14,9 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Deadfile.Entity;
 using Deadfile.Model;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
 
 namespace Deadfile.Pdf
 {
