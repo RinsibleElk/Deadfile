@@ -12,7 +12,6 @@ using Deadfile.Tab.Browser;
 using Deadfile.Tab.Clients;
 using Deadfile.Tab.Events;
 using Deadfile.Tab.Home;
-using Deadfile.Tab.Import;
 using Deadfile.Tab.Invoices;
 using Deadfile.Tab.JobChildren;
 using Deadfile.Tab.JobChildren.Applications;
@@ -63,7 +62,6 @@ namespace Deadfile.Tab.Test.FunctionalTests
         public readonly CurrentApplicationsPageViewModel CurrentApplicationsPageViewModel;
         public readonly UnpaidInvoicesPageViewModel UnpaidInvoicesPageViewModel;
         public readonly TodoReportPageViewModel TodoReportPageViewModel;
-        public readonly ImportPageViewModel ImportPageViewModel;
         public readonly JsonPageViewModel JsonPageViewModel;
         public readonly DefineQuotationsPageViewModel DefineQuotationsPageViewModel;
         public readonly InvoicesPageViewModel InvoicesPageViewModel;
@@ -95,7 +93,6 @@ namespace Deadfile.Tab.Test.FunctionalTests
             CurrentApplicationsPageViewModel = new CurrentApplicationsPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object);
             UnpaidInvoicesPageViewModel = new UnpaidInvoicesPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object);
             TodoReportPageViewModel = new TodoReportPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object);
-            ImportPageViewModel = new ImportPageViewModel(Repository, EventAggregator.Object, DeadfileDialogCoordinator);
             JsonPageViewModel = new JsonPageViewModel(factory, Repository, EventAggregator.Object, DeadfileDialogCoordinator);
             DefineQuotationsPageViewModel = new DefineQuotationsPageViewModel(DeadfileDialogCoordinator, Repository, EventAggregator.Object);
             InvoicesPageViewModel = new InvoicesPageViewModel(TabIdentity, PrintService, Repository, EventAggregator.Object, InvoiceGenerator, DeadfileDialogCoordinator);
@@ -118,7 +115,6 @@ namespace Deadfile.Tab.Test.FunctionalTests
             ViewModels.Add("CurrentApplicationsPage", CurrentApplicationsPageViewModel);
             ViewModels.Add("UnpaidInvoicesPage", UnpaidInvoicesPageViewModel);
             ViewModels.Add("TodoReportPage", TodoReportPageViewModel);
-            ViewModels.Add("ImportPage", ImportPageViewModel);
             ViewModels.Add("JsonPage", JsonPageViewModel);
             ViewModels.Add("DefineQuotationsPage", DefineQuotationsPageViewModel);
             ViewModels.Add("InvoicesPage", InvoicesPageViewModel);

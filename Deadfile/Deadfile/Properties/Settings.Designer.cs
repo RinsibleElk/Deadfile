@@ -94,5 +94,17 @@ namespace Deadfile.Properties {
                 this["Accent"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string MainWindowPlacement {
+            get {
+                return ((string)(this["MainWindowPlacement"]));
+            }
+            set {
+                this["MainWindowPlacement"] = value;
+            }
+        }
     }
 }
