@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Tab.Common;
 
@@ -14,7 +15,6 @@ namespace Deadfile.Tab.Home
         void LocalAuthorities();
         void DefineQuotations();
         void UnbilledJobs();
-        void Import();
         void TodoReport();
         void ImportExportToJson();
         void UnpaidInvoices();

@@ -1,14 +1,17 @@
-﻿<UserControl x:Class="Deadfile.Tab.Clients.ClientsActionsPadView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Deadfile.Tab.Clients"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
-             mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type=local:ClientsActionsPadDesignTimeViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="100" d:DesignWidth="300">
+﻿<UserControl
+    x:Class="Deadfile.Tab.Clients.ClientsActionsPadView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
+    xmlns:local="clr-namespace:Deadfile.Tab.Clients"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=local:ClientsActionsPadDesignTimeViewModel,
+                                     IsDesignTimeCreatable=True}"
+    d:DesignHeight="100"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
     <UserControl.Resources>
         <designTime:DesignTimeResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,10 +21,33 @@
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Button x:Name="AddItem" Visibility="{Binding AddItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource AddButton}" ToolTip="Add a new Client." />
-        <Button x:Name="EditItem" IsDefault="{Binding CanEditItem}" Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource EditButton}" ToolTip="Edit this Client." />
-        <Button x:Name="SaveItem" IsDefault="{Binding CanEditItem, Converter={StaticResource InverseBoolean}}" Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource SaveButton}" ToolTip="Save this Client." />
-        <Button x:Name="DiscardItem" Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" IsCancel="True" Style="{StaticResource DiscardButton}" ToolTip="Discard all changes and stop editing." />
-        <Button x:Name="DeleteItem" Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource DeleteButton}" ToolTip="Delete this Client. This is not permanent." />
+        <Button
+            x:Name="AddItem"
+            Style="{StaticResource AddButton}"
+            ToolTip="Add a new Client."
+            Visibility="{Binding AddItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+        <Button
+            x:Name="EditItem"
+            IsDefault="{Binding CanEditItem}"
+            Style="{StaticResource EditButton}"
+            ToolTip="Edit this Client."
+            Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+        <Button
+            x:Name="SaveItem"
+            IsDefault="{Binding CanEditItem, Converter={StaticResource InverseBoolean}}"
+            Style="{StaticResource SaveButton}"
+            ToolTip="Save this Client."
+            Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+        <Button
+            x:Name="DiscardItem"
+            IsCancel="True"
+            Style="{StaticResource DiscardButton}"
+            ToolTip="Discard all changes and stop editing."
+            Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+        <Button
+            x:Name="DeleteItem"
+            Style="{StaticResource DeleteButton}"
+            ToolTip="Delete this Client. This is not permanent."
+            Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
     </StackPanel>
 </UserControl>

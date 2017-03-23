@@ -16,6 +16,8 @@ namespace Deadfile
         public ICommand OpenNewTab { get; } = null;
         public ICommand OpenNewTabToBrowserModelCommand { get; } = null;
         public ICommand OpenNewTabToNewClientCommand { get; } = null;
+        public ICommand OpenNewTabToExperienceCommand { get; } = null;
+        public ICommand OpenNewTabToInvoiceClientCommand { get; } = null;
         public string Server { get; set; } = @".\SQLEXPRESS";
         public string Database { get; set; } = "Deadfile";
         public string Username { get; set; } = "RinsibleElk";

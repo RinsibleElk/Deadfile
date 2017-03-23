@@ -1,13 +1,16 @@
-﻿<UserControl x:Class="Deadfile.Tab.Invoices.InvoicesActionsPadView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Deadfile.Tab.Invoices"
-             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
-             mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type=local:InvoicesActionsPadDesignTimeViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="100" d:DesignWidth="300">
+﻿<UserControl
+    x:Class="Deadfile.Tab.Invoices.InvoicesActionsPadView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
+    xmlns:local="clr-namespace:Deadfile.Tab.Invoices"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=local:InvoicesActionsPadDesignTimeViewModel,
+                                     IsDesignTimeCreatable=True}"
+    d:DesignHeight="100"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
     <UserControl.Resources>
         <designTime:DesignTimeResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,11 +20,37 @@
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Button x:Name="PrintItem" Style="{StaticResource PrintButton}" ToolTip="Print (and Save) this Invoice." />
-        <Button x:Name="EditItem" IsDefault="{Binding CanEditItem}" Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource EditButton}" ToolTip="Edit this Invoice." />
-        <Button x:Name="SaveItem" IsDefault="{Binding CanEditItem, Converter={StaticResource InverseBoolean}}" Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource SaveButton}" ToolTip="Save changes to this Invoice." />
-        <Button x:Name="DiscardItem" Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" IsCancel="True" Style="{StaticResource DiscardButton}" ToolTip="Discard changes to this Invoice." />
-        <Button x:Name="DeleteItem" Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource DeleteButton}" ToolTip="Delete this Invoice (Cancel it). This is not permanent." />
-        <Button x:Name="PaidItem" Visibility="{Binding CanPaidItem, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource PaidButton}" ToolTip="Mark this Invoice as Paid. This is not permanent." />
+        <Button
+            x:Name="PrintItem"
+            Style="{StaticResource PrintButton}"
+            ToolTip="Print (and Save) this Invoice." />
+        <Button
+            x:Name="EditItem"
+            IsDefault="{Binding CanEditItem}"
+            Style="{StaticResource EditButton}"
+            ToolTip="Edit this Invoice."
+            Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+        <Button
+            x:Name="SaveItem"
+            IsDefault="{Binding CanEditItem, Converter={StaticResource InverseBoolean}}"
+            Style="{StaticResource SaveButton}"
+            ToolTip="Save changes to this Invoice."
+            Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+        <Button
+            x:Name="DiscardItem"
+            IsCancel="True"
+            Style="{StaticResource DiscardButton}"
+            ToolTip="Discard changes to this Invoice."
+            Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+        <Button
+            x:Name="DeleteItem"
+            Style="{StaticResource DeleteButton}"
+            ToolTip="Delete this Invoice (Cancel it). This is not permanent."
+            Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+        <Button
+            x:Name="PaidItem"
+            Style="{StaticResource PaidButton}"
+            ToolTip="Mark this Invoice as Paid. This is not permanent."
+            Visibility="{Binding CanPaidItem, Converter={StaticResource BooleanToVisibility}}" />
     </StackPanel>
 </UserControl>

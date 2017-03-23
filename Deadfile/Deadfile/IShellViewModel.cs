@@ -18,6 +18,8 @@ namespace Deadfile
         ICommand OpenNewTab { get; }
         ICommand OpenNewTabToBrowserModelCommand { get; }
         ICommand OpenNewTabToNewClientCommand { get; }
+        ICommand OpenNewTabToExperienceCommand { get; }
+        ICommand OpenNewTabToInvoiceClientCommand { get; }
         string Server { get; set; }
         string Database { get; set; }
         string Username { get; set; }

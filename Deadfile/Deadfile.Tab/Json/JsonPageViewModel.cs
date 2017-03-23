@@ -47,7 +47,8 @@ namespace Deadfile.Tab.Json
             {
                 Title = @"Export to JSON File",
                 AddExtension = true,
-                DefaultExt = @"json"
+                DefaultExt = @".json",
+                Filter = @"JSON files (.json)|*.json"
             };
             var result = saveFileDialog.ShowDialog();
             if (result == DialogResult.OK)

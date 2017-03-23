@@ -163,12 +163,6 @@
     <Compile Include="Home\HomePageViewModel.cs" />
     <Compile Include="Home\IHomeActionsPadViewModel.cs" />
     <Compile Include="Home\IHomePageViewModel.cs" />
-    <Compile Include="Import\IImportPageViewModel.cs" />
-    <Compile Include="Import\ImportPageDesignTimeViewModel.cs" />
-    <Compile Include="Import\ImportPageView.xaml.cs">
-      <DependentUpon>ImportPageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Import\ImportPageViewModel.cs" />
     <Compile Include="Invoices\IInvoicesActionsPadViewModel.cs" />
     <Compile Include="Invoices\IInvoicesPageViewModel.cs" />
     <Compile Include="Invoices\InvoicesActionsPadDesignTimeViewModel.cs" />
@@ -326,10 +320,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Home\HomePageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Import\ImportPageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

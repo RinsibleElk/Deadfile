@@ -15,7 +15,6 @@ namespace Deadfile.Tab
         Invoices,
         DefineQuotations,
         UnbilledJobs,
-        Import,
         TodoReport,
         Json,
         UnpaidInvoices,

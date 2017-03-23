@@ -1,13 +1,18 @@
-﻿<UserControl x:Class="Deadfile.Tab.Home.HomePageView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Deadfile.Tab.Home"
-             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
-             d:DataContext="{d:DesignInstance Type=local:HomePageDesignTimeViewModel, IsDesignTimeCreatable=True}"
-             mc:Ignorable="d" 
-             d:DesignHeight="700" d:DesignWidth="700">
+﻿<UserControl
+    x:Class="Deadfile.Tab.Home.HomePageView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
+    xmlns:local="clr-namespace:Deadfile.Tab.Home"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tab="clr-namespace:Deadfile.Tab"
+    d:DataContext="{d:DesignInstance Type=local:HomePageDesignTimeViewModel,
+                                     IsDesignTimeCreatable=True}"
+    d:DesignHeight="700"
+    d:DesignWidth="700"
+    mc:Ignorable="d">
     <UserControl.Resources>
         <designTime:DesignTimeResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -23,41 +28,117 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0"
-                        Orientation="Horizontal">
-                <Button x:Name="AddClient"
-                        Style="{StaticResource AddClientButton}"
-                        Margin="10,20,0,10"/>
-                <Button x:Name="UnbilledJobs"
-                        Style="{StaticResource UnbilledJobsButton}"
-                        Margin="10,20,0,10"/>
-                <Button x:Name="ImportExportToJson"
-                        Style="{StaticResource ImportExportButton}"
-                        Margin="10,20,0,10"/>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <Button
+                    x:Name="AddClient"
+                    Margin="10,20,0,10"
+                    Style="{StaticResource AddClientButton}"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}">
+                    <Button.ContextMenu>
+                        <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                            <MenuItem Command="{Binding OpenNewTabToNewClientCommand}" Header="Open In New Tab..." />
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button
+                    x:Name="UnbilledJobs"
+                    Margin="10,20,0,10"
+                    Style="{StaticResource UnbilledJobsButton}"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}">
+                    <Button.ContextMenu>
+                        <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                            <MenuItem
+                                Command="{Binding OpenNewTabToExperienceCommand}"
+                                CommandParameter="{x:Static tab:Experience.UnbilledJobs}"
+                                Header="Open In New Tab..." />
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button
+                    x:Name="ImportExportToJson"
+                    Margin="10,20,0,10"
+                    Style="{StaticResource ImportExportButton}"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}">
+                    <Button.ContextMenu>
+                        <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                            <MenuItem
+                                Command="{Binding OpenNewTabToExperienceCommand}"
+                                CommandParameter="{x:Static tab:Experience.Json}"
+                                Header="Open In New Tab..." />
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
             </StackPanel>
-            <StackPanel Grid.Row="1"
-                        Orientation="Horizontal">
-                <Button x:Name="LocalAuthorities"
-                        Style="{StaticResource LocalAuthoritiesButton}"
-                        Margin="10,20,0,10"/>
-                <Button x:Name="Import"
-                        Style="{StaticResource ImportButton}"
-                        Margin="10,20,0,10"/>
-                <Button x:Name="UnpaidInvoices"
-                        Style="{StaticResource UnpaidInvoicesButton}"
-                        Margin="10,20,0,10"/>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <Button
+                    x:Name="LocalAuthorities"
+                    Margin="10,20,0,10"
+                    Style="{StaticResource LocalAuthoritiesButton}"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}">
+                    <Button.ContextMenu>
+                        <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                            <MenuItem
+                                Command="{Binding OpenNewTabToExperienceCommand}"
+                                CommandParameter="{x:Static tab:Experience.LocalAuthorities}"
+                                Header="Open In New Tab..." />
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button
+                    x:Name="UnpaidInvoices"
+                    Margin="10,20,0,10"
+                    Style="{StaticResource UnpaidInvoicesButton}"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}">
+                    <Button.ContextMenu>
+                        <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                            <MenuItem
+                                Command="{Binding OpenNewTabToExperienceCommand}"
+                                CommandParameter="{x:Static tab:Experience.UnpaidInvoices}"
+                                Header="Open In New Tab..." />
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button
+                    x:Name="CurrentApplications"
+                    Margin="10,20,0,10"
+                    Style="{StaticResource CurrentApplicationsButton}">
+                    <Button.ContextMenu>
+                        <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                            <MenuItem
+                                Command="{Binding OpenNewTabToExperienceCommand}"
+                                CommandParameter="{x:Static tab:Experience.CurrentApplications}"
+                                Header="Open In New Tab..." />
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
             </StackPanel>
-            <StackPanel Grid.Row="2"
-                        Orientation="Horizontal">
-                <Button x:Name="DefineQuotations"
-                        Style="{StaticResource DefineQuotationsButton}"
-                        Margin="10,20,0,10" />
-                <Button x:Name="TodoReport"
-                        Style="{StaticResource TodoReportButton}"
-                        Margin="10,20,0,10"/>
-                <Button x:Name="CurrentApplications"
-                        Style="{StaticResource CurrentApplicationsButton}"
-                        Margin="10,20,0,10"/>
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <Button
+                    x:Name="DefineQuotations"
+                    Margin="10,20,0,10"
+                    Style="{StaticResource DefineQuotationsButton}">
+                    <Button.ContextMenu>
+                        <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                            <MenuItem
+                                Command="{Binding OpenNewTabToExperienceCommand}"
+                                CommandParameter="{x:Static tab:Experience.DefineQuotations}"
+                                Header="Open In New Tab..." />
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button
+                    x:Name="TodoReport"
+                    Margin="10,20,0,10"
+                    Style="{StaticResource TodoReportButton}">
+                    <Button.ContextMenu>
+                        <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                            <MenuItem
+                                Command="{Binding OpenNewTabToExperienceCommand}"
+                                CommandParameter="{x:Static tab:Experience.TodoReport}"
+                                Header="Open In New Tab..." />
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
             </StackPanel>
         </Grid>
     </ScrollViewer>

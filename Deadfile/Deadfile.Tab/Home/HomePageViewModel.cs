@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Tab.Events;
+using Prism.Commands;
 using IEventAggregator = Prism.Events.IEventAggregator;
 
 namespace Deadfile.Tab.Home
@@ -44,12 +46,6 @@ namespace Deadfile.Tab.Home
         {
             Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.UnbilledJobs);
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.UnbilledJobs));
-        }
-
-        public void Import()
-        {
-            Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.Import);
-            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.Import));
         }
 
         public void TodoReport()

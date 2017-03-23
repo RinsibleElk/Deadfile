@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Deadfile.Tab.DesignTime;
 
 namespace Deadfile.Tab.Home
@@ -25,11 +26,6 @@ namespace Deadfile.Tab.Home
         }
 
         public void UnbilledJobs()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Import()
         {
             throw new NotImplementedException();
         }

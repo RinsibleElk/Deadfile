@@ -68,6 +68,8 @@ namespace Deadfile
             OpenNewTab = new DelegateCommand(OpenTab);
             OpenNewTabToBrowserModelCommand = new DelegateCommand<BrowserModel>(OpenTabToBrowserItem);
             OpenNewTabToNewClientCommand = new DelegateCommand(OpenNewTabToNewClient);
+            OpenNewTabToExperienceCommand = new DelegateCommand<Experience?>(OpenNewTabToExperience);
+            OpenNewTabToInvoiceClientCommand=new DelegateCommand<int?>(OpenNewTabToInvoiceClient);
             if (_isFirst)
             {
                 OpenTab();
@@ -99,6 +101,28 @@ namespace Deadfile
             tabModule.NavigateToNewClient();
         }
 
+        private void OpenNewTabToInvoiceClient(int? clientId)
+        {
+            var tabModule = _container.GetInstance<TabModule>();
+            var tabViewModel = tabModule.GetFirstViewModel();
+            ActivateItem(tabViewModel);
+            if (clientId == null)
+                throw new ApplicationException("Expected a valid client id to invoice.");
+            else
+                tabModule.NavigateToNewInvoice(clientId.Value);
+        }
+
+        public void OpenNewTabToExperience(Experience? experience)
+        {
+            var tabModule = _container.GetInstance<TabModule>();
+            var tabViewModel = tabModule.GetFirstViewModel();
+            ActivateItem(tabViewModel);
+            if (experience == null)
+                throw new ApplicationException("Expected a valid experience to navigate to.");
+            else
+                tabModule.NavigateToExperience(experience.Value);
+        }
+
         public ItemActionCallback ClosingItemActionCallback { get; }
 
         public void CloseItem(Screen dataContext)
@@ -113,6 +137,9 @@ namespace Deadfile
         public ICommand OpenNewTabToBrowserModelCommand { get; }
 
         public ICommand OpenNewTabToNewClientCommand { get; }
+        public ICommand OpenNewTabToExperienceCommand { get; }
+        public ICommand OpenNewTabToInvoiceClientCommand { get; }
+
         public string Server
         {
             get { return _server; }

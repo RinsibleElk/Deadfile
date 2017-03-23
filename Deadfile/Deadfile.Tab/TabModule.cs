@@ -11,7 +11,6 @@ using Deadfile.Tab.Browser;
 using Deadfile.Tab.Clients;
 using Deadfile.Tab.Events;
 using Deadfile.Tab.Home;
-using Deadfile.Tab.Import;
 using Deadfile.Tab.Invoices;
 using Deadfile.Tab.JobChildren;
 using Deadfile.Tab.JobChildren.Applications;
@@ -30,6 +29,7 @@ using Deadfile.Tab.Reports.CurrentApplications;
 using Deadfile.Tab.Reports.UnpaidInvoices;
 using Deadfile.Tab.Tab;
 using MahApps.Metro.Controls.Dialogs;
+using NLog;
 
 namespace Deadfile.Tab
 {
@@ -69,7 +69,6 @@ namespace Deadfile.Tab
             _container.RegisterSingleton(typeof(CurrentApplicationsPageViewModel), Experience.CurrentApplications + RegionNames.Page, typeof(CurrentApplicationsPageViewModel));
             _container.RegisterSingleton(typeof(UnpaidInvoicesPageViewModel), Experience.UnpaidInvoices + RegionNames.Page, typeof(UnpaidInvoicesPageViewModel));
             _container.RegisterSingleton(typeof(TodoReportPageViewModel), Experience.TodoReport + RegionNames.Page, typeof(TodoReportPageViewModel));
-            _container.RegisterSingleton(typeof(ImportPageViewModel), Experience.Import + RegionNames.Page, typeof(ImportPageViewModel));
             _container.RegisterSingleton(typeof(JsonPageViewModel), Experience.Json + RegionNames.Page, typeof(JsonPageViewModel));
             _container.RegisterSingleton(typeof(DefineQuotationsPageViewModel), Experience.DefineQuotations + RegionNames.Page, typeof(DefineQuotationsPageViewModel));
             _container.RegisterSingleton(typeof(InvoicesPageViewModel), Experience.Invoices + RegionNames.Page, typeof(InvoicesPageViewModel));
@@ -111,6 +110,16 @@ namespace Deadfile.Tab
         public void NavigateToNewClient()
         {
             _container.GetInstance<Prism.Events.IEventAggregator>().GetEvent<AddClientEvent>().Publish(AddClientMessage.AddClient);
+        }
+
+        public void NavigateToExperience(Experience experience)
+        {
+            _container.GetInstance<Prism.Events.IEventAggregator>().GetEvent<NavigateEvent>().Publish(new NavigateMessage(experience));
+        }
+
+        public void NavigateToNewInvoice(int clientId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
