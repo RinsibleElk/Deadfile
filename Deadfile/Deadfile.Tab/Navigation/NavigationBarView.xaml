@@ -1,26 +1,57 @@
-﻿<UserControl x:Class="Deadfile.Tab.Navigation.NavigationBarView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Deadfile.Tab.Navigation"
-             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
-             mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type=local:NavigationBarDesignTimeViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="300" d:DesignWidth="300">
+﻿<UserControl
+    x:Class="Deadfile.Tab.Navigation.NavigationBarView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
+    xmlns:local="clr-namespace:Deadfile.Tab.Navigation"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=local:NavigationBarDesignTimeViewModel,
+                                     IsDesignTimeCreatable=True}"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
     <UserControl.Resources>
         <designTime:DesignTimeResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Converters.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Styles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Themables.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Red.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
-    <StackPanel Orientation="Horizontal" >
-        <Button Height="32" Width="32" Margin="3" x:Name="Home" Style="{StaticResource HomeButton}" />
-        <Button Height="32" Width="32" Margin="3" x:Name="Back" Style="{StaticResource BackButton}" />
-        <Button Height="32" Width="32" Margin="3" x:Name="Forward" Style="{StaticResource ForwardButton}" />
-        <Button Height="32" Width="32" Margin="3" x:Name="Undo" Style="{StaticResource UndoButton}" />
-        <Button Height="32" Width="32" Margin="3" x:Name="Redo" Style="{StaticResource RedoButton}" />
+    <StackPanel Orientation="Horizontal">
+        <Button
+            x:Name="Home"
+            Width="32"
+            Height="32"
+            Margin="3"
+            Style="{StaticResource HomeButton}" />
+        <Button
+            x:Name="Back"
+            Width="32"
+            Height="32"
+            Margin="3"
+            Style="{StaticResource BackButton}" />
+        <Button
+            x:Name="Forward"
+            Width="32"
+            Height="32"
+            Margin="3"
+            Style="{StaticResource ForwardButton}" />
+        <Button
+            x:Name="Undo"
+            Width="32"
+            Height="32"
+            Margin="3"
+            Style="{StaticResource UndoButton}" />
+        <Button
+            x:Name="Redo"
+            Width="32"
+            Height="32"
+            Margin="3"
+            Style="{StaticResource RedoButton}" />
     </StackPanel>
 </UserControl>

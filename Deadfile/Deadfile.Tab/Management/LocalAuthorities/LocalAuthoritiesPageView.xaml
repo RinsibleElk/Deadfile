@@ -1,23 +1,29 @@
-﻿<UserControl x:Class="Deadfile.Tab.Management.LocalAuthorities.LocalAuthoritiesPageView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-             dialog:DialogParticipation.Register="{Binding}"
-             xmlns:local="clr-namespace:Deadfile.Tab.Management.LocalAuthorities"
-             xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:templates="clr-namespace:Deadfile.Infrastructure.Templates;assembly=Deadfile.Infrastructure"
-             xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
-             mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type=local:LocalAuthoritiesPageDesignTimeViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="300" d:DesignWidth="300">
+﻿<UserControl
+    x:Class="Deadfile.Tab.Management.LocalAuthorities.LocalAuthoritiesPageView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
+    xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    xmlns:local="clr-namespace:Deadfile.Tab.Management.LocalAuthorities"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Deadfile.Model;assembly=Deadfile.Model"
+    xmlns:templates="clr-namespace:Deadfile.Infrastructure.Templates;assembly=Deadfile.Infrastructure"
+    d:DataContext="{d:DesignInstance Type=local:LocalAuthoritiesPageDesignTimeViewModel,
+                                     IsDesignTimeCreatable=True}"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    dialog:DialogParticipation.Register="{Binding}"
+    mc:Ignorable="d">
     <UserControl.Resources>
         <designTime:DesignTimeResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Converters.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Styles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Deadfile.Infrastructure;component/Styles/Themables.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Red.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
@@ -25,15 +31,13 @@
         <DockPanel.Resources>
             <DataTemplate x:Key="ExpanderHeaderTemplate" DataType="model:LocalAuthorityModel">
                 <Border Height="24">
-                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
                 </Border>
             </DataTemplate>
             <DataTemplate x:Key="ExpanderHeaderTemplateWithUrl" DataType="model:LocalAuthorityModel">
                 <Border Height="24">
                     <TextBlock VerticalAlignment="Center">
-                        <Hyperlink
-                                Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                                CommandParameter="{Binding Url}">
+                        <Hyperlink Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" CommandParameter="{Binding Url}">
                             <TextBlock Text="{Binding Name}" />
                         </Hyperlink>
                     </TextBlock>
@@ -41,62 +45,71 @@
             </DataTemplate>
             <DataTemplate x:Key="ExpanderHeaderTemplateAddNew" DataType="model:LocalAuthorityModel">
                 <Border Height="24">
-                    <TextBlock Text="Add New..." VerticalAlignment="Center"/>
+                    <TextBlock VerticalAlignment="Center" Text="Add New..." />
                 </Border>
             </DataTemplate>
             <templates:LocalAuthorityHyperlinkHeaderTemplateSelector
                 x:Key="ExpanderHeaderTemplateSelector"
-                WithUrlTemplate="{StaticResource ExpanderHeaderTemplateWithUrl}"
+                AddNewTemplate="{StaticResource ExpanderHeaderTemplateAddNew}"
                 NoUrlTemplate="{StaticResource ExpanderHeaderTemplate}"
-                AddNewTemplate="{StaticResource ExpanderHeaderTemplateAddNew}"/>
+                WithUrlTemplate="{StaticResource ExpanderHeaderTemplateWithUrl}" />
         </DockPanel.Resources>
-        <TextBox DockPanel.Dock="Top" controls:TextBoxHelper.Watermark="Filter" Text="{Binding Filter, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
-        <ListBox SelectionMode="Single"
-                 ItemsSource="{Binding Items}"
-                 SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+        <TextBox
+            controls:TextBoxHelper.Watermark="Filter"
+            DockPanel.Dock="Top"
+            Text="{Binding Filter, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+        <ListBox
+            ItemsSource="{Binding Items}"
+            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+            SelectionMode="Single">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                     <Setter Property="Padding" Value="0" />
-                    <Setter Property="Background" Value="Transparent"></Setter>
+                    <Setter Property="Background" Value="Transparent" />
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderThickness="0,0,0,1" BorderBrush="Black">
-                        <Expander   HeaderTemplateSelector="{StaticResource ExpanderHeaderTemplateSelector}"
-                                    Header="{Binding}" Style="{StaticResource GradientExpanderStyle}"
-                                    IsExpanded="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}">
+                    <Border BorderBrush="Black" BorderThickness="0,0,0,1">
+                        <Expander
+                            Header="{Binding}"
+                            HeaderTemplateSelector="{StaticResource ExpanderHeaderTemplateSelector}"
+                            IsExpanded="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}"
+                            Style="{StaticResource GradientExpanderStyle}">
                             <Grid Background="White">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <TextBox Grid.Row="0"
-                                         IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                         controls:TextBoxHelper.Watermark="Name"
-                                         Text="{Binding Name, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
-                                <TextBox Grid.Row="1"
-                                         IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                         controls:TextBoxHelper.Watermark="Url"
-                                         Text="{Binding Url, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
-                                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            Command="{Binding Path=DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                <TextBox
+                                    Grid.Row="0"
+                                    controls:TextBoxHelper.Watermark="Name"
+                                    IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    Text="{Binding Name, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox
+                                    Grid.Row="1"
+                                    controls:TextBoxHelper.Watermark="Url"
+                                    IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    Text="{Binding Url, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+                                <StackPanel
+                                    Grid.Row="2"
+                                    HorizontalAlignment="Right"
+                                    Orientation="Horizontal">
+                                    <Button Command="{Binding Path=DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                         <TextBlock Text="{Binding Path=DataContext.SelectedItem.Id, Converter={StaticResource ModelIdToEditCommandName}, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </Button>
-                                    <Button Visibility="{Binding Path=DataContext.CanDeleteItem, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            Command="{Binding Path=DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <Button Command="{Binding Path=DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Visibility="{Binding Path=DataContext.CanDeleteItem, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                         Delete
                                     </Button>
-                                    <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            Command="{Binding Path=DataContext.DiscardCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <Button Command="{Binding Path=DataContext.DiscardCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                         Discard
                                     </Button>
-                                    <Button Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            IsEnabled="{Binding Path=HasErrors, Converter={StaticResource InverseBoolean}}"
-                                            Command="{Binding Path=DataContext.SaveCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <Button
+                                        Command="{Binding Path=DataContext.SaveCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        IsEnabled="{Binding Path=HasErrors, Converter={StaticResource InverseBoolean}}"
+                                        Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                         Save
                                     </Button>
                                 </StackPanel>

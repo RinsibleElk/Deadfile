@@ -120,6 +120,7 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShellViewModel.cs" />
+    <Compile Include="ThemeUtils.cs" />
     <Compile Include="WindowPlacement.cs" />
   </ItemGroup>
   <ItemGroup>

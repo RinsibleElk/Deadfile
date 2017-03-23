@@ -251,9 +251,7 @@ namespace Deadfile
                 _themeToUse = value;
                 Properties.Settings.Default.Theme = _themeToUse.ToString();
                 Properties.Settings.Default.Save();
-                ThemeManager.ChangeAppStyle(Application.Current,
-                                            ThemeManager.GetAccent(_accentToUse.ToString()),
-                                            ThemeManager.GetAppTheme(_themeToUse.ToString()));
+                ThemeUtils.SetThemeFromProperties();
                 OnPropertyChanged(new PropertyChangedEventArgs(nameof(ThemeToUse)));
             }
         }
@@ -268,9 +266,7 @@ namespace Deadfile
                 _accentToUse = value;
                 Properties.Settings.Default.Accent = _accentToUse.ToString();
                 Properties.Settings.Default.Save();
-                ThemeManager.ChangeAppStyle(Application.Current,
-                                            ThemeManager.GetAccent(_accentToUse.ToString()),
-                                            ThemeManager.GetAppTheme(_themeToUse.ToString()));
+                ThemeUtils.SetThemeFromProperties();
                 OnPropertyChanged(new PropertyChangedEventArgs(nameof(AccentToUse)));
             }
         }

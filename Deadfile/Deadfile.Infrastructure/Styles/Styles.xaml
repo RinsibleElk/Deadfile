@@ -242,15 +242,6 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
     </Style>
 
-    <Style
-        x:Key="QuotationAuthor"
-        BasedOn="{StaticResource {x:Type TextBlock}}"
-        TargetType="{x:Type TextBlock}">
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Harlow" />
-        <Setter Property="FontWeight" Value="Bold" />
-    </Style>
-
     <ImageBrush
         x:Key="HomeButtonImageBrush"
         ImageSource="../Resources/home.png"
