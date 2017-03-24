@@ -26,30 +26,30 @@
     <StackPanel Orientation="Horizontal">
         <Button
             x:Name="AddItem"
-            Style="{StaticResource AddButton}"
+            Style="{DynamicResource GeometryAddItemButton}"
             ToolTip="Add a new Client."
             Visibility="{Binding AddItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
         <Button
             x:Name="EditItem"
             IsDefault="{Binding CanEditItem}"
-            Style="{StaticResource EditButton}"
+            Style="{StaticResource GeometryEditItemButton}"
             ToolTip="Edit this Client."
             Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
         <Button
             x:Name="SaveItem"
             IsDefault="{Binding CanEditItem, Converter={StaticResource InverseBoolean}}"
-            Style="{StaticResource SaveButton}"
+            Style="{StaticResource GeometrySaveItemButton}"
             ToolTip="Save this Client."
             Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
         <Button
             x:Name="DiscardItem"
             IsCancel="True"
-            Style="{StaticResource DiscardButton}"
+            Style="{StaticResource GeometryDiscardItemButton}"
             ToolTip="Discard all changes and stop editing."
             Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
         <Button
             x:Name="DeleteItem"
-            Style="{StaticResource DeleteButton}"
+            Style="{StaticResource GeometryDeleteItemButton}"
             ToolTip="Delete this Client. This is not permanent."
             Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
     </StackPanel>

@@ -28,7 +28,7 @@ namespace Deadfile
             Accent accent;
             if (!Enum.TryParse(Properties.Settings.Default.Accent, out accent))
             {
-                accent = Accent.Red;
+                accent = Accent.Steel;
                 Properties.Settings.Default.Accent = accent.ToString();
                 Properties.Settings.Default.Save();
             }

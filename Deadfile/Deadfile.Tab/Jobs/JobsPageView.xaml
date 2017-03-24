@@ -45,24 +45,28 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock
             Grid.Row="0"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Status:
         </TextBlock>
         <TextBlock
             Grid.Row="1"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             JobNumber:
         </TextBlock>
         <TextBlock
             Grid.Row="2"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Description:
         </TextBlock>
         <Label
@@ -72,25 +76,29 @@
         <TextBlock
             Grid.Row="4"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Address Line 1:
         </TextBlock>
         <TextBlock
             Grid.Row="5"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Address Line 2:
         </TextBlock>
         <TextBlock
             Grid.Row="6"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Address Line 3:
         </TextBlock>
         <TextBlock
             Grid.Row="7"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Post Code:
         </TextBlock>
         <Label
@@ -100,7 +108,8 @@
         <TextBlock
             Grid.Row="9"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Notes:
         </TextBlock>
         <Label
@@ -110,6 +119,7 @@
         <ComboBox
             Grid.Row="0"
             Grid.Column="1"
+            Margin="20,5,20,5"
             IsEditable="False"
             IsEnabled="{Binding Editable}"
             ItemsSource="{Binding Source={StaticResource JobStatusValues}}"
@@ -117,42 +127,49 @@
         <TextBox
             Grid.Row="1"
             Grid.Column="1"
+            Margin="20,5,20,5"
             controls:TextBoxHelper.Watermark="Job Number"
             IsEnabled="{Binding Editable}"
             Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.JobNumberString}" />
         <TextBox
             Grid.Row="2"
             Grid.Column="1"
+            Margin="20,5,20,5"
             controls:TextBoxHelper.Watermark="Description"
             IsEnabled="{Binding Editable}"
             Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Description}" />
         <TextBox
             Grid.Row="4"
             Grid.Column="1"
+            Margin="20,5,20,5"
             controls:TextBoxHelper.Watermark="Address First Line"
             IsEnabled="{Binding Editable}"
             Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressFirstLine}" />
         <TextBox
             Grid.Row="5"
             Grid.Column="1"
+            Margin="20,5,20,5"
             controls:TextBoxHelper.Watermark="Address Second Line"
             IsEnabled="{Binding Editable}"
             Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressSecondLine}" />
         <TextBox
             Grid.Row="6"
             Grid.Column="1"
+            Margin="20,5,20,5"
             controls:TextBoxHelper.Watermark="Address Third Line"
             IsEnabled="{Binding Editable}"
             Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressThirdLine}" />
         <TextBox
             Grid.Row="7"
             Grid.Column="1"
+            Margin="20,5,20,5"
             controls:TextBoxHelper.Watermark="Post Code"
             IsEnabled="{Binding Editable}"
             Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.AddressPostCode}" />
         <TextBox
             Grid.Row="9"
             Grid.Column="1"
+            Margin="20,5,20,5"
             controls:TextBoxHelper.Watermark="Notes"
             IsEnabled="{Binding Editable}"
             Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=SelectedItem.Notes}" />
@@ -160,20 +177,31 @@
             Grid.Row="11"
             Grid.Column="0"
             Grid.ColumnSpan="2"
+            Margin="20,5,20,5"
             ItemsSource="{Binding Errors}"
             TextBlock.Foreground="Red" />
         <ListBox
             Grid.Row="12"
             Grid.Column="0"
+            Margin="20,5,20,5"
             IsEnabled="{Binding ChildIsEditable, Converter={StaticResource InverseBoolean}}"
             ItemsSource="{Binding JobChildren}"
             SelectedItem="{Binding SelectedJobChild, Mode=TwoWay}" />
-        <ContentControl Grid.Row="13" Grid.Column="0" />
+        <ContentControl
+            Grid.Row="13"
+            Grid.Column="0"
+            Margin="20,5,20,5" />
         <controls:TransitioningContentControl
             x:Name="JobChildViewModel"
             Grid.Row="12"
             Grid.RowSpan="2"
             Grid.Column="1"
+            Margin="20,5,20,5"
+            Background="Transparent"
             Transition="LeftReplace" />
+        <Label
+            Grid.Row="14"
+            Grid.Column="0"
+            Grid.ColumnSpan="2" />
     </Grid>
 </UserControl>

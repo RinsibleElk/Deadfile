@@ -63,31 +63,36 @@
         <TextBlock
             Grid.Row="0"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Status:
         </TextBlock>
         <TextBlock
             Grid.Row="1"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Title:
         </TextBlock>
         <TextBlock
             Grid.Row="2"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             First Name:
         </TextBlock>
         <TextBlock
             Grid.Row="3"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Middle Names:
         </TextBlock>
         <TextBlock
             Grid.Row="4"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Last Name:
         </TextBlock>
         <Label
@@ -97,7 +102,8 @@
         <TextBlock
             Grid.Row="6"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Company:
         </TextBlock>
         <Label
@@ -107,25 +113,29 @@
         <TextBlock
             Grid.Row="8"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Address Line 1:
         </TextBlock>
         <TextBlock
             Grid.Row="9"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Address Line 2:
         </TextBlock>
         <TextBlock
             Grid.Row="10"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Address Line 3:
         </TextBlock>
         <TextBlock
             Grid.Row="11"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Post Code:
         </TextBlock>
         <Label
@@ -135,19 +145,22 @@
         <TextBlock
             Grid.Row="13"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Phone Number 1:
         </TextBlock>
         <TextBlock
             Grid.Row="14"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Phone Number 2:
         </TextBlock>
         <TextBlock
             Grid.Row="15"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Phone Number 3:
         </TextBlock>
         <Label
@@ -157,8 +170,9 @@
         <TextBlock
             Grid.Row="17"
             Grid.Column="0"
-            VerticalAlignment="Center">
-            Email AddressFirstLine:
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
+            Email Address First Line:
         </TextBlock>
         <Label
             Grid.Row="18"
@@ -167,7 +181,8 @@
         <TextBlock
             Grid.Row="19"
             Grid.Column="0"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Style="{DynamicResource FormLabel}">
             Notes:
         </TextBlock>
         <Label
