@@ -45,6 +45,10 @@
       <HintPath>..\packages\Caliburn.Micro.3.0.2\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Dragablz, Version=0.0.3.186, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.3.186\lib\net45\Dragablz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.4.0-ALPHA036\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
@@ -126,8 +130,8 @@
     <Compile Include="Services\PrintService.cs" />
     <Compile Include="Services\QuotationsTimerService.cs" />
     <Compile Include="Services\UrlNavigationService.cs" />
-    <Compile Include="Styles\Accent.cs" />
-    <Compile Include="Styles\Theme.cs" />
+    <Compile Include="Styles\DeadfileAccent.cs" />
+    <Compile Include="Styles\DeadfileTheme.cs" />
     <Compile Include="Templates\InvoiceTemplateSelector.cs" />
     <Compile Include="Templates\LocalAuthorityHyperlinkHeaderTemplateSelector.cs" />
     <Compile Include="Templates\ModelTemplateSelector.cs" />

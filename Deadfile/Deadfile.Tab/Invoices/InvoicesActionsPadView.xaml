@@ -22,38 +22,42 @@
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
-    <StackPanel Orientation="Horizontal">
-        <Button
-            x:Name="PrintItem"
-            Style="{StaticResource PrintButton}"
-            ToolTip="Print (and Save) this Invoice." />
-        <Button
-            x:Name="EditItem"
-            IsDefault="{Binding CanEditItem}"
-            Style="{StaticResource EditButton}"
-            ToolTip="Edit this Invoice."
-            Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
-        <Button
-            x:Name="SaveItem"
-            IsDefault="{Binding CanEditItem, Converter={StaticResource InverseBoolean}}"
-            Style="{StaticResource SaveButton}"
-            ToolTip="Save changes to this Invoice."
-            Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
-        <Button
-            x:Name="DiscardItem"
-            IsCancel="True"
-            Style="{StaticResource DiscardButton}"
-            ToolTip="Discard changes to this Invoice."
-            Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
-        <Button
-            x:Name="DeleteItem"
-            Style="{StaticResource DeleteButton}"
-            ToolTip="Delete this Invoice (Cancel it). This is not permanent."
-            Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
-        <Button
-            x:Name="PaidItem"
-            Style="{StaticResource PaidButton}"
-            ToolTip="Mark this Invoice as Paid. This is not permanent."
-            Visibility="{Binding CanPaidItem, Converter={StaticResource BooleanToVisibility}}" />
-    </StackPanel>
+    <Border BorderBrush="{DynamicResource BlackBrush}" BorderThickness="0,1,0,0">
+        <Border BorderBrush="{DynamicResource GrayBrush7}" BorderThickness="0,2,0,0">
+            <StackPanel Background="{DynamicResource ControlBackgroundBrush}" Orientation="Horizontal">
+                <Button
+                    x:Name="PrintItem"
+                    Style="{StaticResource PrintButton}"
+                    ToolTip="Print (and Save) this Invoice." />
+                <Button
+                    x:Name="EditItem"
+                    IsDefault="{Binding CanEditItem}"
+                    Style="{StaticResource EditButton}"
+                    ToolTip="Edit this Invoice."
+                    Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                <Button
+                    x:Name="SaveItem"
+                    IsDefault="{Binding CanEditItem, Converter={StaticResource InverseBoolean}}"
+                    Style="{StaticResource SaveButton}"
+                    ToolTip="Save changes to this Invoice."
+                    Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                <Button
+                    x:Name="DiscardItem"
+                    IsCancel="True"
+                    Style="{StaticResource DiscardButton}"
+                    ToolTip="Discard changes to this Invoice."
+                    Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                <Button
+                    x:Name="DeleteItem"
+                    Style="{StaticResource DeleteButton}"
+                    ToolTip="Delete this Invoice (Cancel it). This is not permanent."
+                    Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                <Button
+                    x:Name="PaidItem"
+                    Style="{StaticResource PaidButton}"
+                    ToolTip="Mark this Invoice as Paid. This is not permanent."
+                    Visibility="{Binding CanPaidItem, Converter={StaticResource BooleanToVisibility}}" />
+            </StackPanel>
+        </Border>
+    </Border>
 </UserControl>

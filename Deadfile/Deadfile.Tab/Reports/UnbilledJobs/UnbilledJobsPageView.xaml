@@ -25,7 +25,7 @@
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
-    <DockPanel LastChildFill="True">
+    <DockPanel LastChildFill="False">
         <DockPanel DockPanel.Dock="Top" LastChildFill="True">
             <Button x:Name="Print" DockPanel.Dock="Right">
                 Print

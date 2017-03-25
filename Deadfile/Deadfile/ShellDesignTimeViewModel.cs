@@ -25,7 +25,7 @@ namespace Deadfile
         public ICommand AcceptCommand { get; } = null;
         public ICommand CancelCommand { get; } = null;
         public bool SettingsIsOpen { get; set; } = false;
-        public Theme ThemeToUse { get; set; } = Theme.BaseDark;
-        public Accent AccentToUse { get; set; } = Accent.Red;
+        public DeadfileTheme ThemeToUse { get; set; } = DeadfileTheme.BaseDark;
+        public DeadfileAccent AccentToUse { get; set; } = DeadfileAccent.Red;
     }
 }

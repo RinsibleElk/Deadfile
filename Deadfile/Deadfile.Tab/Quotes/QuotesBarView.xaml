@@ -23,59 +23,69 @@
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
-    <Grid Margin="5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <DockPanel
-            x:Name="PhraseDockPanel"
-            Grid.Row="0"
-            Grid.Column="0">
-            <Canvas ClipToBounds="True">
+    <Border BorderBrush="{DynamicResource BlackBrush}" BorderThickness="0,1,0,0">
+        <Border BorderBrush="{DynamicResource GrayBrush7}" BorderThickness="0,2,0,0">
+            <Grid Background="{DynamicResource ControlBackgroundBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <DockPanel
+                    x:Name="PhraseDockPanel"
+                    Grid.Row="0"
+                    Grid.Column="0">
+                    <Canvas ClipToBounds="True">
+                        <TextBlock
+                            x:Name="PhraseTextBlock"
+                            Style="{StaticResource QuotationPhrase}"
+                            Text="{Binding Quotation.Phrase}"
+                            TextWrapping="NoWrap">
+                            <TextBlock.RenderTransform>
+                                <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
+                            </TextBlock.RenderTransform>
+                            <TextBlock.Triggers>
+                                <EventTrigger RoutedEvent="TextBlock.Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                BeginTime="00:00:00"
+                                                RepeatBehavior="Forever"
+                                                Storyboard.TargetName="AnimatedTranslateTransform"
+                                                Storyboard.TargetProperty="X"
+                                                From="500"
+                                                To="-1000"
+                                                Duration="00:00:10" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </TextBlock.Triggers>
+                        </TextBlock>
+                    </Canvas>
+                </DockPanel>
                 <TextBlock
-                    x:Name="PhraseTextBlock"
-                    Style="{StaticResource QuotationPhrase}"
-                    Text="{Binding Quotation.Phrase}"
-                    TextWrapping="NoWrap">
-                    <TextBlock.RenderTransform>
-                        <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
-                    </TextBlock.RenderTransform>
-                    <TextBlock.Triggers>
-                        <EventTrigger RoutedEvent="TextBlock.Loaded">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation
-                                        BeginTime="00:00:00"
-                                        RepeatBehavior="Forever"
-                                        Storyboard.TargetName="AnimatedTranslateTransform"
-                                        Storyboard.TargetProperty="X"
-                                        From="500"
-                                        To="-1000"
-                                        Duration="00:00:10" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </TextBlock.Triggers>
-                </TextBlock>
-            </Canvas>
-        </DockPanel>
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="0"
-            Style="{DynamicResource QuotationAuthor}"
-            Text="{Binding Quotation.Author}" />
-        <Button
-            Grid.Row="0"
-            Grid.RowSpan="2"
-            Grid.Column="1"
-            Width="64"
-            Height="64"
-            Command="{Binding NextQuotationCommand}"
-            Style="{StaticResource QuoteButton}" />
-    </Grid>
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Style="{DynamicResource QuotationAuthor}"
+                    Text="{Binding Quotation.Author}" />
+                <Button
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Width="64"
+                    Height="64"
+                    Command="{Binding NextQuotationCommand}"
+                    Style="{StaticResource QuoteButton}" />
+                <Grid.Effect>
+                    <DropShadowEffect
+                        BlurRadius="6"
+                        Direction="90"
+                        ShadowDepth="4" />
+                </Grid.Effect>
+            </Grid>
+        </Border>
+    </Border>
 </UserControl>

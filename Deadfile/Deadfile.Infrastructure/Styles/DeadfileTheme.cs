@@ -6,16 +6,9 @@ using System.Threading.Tasks;
 
 namespace Deadfile.Infrastructure.Styles
 {
-    public enum Accent
+    public enum DeadfileTheme
     {
-        Red,
-        Blue,
-        Emerald,
-        Green,
-        Indigo,
-        Olive,
-        Sienna,
-        Steel,
-        Cobalt
+        BaseLight,
+        BaseDark
     }
 }

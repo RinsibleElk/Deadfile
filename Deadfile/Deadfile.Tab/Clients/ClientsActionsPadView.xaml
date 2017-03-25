@@ -23,34 +23,38 @@
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
-    <StackPanel Orientation="Horizontal">
-        <Button
-            x:Name="AddItem"
-            Style="{DynamicResource GeometryAddItemButton}"
-            ToolTip="Add a new Client."
-            Visibility="{Binding AddItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
-        <Button
-            x:Name="EditItem"
-            IsDefault="{Binding CanEditItem}"
-            Style="{StaticResource GeometryEditItemButton}"
-            ToolTip="Edit this Client."
-            Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
-        <Button
-            x:Name="SaveItem"
-            IsDefault="{Binding CanEditItem, Converter={StaticResource InverseBoolean}}"
-            Style="{StaticResource GeometrySaveItemButton}"
-            ToolTip="Save this Client."
-            Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
-        <Button
-            x:Name="DiscardItem"
-            IsCancel="True"
-            Style="{StaticResource GeometryDiscardItemButton}"
-            ToolTip="Discard all changes and stop editing."
-            Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
-        <Button
-            x:Name="DeleteItem"
-            Style="{StaticResource GeometryDeleteItemButton}"
-            ToolTip="Delete this Client. This is not permanent."
-            Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
-    </StackPanel>
+    <Border BorderBrush="{DynamicResource BlackBrush}" BorderThickness="0,1,0,0">
+        <Border BorderBrush="{DynamicResource GrayBrush7}" BorderThickness="0,2,0,0">
+            <StackPanel Background="{DynamicResource ControlBackgroundBrush}" Orientation="Horizontal">
+                <Button
+                    x:Name="AddItem"
+                    Style="{DynamicResource GeometryAddItemButton}"
+                    ToolTip="Add a new Client."
+                    Visibility="{Binding AddItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                <Button
+                    x:Name="EditItem"
+                    IsDefault="{Binding CanEditItem}"
+                    Style="{StaticResource GeometryEditItemButton}"
+                    ToolTip="Edit this Client."
+                    Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                <Button
+                    x:Name="SaveItem"
+                    IsDefault="{Binding CanEditItem, Converter={StaticResource InverseBoolean}}"
+                    Style="{StaticResource GeometrySaveItemButton}"
+                    ToolTip="Save this Client."
+                    Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                <Button
+                    x:Name="DiscardItem"
+                    IsCancel="True"
+                    Style="{StaticResource GeometryDiscardItemButton}"
+                    ToolTip="Discard all changes and stop editing."
+                    Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                <Button
+                    x:Name="DeleteItem"
+                    Style="{StaticResource GeometryDeleteItemButton}"
+                    ToolTip="Delete this Client. This is not permanent."
+                    Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+            </StackPanel>
+        </Border>
+    </Border>
 </UserControl>

@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Markup;
 using Deadfile.Infrastructure.Styles;
 using MahApps.Metro;
-using Accent = Deadfile.Infrastructure.Styles.Accent;
+using Accent = Deadfile.Infrastructure.Styles.DeadfileAccent;
 
 namespace Deadfile
 {

@@ -11,14 +11,14 @@ namespace Deadfile
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Rect
+    public struct DeadfileRect
     {
         public int Left;
         public int Top;
         public int Right;
         public int Bottom;
 
-        public Rect(int left, int top, int right, int bottom)
+        public DeadfileRect(int left, int top, int right, int bottom)
         {
             Left = left;
             Top = top;
@@ -29,12 +29,12 @@ namespace Deadfile
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Point
+    public struct DeadfilePoint
     {
         public int X;
         public int Y;
 
-        public Point(int x, int y)
+        public DeadfilePoint(int x, int y)
         {
             X = x;
             Y = y;
@@ -48,9 +48,9 @@ namespace Deadfile
         public int length;
         public int flags;
         public int showCmd;
-        public Point minPosition;
-        public Point maxPosition;
-        public Rect normalPosition;
+        public DeadfilePoint minPosition;
+        public DeadfilePoint maxPosition;
+        public DeadfileRect normalPosition;
     }
 
     public static class WindowPlacement

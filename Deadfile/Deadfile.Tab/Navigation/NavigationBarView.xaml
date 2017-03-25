@@ -22,36 +22,40 @@
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
-    <StackPanel Orientation="Horizontal">
-        <Button
-            x:Name="Home"
-            Width="32"
-            Height="32"
-            Margin="3"
-            Style="{StaticResource HomeButton}" />
-        <Button
-            x:Name="Back"
-            Width="32"
-            Height="32"
-            Margin="3"
-            Style="{StaticResource BackButton}" />
-        <Button
-            x:Name="Forward"
-            Width="32"
-            Height="32"
-            Margin="3"
-            Style="{StaticResource ForwardButton}" />
-        <Button
-            x:Name="Undo"
-            Width="32"
-            Height="32"
-            Margin="3"
-            Style="{StaticResource UndoButton}" />
-        <Button
-            x:Name="Redo"
-            Width="32"
-            Height="32"
-            Margin="3"
-            Style="{StaticResource RedoButton}" />
-    </StackPanel>
+    <Border BorderBrush="{DynamicResource BlackBrush}" BorderThickness="0,0,0,1">
+        <Border BorderBrush="{DynamicResource GrayBrush7}" BorderThickness="0,0,0,2">
+            <StackPanel Background="{DynamicResource ControlBackgroundBrush}" Orientation="Horizontal">
+                <Button
+                    x:Name="Home"
+                    Width="32"
+                    Height="32"
+                    Margin="3"
+                    Style="{StaticResource HomeButton}" />
+                <Button
+                    x:Name="Back"
+                    Width="32"
+                    Height="32"
+                    Margin="3"
+                    Style="{StaticResource BackButton}" />
+                <Button
+                    x:Name="Forward"
+                    Width="32"
+                    Height="32"
+                    Margin="3"
+                    Style="{StaticResource ForwardButton}" />
+                <Button
+                    x:Name="Undo"
+                    Width="32"
+                    Height="32"
+                    Margin="3"
+                    Style="{StaticResource UndoButton}" />
+                <Button
+                    x:Name="Redo"
+                    Width="32"
+                    Height="32"
+                    Margin="3"
+                    Style="{StaticResource RedoButton}" />
+            </StackPanel>
+        </Border>
+    </Border>
 </UserControl>

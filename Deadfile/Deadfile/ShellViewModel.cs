@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,11 +12,12 @@ using Deadfile.Infrastructure;
 using Deadfile.Infrastructure.Styles;
 using Deadfile.Model;
 using Deadfile.Model.Browser;
+using Deadfile.Properties;
 using Deadfile.Tab;
 using Dragablz;
 using MahApps.Metro;
 using Prism.Commands;
-using Accent = Deadfile.Infrastructure.Styles.Accent;
+using DeadfileAccent = Deadfile.Infrastructure.Styles.DeadfileAccent;
 using LogManager = NLog.LogManager;
 
 namespace Deadfile
@@ -47,16 +49,18 @@ namespace Deadfile
             _password = Properties.Settings.Default.Password;
             if (!Enum.TryParse(Properties.Settings.Default.Theme, out _themeToUse))
             {
-                _themeToUse = Theme.BaseDark;
+                _themeToUse = DeadfileTheme.BaseDark;
                 Properties.Settings.Default.Theme = _themeToUse.ToString();
                 Properties.Settings.Default.Save();
             }
             if (!Enum.TryParse(Properties.Settings.Default.Accent, out _accentToUse))
             {
-                _accentToUse = Accent.Red;
-                Properties.Settings.Default.Accent = _accentToUse.ToString();
-                Properties.Settings.Default.Save();
+                _accentToUse = DeadfileAccent.Red;
+                Settings.Default.Accent = _accentToUse.ToString();
+                Settings.Default.Save();
             }
+            _useCustomAccent = Settings.Default.UseCustomAccent;
+            _customAccent = FromDrawingColor(Settings.Default.CustomAccent);
             _acceptCommand = new DelegateCommand(Accept, () => CanAccept);
             _cancelCommand = new DelegateCommand(Cancel);
             ClosingItemActionCallback = new ItemActionCallback((dataContext) =>
@@ -192,10 +196,10 @@ namespace Deadfile
 
         private void Accept()
         {
-            Properties.Settings.Default.Database = _database;
-            Properties.Settings.Default.Username = _username;
-            Properties.Settings.Default.Server = _server;
-            Properties.Settings.Default.Password = _password;
+            Settings.Default.Database = _database;
+            Settings.Default.Username = _username;
+            Settings.Default.Server = _server;
+            Settings.Default.Password = _password;
             DeadfileContextAbstraction.DatabaseName = _database;
             DeadfileContextAbstraction.UserId = _username;
             DeadfileContextAbstraction.ServerName = _server;
@@ -217,10 +221,10 @@ namespace Deadfile
                 DeadfileContextAbstraction.ServerName = _server;
                 DeadfileContextAbstraction.Password = _password;
                 var result = DeadfileContextAbstraction.RebuildConnectionString();
-                DeadfileContextAbstraction.DatabaseName = Properties.Settings.Default.Database;
-                DeadfileContextAbstraction.UserId = Properties.Settings.Default.Username;
-                DeadfileContextAbstraction.ServerName = Properties.Settings.Default.Server;
-                DeadfileContextAbstraction.Password = Properties.Settings.Default.Password;
+                DeadfileContextAbstraction.DatabaseName = Settings.Default.Database;
+                DeadfileContextAbstraction.UserId = Settings.Default.Username;
+                DeadfileContextAbstraction.ServerName = Settings.Default.Server;
+                DeadfileContextAbstraction.Password = Settings.Default.Password;
                 DeadfileContextAbstraction.RebuildConnectionString();
                 return result;
             }
@@ -241,27 +245,69 @@ namespace Deadfile
             }
         }
 
-        private Theme _themeToUse;
-        public Theme ThemeToUse
+        private DeadfileTheme _themeToUse;
+        public DeadfileTheme ThemeToUse
         {
             get { return _themeToUse; }
             set
             {
                 if (value == _themeToUse) return;
                 _themeToUse = value;
-                Properties.Settings.Default.Theme = _themeToUse.ToString();
-                Properties.Settings.Default.Save();
+                Settings.Default.Theme = _themeToUse.ToString();
+                Settings.Default.Save();
                 ThemeUtils.SetThemeFromProperties();
                 OnPropertyChanged(new PropertyChangedEventArgs(nameof(ThemeToUse)));
             }
         }
 
-        private Accent _accentToUse;
-        public Accent AccentToUse
+        private static System.Drawing.Color FromMediaColor(System.Windows.Media.Color color)
+        {
+            return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
+        }
+
+        internal static System.Windows.Media.Color FromDrawingColor(System.Drawing.Color color)
+        {
+            return System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
+        }
+
+        private System.Windows.Media.Color _customAccent;
+        public System.Windows.Media.Color CustomAccent
+        {
+            get { return _customAccent; }
+            set
+            {
+                UseCustomAccent = true;
+                if (value == _customAccent) return;
+                _customAccent = value;
+                Settings.Default.CustomAccent = FromMediaColor(_customAccent);
+                Settings.Default.Save();
+                ThemeUtils.SetThemeFromProperties();
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(CustomAccent)));
+            }
+        }
+
+        private bool _useCustomAccent;
+        public bool UseCustomAccent
+        {
+            get { return _useCustomAccent; }
+            set
+            {
+                if (value == _useCustomAccent) return;
+                _useCustomAccent = value;
+                Settings.Default.UseCustomAccent = _useCustomAccent;
+                Settings.Default.Save();
+                ThemeUtils.SetThemeFromProperties();
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(UseCustomAccent)));
+            }
+        }
+
+        private DeadfileAccent _accentToUse;
+        public DeadfileAccent AccentToUse
         {
             get { return _accentToUse; }
             set
             {
+                UseCustomAccent = false;
                 if (value == _accentToUse) return;
                 _accentToUse = value;
                 Properties.Settings.Default.Accent = _accentToUse.ToString();

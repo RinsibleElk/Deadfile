@@ -85,7 +85,7 @@ namespace Deadfile.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Steel")]
         public string Accent {
             get {
                 return ((string)(this["Accent"]));
@@ -104,6 +104,30 @@ namespace Deadfile.Properties {
             }
             set {
                 this["MainWindowPlacement"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseCustomAccent {
+            get {
+                return ((bool)(this["UseCustomAccent"]));
+            }
+            set {
+                this["UseCustomAccent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Sienna")]
+        public global::System.Drawing.Color CustomAccent {
+            get {
+                return ((global::System.Drawing.Color)(this["CustomAccent"]));
+            }
+            set {
+                this["CustomAccent"] = value;
             }
         }
     }

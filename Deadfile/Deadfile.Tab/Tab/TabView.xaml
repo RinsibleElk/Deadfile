@@ -26,7 +26,7 @@
     <Grid Background="{StaticResource ContentBackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="2" />
+            <ColumnDefinition Width="3" />
             <ColumnDefinition
                 Width="Auto"
                 MinWidth="100"
@@ -38,34 +38,34 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <GridSplitter
-            Grid.Row="0"
-            Grid.RowSpan="3"
+            Grid.Row="1"
             Grid.Column="1"
-            Width="2"
+            Width="3"
             HorizontalAlignment="Stretch"
-            Foreground="{DynamicResource GrayBrush10}"
+            Foreground="{DynamicResource GrayBrush1}"
             Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
         <ContentControl
             x:Name="NavigationBar"
             Grid.Row="0"
             Grid.Column="0"
-            Grid.ColumnSpan="3"
-            Background="{DynamicResource ControlBackgroundBrush}" />
+            Grid.ColumnSpan="3" />
         <metro:TransitioningContentControl
             x:Name="ContentArea"
             Grid.Row="1"
             Grid.Column="0"
+            Grid.ColumnSpan="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BrowserAndActionsAreVisibleToContentColumnSpan}}"
+            BorderThickness="0"
             Transition="Default" />
         <ContentControl
             x:Name="BrowserPane"
-            Grid.Row="0"
-            Grid.RowSpan="2"
+            Grid.Row="1"
             Grid.Column="2"
             Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
         <ContentControl
             x:Name="QuotesBar"
             Grid.Row="2"
-            Grid.Column="0" />
+            Grid.Column="0"
+            Grid.ColumnSpan="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BrowserAndActionsAreVisibleToQuotesColumnSpan}}" />
         <ContentControl
             x:Name="ActionsPad"
             Grid.Row="2"

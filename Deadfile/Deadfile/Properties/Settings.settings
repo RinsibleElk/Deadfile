@@ -18,10 +18,16 @@
       <Value Profile="(Default)">BaseDark</Value>
     </Setting>
     <Setting Name="Accent" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Red</Value>
+      <Value Profile="(Default)">Steel</Value>
     </Setting>
     <Setting Name="MainWindowPlacement" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UseCustomAccent" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CustomAccent" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Sienna</Value>
     </Setting>
   </Settings>
 </SettingsFile>

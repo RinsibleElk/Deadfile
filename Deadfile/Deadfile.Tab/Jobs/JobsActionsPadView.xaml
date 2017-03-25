@@ -20,29 +20,33 @@
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
-    <StackPanel Orientation="Horizontal">
-        <Button
-            x:Name="EditItem"
-            IsDefault="{Binding CanEditItem}"
-            Style="{StaticResource EditButton}"
-            ToolTip="Edit this Job."
-            Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
-        <Button
-            x:Name="SaveItem"
-            IsDefault="{Binding CanEditItem, Converter={StaticResource InverseBoolean}}"
-            Style="{StaticResource SaveButton}"
-            ToolTip="Save changes to this Job."
-            Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
-        <Button
-            x:Name="DiscardItem"
-            IsCancel="True"
-            Style="{StaticResource DiscardButton}"
-            ToolTip="Discard changes to this Job."
-            Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
-        <Button
-            x:Name="DeleteItem"
-            Style="{StaticResource DeleteButton}"
-            ToolTip="Delete this Job. This is not permanent."
-            Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
-    </StackPanel>
+    <Border BorderBrush="{DynamicResource BlackBrush}" BorderThickness="0,1,0,0">
+        <Border BorderBrush="{DynamicResource GrayBrush7}" BorderThickness="0,2,0,0">
+            <StackPanel Background="{DynamicResource ControlBackgroundBrush}" Orientation="Horizontal">
+                <Button
+                    x:Name="EditItem"
+                    IsDefault="{Binding CanEditItem}"
+                    Style="{StaticResource EditButton}"
+                    ToolTip="Edit this Job."
+                    Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                <Button
+                    x:Name="SaveItem"
+                    IsDefault="{Binding CanEditItem, Converter={StaticResource InverseBoolean}}"
+                    Style="{StaticResource SaveButton}"
+                    ToolTip="Save changes to this Job."
+                    Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                <Button
+                    x:Name="DiscardItem"
+                    IsCancel="True"
+                    Style="{StaticResource DiscardButton}"
+                    ToolTip="Discard changes to this Job."
+                    Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                <Button
+                    x:Name="DeleteItem"
+                    Style="{StaticResource DeleteButton}"
+                    ToolTip="Delete this Job. This is not permanent."
+                    Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+            </StackPanel>
+        </Border>
+    </Border>
 </UserControl>

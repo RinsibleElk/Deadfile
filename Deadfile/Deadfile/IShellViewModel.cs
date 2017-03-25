@@ -27,7 +27,7 @@ namespace Deadfile
         ICommand AcceptCommand { get; }
         ICommand CancelCommand { get; }
         bool SettingsIsOpen { get; set; }
-        Theme ThemeToUse { get; set; }
-        Accent AccentToUse { get; set; }
+        DeadfileTheme ThemeToUse { get; set; }
+        DeadfileAccent AccentToUse { get; set; }
     }
 }

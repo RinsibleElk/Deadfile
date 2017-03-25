@@ -14,6 +14,7 @@
     xmlns:local="clr-namespace:Deadfile"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tab="clr-namespace:Deadfile.Tab.Tab;assembly=Deadfile.Tab"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     x:Name="Deadfile"
     Title="deadfile"
     Dialog:DialogParticipation.Register="{Binding}"
@@ -117,6 +118,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock
                         Grid.Row="0"
@@ -200,6 +202,17 @@
                         Margin="5"
                         ItemsSource="{Binding Source={StaticResource AccentValues}}"
                         SelectedItem="{Binding AccentToUse}" />
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="0"
+                        Margin="5">
+                        Custom:
+                    </TextBlock>
+                    <xctk:ColorPicker
+                        Grid.Row="8"
+                        Grid.Column="1"
+                        Margin="5"
+                        SelectedColor="{Binding CustomAccent}" />
                 </Grid>
             </controls:Flyout>
         </controls:FlyoutsControl>
@@ -220,7 +233,7 @@
             BorderThickness="0"
             ClosingItemCallback="{Binding ClosingItemActionCallback}"
             Focusable="True"
-            ItemContainerStyle="{StaticResource MahAppsTrapezoidDragableTabItemStyle}"
+            ItemContainerStyle="{StaticResource DeadfileDragablzTabItemStyle}"
             ShowDefaultCloseButton="True">
             <dragablz:TabablzControl.HeaderItemTemplate>
                 <DataTemplate DataType="tab:TabViewModel">
