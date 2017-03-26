@@ -242,7 +242,7 @@
                             Width="16"
                             Height="16"
                             Source="{Binding ContentArea.Experience, Converter={StaticResource ExperienceToImage}}" />
-                        <TextBlock Text="{Binding DisplayName}" />
+                        <TextBlock Margin="5,0,5,0" Text="{Binding DisplayName}" />
                     </StackPanel>
                 </DataTemplate>
             </dragablz:TabablzControl.HeaderItemTemplate>

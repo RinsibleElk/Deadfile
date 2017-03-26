@@ -6,7 +6,7 @@
     xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
     xmlns:local="clr-namespace:Deadfile.Tab.Home"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="300"
+    d:DesignHeight="100"
     d:DesignWidth="300"
     mc:Ignorable="d">
     <UserControl.Resources>
@@ -20,9 +20,9 @@
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
-    <Border BorderBrush="{DynamicResource BlackBrush}" BorderThickness="0,1,0,0">
+    <Border BorderBrush="{DynamicResource GrayBrush1}" BorderThickness="0,1,0,0">
         <Border BorderBrush="{DynamicResource GrayBrush7}" BorderThickness="0,2,0,0">
-            <Grid Background="{DynamicResource ControlBackgroundBrush}" />
+            <Grid Background="{DynamicResource AccentColorBrush}" />
         </Border>
     </Border>
 </UserControl>

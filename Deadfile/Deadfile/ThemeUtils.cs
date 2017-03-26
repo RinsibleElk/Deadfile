@@ -19,11 +19,11 @@ namespace Deadfile
         public static string GetTheme()
         {
             DeadfileTheme deadfileTheme;
-            if (!Enum.TryParse(Properties.Settings.Default.Theme, out deadfileTheme))
+            if (!Enum.TryParse(Settings.Default.Theme, out deadfileTheme))
             {
                 deadfileTheme = DeadfileTheme.BaseDark;
-                Properties.Settings.Default.Theme = deadfileTheme.ToString();
-                Properties.Settings.Default.Save();
+                Settings.Default.Theme = deadfileTheme.ToString();
+                Settings.Default.Save();
             }
             return deadfileTheme.ToString();
         }
@@ -34,8 +34,8 @@ namespace Deadfile
             if (!Enum.TryParse(Properties.Settings.Default.Accent, out accent))
             {
                 accent = DeadfileAccent.Steel;
-                Properties.Settings.Default.Accent = accent.ToString();
-                Properties.Settings.Default.Save();
+                Settings.Default.Accent = accent.ToString();
+                Settings.Default.Save();
             }
             return accent.ToString();
         }
@@ -52,19 +52,19 @@ namespace Deadfile
         private static Color IdealTextColor(Color color)
         {
             const int nThreshold = 105;
-            var bgDelta = System.Convert.ToInt32((color.R * 0.299) + (color.G * 0.587) + (color.B * 0.114));
+            var bgDelta = System.Convert.ToInt32((color.R*0.299) + (color.G*0.587) + (color.B*0.114));
             var foreColor = (255 - bgDelta < nThreshold) ? Colors.Black : Colors.White;
             return foreColor;
         }
 
         private static SolidColorBrush GetSolidColorBrush(Color color, double opacity = 1d)
         {
-            var brush = new SolidColorBrush(color) { Opacity = opacity };
+            var brush = new SolidColorBrush(color) {Opacity = opacity};
             brush.Freeze();
             return brush;
         }
 
-        public static void CreateAppStyleBy(Color color, bool changeImmediately = false)
+        public static void CreateAppStyleBy(Color color, AppTheme theme)
         {
             // create a runtime accent resource dictionary
 
@@ -141,14 +141,8 @@ namespace Deadfile
             var newAccent = new Accent {Name = resDictName, Resources = resourceDictionary};
             ThemeManager.AddAccent(newAccent.Name, newAccent.Resources.Source);
 
-            if (changeImmediately)
-            {
-                var application = Application.Current;
-                //var applicationTheme = ThemeManager.AppThemes.First(x => string.Equals(x.Name, "BaseLight"));
-                // detect current application theme
-                Tuple<AppTheme, Accent> applicationTheme = ThemeManager.DetectAppStyle(application);
-                ThemeManager.ChangeAppStyle(application, newAccent, applicationTheme.Item1);
-            }
+            var application = Application.Current;
+            ThemeManager.ChangeAppStyle(application, newAccent, theme);
         }
 
         public static void SetThemeFromProperties()
@@ -158,7 +152,7 @@ namespace Deadfile
             if (useCustomAccent)
             {
                 var customAccent = ShellViewModel.FromDrawingColor(Settings.Default.CustomAccent);
-                CreateAppStyleBy(customAccent, true);
+                CreateAppStyleBy(customAccent, ThemeManager.GetAppTheme(theme));
             }
             else
             {

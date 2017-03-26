@@ -42,7 +42,7 @@
             Grid.Column="1"
             Width="3"
             HorizontalAlignment="Stretch"
-            Foreground="{DynamicResource GrayBrush1}"
+            Background="{DynamicResource GrayBrush1}"
             Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
         <ContentControl
             x:Name="NavigationBar"
@@ -54,6 +54,7 @@
             Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BrowserAndActionsAreVisibleToContentColumnSpan}}"
+            Background="{StaticResource BrowserBackground}"
             BorderThickness="0"
             Transition="Default" />
         <ContentControl

@@ -108,7 +108,6 @@
         x:Key="FormLabel"
         BasedOn="{StaticResource {x:Type TextBlock}}"
         TargetType="{x:Type TextBlock}">
-        <Setter Property="Foreground" Value="{DynamicResource AccentBaseColorBrush}" />
         <Setter Property="Margin" Value="20,5,20,5" />
     </Style>
     <Style

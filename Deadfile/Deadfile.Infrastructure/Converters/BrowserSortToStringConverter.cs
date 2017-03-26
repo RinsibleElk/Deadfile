@@ -25,6 +25,7 @@ namespace Deadfile.Infrastructure.Converters
             if (targetType != typeof(string))
                 throw new ApplicationException(
                     "Attempted to convert a browser sort to something other than a string");
+            if (value == null) return "";
             if (value.GetType() != typeof(BrowserSort)) return "";
             var browserSort = (BrowserSort) value;
             switch (browserSort)
