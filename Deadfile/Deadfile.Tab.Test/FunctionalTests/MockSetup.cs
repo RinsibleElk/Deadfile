@@ -84,7 +84,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
             NavigationContainer = new MockNavigationContainer(ViewModels);
             NavigationService = new NavigationService(NavigationContainer);
             TabViewModel = new TabViewModel(TabIdentity, EventAggregator.Object, NavigationService);
-            NavigationBarViewModel = new NavigationBarViewModel(TabIdentity, NavigationService, EventAggregator.Object);
+            NavigationBarViewModel = new NavigationBarViewModel(TabIdentity, NavigationService, EventAggregator.Object, Repository);
             HomePageViewModel = new HomePageViewModel(TabIdentity, EventAggregator.Object);
             ClientsPageViewModel = new ClientsPageViewModel(TabIdentity, EventAggregator.Object, Repository, DeadfileDialogCoordinator, UrlNavigationService);
             JobsPageViewModel = new JobsPageViewModel(TabIdentity, NavigationService, Repository, EventAggregator.Object, DeadfileDialogCoordinator);

@@ -108,72 +108,94 @@
                             HeaderTemplateSelector="{StaticResource ExpanderHeaderTemplateSelector}"
                             IsExpanded="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}"
                             Style="{StaticResource GradientExpanderStyle}">
-                            <Grid Background="White">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
+                                    Description:
+                                </TextBlock>
                                 <TextBox
                                     Grid.Row="0"
+                                    Grid.Column="1"
                                     controls:TextBoxHelper.Watermark="Description"
                                     IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     Text="{Binding Description, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
-                                <DockPanel Grid.Row="1" LastChildFill="True">
-                                    <DockPanel.Resources>
-                                        <Style x:Key="PriorityToggle" TargetType="{x:Type Image}">
-                                            <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/medium-priority.png" />
-                                            <Setter Property="ToolTip" Value="Toggle Priority (Medium)" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.Low}">
-                                                    <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/low-priority.png" />
-                                                    <Setter Property="ToolTip" Value="Toggle Priority (Low)" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.Medium}">
-                                                    <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/medium-priority.png" />
-                                                    <Setter Property="ToolTip" Value="Toggle Priority (Medium)" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.High}">
-                                                    <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/high-priority.png" />
-                                                    <Setter Property="ToolTip" Value="Toggle Priority (High)" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DockPanel.Resources>
-                                    <Button Command="{Binding Path=DataContext.TogglePriorityCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}">
-                                        <Image
-                                            Width="16"
-                                            Height="16"
-                                            DockPanel.Dock="Right"
-                                            Style="{StaticResource PriorityToggle}" />
-                                    </Button>
-                                    <CheckBox
-                                        Margin="10,0,10,0"
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
+                                    Priority:
+                                </TextBlock>
+                                <Button
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Command="{Binding Path=DataContext.TogglePriorityCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <Image
+                                        Width="16"
+                                        Height="16"
                                         DockPanel.Dock="Right"
-                                        IsChecked="{Binding State, Mode=TwoWay, Converter={StaticResource JobTaskStateToBoolean}}"
-                                        IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}">
-                                        Completed
-                                    </CheckBox>
-                                    <DatePicker
-                                        IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        IsTodayHighlighted="True"
-                                        SelectedDate="{Binding DueDate}" />
-                                </DockPanel>
-                                <TextBox
+                                        Style="{StaticResource PriorityToggle}" />
+                                </Button>
+                                <TextBlock
                                     Grid.Row="2"
+                                    Grid.Column="0"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
+                                    Due Date:
+                                </TextBlock>
+                                <DatePicker
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    IsTodayHighlighted="True"
+                                    SelectedDate="{Binding DueDate}" />
+                                <TextBlock
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
+                                    Notes:
+                                </TextBlock>
+                                <TextBox
+                                    Grid.Row="3"
+                                    Grid.Column="1"
                                     controls:TextBoxHelper.Watermark="Notes"
                                     IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     Text="{Binding Notes, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock
+                                    Grid.Row="4"
+                                    Grid.Column="0"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
+                                    State:
+                                </TextBlock>
                                 <ComboBox
-                                    Grid.Row="3"
+                                    Grid.Row="4"
+                                    Grid.Column="1"
                                     IsEditable="False"
                                     IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     ItemsSource="{Binding Source={StaticResource JobTaskStateValues}}"
                                     SelectedItem="{Binding State}" />
                                 <StackPanel
-                                    Grid.Row="4"
+                                    Grid.Row="5"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
                                     HorizontalAlignment="Right"
                                     Orientation="Horizontal">
                                     <Button Command="{Binding Path=DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}">

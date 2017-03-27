@@ -28,10 +28,7 @@ namespace Deadfile.Model.Browser
                     Children.Add(job);
         }
 
-        public override BrowserModelType ModelType
-        {
-            get { return BrowserModelType.Client; }
-        }
+        public override BrowserModelType ModelType => BrowserModelType.Client;
 
         private ClientStatus _clientStatus = ClientStatus.Active;
         public ClientStatus Status

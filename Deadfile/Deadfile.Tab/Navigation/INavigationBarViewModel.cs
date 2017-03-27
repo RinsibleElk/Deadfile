@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Caliburn.Micro;
+using Deadfile.Model.Browser;
 using Deadfile.Tab.Events;
 
 namespace Deadfile.Tab.Navigation
@@ -20,5 +23,11 @@ namespace Deadfile.Tab.Navigation
         bool CanUndo { get; }
         void Redo();
         bool CanRedo { get; }
+        string SearchText { get; set; }
+        bool IsSearchShown { get; }
+        ObservableCollection<BrowserModel> SearchResults { get; }
+        BrowserModel SelectedSearchItem { get; set; }
+        ICommand LostFocusCommand { get; }
+        ICommand GotFocusCommand { get; }
     }
 }

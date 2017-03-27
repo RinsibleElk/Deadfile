@@ -27,10 +27,7 @@ namespace Deadfile.Model.Browser
                 Children.Add(Repository.GetBrowserClientById(Mode, IncludeInactiveEnabled, ParentId));
         }
 
-        public override BrowserModelType ModelType
-        {
-            get { return BrowserModelType.Job; }
-        }
+        public override BrowserModelType ModelType => BrowserModelType.Job;
 
         private JobStatus _jobStatus = JobStatus.Active;
         public JobStatus Status

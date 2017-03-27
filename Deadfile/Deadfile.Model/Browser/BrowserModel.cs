@@ -14,19 +14,12 @@ namespace Deadfile.Model.Browser
     {
         private sealed class BrowserDummy : BrowserModel
         {
-            public BrowserDummy() : base()
-            {
-            }
-
             protected override void LoadChildren()
             {
                 throw new NotImplementedException();
             }
 
-            public override BrowserModelType ModelType
-            {
-                get { return BrowserModelType.Dummy; }
-            }
+            public override BrowserModelType ModelType => BrowserModelType.Dummy;
         }
 
         private static readonly BrowserDummy DummyChild = new BrowserDummy();
@@ -87,10 +80,7 @@ namespace Deadfile.Model.Browser
         /// <summary>
         /// Returns true if this object's Children have not yet been populated.
         /// </summary>
-        public bool HasDummyChild
-        {
-            get { return this.Children.Count == 1 && this.Children[0] == DummyChild; }
-        }
+        public bool HasDummyChild => Children.Count == 1 && Children[0] == DummyChild;
 
         /// <summary>
         /// Invoked when the child items need to be loaded on demand.

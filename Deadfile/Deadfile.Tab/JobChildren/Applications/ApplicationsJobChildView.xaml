@@ -90,7 +90,11 @@
                             HeaderTemplateSelector="{StaticResource ExpanderHeaderTemplateSelector}"
                             IsExpanded="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}"
                             Style="{StaticResource GradientExpanderStyle}">
-                            <Grid Background="White">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
@@ -100,30 +104,70 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
+                                    Reference:
+                                </TextBlock>
                                 <TextBox
                                     Grid.Row="0"
+                                    Grid.Column="1"
                                     controls:TextBoxHelper.Watermark="Reference"
                                     IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     Text="{Binding LocalAuthorityReference, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
+                                    Local Authority:
+                                </TextBlock>
                                 <ComboBox
                                     Grid.Row="1"
+                                    Grid.Column="1"
                                     controls:TextBoxHelper.Watermark="Local Authority"
                                     IsEditable="True"
                                     IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     ItemsSource="{Binding Path=DataContext.LocalAuthorities, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     SelectedItem="{Binding LocalAuthority}" />
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
+                                    Creation Date:
+                                </TextBlock>
                                 <DatePicker
                                     Grid.Row="2"
+                                    Grid.Column="1"
                                     IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     IsTodayHighlighted="True"
                                     SelectedDate="{Binding CreationDate}" />
+                                <TextBlock
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
+                                    Due Date:
+                                </TextBlock>
                                 <DatePicker
                                     Grid.Row="3"
+                                    Grid.Column="1"
                                     IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     IsTodayHighlighted="True"
                                     SelectedDate="{Binding EstimatedDecisionDate}" />
+                                <TextBlock
+                                    Grid.Row="4"
+                                    Grid.Column="0"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
+                                    Type:
+                                </TextBlock>
                                 <ComboBox
                                     Grid.Row="4"
+                                    Grid.Column="1"
                                     IsEditable="False"
                                     IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     ItemsSource="{x:Static utils:ApplicationTypeUtils.AllApplicationTypes}"
@@ -134,14 +178,24 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
+                                <TextBlock
+                                    Grid.Row="5"
+                                    Grid.Column="0"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
+                                    State:
+                                </TextBlock>
                                 <ComboBox
                                     Grid.Row="5"
+                                    Grid.Column="1"
                                     IsEditable="False"
                                     IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     ItemsSource="{Binding Source={StaticResource ApplicationStateValues}}"
                                     SelectedItem="{Binding State}" />
                                 <StackPanel
                                     Grid.Row="6"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
                                     HorizontalAlignment="Right"
                                     Orientation="Horizontal">
                                     <Button Command="{Binding Path=DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}">

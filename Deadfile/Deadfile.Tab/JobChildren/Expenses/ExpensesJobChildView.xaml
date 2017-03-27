@@ -78,7 +78,11 @@
                             HeaderTemplateSelector="{StaticResource ExpanderHeaderTemplateSelector}"
                             IsExpanded="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}"
                             Style="{StaticResource GradientExpanderStyle}">
-                            <Grid Background="White">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
@@ -88,8 +92,16 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,0,0,10"
+                                    VerticalAlignment="Center">
+                                    Type:
+                                </TextBlock>
                                 <ComboBox
                                     Grid.Row="0"
+                                    Grid.Column="1"
                                     IsEditable="False"
                                     IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     ItemsSource="{Binding Source={StaticResource ExpenseTypeValues}}"
@@ -100,31 +112,73 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="0,0,0,10"
+                                    VerticalAlignment="Center">
+                                    Description:
+                                </TextBlock>
                                 <TextBox
                                     Grid.Row="1"
+                                    Grid.Column="1"
                                     controls:TextBoxHelper.Watermark="Description"
                                     IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     Text="{Binding Description, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Margin="0,0,0,10"
+                                    VerticalAlignment="Center">
+                                    Creation Date:
+                                </TextBlock>
                                 <DatePicker
                                     Grid.Row="2"
+                                    Grid.Column="1"
                                     IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     IsTodayHighlighted="True"
                                     SelectedDate="{Binding CreationDate}" />
+                                <TextBlock
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    Margin="0,0,0,10"
+                                    VerticalAlignment="Center">
+                                    Net Amount:
+                                </TextBlock>
                                 <controls:NumericUpDown
                                     Grid.Row="3"
+                                    Grid.Column="1"
                                     IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     Value="{Binding NetAmount}" />
+                                <TextBlock
+                                    Grid.Row="4"
+                                    Grid.Column="0"
+                                    Margin="0,0,0,10"
+                                    VerticalAlignment="Center">
+                                    Notes:
+                                </TextBlock>
                                 <TextBox
                                     Grid.Row="4"
+                                    Grid.Column="1"
                                     controls:TextBoxHelper.Watermark="Notes"
                                     IsEnabled="{Binding Path=DataContext.Editable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     Text="{Binding Notes, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock
+                                    Grid.Row="5"
+                                    Grid.Column="0"
+                                    Margin="0,0,0,10"
+                                    VerticalAlignment="Center">
+                                    State:
+                                </TextBlock>
                                 <TextBox
                                     Grid.Row="5"
+                                    Grid.Column="1"
                                     IsEnabled="False"
                                     Text="{Binding State}" />
                                 <StackPanel
                                     Grid.Row="6"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
                                     HorizontalAlignment="Right"
                                     Orientation="Horizontal">
                                     <Button Command="{Binding Path=DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}">

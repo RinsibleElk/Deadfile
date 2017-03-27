@@ -21,8 +21,8 @@
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
     <Border BorderBrush="{DynamicResource GrayBrush1}" BorderThickness="0,1,0,0">
-        <Border BorderBrush="{DynamicResource GrayBrush7}" BorderThickness="0,2,0,0">
-            <StackPanel Background="{DynamicResource AccentColorBrush}" Orientation="Horizontal">
+        <Border BorderBrush="{DynamicResource GrayBrush4}" BorderThickness="0,2,0,0">
+            <StackPanel Background="{DynamicResource GrayBrush8}" Orientation="Horizontal">
                 <Button
                     x:Name="EditItem"
                     IsDefault="{Binding CanEditItem}"

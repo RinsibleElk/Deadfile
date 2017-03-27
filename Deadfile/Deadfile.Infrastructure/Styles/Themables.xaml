@@ -18,6 +18,7 @@
         <Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Margin" Value="0,0,0,0" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
@@ -30,10 +31,11 @@
                         SnapsToDevicePixels="true">
                         <dragablz:Trapezoid
                             x:Name="Trapezoid"
-                            Margin="0,0,0,0"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            LongBasePenBrush="{TemplateBinding Background}"
+                            Margin="0"
+                            Background="{DynamicResource GrayBrush4}"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            LongBasePenBrush="{DynamicResource AccentColorBrush}"
                             PenThickness="0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -76,13 +78,12 @@
                             <Setter TargetName="contentPresenter" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Header}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Trapezoid" Property="Background" Value="{DynamicResource AccentColorBrush3}" />
-                            <Setter TargetName="Trapezoid" Property="LongBasePenBrush" Value="{DynamicResource AccentColorBrush3}" />
+                            <Setter TargetName="Trapezoid" Property="Background" Value="{DynamicResource GrayBrush7}" />
+                            <Setter TargetName="Trapezoid" Property="LongBasePenBrush" Value="{DynamicResource AccentColorBrush}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Trapezoid" Property="Background" Value="{DynamicResource AccentColorBrush}" />
+                            <Setter TargetName="Trapezoid" Property="Background" Value="{DynamicResource GrayBrush8}" />
                             <Setter TargetName="Trapezoid" Property="LongBasePenBrush" Value="{DynamicResource AccentColorBrush}" />
-                            <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -349,5 +350,48 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    <ControlTemplate x:Key="ClientItemTemplate">
+        <TextBlock Text="{Binding FullName}" />
+    </ControlTemplate>
+    <ControlTemplate x:Key="JobItemTemplate">
+        <TextBlock Text="{Binding FullAddress}" />
+    </ControlTemplate>
+    <ControlTemplate x:Key="InvoiceItemTemplate">
+        <TextBlock Text="{Binding DisplayName}" />
+    </ControlTemplate>
+    <Style
+        x:Key="SearchBoxListItemStyle"
+        BasedOn="{StaticResource {x:Type ListBoxItem}}"
+        TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Template" Value="{DynamicResource ClientItemTemplate}" />
+        <Setter Property="Background" Value="{DynamicResource WhiteBrush}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ModelType}" Value="Client">
+                <Setter Property="Template" Value="{DynamicResource ClientItemTemplate}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding ModelType}" Value="Job">
+                <Setter Property="Template" Value="{DynamicResource JobItemTemplate}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding ModelType}" Value="Invoice">
+                <Setter Property="Template" Value="{DynamicResource InvoiceItemTemplate}" />
+            </DataTrigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="GradientExpanderStyle"
+        BasedOn="{StaticResource {x:Type Expander}}"
+        TargetType="{x:Type Expander}">
+        <Style.Resources>
+            <LinearGradientBrush x:Key="BackBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0.1" Color="{DynamicResource AccentColor}" />
+                <GradientStop Offset="0.9" Color="{DynamicResource AccentBasecolor}" />
+            </LinearGradientBrush>
+        </Style.Resources>
+        <Setter Property="Background" Value="{StaticResource BackBrush}" />
     </Style>
 </ResourceDictionary>

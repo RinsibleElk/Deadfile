@@ -23,6 +23,28 @@ namespace Deadfile.Tab.Navigation
         public NavigationBarView()
         {
             InitializeComponent();
+
+            this.Loaded += NavigationBarViewLoaded;
+        }
+
+        private void NavigationBarViewLoaded(object sender, RoutedEventArgs e)
+        {
+            Window w = Window.GetWindow(SearchTextBox);
+            if (w != null)
+            {
+                w.LocationChanged += (o, args) =>
+                {
+                    var offset = SearchPopup.HorizontalOffset;
+                    SearchPopup.HorizontalOffset = offset + 1;
+                    SearchPopup.HorizontalOffset = offset;
+                };
+                w.SizeChanged += (o, args) =>
+                {
+                    var offset = SearchPopup.HorizontalOffset;
+                    SearchPopup.HorizontalOffset = offset + 1;
+                    SearchPopup.HorizontalOffset = offset;
+                };
+            }
         }
     }
 }

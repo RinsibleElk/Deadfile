@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Deadfile.Infrastructure.Interfaces;
+using Deadfile.Model.Browser;
+using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Events;
+using Prism.Commands;
 using Prism.Events;
 
 namespace Deadfile.Tab.Navigation
@@ -17,6 +22,7 @@ namespace Deadfile.Tab.Navigation
         private readonly TabIdentity _tabIdentity;
         private readonly INavigationService _navigationService;
         private readonly Prism.Events.IEventAggregator _eventAggregator;
+        private readonly IDeadfileRepository _repository;
         private bool _canHome;
         private bool _canRedo;
         private bool _canUndo;
@@ -26,15 +32,33 @@ namespace Deadfile.Tab.Navigation
         private SubscriptionToken _canUndoEventSubscriptionToken;
         private SubscriptionToken _lockedForEditingEventSubscriptionToken;
         private SubscriptionToken _navigateFallBackEventSubscriptionToken;
+        private string _searchText;
+        private bool _isSearchShown;
+        private ObservableCollection<BrowserModel> _searchResults;
+        private BrowserModel _selectedSearchItem;
 
         public NavigationBarViewModel(TabIdentity tabIdentity,
             INavigationService navigationService,
-            Prism.Events.IEventAggregator eventAggregator)
+            Prism.Events.IEventAggregator eventAggregator,
+            IDeadfileRepository repository)
         {
             _tabIdentity = tabIdentity;
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
+            _repository = repository;
             _navigationService.PropertyChanged += NavigationPropertyChanged;
+            LostFocusCommand = new DelegateCommand(SearchTextLostFocus);
+            GotFocusCommand = new DelegateCommand(SearchTextGotFocus);
+        }
+
+        private void SearchTextGotFocus()
+        {
+            IsSearchShown = !String.IsNullOrEmpty(SearchText);
+        }
+
+        private void SearchTextLostFocus()
+        {
+            IsSearchShown = false;
         }
 
         private void NavigationPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -124,6 +148,89 @@ namespace Deadfile.Tab.Navigation
                 NotifyOfPropertyChange(() => CanRedo);
             }
         }
+
+
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                if (value == _searchText) return;
+                _searchText = value;
+                NotifyOfPropertyChange(() => SearchText);
+                if (String.IsNullOrWhiteSpace(_searchText))
+                {
+                    IsSearchShown = false;
+                    SearchResults = new ObservableCollection<BrowserModel>();
+                    SelectedSearchItem = null;
+                }
+                else
+                {
+                    IsSearchShown = true;
+                    var clients =
+                        _repository.GetBrowserItems(new BrowserSettings
+                        {
+                            Mode = BrowserMode.Client,
+                            FilterText = _searchText,
+                            IncludeInactiveEnabled = true
+                        });
+                    var jobs =
+                        _repository.GetBrowserItems(new BrowserSettings
+                        {
+                            Mode = BrowserMode.Job,
+                            FilterText = _searchText,
+                            IncludeInactiveEnabled = true
+                        });
+                    var invoices =
+                        _repository.GetBrowserItems(new BrowserSettings
+                        {
+                            Mode = BrowserMode.Invoice,
+                            FilterText = _searchText,
+                            IncludeInactiveEnabled = true
+                        });
+                    SearchResults = new ObservableCollection<BrowserModel>(clients.Concat(jobs).Concat(invoices));
+                    SelectedSearchItem = null;
+                }
+            }
+        }
+
+        public bool IsSearchShown
+        {
+            get { return _isSearchShown; }
+            set
+            {
+                if (value == _isSearchShown) return;
+                _isSearchShown = value;
+                NotifyOfPropertyChange(() => IsSearchShown);
+            }
+        }
+
+        public ObservableCollection<BrowserModel> SearchResults
+        {
+            get { return _searchResults; }
+            set
+            {
+                if (value == _searchResults) return;
+                _searchResults = value;
+                NotifyOfPropertyChange(() => SearchResults);
+            }
+        }
+
+        public BrowserModel SelectedSearchItem
+        {
+            get { return _selectedSearchItem; }
+            set
+            {
+                if (value == _selectedSearchItem) return;
+                _selectedSearchItem = value;
+                NotifyOfPropertyChange(() => SelectedSearchItem);
+                if (_selectedSearchItem != null)
+                    _eventAggregator.GetEvent<SelectedItemEvent>().Publish(new SelectedItemPacket(_selectedSearchItem.ModelType, _selectedSearchItem.ParentId, _selectedSearchItem.Id));
+            }
+        }
+
+        public ICommand LostFocusCommand { get; }
+        public ICommand GotFocusCommand { get; }
 
         public void OnNavigatedTo(object parameters)
         {

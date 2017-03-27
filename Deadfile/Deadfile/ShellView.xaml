@@ -20,9 +20,9 @@
     Dialog:DialogParticipation.Register="{Binding}"
     d:DataContext="{d:DesignInstance Type=local:ShellDesignTimeViewModel,
                                      IsDesignTimeCreatable=True}"
-    d:DesignHeight="300"
-    d:DesignWidth="300"
-    Background="{DynamicResource AccentColorBrush3}"
+    d:DesignHeight="400"
+    d:DesignWidth="500"
+    Background="{DynamicResource WhiteBrush}"
     BorderThickness="0"
     Closing="Window_Closing"
     FocusManager.FocusedElement="{Binding ElementName=Items}"
@@ -225,37 +225,36 @@
                 IsChecked="{Binding ElementName=SettingsFlyout, Path=IsOpen}" />
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
-    <DockPanel>
-        <dragablz:TabablzControl
-            x:Name="Items"
-            AdjacentHeaderItemOffset="-10"
-            Background="{DynamicResource ControlBackgroundBrush}"
-            BorderThickness="0"
-            ClosingItemCallback="{Binding ClosingItemActionCallback}"
-            Focusable="True"
-            ItemContainerStyle="{StaticResource DeadfileDragablzTabItemStyle}"
-            ShowDefaultCloseButton="True">
-            <dragablz:TabablzControl.HeaderItemTemplate>
-                <DataTemplate DataType="tab:TabViewModel">
-                    <StackPanel Orientation="Horizontal">
-                        <Image
-                            Width="16"
-                            Height="16"
-                            Source="{Binding ContentArea.Experience, Converter={StaticResource ExperienceToImage}}" />
-                        <TextBlock Margin="5,0,5,0" Text="{Binding DisplayName}" />
-                    </StackPanel>
-                </DataTemplate>
-            </dragablz:TabablzControl.HeaderItemTemplate>
-            <dragablz:TabablzControl.InterTabController>
-                <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" />
-            </dragablz:TabablzControl.InterTabController>
-            <dragablz:TabablzControl.HeaderSuffixContent>
+    <dragablz:TabablzControl
+        x:Name="Items"
+        Padding="0"
+        AdjacentHeaderItemOffset="-10"
+        BorderBrush="Transparent"
+        BorderThickness="0"
+        ClosingItemCallback="{Binding ClosingItemActionCallback}"
+        Focusable="True"
+        ItemContainerStyle="{StaticResource DeadfileDragablzTabItemStyle}"
+        ShowDefaultCloseButton="True">
+        <dragablz:TabablzControl.HeaderItemTemplate>
+            <DataTemplate DataType="tab:TabViewModel">
                 <StackPanel Orientation="Horizontal">
-                    <Button Command="{Binding OpenNewTab}" Style="{StaticResource AddTabButton}" />
+                    <Image
+                        Width="16"
+                        Height="16"
+                        Source="{Binding ContentArea.Experience, Converter={StaticResource ExperienceToImage}}" />
+                    <TextBlock Margin="5,0,5,0" Text="{Binding DisplayName}" />
                 </StackPanel>
-            </dragablz:TabablzControl.HeaderSuffixContent>
-        </dragablz:TabablzControl>
-    </DockPanel>
+            </DataTemplate>
+        </dragablz:TabablzControl.HeaderItemTemplate>
+        <dragablz:TabablzControl.InterTabController>
+            <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" />
+        </dragablz:TabablzControl.InterTabController>
+        <dragablz:TabablzControl.HeaderSuffixContent>
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding OpenNewTab}" Style="{StaticResource AddTabButton}" />
+            </StackPanel>
+        </dragablz:TabablzControl.HeaderSuffixContent>
+    </dragablz:TabablzControl>
 </controls:MetroWindow>
 
 

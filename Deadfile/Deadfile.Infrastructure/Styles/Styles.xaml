@@ -60,16 +60,6 @@
         <Setter Property="controls:ButtonHelper.PreserveTextCase" Value="True" />
     </Style>
 
-    <Style x:Key="GradientExpanderStyle" TargetType="{x:Type Expander}">
-        <Style.Resources>
-            <LinearGradientBrush x:Key="BackBrush" StartPoint="0.5,0" EndPoint="0.5,1">
-                <GradientStop Offset="0.1" Color="#887777AA" />
-                <GradientStop Offset="0.9" Color="#44333355" />
-            </LinearGradientBrush>
-        </Style.Resources>
-        <Setter Property="Background" Value="{StaticResource BackBrush}" />
-    </Style>
-
     <LinearGradientBrush x:Key="GridRowRegularBackground" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Offset="0" Color="#33FFFFFF" />
         <GradientStop Offset="0.992" Color="#33000000" />
@@ -1603,5 +1593,22 @@
         </Style.Triggers>
     </Style>
 
-
+    <Style x:Key="PriorityToggle" TargetType="{x:Type Image}">
+        <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/medium-priority.png" />
+        <Setter Property="ToolTip" Value="Toggle Priority (Medium)" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.Low}">
+                <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/low-priority.png" />
+                <Setter Property="ToolTip" Value="Toggle Priority (Low)" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.Medium}">
+                <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/medium-priority.png" />
+                <Setter Property="ToolTip" Value="Toggle Priority (Medium)" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Priority}" Value="{x:Static entity:JobTaskPriority.High}">
+                <Setter Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/high-priority.png" />
+                <Setter Property="ToolTip" Value="Toggle Priority (High)" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

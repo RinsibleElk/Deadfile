@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Infrastructure.Services;
+using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Events;
 using Deadfile.Tab.Navigation;
 using Moq;
@@ -19,6 +20,7 @@ namespace Deadfile.Tab.Test
         {
             public readonly Mock<IEventAggregator> EventAggregatorMock = new Mock<IEventAggregator>();
             public readonly Mock<INavigationService> NavigationServiceMock = new Mock<INavigationService>();
+            public readonly Mock<IDeadfileRepository> DeadfileRepositoryMock = new Mock<IDeadfileRepository>();
             public readonly UndoEvent UndoEvent = new UndoEvent();
             public readonly CanUndoEvent CanUndoEvent = new CanUndoEvent();
             public readonly NavigateFallBackEvent NavigateFallBackEvent = new NavigateFallBackEvent();
@@ -42,7 +44,7 @@ namespace Deadfile.Tab.Test
                     .Setup((ea) => ea.GetEvent<LockedForEditingEvent>())
                     .Returns(LockedForEditingEvent)
                     .Verifiable();
-                ViewModel = new NavigationBarViewModel(TabIdentity, NavigationServiceMock.Object, EventAggregatorMock.Object);
+                ViewModel = new NavigationBarViewModel(TabIdentity, NavigationServiceMock.Object, EventAggregatorMock.Object, DeadfileRepositoryMock.Object);
                 ViewModel.PropertyChanged += (s, e) =>
                 {
                     switch (e.PropertyName)
