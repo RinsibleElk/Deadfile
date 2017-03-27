@@ -53,7 +53,7 @@ namespace Deadfile.Tab.Navigation
 
         private void SearchTextGotFocus()
         {
-            IsSearchShown = !String.IsNullOrEmpty(SearchText);
+            IsSearchShown = !string.IsNullOrEmpty(SearchText);
         }
 
         private void SearchTextLostFocus()

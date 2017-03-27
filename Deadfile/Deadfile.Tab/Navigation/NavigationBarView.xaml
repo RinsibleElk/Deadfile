@@ -81,11 +81,14 @@
                         Width="300"
                         IsOpen="{Binding IsSearchShown}"
                         PlacementTarget="{Binding ElementName=SearchTextBox}">
-                        <ListBox
-                            BorderThickness="1"
-                            ItemContainerStyle="{DynamicResource SearchBoxListItemStyle}"
-                            ItemsSource="{Binding SearchResults}"
-                            SelectedItem="{Binding SelectedSearchItem}" />
+                        <Grid>
+                            <ListView
+                                MaxHeight="400"
+                                BorderThickness="1"
+                                ItemContainerStyle="{DynamicResource SearchBoxListItemStyle}"
+                                ItemsSource="{Binding SearchResults}"
+                                SelectedItem="{Binding SelectedSearchItem}" />
+                        </Grid>
                     </Popup>
                 </Grid>
             </StackPanel>

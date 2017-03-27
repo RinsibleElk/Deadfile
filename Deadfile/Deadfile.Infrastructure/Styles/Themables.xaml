@@ -352,20 +352,40 @@
         </Setter>
     </Style>
     <ControlTemplate x:Key="ClientItemTemplate">
-        <TextBlock Text="{Binding FullName}" />
+        <StackPanel x:Name="Sp">
+            <TextBlock x:Name="Tb" Text="{Binding FullName}" />
+        </StackPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Sp" Property="Background" Value="{DynamicResource AccentColorBrush}" />
+                <Setter TargetName="Tb" Property="FontWeight" Value="Bold" />
+            </Trigger>
+        </ControlTemplate.Triggers>
     </ControlTemplate>
     <ControlTemplate x:Key="JobItemTemplate">
-        <TextBlock Text="{Binding FullAddress}" />
+        <StackPanel x:Name="Sp">
+            <TextBlock x:Name="Tb" Text="{Binding FullAddress}" />
+        </StackPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Sp" Property="Background" Value="{DynamicResource AccentColorBrush}" />
+                <Setter TargetName="Tb" Property="FontWeight" Value="Bold" />
+            </Trigger>
+        </ControlTemplate.Triggers>
     </ControlTemplate>
     <ControlTemplate x:Key="InvoiceItemTemplate">
-        <TextBlock Text="{Binding DisplayName}" />
+        <StackPanel x:Name="Sp">
+            <TextBlock x:Name="Tb" Text="{Binding DisplayName}" />
+        </StackPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Sp" Property="Background" Value="{DynamicResource AccentColorBrush}" />
+                <Setter TargetName="Tb" Property="FontWeight" Value="Bold" />
+            </Trigger>
+        </ControlTemplate.Triggers>
     </ControlTemplate>
-    <Style
-        x:Key="SearchBoxListItemStyle"
-        BasedOn="{StaticResource {x:Type ListBoxItem}}"
-        TargetType="{x:Type ListBoxItem}">
+    <Style x:Key="SearchBoxListItemStyle" TargetType="{x:Type ListViewItem}">
         <Setter Property="Template" Value="{DynamicResource ClientItemTemplate}" />
-        <Setter Property="Background" Value="{DynamicResource WhiteBrush}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding ModelType}" Value="Client">
                 <Setter Property="Template" Value="{DynamicResource ClientItemTemplate}" />
@@ -376,9 +396,6 @@
             <DataTrigger Binding="{Binding ModelType}" Value="Invoice">
                 <Setter Property="Template" Value="{DynamicResource InvoiceItemTemplate}" />
             </DataTrigger>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
-            </Trigger>
         </Style.Triggers>
     </Style>
 
