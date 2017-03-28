@@ -327,10 +327,7 @@ namespace Deadfile.Tab.Common
         public ICommand DeleteCommand => _deleteCommand;
         public ICommand SaveCommand => _saveCommand;
 
-        public UndoTracker<T> UndoTracker
-        {
-            get { return _undoTracker; }
-        }
+        public UndoTracker<T> UndoTracker => _undoTracker;
 
         protected IUndoTrackerActivatable UndoTrackerActivatable = null;
         private bool _canDeleteItem;
@@ -342,6 +339,10 @@ namespace Deadfile.Tab.Common
 
         public int SelectedIndex { get; set; }
         public bool ParentEditable { get; set; }
+        public void NavigateToModel(int modelId)
+        {
+            throw new NotImplementedException();
+        }
 
         IUndoTracker ISimpleEditableItemViewModel.UndoTracker
         {

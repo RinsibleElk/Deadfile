@@ -952,7 +952,7 @@ namespace Deadfile.Model
             return li;
         }
 
-        public void BillJobTask(JobTaskModel jobTaskModel)
+        public int MakeJobTaskBillable(JobTaskModel jobTaskModel)
         {
             var billableHourModel = new BillableHourModel
             {
@@ -968,6 +968,7 @@ namespace Deadfile.Model
             };
             DeleteJobTask(jobTaskModel);
             SaveBillableHour(billableHourModel);
+            return billableHourModel.BillableHourId;
         }
 
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
@@ -1039,18 +1040,21 @@ namespace Deadfile.Model
                 throw new ApplicationException("Log in corrupted");
             using (var dbContext = _deadfileContextAbstractionFactory.GetAbstraction())
             {
+                BillableHour billableHour;
                 if (billableHourModel.BillableHourId == ModelBase.NewModelId)
                 {
                     // Add
-                    dbContext.AddBillableHour(_modelEntityMapper.Mapper.Map<BillableHourModel, BillableHour>(billableHourModel));
+                    billableHour = _modelEntityMapper.Mapper.Map<BillableHourModel, BillableHour>(billableHourModel);
+                    dbContext.AddBillableHour(billableHour);
                 }
                 else
                 {
                     // Edit
-                    var billableHour = dbContext.GetBillableHourById(billableHourModel.BillableHourId);
+                    billableHour = dbContext.GetBillableHourById(billableHourModel.BillableHourId);
                     _modelEntityMapper.Mapper.Map<BillableHourModel, BillableHour>(billableHourModel, billableHour);
                 }
                 dbContext.SaveChanges();
+                billableHourModel.BillableHourId = billableHour.BillableHourId;
             }
         }
 

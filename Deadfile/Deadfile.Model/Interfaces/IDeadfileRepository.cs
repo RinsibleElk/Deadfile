@@ -291,6 +291,7 @@ namespace Deadfile.Model.Interfaces
         /// Delete the job task model and add a new BillableHour to take its place.
         /// </summary>
         /// <param name="jobTaskModel"></param>
-        void BillJobTask(JobTaskModel jobTaskModel);
+        /// <returns>The id of the new billable hour.</returns>
+        int MakeJobTaskBillable(JobTaskModel jobTaskModel);
     }
 }

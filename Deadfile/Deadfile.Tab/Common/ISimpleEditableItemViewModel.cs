@@ -98,5 +98,11 @@ namespace Deadfile.Tab.Common
         /// Set by the parent when it becomes (un)editable. Used to block changes.
         /// </summary>
         bool ParentEditable { get; set; }
+
+        /// <summary>
+        /// Can be called by the parent to navigate to a specific model by id.
+        /// </summary>
+        /// <param name="modelId"></param>
+        void NavigateToModel(int modelId);
     }
 }

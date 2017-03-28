@@ -118,7 +118,6 @@
     <Compile Include="TestBrowserPaneViewModel.cs" />
     <Compile Include="TestJobsActionsPadViewModel.cs" />
     <Compile Include="TestClientsActionsPadViewModel.cs" />
-    <Compile Include="TestJobsPageViewModel.cs" />
     <Compile Include="TestClientsPageViewModel.cs" />
     <Compile Include="TestInvoicesActionsPadViewModel.cs" />
     <Compile Include="TestInvoicesPageViewModel.cs" />

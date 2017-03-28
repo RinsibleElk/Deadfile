@@ -140,6 +140,7 @@
     <Compile Include="Events\DisplayNameEvent.cs" />
     <Compile Include="Events\EditActionEvent.cs" />
     <Compile Include="Events\InvoiceClientEvent.cs" />
+    <Compile Include="Events\JobChildNavigateEvent.cs" />
     <Compile Include="Events\LockedForEditingEvent.cs" />
     <Compile Include="Events\NavigateFallBackEvent.cs" />
     <Compile Include="Events\NavigateEvent.cs" />

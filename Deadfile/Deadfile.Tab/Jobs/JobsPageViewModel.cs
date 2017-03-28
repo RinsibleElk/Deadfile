@@ -14,6 +14,7 @@ using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
 using Deadfile.Tab.JobChildren;
 using MahApps.Metro.Controls.Dialogs;
+using Prism.Events;
 using IEventAggregator = Prism.Events.IEventAggregator;
 
 namespace Deadfile.Tab.Jobs
@@ -356,13 +357,26 @@ namespace Deadfile.Tab.Jobs
 
             base.OnNavigatedTo(clientAndJobNavigationKey);
 
+            _jobChildNavigateEventSubscriptionToken =
+                EventAggregator.GetEvent<JobChildNavigateEvent>().Subscribe(NavigateToJobChild);
+
             // Select JobTasks - this should take care of setting up the view model for the JobChildViewModel control.
             SelectedJobChild = JobChildExperience.JobTasks;
+        }
+
+        private SubscriptionToken _jobChildNavigateEventSubscriptionToken = null;
+
+        private void NavigateToJobChild(JobChildNavigateMessage navigateMessage)
+        {
+            SelectedJobChild = navigateMessage.Experience;
+            JobChildViewModel.NavigateToModel(navigateMessage.ModelId);
         }
 
         public override void OnNavigatedFrom()
         {
             base.OnNavigatedFrom();
+
+            EventAggregator.GetEvent<JobChildNavigateEvent>().Unsubscribe(_jobChildNavigateEventSubscriptionToken);
 
             // Free up resources and disconnect the child.
             SelectedJobChild = JobChildExperience.Empty;

@@ -9,6 +9,9 @@ using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Common;
+using Deadfile.Tab.Events;
+using Deadfile.Tab.JobChildren.BillableHours;
+using Deadfile.Tab.Jobs;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Events;
@@ -22,7 +25,7 @@ namespace Deadfile.Tab.JobChildren.JobTasks
     {
         private readonly IDeadfileRepository _repository;
         private readonly DelegateCommand _togglePriorityCommand;
-        private readonly DelegateCommand _billCommand;
+        private readonly DelegateCommand _makeJobTaskBillableCommand;
 
         public JobTasksJobChildViewModel(IDeadfileDispatcherTimerService timerService,
             IDeadfileDialogCoordinator dialogCoordinator,
@@ -31,25 +34,28 @@ namespace Deadfile.Tab.JobChildren.JobTasks
         {
             _repository = repository;
             _togglePriorityCommand = new DelegateCommand(TogglePriority);
-            _billCommand = new DelegateCommand(BillJobTask);
+            _makeJobTaskBillableCommand = new DelegateCommand(MakeJobTaskBillable);
         }
 
-        private async void BillJobTask()
+        private async void MakeJobTaskBillable()
         {
-            var result = await DialogCoordinator.ConfirmDeleteAsync(this, $"Bill {SelectedItem.Description}?", "Are you sure? This action is permanent.");
+            var result = await DialogCoordinator.ConfirmDeleteAsync(this, $"Make \"{SelectedItem.Description}\" billable?", "Are you sure? This action is permanent.");
             // Open a dialog to ask the user if they are sure.
             if (result == MessageDialogResult.Affirmative)
             {
-                PerformBill();
+                var billableHourId = PerformMakeJobTaskBillable();
 
                 // Refresh the observable collection.
                 Populate();
+
+                // Navigate to the new billable hour.
+                EventAggregator.GetEvent<JobChildNavigateEvent>().Publish(new JobChildNavigateMessage(JobChildExperience.BillableHours, billableHourId));
             }
         }
 
-        private void PerformBill()
+        private int PerformMakeJobTaskBillable()
         {
-            _repository.BillJobTask(SelectedItem);
+            return _repository.MakeJobTaskBillable(SelectedItem);
         }
 
         protected override void PerformDelete()
@@ -68,7 +74,7 @@ namespace Deadfile.Tab.JobChildren.JobTasks
         }
 
         public ICommand TogglePriorityCommand => _togglePriorityCommand;
-        public ICommand BillCommand { get { return _billCommand; } }
+        public ICommand MakeJobTaskBillableCommand { get { return _makeJobTaskBillableCommand; } }
 
         private void TogglePriority()
         {

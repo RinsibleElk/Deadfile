@@ -25,7 +25,7 @@ namespace Deadfile.Tab.Common
     abstract class SimpleEditableItemViewModel<T> : ParameterisedViewModel<ClientAndJobNavigationKey>, ISimpleEditableItemViewModel<T> where T : JobChildModelBase, new()
     {
         protected readonly IDeadfileDialogCoordinator DialogCoordinator;
-        private readonly IEventAggregator _eventAggregator;
+        protected readonly IEventAggregator EventAggregator;
         private readonly DelegateCommand _editCommand;
         private readonly DelegateCommand _discardCommand;
         private readonly DelegateCommand _deleteCommand;
@@ -33,13 +33,13 @@ namespace Deadfile.Tab.Common
         private readonly IDeadfileDispatcherTimer _maintainSelectionTimer;
         private List<string> _errors;
 
-        public SimpleEditableItemViewModel(IDeadfileDispatcherTimerService timerService,
+        protected SimpleEditableItemViewModel(IDeadfileDispatcherTimerService timerService,
             IDeadfileDialogCoordinator dialogCoordinator,
             IEventAggregator eventAggregator)
         {
             _maintainSelectionTimer = timerService.CreateTimer(TimeSpan.FromMilliseconds(10), SetSelectedIndex);
             DialogCoordinator = dialogCoordinator;
-            _eventAggregator = eventAggregator;
+            EventAggregator = eventAggregator;
             _editCommand = new DelegateCommand(StartEditing);
             _discardCommand = new DelegateCommand(DiscardEdits);
             _deleteCommand = new DelegateCommand(DeleteItem, () => CanDeleteItem);
@@ -130,7 +130,7 @@ namespace Deadfile.Tab.Common
                 CanDeleteItem = (SelectedItem != null) && (SelectedItem.Id != ModelBase.NewModelId) && !Editable;
 
                 // Only fire when it changes.
-                _eventAggregator.GetEvent<LockedForEditingEvent>()
+                EventAggregator.GetEvent<LockedForEditingEvent>()
                     .Publish(new LockedForEditingMessage() {IsLocked = _editable});
             }
         }
@@ -331,6 +331,13 @@ namespace Deadfile.Tab.Common
                 if (value) _editingSelectedIndex = _selectedIndex;
                 else _editingSelectedIndex = null;
             }
+        }
+
+        public void NavigateToModel(int modelId)
+        {
+            var matchingItem = Items.FirstOrDefault((model) => model.Id == modelId);
+            if (matchingItem != null)
+                SelectedItem = matchingItem;
         }
 
         private void SetSelectedIndex()

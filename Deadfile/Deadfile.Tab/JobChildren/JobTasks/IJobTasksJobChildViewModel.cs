@@ -12,6 +12,6 @@ namespace Deadfile.Tab.JobChildren.JobTasks
     interface IJobTasksJobChildViewModel : ISimpleEditableItemViewModel<JobTaskModel>
     {
         ICommand TogglePriorityCommand { get; }
-        ICommand BillCommand { get; }
+        ICommand MakeJobTaskBillableCommand { get; }
     }
 }

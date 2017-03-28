@@ -455,7 +455,7 @@
         <Style.Resources>
             <LinearGradientBrush x:Key="BackBrush" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop Offset="0.1" Color="{DynamicResource AccentColor}" />
-                <GradientStop Offset="0.9" Color="{DynamicResource AccentBasecolor}" />
+                <GradientStop Offset="0.9" Color="{DynamicResource AccentBaseColor}" />
             </LinearGradientBrush>
         </Style.Resources>
         <Setter Property="Background" Value="{StaticResource BackBrush}" />

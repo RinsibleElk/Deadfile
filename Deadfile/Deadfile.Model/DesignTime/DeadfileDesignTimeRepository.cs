@@ -204,7 +204,7 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
-        public void BillJobTask(JobTaskModel jobTaskModel)
+        public int MakeJobTaskBillable(JobTaskModel jobTaskModel)
         {
             throw new NotImplementedException();
         }

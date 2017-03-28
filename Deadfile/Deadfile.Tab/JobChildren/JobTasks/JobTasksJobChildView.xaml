@@ -201,7 +201,7 @@
                                     <Button Command="{Binding Path=DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Visibility="{Binding Path=DataContext.Editable, Converter={StaticResource InverseBooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                         <TextBlock Text="{Binding Path=DataContext.SelectedItem.Id, Converter={StaticResource ModelIdToEditCommandName}, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </Button>
-                                    <Button Command="{Binding Path=DataContext.BillCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Visibility="{Binding Path=DataContext.CanDeleteItem, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <Button Command="{Binding Path=DataContext.MakeJobTaskBillableCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Visibility="{Binding Path=DataContext.CanDeleteItem, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                         Bill
                                     </Button>
                                     <Button Command="{Binding Path=DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Visibility="{Binding Path=DataContext.CanDeleteItem, Converter={StaticResource BooleanToVisibility}, RelativeSource={RelativeSource AncestorType=UserControl}}">

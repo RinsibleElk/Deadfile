@@ -135,6 +135,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
             EventAggregator.Setup((ea) => ea.GetEvent<DiscardChangesEvent>()).Returns(new DiscardChangesEvent());
             EventAggregator.Setup((ea) => ea.GetEvent<DisplayNameEvent>()).Returns(new DisplayNameEvent());
             EventAggregator.Setup((ea) => ea.GetEvent<EditActionEvent>()).Returns(new EditActionEvent());
+            EventAggregator.Setup((ea) => ea.GetEvent<JobChildNavigateEvent>()).Returns(new JobChildNavigateEvent());
             EventAggregator.Setup((ea) => ea.GetEvent<InvoiceClientEvent>()).Returns(new InvoiceClientEvent());
             EventAggregator.Setup((ea) => ea.GetEvent<LockedForEditingEvent>()).Returns(new LockedForEditingEvent());
             EventAggregator.Setup((ea) => ea.GetEvent<NavigateEvent>()).Returns(new NavigateEvent());
