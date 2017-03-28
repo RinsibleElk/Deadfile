@@ -660,9 +660,13 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Margin="5,5,5,5">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition
+                Width="Auto"
+                MinWidth="100"
+                MaxWidth="400" />
+            <ColumnDefinition Width="3" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
@@ -676,11 +680,13 @@
             </Grid.RowDefinitions>
             <TextBox
                 Grid.Row="0"
+                Margin="5"
                 controls:TextBoxHelper.Watermark="Filter"
                 IsEnabled="{Binding CanSetBillableItems}"
                 Text="{Binding FilterText, Delay=200, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TreeView
                 Grid.Row="1"
+                Margin="5"
                 IsEnabled="{Binding CanSetBillableItems}"
                 ItemsSource="{Binding Jobs}"
                 Style="{StaticResource TreeViewTransparentBackground}">
@@ -699,22 +705,27 @@
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
             </TreeView>
-            <Button x:Name="SetBillableItems" Grid.Row="2">
+            <Button
+                x:Name="SetBillableItems"
+                Grid.Row="2"
+                Margin="5">
                 Set Billable Items
             </Button>
             <ComboBox
                 Grid.Row="3"
+                Margin="5"
                 IsEditable="False"
                 IsEnabled="{Binding InvoiceEditable}"
                 ItemsSource="{x:Static utils:CompanyUtils.AllCompanies}"
                 SelectedItem="{Binding SelectedItem.Company, Mode=TwoWay}" />
             <ComboBox
                 Grid.Row="4"
+                Margin="5"
                 IsEditable="False"
                 IsEnabled="{Binding InvoiceEditable}"
                 ItemsSource="{Binding Source={StaticResource InvoiceStatusValues}}"
                 SelectedItem="{Binding Mode=TwoWay, Path=SelectedItem.Status}" />
-            <Grid Grid.Row="5">
+            <Grid Grid.Row="5" Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -741,8 +752,14 @@
                     Text="{Binding Hours}" />
             </Grid>
         </Grid>
-        <ContentControl
+        <GridSplitter
             Grid.Column="1"
+            Width="3"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Stretch"
+            Background="{DynamicResource GrayBrush1}" />
+        <ContentControl
+            Grid.Column="2"
             Margin="20,0,20,0"
             Content="{Binding}"
             Style="{StaticResource InvoiceDisplay}" />

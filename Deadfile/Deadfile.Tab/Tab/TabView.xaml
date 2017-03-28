@@ -42,7 +42,8 @@
             Grid.Row="1"
             Grid.Column="1"
             Width="3"
-            HorizontalAlignment="Stretch"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Stretch"
             Background="{DynamicResource GrayBrush1}"
             Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
         <ContentControl
