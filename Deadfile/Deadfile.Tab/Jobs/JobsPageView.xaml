@@ -180,17 +180,16 @@
             Margin="20,5,20,5"
             ItemsSource="{Binding Errors}"
             TextBlock.Foreground="Red" />
-        <ListBox
+        <StackPanel
             Grid.Row="12"
-            Grid.Column="0"
-            Margin="20,5,20,5"
-            IsEnabled="{Binding ChildIsEditable, Converter={StaticResource InverseBoolean}}"
-            ItemsSource="{Binding JobChildren}"
-            SelectedItem="{Binding SelectedJobChild, Mode=TwoWay}" />
-        <ContentControl
-            Grid.Row="13"
-            Grid.Column="0"
-            Margin="20,5,20,5" />
+            Grid.RowSpan="2"
+            Grid.Column="0">
+            <ListBox
+                Margin="20,5,20,5"
+                IsEnabled="{Binding ChildIsEditable, Converter={StaticResource InverseBoolean}}"
+                ItemsSource="{Binding JobChildren}"
+                SelectedItem="{Binding SelectedJobChild, Mode=TwoWay}" />
+        </StackPanel>
         <controls:TransitioningContentControl
             x:Name="JobChildViewModel"
             Grid.Row="12"

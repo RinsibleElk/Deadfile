@@ -84,6 +84,7 @@
                         <Grid>
                             <ListView
                                 MaxHeight="400"
+                                AlternationCount="2"
                                 BorderThickness="1"
                                 ItemContainerStyle="{DynamicResource SearchBoxListItemStyle}"
                                 ItemsSource="{Binding SearchResults}"

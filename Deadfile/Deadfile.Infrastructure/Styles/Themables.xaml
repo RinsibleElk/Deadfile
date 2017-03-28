@@ -2,6 +2,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+    xmlns:entity="clr-namespace:Deadfile.Entity;assembly=Deadfile.Entity"
     xmlns:local="clr-namespace:Deadfile.Infrastructure.Styles"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <Style
@@ -352,36 +353,84 @@
         </Setter>
     </Style>
     <ControlTemplate x:Key="ClientItemTemplate">
-        <StackPanel x:Name="Sp">
-            <TextBlock x:Name="Tb" Text="{Binding FullName}" />
+        <StackPanel x:Name="Sp" Orientation="Horizontal">
+            <Image
+                x:Name="imgIcon"
+                Width="16"
+                Height="16"
+                Source="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png" />
+            <TextBlock
+                x:Name="Tb"
+                Padding="4,0,0,0"
+                Text="{Binding FullName}" />
         </StackPanel>
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="Sp" Property="Background" Value="{DynamicResource AccentColorBrush}" />
                 <Setter TargetName="Tb" Property="FontWeight" Value="Bold" />
             </Trigger>
+            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:ClientStatus.Active}">
+                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:ClientStatus.Inactive}">
+                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab-dead.png" />
+            </DataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
     <ControlTemplate x:Key="JobItemTemplate">
-        <StackPanel x:Name="Sp">
-            <TextBlock x:Name="Tb" Text="{Binding FullAddress}" />
+        <StackPanel x:Name="Sp" Orientation="Horizontal">
+            <Image
+                x:Name="imgIcon"
+                Width="16"
+                Height="16"
+                Source="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab.png" />
+            <TextBlock
+                x:Name="Tb"
+                Padding="4,0,0,0"
+                Text="{Binding FullAddress}" />
         </StackPanel>
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="Sp" Property="Background" Value="{DynamicResource AccentColorBrush}" />
                 <Setter TargetName="Tb" Property="FontWeight" Value="Bold" />
             </Trigger>
+            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:JobStatus.Active}">
+                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:JobStatus.Cancelled}">
+                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab-cancelled.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:JobStatus.Completed}">
+                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab-completed.png" />
+            </DataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
     <ControlTemplate x:Key="InvoiceItemTemplate">
-        <StackPanel x:Name="Sp">
-            <TextBlock x:Name="Tb" Text="{Binding DisplayName}" />
+        <StackPanel x:Name="Sp" Orientation="Horizontal">
+            <Image
+                Name="imgIcon"
+                Width="16"
+                Height="16"
+                Source="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab.png" />
+            <TextBlock
+                x:Name="Tb"
+                Padding="4,0,0,0"
+                Text="{Binding DisplayName}" />
         </StackPanel>
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="Sp" Property="Background" Value="{DynamicResource AccentColorBrush}" />
                 <Setter TargetName="Tb" Property="FontWeight" Value="Bold" />
             </Trigger>
+            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:InvoiceStatus.Created}">
+                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:InvoiceStatus.Cancelled}">
+                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab-cancelled.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:InvoiceStatus.Paid}">
+                <Setter TargetName="imgIcon" Property="Source" Value="pack://application:,,,/Deadfile.Infrastructure;component/Resources/invoice-tab-completed.png" />
+            </DataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
     <Style x:Key="SearchBoxListItemStyle" TargetType="{x:Type ListViewItem}">
