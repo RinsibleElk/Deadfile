@@ -79,12 +79,6 @@
                     Height="64"
                     Command="{Binding NextQuotationCommand}"
                     Style="{StaticResource QuoteButton}" />
-                <Grid.Effect>
-                    <DropShadowEffect
-                        BlurRadius="6"
-                        Direction="90"
-                        ShadowDepth="4" />
-                </Grid.Effect>
             </Grid>
         </Border>
     </Border>

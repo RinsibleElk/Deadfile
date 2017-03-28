@@ -27,7 +27,10 @@
     </UserControl.Resources>
     <Border BorderBrush="{DynamicResource GrayBrush1}" BorderThickness="0,0,0,1">
         <Border BorderBrush="{DynamicResource GrayBrush4}" BorderThickness="0,0,0,2">
-            <StackPanel Background="{DynamicResource GrayBrush8}" Orientation="Horizontal">
+            <StackPanel
+                Margin="0"
+                Background="{DynamicResource GrayBrush8}"
+                Orientation="Horizontal">
                 <Button
                     x:Name="Home"
                     Width="32"
@@ -62,6 +65,7 @@
                     <TextBox
                         x:Name="SearchTextBox"
                         Width="300"
+                        Margin="3"
                         controls:TextBoxHelper.ButtonContent="r"
                         controls:TextBoxHelper.ClearTextButton="True"
                         controls:TextBoxHelper.Watermark="Search anything..."
@@ -84,7 +88,6 @@
                         <Grid>
                             <ListView
                                 MaxHeight="400"
-                                AlternationCount="2"
                                 BorderThickness="1"
                                 ItemContainerStyle="{DynamicResource SearchBoxListItemStyle}"
                                 ItemsSource="{Binding SearchResults}"

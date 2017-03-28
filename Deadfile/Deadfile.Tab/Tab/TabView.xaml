@@ -11,6 +11,7 @@
                                      IsDesignTimeCreatable=True}"
     d:DesignHeight="400"
     d:DesignWidth="500"
+    Background="{DynamicResource ControlBackgroundBrush}"
     mc:Ignorable="d">
     <UserControl.Resources>
         <designTime:DesignTimeResourceDictionary>
@@ -23,7 +24,7 @@
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
-    <Grid Background="{StaticResource ContentBackgroundBrush}">
+    <Grid Background="{DynamicResource ContentBackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="3" />
@@ -54,7 +55,7 @@
             Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BrowserAndActionsAreVisibleToContentColumnSpan}}"
-            Background="{StaticResource BrowserBackground}"
+            Background="{DynamicResource BrowserBackground}"
             BorderThickness="0"
             Transition="Default" />
         <ContentControl

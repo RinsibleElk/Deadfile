@@ -1611,4 +1611,115 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="DeadfileTrapezoidDragableTabItemStyle" TargetType="{x:Type dragablz:DragablzItem}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource MahAppsFocusVisual}" />
+        <Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Margin" Value="0,0,0,0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type dragablz:DragablzItem}">
+                    <Grid
+                        x:Name="templateRoot"
+                        Margin="0,1,0,-1"
+                        SnapsToDevicePixels="true">
+                        <dragablz:Trapezoid
+                            x:Name="Trapezoid"
+                            Margin="0,0,0,0"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            LongBasePenBrush="{TemplateBinding Background}"
+                            PenThickness="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter
+                                    x:Name="contentPresenter"
+                                    Margin="{TemplateBinding Control.Padding}"
+                                    HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                                    Content="{TemplateBinding ContentControl.Content}"
+                                    ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                                    ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                                    SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                <Thumb
+                                    x:Name="PART_Thumb"
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    Style="{StaticResource MahAppsInvisibleThumbStyle}" />
+                                <Button
+                                    Grid.Column="1"
+                                    Command="{x:Static dragablz:TabablzControl.CloseItemCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                    Style="{StaticResource MahAppsCloseItemCommandButtonStyle}">
+                                    <Button.Visibility>
+                                        <MultiBinding Converter="{StaticResource ShowDefaultCloseButtonConverter}">
+                                            <Binding Path="ShowDefaultCloseButton" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type dragablz:TabablzControl}}" />
+                                            <Binding Path="FixedHeaderCount" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type dragablz:TabablzControl}}" />
+                                            <Binding Path="LogicalIndex" RelativeSource="{RelativeSource TemplatedParent}" />
+                                        </MultiBinding>
+                                    </Button.Visibility>
+                                </Button>
+                            </Grid>
+                        </dragablz:Trapezoid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="dragablz:TabablzControl.IsWrappingTabItem" Value="True">
+                            <Setter TargetName="contentPresenter" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Header}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Trapezoid" Property="Background" Value="{DynamicResource GrayBrush4}" />
+                            <Setter TargetName="Trapezoid" Property="LongBasePenBrush" Value="{DynamicResource GrayBrush4}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Trapezoid" Property="Background" Value="{DynamicResource GrayBrush8}" />
+                            <Setter TargetName="Trapezoid" Property="LongBasePenBrush" Value="{DynamicResource GrayBrush8}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="DeadfileTrapezoidAddButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <dragablz:Trapezoid
+                        x:Name="Trapezoid"
+                        Margin="-12,1,0,-1"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        LongBasePenBrush="Transparent"
+                        PenBrush="Transparent"
+                        PenThickness="0">
+                        <Viewbox
+                            Width="16"
+                            Height="16"
+                            Stretch="Uniform">
+                            <Path
+                                x:Name="pth"
+                                Data="{DynamicResource AddItemButtonGeometry}"
+                                Fill="{DynamicResource AccentColorBrush}" />
+                        </Viewbox>
+                    </dragablz:Trapezoid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Trapezoid" Property="Background" Value="{DynamicResource GrayBrush4}" />
+                            <Setter TargetName="Trapezoid" Property="LongBasePenBrush" Value="{DynamicResource GrayBrush4}" />
+                            <Setter TargetName="pth" Property="Fill" Value="{DynamicResource BlackBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

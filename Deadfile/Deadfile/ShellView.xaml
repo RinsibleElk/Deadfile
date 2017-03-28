@@ -227,13 +227,12 @@
     </controls:MetroWindow.RightWindowCommands>
     <dragablz:TabablzControl
         x:Name="Items"
-        Padding="0"
-        AdjacentHeaderItemOffset="-10"
+        AdjacentHeaderItemOffset="-12"
         BorderBrush="Transparent"
         BorderThickness="0"
         ClosingItemCallback="{Binding ClosingItemActionCallback}"
         Focusable="True"
-        ItemContainerStyle="{StaticResource DeadfileDragablzTabItemStyle}"
+        ItemContainerStyle="{DynamicResource DeadfileTrapezoidDragableTabItemStyle}"
         ShowDefaultCloseButton="True">
         <dragablz:TabablzControl.HeaderItemTemplate>
             <DataTemplate DataType="tab:TabViewModel">
@@ -250,9 +249,7 @@
             <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" />
         </dragablz:TabablzControl.InterTabController>
         <dragablz:TabablzControl.HeaderSuffixContent>
-            <StackPanel Orientation="Horizontal">
-                <Button Command="{Binding OpenNewTab}" Style="{StaticResource AddTabButton}" />
-            </StackPanel>
+            <Button Command="{Binding OpenNewTab}" Style="{StaticResource DeadfileTrapezoidAddButton}" />
         </dragablz:TabablzControl.HeaderSuffixContent>
     </dragablz:TabablzControl>
 </controls:MetroWindow>

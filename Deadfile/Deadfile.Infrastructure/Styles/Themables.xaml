@@ -14,83 +14,6 @@
         <Setter Property="FontFamily" Value="Harlow" />
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
-    <Style x:Key="DeadfileDragablzTabItemStyle" TargetType="{x:Type dragablz:DragablzItem}">
-        <Setter Property="FocusVisualStyle" Value="{StaticResource MahAppsFocusVisual}" />
-        <Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Margin" Value="0,0,0,0" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type dragablz:DragablzItem}">
-                    <Grid
-                        x:Name="templateRoot"
-                        Margin="0,1,0,-1"
-                        SnapsToDevicePixels="true">
-                        <dragablz:Trapezoid
-                            x:Name="Trapezoid"
-                            Margin="0"
-                            Background="{DynamicResource GrayBrush4}"
-                            BorderBrush="Transparent"
-                            BorderThickness="0"
-                            LongBasePenBrush="{DynamicResource AccentColorBrush}"
-                            PenThickness="0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <ContentPresenter
-                                    x:Name="contentPresenter"
-                                    Margin="{TemplateBinding Control.Padding}"
-                                    HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
-                                    VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
-                                    Content="{TemplateBinding ContentControl.Content}"
-                                    ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
-                                    ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
-                                    SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
-                                <Thumb
-                                    x:Name="PART_Thumb"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalContentAlignment="Stretch"
-                                    Style="{StaticResource MahAppsInvisibleThumbStyle}" />
-                                <Button
-                                    Grid.Column="1"
-                                    Command="{x:Static dragablz:TabablzControl.CloseItemCommand}"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}}"
-                                    Style="{StaticResource MahAppsCloseItemCommandButtonStyle}">
-                                    <Button.Visibility>
-                                        <MultiBinding Converter="{StaticResource ShowDefaultCloseButtonConverter}">
-                                            <Binding Path="ShowDefaultCloseButton" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type dragablz:TabablzControl}}" />
-                                            <Binding Path="FixedHeaderCount" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type dragablz:TabablzControl}}" />
-                                            <Binding Path="LogicalIndex" RelativeSource="{RelativeSource TemplatedParent}" />
-                                        </MultiBinding>
-                                    </Button.Visibility>
-                                </Button>
-                            </Grid>
-                        </dragablz:Trapezoid>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="dragablz:TabablzControl.IsWrappingTabItem" Value="True">
-                            <Setter TargetName="contentPresenter" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Header}" />
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Trapezoid" Property="Background" Value="{DynamicResource GrayBrush7}" />
-                            <Setter TargetName="Trapezoid" Property="LongBasePenBrush" Value="{DynamicResource AccentColorBrush}" />
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Trapezoid" Property="Background" Value="{DynamicResource GrayBrush8}" />
-                            <Setter TargetName="Trapezoid" Property="LongBasePenBrush" Value="{DynamicResource AccentColorBrush}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
     <Geometry x:Key="AddItemButtonGeometry">
         M 312.66668 663.85688 C 236.90765 656.81077 166.24726 623.67562 112.61917 570.04753 32.052408 489.48076 -0.34454228 372.66832 27.361826 262.63838 50.579487 170.43439 113.60422 92.755298 199.33334 50.680471 c 89.81626 -44.0807476 194.18375 -44.0807476 284.00001 0 137.46978 67.468519 209.1963 221.517529 171.97151 369.347839 -14.16788 56.26475 -44.0058 108.76767 -85.25733 150.01922 -67.6969 67.69688 -163.33829 102.55595 -257.38085 93.80935 z m 50.93161 -59.86813 c 32.52206 -2.87896 61.84555 -10.85428 90.70162 -24.66876 28.20387 -13.50224 48.09539 -27.28176 70.18273 -48.61789 98.43335 -95.08557 107.61313 -249.06762 21.22535 -356.03543 -23.6662 -29.30417 -55.45807 -54.10935 -91.40808 -71.31997 -72.14263 -34.537387 -156.58405 -34.126258 -228.2999 1.11155 -55.08778 27.06754 -96.15215 68.55217 -122.65331 123.90853 -42.79647 89.39443 -31.355866 194.9537 29.80111 274.96657 8.69263 11.37275 29.7777 32.89241 41.51886 42.37464 53.44898 43.16568 121.73243 64.22946 188.93162 58.28076 z M 327.87638 499.56512 c -7.63878 -4.03177 -13.92318 -12.37185 -15.7536 -20.90674 -0.9058 -4.22366 -1.4561 -25.66108 -1.4561 -56.72399 V 372.00001 H 260.7323 c -31.06291 0 -52.50033 -0.5503 -56.72399 -1.4561 -25.2237 -5.40952 -32.63573 -37.20633 -12.2974 -52.75446 3.06775 -2.3452 8.51571 -4.85563 12.2974 -5.66667 4.22366 -0.9058 25.66108 -1.4561 56.72399 -1.4561 h 49.93438 V 260.7323 c 0 -31.06291 0.5503 -52.50033 1.4561 -56.72399 0.81104 -3.78169 3.32147 -9.22965 5.66667 -12.2974 15.54813 -20.33833 47.34494 -12.9263 52.75446 12.2974 0.9058 4.22366 1.4561 25.66108 1.4561 56.72399 v 49.93438 h 49.93438 c 31.06291 0 52.50033 0.5503 56.72399 1.4561 25.2237 5.40952 32.63573 37.20633 12.2974 52.75446 -3.06775 2.3452 -8.51571 4.85563 -12.2974 5.66667 -4.22366 0.9058 -25.66108 1.4561 -56.72399 1.4561 h -49.93438 v 49.93438 c 0 31.06291 -0.5503 52.50033 -1.4561 56.72399 -3.02012 14.08233 -15.09692 24.0083 -29.21057 24.0083 -5.36186 0 -9.30049 -0.90777 -13.45696 -3.10156 z
     </Geometry>
@@ -127,15 +50,7 @@
                             <Path
                                 x:Name="pth"
                                 Data="{StaticResource AddItemButtonGeometry}"
-                                Fill="{DynamicResource GrayBrush1}">
-                                <Path.Effect>
-                                    <DropShadowEffect
-                                        x:Name="pthds"
-                                        BlurRadius="10"
-                                        Opacity="0.5"
-                                        ShadowDepth="4" />
-                                </Path.Effect>
-                            </Path>
+                                Fill="{DynamicResource GrayBrush1}" />
                         </Viewbox>
                         <Label
                             x:Name="lbl"
@@ -175,15 +90,7 @@
                             <Path
                                 x:Name="pth"
                                 Data="{StaticResource EditItemButtonGeometry}"
-                                Fill="{DynamicResource GrayBrush1}">
-                                <Path.Effect>
-                                    <DropShadowEffect
-                                        x:Name="pthds"
-                                        BlurRadius="10"
-                                        Opacity="0.5"
-                                        ShadowDepth="4" />
-                                </Path.Effect>
-                            </Path>
+                                Fill="{DynamicResource GrayBrush1}" />
                         </Viewbox>
                         <Label
                             x:Name="lbl"
@@ -223,15 +130,7 @@
                             <Path
                                 x:Name="pth"
                                 Data="{StaticResource DeleteItemButtonGeometry}"
-                                Fill="{DynamicResource GrayBrush1}">
-                                <Path.Effect>
-                                    <DropShadowEffect
-                                        x:Name="pthds"
-                                        BlurRadius="10"
-                                        Opacity="0.5"
-                                        ShadowDepth="4" />
-                                </Path.Effect>
-                            </Path>
+                                Fill="{DynamicResource GrayBrush1}" />
                         </Viewbox>
                         <Label
                             x:Name="lbl"
@@ -271,15 +170,7 @@
                             <Path
                                 x:Name="pth"
                                 Data="{StaticResource SaveItemButtonGeometry}"
-                                Fill="{DynamicResource GrayBrush1}">
-                                <Path.Effect>
-                                    <DropShadowEffect
-                                        x:Name="pthds"
-                                        BlurRadius="10"
-                                        Opacity="0.5"
-                                        ShadowDepth="4" />
-                                </Path.Effect>
-                            </Path>
+                                Fill="{DynamicResource GrayBrush1}" />
                         </Viewbox>
                         <Label
                             x:Name="lbl"
@@ -319,15 +210,7 @@
                             <Path
                                 x:Name="pth"
                                 Data="{StaticResource DiscardItemButtonGeometry}"
-                                Fill="{DynamicResource GrayBrush1}">
-                                <Path.Effect>
-                                    <DropShadowEffect
-                                        x:Name="pthds"
-                                        BlurRadius="10"
-                                        Opacity="0.5"
-                                        ShadowDepth="4" />
-                                </Path.Effect>
-                            </Path>
+                                Fill="{DynamicResource GrayBrush1}" />
                         </Viewbox>
                         <Label
                             x:Name="lbl"
@@ -459,5 +342,39 @@
             </LinearGradientBrush>
         </Style.Resources>
         <Setter Property="Background" Value="{StaticResource BackBrush}" />
+    </Style>
+
+    <Style
+        x:Key="GeometryAddTabButton"
+        BasedOn="{StaticResource {x:Type Button}}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <StackPanel
+                        x:Name="sp"
+                        VerticalAlignment="Center"
+                        Background="Transparent">
+                        <Viewbox
+                            Width="16"
+                            Height="16"
+                            Stretch="Uniform">
+                            <Path
+                                x:Name="pth"
+                                Data="{StaticResource AddItemButtonGeometry}"
+                                Fill="{DynamicResource GrayBrush1}" />
+                        </Viewbox>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger SourceName="sp" Property="IsMouseOver" Value="True">
+                            <Setter TargetName="pth" Property="Fill" Value="{DynamicResource AccentBaseColorBrush}" />
+                        </Trigger>
+                        <Trigger SourceName="sp" Property="IsEnabled" Value="False">
+                            <Setter TargetName="pth" Property="Fill" Value="{DynamicResource GrayBrush7}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>
