@@ -952,6 +952,24 @@ namespace Deadfile.Model
             return li;
         }
 
+        public void BillJobTask(JobTaskModel jobTaskModel)
+        {
+            var billableHourModel = new BillableHourModel
+            {
+                State = BillableState.Active,
+                CreationDate = DateTime.Today,
+                Description = jobTaskModel.Description,
+                HoursWorked = 0,
+                NetAmount = 0,
+                Notes = jobTaskModel.Notes,
+                JobId = jobTaskModel.JobId,
+                ClientId = jobTaskModel.ClientId,
+                InvoiceId = null
+            };
+            DeleteJobTask(jobTaskModel);
+            SaveBillableHour(billableHourModel);
+        }
+
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)
         {
             if (!DeadfileContextAbstraction.HasConnectionString())

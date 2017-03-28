@@ -44,5 +44,6 @@ namespace Deadfile.Tab.JobChildren.JobTasks
         }
 
         public ICommand TogglePriorityCommand { get; } = null;
+        public ICommand BillCommand { get; } = null;
     }
 }

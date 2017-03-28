@@ -24,7 +24,7 @@ namespace Deadfile.Tab.Common
     /// <typeparam name="T"></typeparam>
     abstract class SimpleEditableItemViewModel<T> : ParameterisedViewModel<ClientAndJobNavigationKey>, ISimpleEditableItemViewModel<T> where T : JobChildModelBase, new()
     {
-        private readonly IDeadfileDialogCoordinator _dialogCoordinator;
+        protected readonly IDeadfileDialogCoordinator DialogCoordinator;
         private readonly IEventAggregator _eventAggregator;
         private readonly DelegateCommand _editCommand;
         private readonly DelegateCommand _discardCommand;
@@ -38,7 +38,7 @@ namespace Deadfile.Tab.Common
             IEventAggregator eventAggregator)
         {
             _maintainSelectionTimer = timerService.CreateTimer(TimeSpan.FromMilliseconds(10), SetSelectedIndex);
-            _dialogCoordinator = dialogCoordinator;
+            DialogCoordinator = dialogCoordinator;
             _eventAggregator = eventAggregator;
             _editCommand = new DelegateCommand(StartEditing);
             _discardCommand = new DelegateCommand(DiscardEdits);
@@ -66,7 +66,7 @@ namespace Deadfile.Tab.Common
 
         private async void DeleteItem()
         {
-            var result = await _dialogCoordinator.ConfirmDeleteAsync(this, "Confirm Deletion", "Are you sure? This action is permanent.");
+            var result = await DialogCoordinator.ConfirmDeleteAsync(this, "Confirm Deletion", "Are you sure? This action is permanent.");
             // Open a dialog to ask the user if they are sure.
             if (result == MessageDialogResult.Affirmative)
             {
@@ -85,12 +85,10 @@ namespace Deadfile.Tab.Common
             get { return _canDeleteItem; }
             set
             {
-                if (_canDeleteItem != value)
-                {
-                    _canDeleteItem = value;
-                    NotifyOfPropertyChange(() => CanDeleteItem);
-                    _deleteCommand.RaiseCanExecuteChanged();
-                }
+                if (_canDeleteItem == value) return;
+                _canDeleteItem = value;
+                NotifyOfPropertyChange(() => CanDeleteItem);
+                _deleteCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -167,7 +165,7 @@ namespace Deadfile.Tab.Common
             return errors;
         }
 
-        private void Populate()
+        protected void Populate()
         {
             // Populate the table.
             // We always add one more, to represent the user wanting to add a new one.

@@ -286,5 +286,11 @@ namespace Deadfile.Model.Interfaces
         /// <param name="filter"></param>
         /// <returns></returns>
         IEnumerable<CurrentApplicationModel> GetCurrentApplications(string filter);
+
+        /// <summary>
+        /// Delete the job task model and add a new BillableHour to take its place.
+        /// </summary>
+        /// <param name="jobTaskModel"></param>
+        void BillJobTask(JobTaskModel jobTaskModel);
     }
 }
