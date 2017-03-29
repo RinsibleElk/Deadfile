@@ -8,6 +8,7 @@ namespace Deadfile.Infrastructure.Styles
 {
     public enum DeadfileAccent
     {
+        Custom,
         Red,
         Blue,
         Emerald,

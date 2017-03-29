@@ -16,7 +16,7 @@ namespace Deadfile
 {
     internal static class PropertiesAccessor
     {
-        public static string GetTheme()
+        public static DeadfileTheme GetTheme()
         {
             DeadfileTheme deadfileTheme;
             if (!Enum.TryParse(Settings.Default.Theme, out deadfileTheme))
@@ -25,10 +25,10 @@ namespace Deadfile
                 Settings.Default.Theme = deadfileTheme.ToString();
                 Settings.Default.Save();
             }
-            return deadfileTheme.ToString();
+            return deadfileTheme;
         }
 
-        public static string GetAccent()
+        public static DeadfileAccent GetAccent()
         {
             DeadfileAccent accent;
             if (!Enum.TryParse(Properties.Settings.Default.Accent, out accent))
@@ -37,7 +37,7 @@ namespace Deadfile
                 Settings.Default.Accent = accent.ToString();
                 Settings.Default.Save();
             }
-            return accent.ToString();
+            return accent;
         }
     }
 
@@ -148,18 +148,17 @@ namespace Deadfile
         public static void SetThemeFromProperties()
         {
             var theme = PropertiesAccessor.GetTheme();
-            var useCustomAccent = Settings.Default.UseCustomAccent;
-            if (useCustomAccent)
+            var accent = PropertiesAccessor.GetAccent();
+            if (accent == DeadfileAccent.Custom)
             {
                 var customAccent = ShellViewModel.FromDrawingColor(Settings.Default.CustomAccent);
-                CreateAppStyleBy(customAccent, ThemeManager.GetAppTheme(theme));
+                CreateAppStyleBy(customAccent, ThemeManager.GetAppTheme(theme.ToString()));
             }
             else
             {
-                var accent = PropertiesAccessor.GetAccent();
                 ThemeManager.ChangeAppStyle(Application.Current,
-                    ThemeManager.GetAccent(accent),
-                    ThemeManager.GetAppTheme(theme));
+                    ThemeManager.GetAccent(accent.ToString()),
+                    ThemeManager.GetAppTheme(theme.ToString()));
             }
             var resources = Application.Current.Resources;
             var themables =

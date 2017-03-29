@@ -23,10 +23,6 @@
         <converters:SwitchConverterCase Then="1" When="True" />
         <converters:SwitchConverterCase Then="3" When="False" />
     </converters:SwitchConverter>
-    <converters:SwitchConverter x:Key="BrowserPaneIsCollapsedToGridSplitterColumnSpan">
-        <converters:SwitchConverterCase Then="2" When="True" />
-        <converters:SwitchConverterCase Then="1" When="False" />
-    </converters:SwitchConverter>
     <converters:SwitchConverter x:Key="ExperienceToImage">
         <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png" When="Clients" />
         <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab.png" When="Jobs" />

@@ -23,7 +23,5 @@ namespace Deadfile.Tab.Tab
         public object ActionsPad { get; set; } = null;
         public bool ActionsPadIsVisible { get; set; } = true;
         public bool BrowserPaneIsVisible { get; set; } = true;
-        public bool BrowserPaneIsCollapsed { get; set; } = false;
-        public ICommand CollapseBrowserPaneCommand { get; } = null;
     }
 }

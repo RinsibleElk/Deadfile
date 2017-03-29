@@ -109,18 +109,6 @@ namespace Deadfile.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool UseCustomAccent {
-            get {
-                return ((bool)(this["UseCustomAccent"]));
-            }
-            set {
-                this["UseCustomAccent"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Sienna")]
         public global::System.Drawing.Color CustomAccent {
             get {

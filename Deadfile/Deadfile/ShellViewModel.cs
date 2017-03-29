@@ -43,23 +43,22 @@ namespace Deadfile
         /// <param name="interTabClient"></param>
         public ShellViewModel(SimpleContainer container, IInterTabClient interTabClient)
         {
-            _server = Properties.Settings.Default.Server;
-            _database = Properties.Settings.Default.Database;
-            _username = Properties.Settings.Default.Username;
-            _password = Properties.Settings.Default.Password;
-            if (!Enum.TryParse(Properties.Settings.Default.Theme, out _themeToUse))
+            _server = Settings.Default.Server;
+            _database = Settings.Default.Database;
+            _username = Settings.Default.Username;
+            _password = Settings.Default.Password;
+            if (!Enum.TryParse(Settings.Default.Theme, out _themeToUse))
             {
                 _themeToUse = DeadfileTheme.BaseDark;
-                Properties.Settings.Default.Theme = _themeToUse.ToString();
-                Properties.Settings.Default.Save();
+                Settings.Default.Theme = _themeToUse.ToString();
+                Settings.Default.Save();
             }
-            if (!Enum.TryParse(Properties.Settings.Default.Accent, out _accentToUse))
+            if (!Enum.TryParse(Settings.Default.Accent, out _accentToUse))
             {
                 _accentToUse = DeadfileAccent.Red;
                 Settings.Default.Accent = _accentToUse.ToString();
                 Settings.Default.Save();
             }
-            _useCustomAccent = Settings.Default.UseCustomAccent;
             _customAccent = FromDrawingColor(Settings.Default.CustomAccent);
             _acceptCommand = new DelegateCommand(Accept, () => CanAccept);
             _cancelCommand = new DelegateCommand(Cancel);
@@ -276,7 +275,7 @@ namespace Deadfile
             get { return _customAccent; }
             set
             {
-                UseCustomAccent = true;
+                AccentToUse = DeadfileAccent.Custom;
                 if (value == _customAccent) return;
                 _customAccent = value;
                 Settings.Default.CustomAccent = FromMediaColor(_customAccent);
@@ -286,32 +285,16 @@ namespace Deadfile
             }
         }
 
-        private bool _useCustomAccent;
-        public bool UseCustomAccent
-        {
-            get { return _useCustomAccent; }
-            set
-            {
-                if (value == _useCustomAccent) return;
-                _useCustomAccent = value;
-                Settings.Default.UseCustomAccent = _useCustomAccent;
-                Settings.Default.Save();
-                ThemeUtils.SetThemeFromProperties();
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(UseCustomAccent)));
-            }
-        }
-
         private DeadfileAccent _accentToUse;
         public DeadfileAccent AccentToUse
         {
             get { return _accentToUse; }
             set
             {
-                UseCustomAccent = false;
                 if (value == _accentToUse) return;
                 _accentToUse = value;
-                Properties.Settings.Default.Accent = _accentToUse.ToString();
-                Properties.Settings.Default.Save();
+                Settings.Default.Accent = _accentToUse.ToString();
+                Settings.Default.Save();
                 ThemeUtils.SetThemeFromProperties();
                 OnPropertyChanged(new PropertyChangedEventArgs(nameof(AccentToUse)));
             }

@@ -58,7 +58,8 @@
             VerticalAlignment="Stretch"
             metro:VisibilityHelper.IsVisible="{Binding BrowserPaneIsVisible}"
             Background="{DynamicResource GrayBrush1}"
-            MouseDoubleClick="GridSplitter_OnMouseDoubleClick" />
+            MouseDoubleClick="GridSplitter_OnMouseDoubleClick"
+            ToolTip="Double Click to Expand/Collapse" />
         <ContentControl
             x:Name="BrowserPane"
             Grid.Row="1"

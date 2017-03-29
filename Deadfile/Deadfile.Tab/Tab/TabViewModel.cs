@@ -26,7 +26,6 @@ namespace Deadfile.Tab.Tab
         private IPageViewModel _contentArea;
         private object _browserPane;
         private readonly Prism.Events.IEventAggregator _eventAggregator;
-        private readonly DelegateCommand _collapseBrowserPaneCommand;
 
         public TabViewModel(TabIdentity tabIdentity,
             Prism.Events.IEventAggregator eventAggregator,
@@ -35,13 +34,7 @@ namespace Deadfile.Tab.Tab
             _tabIdentity = tabIdentity;
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
-            _collapseBrowserPaneCommand = new DelegateCommand(CollapseBrowserPane);
             DisplayName = "Home";
-        }
-
-        private void CollapseBrowserPane()
-        {
-            BrowserPaneIsCollapsed = !BrowserPaneIsCollapsed;
         }
 
         private void AddClientAction(AddClientMessage addClientAction)
@@ -153,30 +146,6 @@ namespace Deadfile.Tab.Tab
                 if (_browserPaneIsVisible == value) return;
                 _browserPaneIsVisible = value;
                 NotifyOfPropertyChange(() => BrowserPaneIsVisible);
-            }
-        }
-
-        public bool BrowserPaneIsCollapsed
-        {
-            get { return _browserPaneIsCollapsed; }
-            set
-            {
-                if (_browserPaneIsCollapsed == value) return;
-                _browserPaneIsCollapsed = value;
-                NotifyOfPropertyChange(() => BrowserPaneIsCollapsed);
-            }
-        }
-
-        public ICommand CollapseBrowserPaneCommand => _collapseBrowserPaneCommand;
-
-        public int BrowserPaneWidth
-        {
-            get { return _browserPaneWidth; }
-            set
-            {
-                if (_browserPaneWidth == value) return;
-                _browserPaneWidth = value;
-                NotifyOfPropertyChange(() => BrowserPaneWidth);
             }
         }
 
