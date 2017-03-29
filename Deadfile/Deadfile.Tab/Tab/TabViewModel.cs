@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using Deadfile.Model.Browser;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
+using Prism.Commands;
 using Prism.Events;
+using Action = System.Action;
 using LogManager = NLog.LogManager;
 
 namespace Deadfile.Tab.Tab
@@ -23,6 +26,7 @@ namespace Deadfile.Tab.Tab
         private IPageViewModel _contentArea;
         private object _browserPane;
         private readonly Prism.Events.IEventAggregator _eventAggregator;
+        private readonly DelegateCommand _collapseBrowserPaneCommand;
 
         public TabViewModel(TabIdentity tabIdentity,
             Prism.Events.IEventAggregator eventAggregator,
@@ -31,7 +35,13 @@ namespace Deadfile.Tab.Tab
             _tabIdentity = tabIdentity;
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
+            _collapseBrowserPaneCommand = new DelegateCommand(CollapseBrowserPane);
             DisplayName = "Home";
+        }
+
+        private void CollapseBrowserPane()
+        {
+            BrowserPaneIsCollapsed = !BrowserPaneIsCollapsed;
         }
 
         private void AddClientAction(AddClientMessage addClientAction)
@@ -70,25 +80,24 @@ namespace Deadfile.Tab.Tab
                 if (_contentArea != null && _contentArea.ShowActionsPad)
                 {
                     _navigationService.RequestNavigate(this, nameof(ActionsPad), value.Experience + "ActionsPad", null);
-                    BrowserAndActionsAreVisible = true;
+                    ActionsPadIsVisible = true;
                 }
                 else
                 {
                     _navigationService.RequestDeactivate(this, nameof(ActionsPad));
-                    BrowserAndActionsAreVisible = false;
+                    ActionsPadIsVisible = false;
+                }
+                if (_contentArea != null && _contentArea.ShowBrowserPane)
+                {
+                    _navigationService.RequestNavigate(this, nameof(BrowserPane), "BrowserPane", null);
+                    BrowserPaneIsVisible = true;
+                }
+                else
+                {
+                    _navigationService.RequestDeactivate(this, nameof(BrowserPane));
+                    BrowserPaneIsVisible = false;
                 }
                 ContentArea?.CompleteNavigation();
-            }
-        }
-
-        public bool BrowserAndActionsAreVisible
-        {
-            get { return _browserAndActionsAreVisible; }
-            set
-            {
-                if (value == _browserAndActionsAreVisible) return;
-                _browserAndActionsAreVisible = value;
-                NotifyOfPropertyChange(() => BrowserAndActionsAreVisible);
             }
         }
 
@@ -125,6 +134,52 @@ namespace Deadfile.Tab.Tab
             }
         }
 
+        public bool ActionsPadIsVisible
+        {
+            get { return _actionsPadIsVisible; }
+            set
+            {
+                if (_actionsPadIsVisible == value) return;
+                _actionsPadIsVisible = value;
+                NotifyOfPropertyChange(() => ActionsPadIsVisible);
+            }
+        }
+
+        public bool BrowserPaneIsVisible
+        {
+            get { return _browserPaneIsVisible; }
+            set
+            {
+                if (_browserPaneIsVisible == value) return;
+                _browserPaneIsVisible = value;
+                NotifyOfPropertyChange(() => BrowserPaneIsVisible);
+            }
+        }
+
+        public bool BrowserPaneIsCollapsed
+        {
+            get { return _browserPaneIsCollapsed; }
+            set
+            {
+                if (_browserPaneIsCollapsed == value) return;
+                _browserPaneIsCollapsed = value;
+                NotifyOfPropertyChange(() => BrowserPaneIsCollapsed);
+            }
+        }
+
+        public ICommand CollapseBrowserPaneCommand => _collapseBrowserPaneCommand;
+
+        public int BrowserPaneWidth
+        {
+            get { return _browserPaneWidth; }
+            set
+            {
+                if (_browserPaneWidth == value) return;
+                _browserPaneWidth = value;
+                NotifyOfPropertyChange(() => BrowserPaneWidth);
+            }
+        }
+
         public void NavigateAction(NavigateMessage message)
         {
             _navigationService.RequestNavigate(this, nameof(ContentArea), message.Experience + "Page", null);
@@ -140,7 +195,6 @@ namespace Deadfile.Tab.Tab
             {
                 _navigationService.RequestNavigate(this, nameof(NavigationBar), "NavigationBar", null);
                 _navigationService.RequestNavigate(this, nameof(ContentArea), "HomePage", null);
-                _navigationService.RequestNavigate(this, nameof(BrowserPane), "BrowserPane", null);
                 _navigationService.RequestNavigate(this, nameof(QuotesBar), "QuotesBar", null);
                 _closed = false;
             }
@@ -216,13 +270,16 @@ namespace Deadfile.Tab.Tab
         private SubscriptionToken _navigateToSelectedClientSubscriptionToken = null;
         private object _quotesBar;
         private object _actionsPad;
-        private bool _browserAndActionsAreVisible;
         private SubscriptionToken _addNewJobSubscriptionToken = null;
         private SubscriptionToken _invoiceClientSubscriptionToken = null;
         private SubscriptionToken _navigateEventSubscriptionToken = null;
         private SubscriptionToken _displayNameEventSubscriptionToken;
         private SubscriptionToken _addClientEventSubscriptionToken;
         private bool _closed = true;
+        private bool _actionsPadIsVisible;
+        private int _browserPaneWidth;
+        private bool _browserPaneIsVisible;
+        private bool _browserPaneIsCollapsed;
 
         private void NavigateToExperience(SelectedItemPacket packet)
         {

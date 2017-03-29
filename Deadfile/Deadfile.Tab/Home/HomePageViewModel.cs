@@ -72,12 +72,10 @@ namespace Deadfile.Tab.Home
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.CurrentApplications));
         }
 
-        public Experience Experience
-        {
-            get { return Experience.Home; }
-        }
+        public Experience Experience => Experience.Home;
 
-        public bool ShowActionsPad { get; } = true;
+        public bool ShowActionsPad { get; } = false;
+        public bool ShowBrowserPane { get; } = true;
         public void CompleteNavigation()
         {
         }

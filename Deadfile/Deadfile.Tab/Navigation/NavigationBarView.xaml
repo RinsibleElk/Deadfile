@@ -95,6 +95,7 @@
                         </Grid>
                     </Popup>
                 </Grid>
+                <CheckBox Margin="3" IsChecked="{Binding IncludeInactive}">Include Inactive</CheckBox>
             </StackPanel>
         </Border>
     </Border>

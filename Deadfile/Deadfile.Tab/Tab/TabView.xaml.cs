@@ -24,5 +24,23 @@ namespace Deadfile.Tab.Tab
         {
             InitializeComponent();
         }
+
+        private static readonly GridLength Zero = new GridLength(0);
+        private GridLength? _browserPaneWidth;
+        private void GridSplitter_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (BrowserPane.Visibility == Visibility.Visible)
+            {
+                BrowserPane.Visibility = Visibility.Collapsed;
+                _browserPaneWidth = MainGrid.ColumnDefinitions[2].Width;
+                MainGrid.ColumnDefinitions[2].Width = Zero;
+            }
+            else if (_browserPaneWidth != null)
+            {
+                BrowserPane.Visibility = Visibility.Visible;
+                MainGrid.ColumnDefinitions[2].Width = _browserPaneWidth.Value;
+                _browserPaneWidth = null;
+            }
+        }
     }
 }

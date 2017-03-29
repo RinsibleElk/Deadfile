@@ -288,6 +288,8 @@ namespace Deadfile.Tab.Common
         public abstract Experience Experience { get; }
         public bool ShowActionsPad => true;
 
+        public bool ShowBrowserPane => true;
+
         /// <summary>
         /// Finalise navigation by enabling editing if requested.
         /// </summary>

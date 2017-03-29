@@ -80,7 +80,6 @@ namespace Deadfile.Tab
             _container.RegisterSingleton(typeof(BillableHoursJobChildViewModel), JobChildExperience.BillableHours + JobChildKeys.JobChildKey, typeof(BillableHoursJobChildViewModel));
 
             // Actions pads
-            _container.RegisterSingleton(typeof(HomeActionsPadViewModel), Experience.Home + RegionNames.ActionsPad, typeof(HomeActionsPadViewModel));
             _container.RegisterSingleton(typeof(ClientsActionsPadViewModel), Experience.Clients + RegionNames.ActionsPad, typeof(ClientsActionsPadViewModel));
             _container.RegisterSingleton(typeof(JobsActionsPadViewModel), Experience.Jobs + RegionNames.ActionsPad, typeof(JobsActionsPadViewModel));
             _container.RegisterSingleton(typeof(InvoicesActionsPadViewModel), Experience.Invoices + RegionNames.ActionsPad, typeof(InvoicesActionsPadViewModel));

@@ -50,11 +50,9 @@ namespace Deadfile.Tab.Home
             throw new NotImplementedException();
         }
 
-        public override Experience Experience
-        {
-            get { return Experience.Home; }
-        }
+        public override Experience Experience => Experience.Home;
 
-        public override bool ShowActionsPad { get; } = true;
+        public override bool ShowActionsPad { get; } = false;
+        public override bool ShowBrowserPane { get; } = true;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Deadfile.Tab.Browser;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.DesignTime;
@@ -19,8 +20,10 @@ namespace Deadfile.Tab.Tab
         public IPageViewModel ContentArea { get; set; } = new HomePageDesignTimeViewModel();
         public object BrowserPane { get; set; } = new BrowserPaneDesignTimeViewModel();
         public object QuotesBar { get; set; } = new QuotesBarDesignTimeViewModel();
-        public object ActionsPad { get; set; } = new HomeActionsPadDesignTimeViewModel();
-
-        public bool BrowserAndActionsAreVisible { get; set; } = true;
+        public object ActionsPad { get; set; } = null;
+        public bool ActionsPadIsVisible { get; set; } = true;
+        public bool BrowserPaneIsVisible { get; set; } = true;
+        public bool BrowserPaneIsCollapsed { get; set; } = false;
+        public ICommand CollapseBrowserPaneCommand { get; } = null;
     }
 }

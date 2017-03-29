@@ -15,13 +15,17 @@
     <converters:JobTaskStateToNullableBooleanConverter x:Key="JobTaskStateToBoolean" />
     <converters:ExpenseTypeToStringConverter x:Key="ExpenseTypeToString" />
     <converters:BrowserSortToStringConverter x:Key="BrowserSortToString" />
-    <converters:SwitchConverter x:Key="BrowserAndActionsAreVisibleToQuotesColumnSpan">
-        <converters:SwitchConverterCase Then="2" When="True" />
-        <converters:SwitchConverterCase Then="3" When="False" />
+    <converters:SwitchConverter x:Key="ActionsPadIsVisibleToQuotesColumnSpan">
+        <converters:SwitchConverterCase Then="1" When="True" />
+        <converters:SwitchConverterCase Then="2" When="False" />
     </converters:SwitchConverter>
-    <converters:SwitchConverter x:Key="BrowserAndActionsAreVisibleToContentColumnSpan">
+    <converters:SwitchConverter x:Key="BrowserPaneIsVisibleToContentColumnSpan">
         <converters:SwitchConverterCase Then="1" When="True" />
         <converters:SwitchConverterCase Then="3" When="False" />
+    </converters:SwitchConverter>
+    <converters:SwitchConverter x:Key="BrowserPaneIsCollapsedToGridSplitterColumnSpan">
+        <converters:SwitchConverterCase Then="2" When="True" />
+        <converters:SwitchConverterCase Then="1" When="False" />
     </converters:SwitchConverter>
     <converters:SwitchConverter x:Key="ExperienceToImage">
         <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png" When="Clients" />

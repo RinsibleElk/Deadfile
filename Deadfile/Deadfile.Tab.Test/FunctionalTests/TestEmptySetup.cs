@@ -20,10 +20,11 @@ namespace Deadfile.Tab.Test.FunctionalTests
             using (var setup = new MockSetup())
             {
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.HomePageViewModel));
-                Assert.True(Object.ReferenceEquals(setup.TabViewModel.ActionsPad, setup.HomeActionsPadViewModel));
+                Assert.True(Object.ReferenceEquals(setup.TabViewModel.ActionsPad, null));
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.BrowserPane, setup.BrowserPaneViewModel));
-                Assert.True(setup.TabViewModel.BrowserAndActionsAreVisible);
+                Assert.False(setup.TabViewModel.ActionsPadIsVisible);
+                Assert.True(setup.TabViewModel.BrowserPaneIsVisible);
                 Assert.Equal("Home", setup.TabViewModel.DisplayName);
             }
         }
@@ -38,7 +39,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.ActionsPad, setup.ClientsActionsPadViewModel));
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.BrowserPane, setup.BrowserPaneViewModel));
-                Assert.True(setup.TabViewModel.BrowserAndActionsAreVisible);
+                Assert.True(setup.TabViewModel.ActionsPadIsVisible);
+                Assert.True(setup.TabViewModel.BrowserPaneIsVisible);
                 Assert.Equal("New Client", setup.TabViewModel.DisplayName);
             }
         }
@@ -90,7 +92,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.DefineQuotationsPageViewModel));
                 Assert.Equal(null, setup.TabViewModel.ActionsPad);
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
-                Assert.False(setup.TabViewModel.BrowserAndActionsAreVisible);
+                Assert.False(setup.TabViewModel.ActionsPadIsVisible);
+                Assert.False(setup.TabViewModel.BrowserPaneIsVisible);
                 Assert.Equal("Define Quotations", setup.TabViewModel.DisplayName);
                 Assert.Equal(1, setup.DefineQuotationsPageViewModel.Items.Count);
                 Assert.Equal(ModelBase.NewModelId, setup.DefineQuotationsPageViewModel.Items[0].QuotationId);
@@ -119,7 +122,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.DefineQuotationsPageViewModel));
                 Assert.Equal(null, setup.TabViewModel.ActionsPad);
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
-                Assert.False(setup.TabViewModel.BrowserAndActionsAreVisible);
+                Assert.False(setup.TabViewModel.ActionsPadIsVisible);
+                Assert.False(setup.TabViewModel.BrowserPaneIsVisible);
                 Assert.Equal("Define Quotations", setup.TabViewModel.DisplayName);
                 Assert.Equal(1, setup.DefineQuotationsPageViewModel.Items.Count);
                 Assert.Equal(ModelBase.NewModelId, setup.DefineQuotationsPageViewModel.Items[0].QuotationId);
@@ -186,7 +190,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.LocalAuthoritiesPageViewModel));
                 Assert.Equal(null, setup.TabViewModel.ActionsPad);
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
-                Assert.False(setup.TabViewModel.BrowserAndActionsAreVisible);
+                Assert.False(setup.TabViewModel.ActionsPadIsVisible);
+                Assert.False(setup.TabViewModel.BrowserPaneIsVisible);
                 Assert.Equal("Local Authorities", setup.TabViewModel.DisplayName);
                 Assert.Equal(1, setup.LocalAuthoritiesPageViewModel.Items.Count);
                 Assert.Equal(ModelBase.NewModelId, setup.LocalAuthoritiesPageViewModel.Items[0].LocalAuthorityId);
@@ -215,7 +220,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.LocalAuthoritiesPageViewModel));
                 Assert.Equal(null, setup.TabViewModel.ActionsPad);
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
-                Assert.False(setup.TabViewModel.BrowserAndActionsAreVisible);
+                Assert.False(setup.TabViewModel.ActionsPadIsVisible);
+                Assert.False(setup.TabViewModel.BrowserPaneIsVisible);
                 Assert.Equal("Local Authorities", setup.TabViewModel.DisplayName);
                 Assert.Equal(1, setup.LocalAuthoritiesPageViewModel.Items.Count);
                 Assert.Equal(ModelBase.NewModelId, setup.LocalAuthoritiesPageViewModel.Items[0].LocalAuthorityId);
@@ -244,10 +250,11 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 Assert.False(setup.NavigationBarViewModel.CanForward);
                 setup.NavigationBarViewModel.Back();
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.HomePageViewModel));
-                Assert.True(Object.ReferenceEquals(setup.TabViewModel.ActionsPad, setup.HomeActionsPadViewModel));
+                Assert.True(Object.ReferenceEquals(setup.TabViewModel.ActionsPad, null));
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.BrowserPane, setup.BrowserPaneViewModel));
-                Assert.True(setup.TabViewModel.BrowserAndActionsAreVisible);
+                Assert.False(setup.TabViewModel.ActionsPadIsVisible);
+                Assert.True(setup.TabViewModel.BrowserPaneIsVisible);
                 Assert.Equal("Home", setup.TabViewModel.DisplayName);
                 Assert.False(setup.NavigationBarViewModel.CanBack);
                 Assert.True(setup.NavigationBarViewModel.CanForward);
@@ -255,7 +262,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.DefineQuotationsPageViewModel));
                 Assert.Equal(null, setup.TabViewModel.ActionsPad);
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
-                Assert.False(setup.TabViewModel.BrowserAndActionsAreVisible);
+                Assert.False(setup.TabViewModel.ActionsPadIsVisible);
+                Assert.False(setup.TabViewModel.BrowserPaneIsVisible);
                 Assert.Equal("Define Quotations", setup.TabViewModel.DisplayName);
             }
         }
@@ -269,10 +277,10 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 Assert.True(setup.NavigationBarViewModel.CanBack);
                 setup.NavigationBarViewModel.Back();
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.HomePageViewModel));
-                Assert.True(Object.ReferenceEquals(setup.TabViewModel.ActionsPad, setup.HomeActionsPadViewModel));
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.BrowserPane, setup.BrowserPaneViewModel));
-                Assert.True(setup.TabViewModel.BrowserAndActionsAreVisible);
+                Assert.False(setup.TabViewModel.ActionsPadIsVisible);
+                Assert.True(setup.TabViewModel.BrowserPaneIsVisible);
                 Assert.Equal("Home", setup.TabViewModel.DisplayName);
                 Assert.False(setup.NavigationBarViewModel.CanBack);
                 Assert.True(setup.NavigationBarViewModel.CanForward);
@@ -280,7 +288,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.LocalAuthoritiesPageViewModel));
                 Assert.Equal(null, setup.TabViewModel.ActionsPad);
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.NavigationBar, setup.NavigationBarViewModel));
-                Assert.False(setup.TabViewModel.BrowserAndActionsAreVisible);
+                Assert.False(setup.TabViewModel.ActionsPadIsVisible);
+                Assert.False(setup.TabViewModel.BrowserPaneIsVisible);
                 Assert.Equal("Local Authorities", setup.TabViewModel.DisplayName);
             }
         }

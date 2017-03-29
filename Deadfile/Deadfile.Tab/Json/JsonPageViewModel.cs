@@ -101,6 +101,7 @@ namespace Deadfile.Tab.Json
 
         public Experience Experience { get; } = Experience.Json;
         public bool ShowActionsPad { get; } = false;
+        public bool ShowBrowserPane { get; } = false;
         public void CompleteNavigation()
         {
         }

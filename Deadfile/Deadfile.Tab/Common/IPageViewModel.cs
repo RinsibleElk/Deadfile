@@ -19,9 +19,14 @@ namespace Deadfile.Tab.Common
         Experience Experience { get; }
 
         /// <summary>
-        /// Whether an actions pad and browser pane should be displayed during this experience.
+        /// Whether an actions pad should be displayed during this experience.
         /// </summary>
         bool ShowActionsPad { get; }
+
+        /// <summary>
+        /// Whether a browser pane should be displayed during this experience.
+        /// </summary>
+        bool ShowBrowserPane { get; }
 
         /// <summary>
         /// Called when all related views are up and running to finalise navigation of the content area.

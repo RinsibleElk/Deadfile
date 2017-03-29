@@ -24,6 +24,7 @@ namespace Deadfile.Tab.DesignTime
 
         public virtual Experience Experience { get; }
         public virtual bool ShowActionsPad { get; } = false;
+        public virtual bool ShowBrowserPane { get; } = false;
         public void CompleteNavigation()
         {
             throw new NotImplementedException();

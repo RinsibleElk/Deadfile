@@ -36,6 +36,7 @@ namespace Deadfile.Tab.Navigation
         private bool _isSearchShown;
         private ObservableCollection<BrowserModel> _searchResults;
         private BrowserModel _selectedSearchItem;
+        private bool _includeInactive;
 
         public NavigationBarViewModel(TabIdentity tabIdentity,
             INavigationService navigationService,
@@ -149,6 +150,42 @@ namespace Deadfile.Tab.Navigation
             }
         }
 
+        private void RefreshSearchResults()
+        {
+            if (String.IsNullOrWhiteSpace(_searchText))
+            {
+                IsSearchShown = false;
+                SearchResults = new ObservableCollection<BrowserModel>();
+                SelectedSearchItem = null;
+            }
+            else
+            {
+                IsSearchShown = true;
+                var clients =
+                    _repository.GetBrowserItems(new BrowserSettings
+                    {
+                        Mode = BrowserMode.Client,
+                        FilterText = _searchText,
+                        IncludeInactiveEnabled = IncludeInactive
+                    });
+                var jobs =
+                    _repository.GetBrowserItems(new BrowserSettings
+                    {
+                        Mode = BrowserMode.Job,
+                        FilterText = _searchText,
+                        IncludeInactiveEnabled = IncludeInactive
+                    });
+                var invoices =
+                    _repository.GetBrowserItems(new BrowserSettings
+                    {
+                        Mode = BrowserMode.Invoice,
+                        FilterText = _searchText,
+                        IncludeInactiveEnabled = IncludeInactive
+                    });
+                SearchResults = new ObservableCollection<BrowserModel>(clients.Concat(jobs).Concat(invoices));
+                SelectedSearchItem = null;
+            }
+        }
 
         public string SearchText
         {
@@ -158,39 +195,7 @@ namespace Deadfile.Tab.Navigation
                 if (value == _searchText) return;
                 _searchText = value;
                 NotifyOfPropertyChange(() => SearchText);
-                if (String.IsNullOrWhiteSpace(_searchText))
-                {
-                    IsSearchShown = false;
-                    SearchResults = new ObservableCollection<BrowserModel>();
-                    SelectedSearchItem = null;
-                }
-                else
-                {
-                    IsSearchShown = true;
-                    var clients =
-                        _repository.GetBrowserItems(new BrowserSettings
-                        {
-                            Mode = BrowserMode.Client,
-                            FilterText = _searchText,
-                            IncludeInactiveEnabled = true
-                        });
-                    var jobs =
-                        _repository.GetBrowserItems(new BrowserSettings
-                        {
-                            Mode = BrowserMode.Job,
-                            FilterText = _searchText,
-                            IncludeInactiveEnabled = true
-                        });
-                    var invoices =
-                        _repository.GetBrowserItems(new BrowserSettings
-                        {
-                            Mode = BrowserMode.Invoice,
-                            FilterText = _searchText,
-                            IncludeInactiveEnabled = true
-                        });
-                    SearchResults = new ObservableCollection<BrowserModel>(clients.Concat(jobs).Concat(invoices));
-                    SelectedSearchItem = null;
-                }
+                RefreshSearchResults();
             }
         }
 
@@ -202,6 +207,18 @@ namespace Deadfile.Tab.Navigation
                 if (value == _isSearchShown) return;
                 _isSearchShown = value;
                 NotifyOfPropertyChange(() => IsSearchShown);
+            }
+        }
+
+        public bool IncludeInactive
+        {
+            get { return _includeInactive; }
+            set
+            {
+                if (_includeInactive == value) return;
+                _includeInactive = value;
+                NotifyOfPropertyChange(() => IncludeInactive);
+                RefreshSearchResults();
             }
         }
 

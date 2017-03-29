@@ -69,7 +69,6 @@ namespace Deadfile.Tab.Test.FunctionalTests
         public readonly ApplicationsJobChildViewModel ApplicationsJobChildViewModel;
         public readonly ExpensesJobChildViewModel ExpensesJobChildViewModel;
         public readonly BillableHoursJobChildViewModel BillableHoursJobChildViewModel;
-        public readonly HomeActionsPadViewModel HomeActionsPadViewModel;
         public readonly ClientsActionsPadViewModel ClientsActionsPadViewModel;
         public readonly JobsActionsPadViewModel JobsActionsPadViewModel;
         public readonly InvoicesActionsPadViewModel InvoicesActionsPadViewModel;
@@ -100,7 +99,6 @@ namespace Deadfile.Tab.Test.FunctionalTests
             ApplicationsJobChildViewModel = new ApplicationsJobChildViewModel(DispatcherTimerService, DeadfileDialogCoordinator, Repository, EventAggregator.Object);
             ExpensesJobChildViewModel = new ExpensesJobChildViewModel(DispatcherTimerService, DeadfileDialogCoordinator, Repository, EventAggregator.Object);
             BillableHoursJobChildViewModel = new BillableHoursJobChildViewModel(DispatcherTimerService, DeadfileDialogCoordinator, Repository, EventAggregator.Object);
-            HomeActionsPadViewModel = new HomeActionsPadViewModel();
             ClientsActionsPadViewModel = new ClientsActionsPadViewModel(TabIdentity, EventAggregator.Object);
             JobsActionsPadViewModel = new JobsActionsPadViewModel(TabIdentity, EventAggregator.Object);
             InvoicesActionsPadViewModel = new InvoicesActionsPadViewModel(TabIdentity, EventAggregator.Object);
@@ -122,7 +120,6 @@ namespace Deadfile.Tab.Test.FunctionalTests
             ViewModels.Add("ApplicationsJobChild", ApplicationsJobChildViewModel);
             ViewModels.Add("ExpensesJobChild", ExpensesJobChildViewModel);
             ViewModels.Add("BillableHoursJobChild", BillableHoursJobChildViewModel);
-            ViewModels.Add("HomeActionsPad", HomeActionsPadViewModel);
             ViewModels.Add("ClientsActionsPad", ClientsActionsPadViewModel);
             ViewModels.Add("JobsActionsPad", JobsActionsPadViewModel);
             ViewModels.Add("InvoicesActionsPad", InvoicesActionsPadViewModel);

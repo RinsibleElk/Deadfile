@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:local="clr-namespace:Deadfile.Tab.Tab"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
@@ -24,28 +25,17 @@
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
-    <Grid Background="{DynamicResource ContentBackgroundBrush}">
+    <Grid x:Name="MainGrid" Background="{DynamicResource ContentBackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="3" />
-            <ColumnDefinition
-                Width="Auto"
-                MinWidth="100"
-                MaxWidth="400" />
+            <ColumnDefinition Width="Auto" MaxWidth="400" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <GridSplitter
-            Grid.Row="1"
-            Grid.Column="1"
-            Width="3"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Stretch"
-            Background="{DynamicResource GrayBrush1}"
-            Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
         <ContentControl
             x:Name="NavigationBar"
             Grid.Row="0"
@@ -55,24 +45,42 @@
             x:Name="ContentArea"
             Grid.Row="1"
             Grid.Column="0"
-            Grid.ColumnSpan="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BrowserAndActionsAreVisibleToContentColumnSpan}}"
+            Grid.ColumnSpan="{Binding BrowserPaneIsVisible, Converter={StaticResource BrowserPaneIsVisibleToContentColumnSpan}}"
             Background="{DynamicResource BrowserBackground}"
             BorderThickness="0"
             Transition="Default" />
+        <GridSplitter
+            x:Name="GridSplitter"
+            Grid.Row="1"
+            Grid.Column="1"
+            Width="3"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            metro:VisibilityHelper.IsVisible="{Binding BrowserPaneIsVisible}"
+            Background="{DynamicResource GrayBrush1}"
+            MouseDoubleClick="GridSplitter_OnMouseDoubleClick" />
         <ContentControl
             x:Name="BrowserPane"
             Grid.Row="1"
             Grid.Column="2"
-            Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
-        <ContentControl
-            x:Name="QuotesBar"
+            metro:VisibilityHelper.IsVisible="{Binding BrowserPaneIsVisible}" />
+        <Grid
             Grid.Row="2"
             Grid.Column="0"
-            Grid.ColumnSpan="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BrowserAndActionsAreVisibleToQuotesColumnSpan}}" />
-        <ContentControl
-            x:Name="ActionsPad"
-            Grid.Row="2"
-            Grid.Column="2"
-            Visibility="{Binding BrowserAndActionsAreVisible, Converter={StaticResource BooleanToVisibility}}" />
+            Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ContentControl
+                x:Name="QuotesBar"
+                Grid.Column="0"
+                Grid.ColumnSpan="{Binding ActionsPadIsVisible, Converter={StaticResource ActionsPadIsVisibleToQuotesColumnSpan}}" />
+            <ContentControl
+                x:Name="ActionsPad"
+                Grid.Column="1"
+                Width="200"
+                Visibility="{Binding ActionsPadIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+        </Grid>
     </Grid>
 </UserControl>

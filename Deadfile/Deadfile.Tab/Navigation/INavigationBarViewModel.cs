@@ -25,6 +25,7 @@ namespace Deadfile.Tab.Navigation
         bool CanRedo { get; }
         string SearchText { get; set; }
         bool IsSearchShown { get; }
+        bool IncludeInactive { get; set; }
         ObservableCollection<BrowserModel> SearchResults { get; }
         BrowserModel SelectedSearchItem { get; set; }
         ICommand LostFocusCommand { get; }
