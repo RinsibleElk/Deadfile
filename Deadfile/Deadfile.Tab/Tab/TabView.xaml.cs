@@ -34,12 +34,16 @@ namespace Deadfile.Tab.Tab
                 BrowserPane.Visibility = Visibility.Collapsed;
                 _browserPaneWidth = MainGrid.ColumnDefinitions[2].Width;
                 MainGrid.ColumnDefinitions[2].Width = Zero;
+                GridSplitter.Width = 10;
+                GridSplitter.ToolTip = "Double Click to Expand Browser Pane";
             }
             else if (_browserPaneWidth != null)
             {
                 BrowserPane.Visibility = Visibility.Visible;
                 MainGrid.ColumnDefinitions[2].Width = _browserPaneWidth.Value;
                 _browserPaneWidth = null;
+                GridSplitter.Width = 3;
+                GridSplitter.ToolTip = "Double Click to Collapse";
             }
         }
     }

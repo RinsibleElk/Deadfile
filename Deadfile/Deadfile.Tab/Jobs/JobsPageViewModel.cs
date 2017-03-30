@@ -217,22 +217,24 @@ namespace Deadfile.Tab.Jobs
                 }
 
                 // Finally, save the job and handle any related stuffs.
-                if (actuallySave)
-                {
-                    // Now save the job.
-                    _repository.SaveJob(SelectedItem);
+                if (!actuallySave) return false;
+                // Now save the job.
+                _repository.SaveJob(SelectedItem);
 
-                    // If the job is now in an inactive state, check if the client no longer has any active jobs and make it inactive.
-                    var jobsForClient = _repository.GetBrowserJobsForClient(BrowserMode.Client, false,
-                        SelectedItem.ClientId);
-                    if (jobsForClient.FirstOrDefault() == null)
-                    {
-                        var clientModel = _repository.GetClientById(SelectedItem.ClientId);
-                        clientModel.Status = ClientStatus.Inactive;
-                        _repository.SaveClient(clientModel);
-                    }
+                // If the job is now in an inactive state, check if the client no longer has any active jobs and make it inactive.
+                var firstJob = _repository.GetBrowserJobsForClient(BrowserMode.Client, false, SelectedItem.ClientId).FirstOrDefault();
+                var clientModel = _repository.GetClientById(SelectedItem.ClientId);
+                if (firstJob == null && clientModel.Status == ClientStatus.Active)
+                {
+                    clientModel.Status = ClientStatus.Inactive;
+                    _repository.SaveClient(clientModel);
                 }
-                return actuallySave;
+                else if (firstJob != null && clientModel.Status == ClientStatus.Inactive)
+                {
+                    clientModel.Status = ClientStatus.Active;
+                    _repository.SaveClient(clientModel);
+                }
+                return true;
             }
             catch (Exception e)
             {

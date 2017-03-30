@@ -2,6 +2,7 @@
     x:Class="Deadfile.Tab.Home.HomePageView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:Deadfile.Infrastructure.Behaviors;assembly=Deadfile.Infrastructure"
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
@@ -29,25 +30,29 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
-                <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <Button
                     x:Name="AddClient"
-                    Margin="10,20,0,10"
-                    Style="{StaticResource AddClientButton}"
-                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}">
+                    Margin="20"
+                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab-dead.png"
+                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
+                    Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
                         <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                             <MenuItem Command="{Binding OpenNewTabToNewClientCommand}" Header="Open In New Tab..." />
                         </ContextMenu>
                     </Button.ContextMenu>
+                    Add Client
                 </Button>
                 <Button
                     x:Name="UnbilledJobs"
-                    Margin="10,20,0,10"
-                    Style="{StaticResource UnbilledJobsButton}"
-                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}">
+                    Margin="20"
+                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unbilled-jobs.png"
+                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unbilled-jobs-hover.png"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
+                    Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
                         <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                             <MenuItem
@@ -56,12 +61,15 @@
                                 Header="Open In New Tab..." />
                         </ContextMenu>
                     </Button.ContextMenu>
+                    Unbilled Jobs
                 </Button>
                 <Button
                     x:Name="ImportExportToJson"
-                    Margin="10,20,0,10"
-                    Style="{StaticResource ImportExportButton}"
-                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}">
+                    Margin="20"
+                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-export.png"
+                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-export-hover.png"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
+                    Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
                         <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                             <MenuItem
@@ -70,28 +78,34 @@
                                 Header="Open In New Tab..." />
                         </ContextMenu>
                     </Button.ContextMenu>
+                    Import/Export
                 </Button>
-            </StackPanel>
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <Button
                     x:Name="LocalAuthorities"
-                    Margin="10,20,0,10"
-                    Style="{StaticResource LocalAuthoritiesButton}"
-                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}">
+                    Margin="20"
+                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/localauthority-tab.png"
+                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/localauthority-tab.png"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
+                    Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
                         <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                             <MenuItem
                                 Command="{Binding OpenNewTabToExperienceCommand}"
-                                CommandParameter="{x:Static tab:Experience.LocalAuthorities}"
+                                CommandParameter="{x:Static tab:Experience.Json}"
                                 Header="Open In New Tab..." />
                         </ContextMenu>
                     </Button.ContextMenu>
+                    Local Authorities
                 </Button>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <Button
                     x:Name="UnpaidInvoices"
-                    Margin="10,20,0,10"
-                    Style="{StaticResource UnpaidInvoicesButton}"
-                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}">
+                    Margin="20"
+                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unpaid-invoices.png"
+                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unpaid-invoices-hover.png"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
+                    Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
                         <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                             <MenuItem
@@ -100,11 +114,15 @@
                                 Header="Open In New Tab..." />
                         </ContextMenu>
                     </Button.ContextMenu>
+                    Local Authorities
                 </Button>
                 <Button
                     x:Name="CurrentApplications"
-                    Margin="10,20,0,10"
-                    Style="{StaticResource CurrentApplicationsButton}">
+                    Margin="20"
+                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/current-applications.png"
+                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/current-applications-hover.png"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
+                    Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
                         <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                             <MenuItem
@@ -113,13 +131,15 @@
                                 Header="Open In New Tab..." />
                         </ContextMenu>
                     </Button.ContextMenu>
+                    Current Applications
                 </Button>
-            </StackPanel>
-            <StackPanel Grid.Row="2" Orientation="Horizontal">
                 <Button
                     x:Name="DefineQuotations"
-                    Margin="10,20,0,10"
-                    Style="{StaticResource DefineQuotationsButton}">
+                    Margin="20"
+                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/quote.png"
+                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/quote-hover.png"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
+                    Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
                         <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                             <MenuItem
@@ -128,11 +148,15 @@
                                 Header="Open In New Tab..." />
                         </ContextMenu>
                     </Button.ContextMenu>
+                    Define Quotations
                 </Button>
                 <Button
                     x:Name="TodoReport"
-                    Margin="10,20,0,10"
-                    Style="{StaticResource TodoReportButton}">
+                    Margin="20"
+                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/todo-report.png"
+                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/todo-report-hover.png"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
+                    Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
                         <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                             <MenuItem
@@ -141,6 +165,7 @@
                                 Header="Open In New Tab..." />
                         </ContextMenu>
                     </Button.ContextMenu>
+                    Todo Report
                 </Button>
             </StackPanel>
         </Grid>

@@ -28,7 +28,7 @@
     <Grid x:Name="MainGrid" Background="{DynamicResource ContentBackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="3" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" MaxWidth="400" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -59,7 +59,7 @@
             metro:VisibilityHelper.IsVisible="{Binding BrowserPaneIsVisible}"
             Background="{DynamicResource GrayBrush1}"
             MouseDoubleClick="GridSplitter_OnMouseDoubleClick"
-            ToolTip="Double Click to Expand/Collapse" />
+            ToolTip="Double Click to Collapse" />
         <ContentControl
             x:Name="BrowserPane"
             Grid.Row="1"

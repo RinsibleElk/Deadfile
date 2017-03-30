@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:Deadfile.Infrastructure.Behaviors"
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
     xmlns:entity="clr-namespace:Deadfile.Entity;assembly=Deadfile.Entity"
@@ -422,8 +423,8 @@
     <system:Double x:Key="ActionsPadButtonSize">50</system:Double>
     <system:Double x:Key="ActionsPadButtonHeight">76</system:Double>
     <system:Double x:Key="ActionsPadButtonLabelHeight">26</system:Double>
-    <system:Double x:Key="HomePageButtonHeight">154</system:Double>
-    <system:Double x:Key="HomePageButtonSize">128</system:Double>
+    <system:Double x:Key="HomePageButtonSize">154</system:Double>
+    <system:Double x:Key="HomePageButtonImageSize">128</system:Double>
     <system:Double x:Key="HomePageButtonLabelHeight">26</system:Double>
 
     <Style
@@ -1007,554 +1008,46 @@
     <SolidColorBrush x:Key="HomeButtonBackground" Color="#22D3D3D3" />
     <SolidColorBrush x:Key="HomeButtonBackgroundHover" Color="#77D3D3D3" />
 
-    <Style
-        x:Key="DefineQuotationsButton"
-        BasedOn="{StaticResource {x:Type Button}}"
-        TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border
-                        Width="{StaticResource HomePageButtonSize}"
-                        Height="{StaticResource HomePageButtonHeight}"
-                        Background="{StaticResource HomeButtonBackground}"
-                        BorderThickness="1">
-                        <StackPanel>
-                            <Image
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonSize}"
-                                Source="../Resources/quote.png" />
-                            <Label
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonLabelHeight}"
-                                HorizontalAlignment="Center"
-                                HorizontalContentAlignment="Center">
-                                Define Quotations
-                            </Label>
-                        </StackPanel>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
+    <ControlTemplate x:Key="HomePageButton" TargetType="{x:Type Button}">
+        <Border
+            x:Name="B"
+            Width="{StaticResource HomePageButtonSize}"
+            Height="{StaticResource HomePageButtonSize}"
+            Background="{StaticResource HomeButtonBackground}"
+            BorderBrush="{DynamicResource BlackBrush}"
+            BorderThickness="1,1,2,2">
+            <StackPanel x:Name="Sp">
+                <Image
+                    x:Name="Img"
+                    Width="{StaticResource HomePageButtonImageSize}"
+                    Height="{StaticResource HomePageButtonImageSize}"
+                    Source="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=(behaviors:ButtonHelper.ActiveImageSource)}" />
+                <Label
+                    x:Name="Lbl"
+                    Width="{StaticResource HomePageButtonSize}"
+                    Height="{StaticResource HomePageButtonLabelHeight}"
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Content="{TemplateBinding Content}" />
+            </StackPanel>
+        </Border>
+        <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonHeight}"
-                                Background="{StaticResource HomeButtonBackgroundHover}"
-                                BorderThickness="1">
-                                <StackPanel>
-                                    <Image
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonSize}"
-                                        Source="../Resources/quote-hover.png" />
-                                    <Label
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonLabelHeight}"
-                                        HorizontalAlignment="Center"
-                                        HorizontalContentAlignment="Center"
-                                        FontWeight="Bold">
-                                        Define Quotations
-                                    </Label>
-                                </StackPanel>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
+                <Setter TargetName="B" Property="Background" Value="{StaticResource HomeButtonBackgroundHover}" />
+                <Setter TargetName="B" Property="BorderBrush" Value="{DynamicResource BlackBrush}" />
+                <Setter TargetName="B" Property="BorderThickness" Value="1,1,2,2" />
+                <Setter TargetName="Img" Property="Source" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=(behaviors:ButtonHelper.HoverImageSource)}" />
+                <Setter TargetName="Lbl" Property="FontWeight" Value="Bold" />
             </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style
-        x:Key="AddClientButton"
-        BasedOn="{StaticResource {x:Type Button}}"
-        TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border
-                        Width="{StaticResource HomePageButtonSize}"
-                        Height="{StaticResource HomePageButtonHeight}"
-                        Background="{StaticResource HomeButtonBackground}"
-                        BorderThickness="1">
-                        <StackPanel>
-                            <Image
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonSize}"
-                                Source="../Resources/client-tab-dead.png" />
-                            <Label
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonLabelHeight}"
-                                HorizontalAlignment="Center"
-                                HorizontalContentAlignment="Center">
-                                Add Client
-                            </Label>
-                        </StackPanel>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonHeight}"
-                                Background="{StaticResource HomeButtonBackgroundHover}"
-                                BorderThickness="1">
-                                <StackPanel>
-                                    <Image
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonSize}"
-                                        Source="../Resources/client-tab.png" />
-                                    <Label
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonLabelHeight}"
-                                        HorizontalAlignment="Center"
-                                        HorizontalContentAlignment="Center"
-                                        FontWeight="Bold">
-                                        Add Client
-                                    </Label>
-                                </StackPanel>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="B" Property="Background" Value="{StaticResource HomeButtonBackgroundHover}" />
+                <Setter TargetName="B" Property="BorderBrush" Value="{DynamicResource GrayBrush4}" />
+                <Setter TargetName="B" Property="BorderThickness" Value="2,2,1,1" />
+                <Setter TargetName="Img" Property="Source" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=(behaviors:ButtonHelper.HoverImageSource)}" />
+                <Setter TargetName="Lbl" Property="FontWeight" Value="Bold" />
             </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style
-        x:Key="UnbilledJobsButton"
-        BasedOn="{StaticResource {x:Type Button}}"
-        TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border
-                        Width="{StaticResource HomePageButtonSize}"
-                        Height="{StaticResource HomePageButtonHeight}"
-                        Background="{StaticResource HomeButtonBackground}"
-                        BorderThickness="1">
-                        <StackPanel>
-                            <Image
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonSize}"
-                                Source="../Resources/unbilled-jobs.png" />
-                            <Label
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonLabelHeight}"
-                                HorizontalAlignment="Center"
-                                HorizontalContentAlignment="Center">
-                                Unbilled Jobs
-                            </Label>
-                        </StackPanel>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonHeight}"
-                                Background="{StaticResource HomeButtonBackgroundHover}"
-                                BorderThickness="1">
-                                <StackPanel>
-                                    <Image
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonSize}"
-                                        Source="../Resources/unbilled-jobs-hover.png" />
-                                    <Label
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonLabelHeight}"
-                                        HorizontalAlignment="Center"
-                                        HorizontalContentAlignment="Center"
-                                        FontWeight="Bold">
-                                        Unbilled Jobs
-                                    </Label>
-                                </StackPanel>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style
-        x:Key="UnpaidInvoicesButton"
-        BasedOn="{StaticResource {x:Type Button}}"
-        TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border
-                        Width="{StaticResource HomePageButtonSize}"
-                        Height="{StaticResource HomePageButtonHeight}"
-                        Background="{StaticResource HomeButtonBackground}"
-                        BorderThickness="1">
-                        <StackPanel>
-                            <Image
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonSize}"
-                                Source="../Resources/unpaid-invoices.png" />
-                            <Label
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonLabelHeight}"
-                                HorizontalAlignment="Center"
-                                HorizontalContentAlignment="Center">
-                                Unpaid Invoices
-                            </Label>
-                        </StackPanel>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonHeight}"
-                                Background="{StaticResource HomeButtonBackgroundHover}"
-                                BorderThickness="1">
-                                <StackPanel>
-                                    <Image
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonSize}"
-                                        Source="../Resources/unpaid-invoices-hover.png" />
-                                    <Label
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonLabelHeight}"
-                                        HorizontalAlignment="Center"
-                                        HorizontalContentAlignment="Center"
-                                        FontWeight="Bold">
-                                        Unpaid Invoices
-                                    </Label>
-                                </StackPanel>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style
-        x:Key="TodoReportButton"
-        BasedOn="{StaticResource {x:Type Button}}"
-        TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border
-                        Width="{StaticResource HomePageButtonSize}"
-                        Height="{StaticResource HomePageButtonHeight}"
-                        Background="{StaticResource HomeButtonBackground}"
-                        BorderThickness="1">
-                        <StackPanel>
-                            <Image
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonSize}"
-                                Source="../Resources/todo-report.png" />
-                            <Label
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonLabelHeight}"
-                                HorizontalAlignment="Center"
-                                HorizontalContentAlignment="Center">
-                                Todo Report
-                            </Label>
-                        </StackPanel>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonHeight}"
-                                Background="{StaticResource HomeButtonBackgroundHover}"
-                                BorderThickness="1">
-                                <StackPanel>
-                                    <Image
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonSize}"
-                                        Source="../Resources/todo-report-hover.png" />
-                                    <Label
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonLabelHeight}"
-                                        HorizontalAlignment="Center"
-                                        HorizontalContentAlignment="Center"
-                                        FontWeight="Bold">
-                                        Todo Report
-                                    </Label>
-                                </StackPanel>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style
-        x:Key="CurrentApplicationsButton"
-        BasedOn="{StaticResource {x:Type Button}}"
-        TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border
-                        Width="{StaticResource HomePageButtonSize}"
-                        Height="{StaticResource HomePageButtonHeight}"
-                        Background="{StaticResource HomeButtonBackground}"
-                        BorderThickness="1">
-                        <StackPanel>
-                            <Image
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonSize}"
-                                Source="../Resources/current-applications.png" />
-                            <Label
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonLabelHeight}"
-                                HorizontalAlignment="Center"
-                                HorizontalContentAlignment="Center">
-                                Current Applications
-                            </Label>
-                        </StackPanel>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonHeight}"
-                                Background="{StaticResource HomeButtonBackgroundHover}"
-                                BorderThickness="1">
-                                <StackPanel>
-                                    <Image
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonSize}"
-                                        Source="../Resources/current-applications-hover.png" />
-                                    <Label
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonLabelHeight}"
-                                        HorizontalAlignment="Center"
-                                        HorizontalContentAlignment="Center"
-                                        FontWeight="Bold">
-                                        Current Applications
-                                    </Label>
-                                </StackPanel>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style
-        x:Key="LocalAuthoritiesButton"
-        BasedOn="{StaticResource {x:Type Button}}"
-        TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border
-                        Width="{StaticResource HomePageButtonSize}"
-                        Height="{StaticResource HomePageButtonHeight}"
-                        Background="{StaticResource HomeButtonBackground}"
-                        BorderThickness="1">
-                        <StackPanel>
-                            <Image
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonSize}"
-                                Source="../Resources/localauthority-tab.png" />
-                            <Label
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonLabelHeight}"
-                                HorizontalAlignment="Center"
-                                HorizontalContentAlignment="Center">
-                                Local Authorities
-                            </Label>
-                        </StackPanel>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonHeight}"
-                                Background="{StaticResource HomeButtonBackgroundHover}"
-                                BorderThickness="1">
-                                <StackPanel>
-                                    <Image
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonSize}"
-                                        Source="../Resources/localauthority-tab.png" />
-                                    <Label
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonLabelHeight}"
-                                        HorizontalAlignment="Center"
-                                        HorizontalContentAlignment="Center"
-                                        FontWeight="Bold">
-                                        Local Authorities
-                                    </Label>
-                                </StackPanel>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style
-        x:Key="ImportButton"
-        BasedOn="{StaticResource {x:Type Button}}"
-        TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border
-                        Width="{StaticResource HomePageButtonSize}"
-                        Height="{StaticResource HomePageButtonHeight}"
-                        Background="{StaticResource HomeButtonBackground}"
-                        BorderThickness="1">
-                        <StackPanel>
-                            <Image
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonSize}"
-                                Source="../Resources/import.png" />
-                            <Label
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonLabelHeight}"
-                                HorizontalAlignment="Center"
-                                HorizontalContentAlignment="Center">
-                                Import
-                            </Label>
-                        </StackPanel>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonHeight}"
-                                Background="{StaticResource HomeButtonBackgroundHover}"
-                                BorderThickness="1">
-                                <StackPanel>
-                                    <Image
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonSize}"
-                                        Source="../Resources/import-hover.png" />
-                                    <Label
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonLabelHeight}"
-                                        HorizontalAlignment="Center"
-                                        HorizontalContentAlignment="Center"
-                                        FontWeight="Bold">
-                                        Import
-                                    </Label>
-                                </StackPanel>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style
-        x:Key="ImportExportButton"
-        BasedOn="{StaticResource {x:Type Button}}"
-        TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border
-                        Width="{StaticResource HomePageButtonSize}"
-                        Height="{StaticResource HomePageButtonHeight}"
-                        Background="{StaticResource HomeButtonBackground}"
-                        BorderThickness="1">
-                        <StackPanel>
-                            <Image
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonSize}"
-                                Source="../Resources/import-export.png" />
-                            <Label
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonLabelHeight}"
-                                HorizontalAlignment="Center"
-                                HorizontalContentAlignment="Center">
-                                Export to JSON
-                            </Label>
-                        </StackPanel>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border
-                                Width="{StaticResource HomePageButtonSize}"
-                                Height="{StaticResource HomePageButtonHeight}"
-                                Background="{StaticResource HomeButtonBackgroundHover}"
-                                BorderThickness="1">
-                                <StackPanel>
-                                    <Image
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonSize}"
-                                        Source="../Resources/import-export-hover.png" />
-                                    <Label
-                                        Width="{StaticResource HomePageButtonSize}"
-                                        Height="{StaticResource HomePageButtonLabelHeight}"
-                                        HorizontalAlignment="Center"
-                                        HorizontalContentAlignment="Center"
-                                        FontWeight="Bold">
-                                        Export to JSON
-                                    </Label>
-                                </StackPanel>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
     <ImageBrush
         x:Key="QuoteButtonImageBrush"
