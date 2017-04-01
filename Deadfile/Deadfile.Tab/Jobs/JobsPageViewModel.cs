@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Caliburn.Micro;
 using Deadfile.Entity;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Infrastructure.UndoRedo;
@@ -19,13 +17,14 @@ using IEventAggregator = Prism.Events.IEventAggregator;
 
 namespace Deadfile.Tab.Jobs
 {
-    class JobsPageViewModel : EditableItemViewModel<ClientAndJobNavigationKey, JobModel, JobsPageState>, IJobsPageViewModel
+    internal class JobsPageViewModel : EditableItemViewModel<ClientAndJobNavigationKey, JobModel, JobsPageState>, IJobsPageViewModel
     {
         private readonly TabIdentity _tabIdentity;
         private readonly INavigationService _navigationService;
         private readonly IDeadfileRepository _repository;
         private JobChildExperience _selectedJobChild = JobChildExperience.Empty;
         private ISimpleEditableItemViewModel _jobChildViewModel;
+        private SubscriptionToken _jobChildNavigateEventSubscriptionToken;
 
         public static readonly List<JobChildExperience> AllJobChildExperiences = new List<JobChildExperience>(new[]
         {
@@ -109,10 +108,7 @@ namespace Deadfile.Tab.Jobs
             else
             {
                 jobModel = _repository.GetJobById(clientAndJobNavigationKey.JobId);
-                if (jobModel.JobId == ModelBase.NewModelId)
-                    DisplayName = "New Job";
-                else
-                    DisplayName = jobModel.AddressFirstLine;
+                DisplayName = jobModel.JobId == ModelBase.NewModelId ? "New Job" : jobModel.AddressFirstLine;
             }
             Logger.Info("Event|DisplayNameEvent|Send|{0}|{1}", _tabIdentity.TabIndex, DisplayName);
             EventAggregator.GetEvent<DisplayNameEvent>().Publish(DisplayName);
@@ -288,7 +284,7 @@ namespace Deadfile.Tab.Jobs
             }
         }
 
-        private bool _jobChildIsEditable = false;
+        private bool _jobChildIsEditable;
         public bool JobChildIsEditable
         {
             get { return _jobChildIsEditable; }
@@ -365,8 +361,6 @@ namespace Deadfile.Tab.Jobs
             // Select JobTasks - this should take care of setting up the view model for the JobChildViewModel control.
             SelectedJobChild = JobChildExperience.JobTasks;
         }
-
-        private SubscriptionToken _jobChildNavigateEventSubscriptionToken = null;
 
         private void NavigateToJobChild(JobChildNavigateMessage navigateMessage)
         {

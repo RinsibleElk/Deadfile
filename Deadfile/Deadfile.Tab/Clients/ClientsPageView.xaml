@@ -2,6 +2,7 @@
     x:Class="Deadfile.Tab.Clients.ClientsPageView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:Deadfile.Infrastructure.Behaviors;assembly=Deadfile.Infrastructure"
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
@@ -12,8 +13,8 @@
     xmlns:utils="clr-namespace:Deadfile.Model.Utils;assembly=Deadfile.Model"
     d:DataContext="{d:DesignInstance Type=local:ClientsPageDesignTimeViewModel,
                                      IsDesignTimeCreatable=True}"
-    d:DesignHeight="300"
-    d:DesignWidth="300"
+    d:DesignHeight="700"
+    d:DesignWidth="700"
     dialog:DialogParticipation.Register="{Binding}"
     mc:Ignorable="d">
     <UserControl.Resources>
@@ -33,8 +34,6 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -172,7 +171,7 @@
             Grid.Column="0"
             VerticalAlignment="Center"
             Style="{DynamicResource FormLabel}">
-            Email Address First Line:
+            Email Address:
         </TextBlock>
         <Label
             Grid.Row="18"
@@ -304,28 +303,40 @@
             Margin="20,5,20,5"
             ItemsSource="{Binding Errors}"
             TextBlock.Foreground="Red" />
-        <Button
-            x:Name="AddNewJob"
+        <StackPanel
             Grid.Row="22"
             Grid.Column="1"
-            Margin="20,5,20,5"
-            Visibility="{Binding CanAddNewJob, Converter={StaticResource BooleanToVisibility}}">
-            Add New Job...
-        </Button>
-        <Button
-            x:Name="InvoiceClient"
-            Grid.Row="23"
-            Grid.Column="1"
-            Margin="20,5,20,5"
-            Content="Invoice Client..."
-            Visibility="{Binding CanInvoiceClient, Converter={StaticResource BooleanToVisibility}}" />
-        <Button
-            x:Name="EmailClient"
-            Grid.Row="24"
-            Grid.Column="1"
-            Margin="20,5,20,5"
-            Visibility="{Binding CanEmailClient, Converter={StaticResource BooleanToVisibility}}">
-            E-mail Client...
-        </Button>
+            Orientation="Horizontal">
+            <Button
+                x:Name="AddNewJob"
+                Margin="20,5,20,5"
+                behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource UnbilledJobsPrimaryGeometry}"
+                behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource UnbilledJobsSecondaryGeometry}"
+                behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource UnbilledJobsTertiaryGeometry}"
+                Template="{StaticResource ClientsPageButton}"
+                Visibility="{Binding Editable, Converter={StaticResource InverseBooleanToVisibility}}">
+                Add New Job...
+            </Button>
+            <Button
+                x:Name="InvoiceClient"
+                Margin="20,5,20,5"
+                behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource UnpaidInvoicesPrimaryGeometry}"
+                behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource UnpaidInvoicesSecondaryGeometry}"
+                behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource UnpaidInvoicesTertiaryGeometry}"
+                Content="Invoice Client..."
+                Template="{StaticResource ClientsPageButton}"
+                Visibility="{Binding Editable, Converter={StaticResource InverseBooleanToVisibility}}" />
+            <Button
+                x:Name="EmailClient"
+                Margin="20,5,20,5"
+                behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource EmailClientPrimaryGeometry}"
+                behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource EmailClientSecondaryGeometry}"
+                behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource EmailClientTertiaryGeometry}"
+                IsEnabled="{Binding CanEmailClient}"
+                Template="{StaticResource ClientsPageButton}"
+                Visibility="{Binding Editable, Converter={StaticResource InverseBooleanToVisibility}}">
+                E-mail Client...
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>

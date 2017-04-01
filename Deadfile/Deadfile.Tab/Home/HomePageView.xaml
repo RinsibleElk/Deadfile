@@ -35,8 +35,9 @@
                 <Button
                     x:Name="AddClient"
                     Margin="20"
-                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab-dead.png"
-                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/client-tab.png"
+                    behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource ClientsPagePrimaryGeometry}"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource ClientsPageSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource ClientsPageTertiaryGeometry}"
                     Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
                     Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
@@ -49,8 +50,9 @@
                 <Button
                     x:Name="UnbilledJobs"
                     Margin="20"
-                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unbilled-jobs.png"
-                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unbilled-jobs-hover.png"
+                    behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource UnbilledJobsPrimaryGeometry}"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource UnbilledJobsSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource UnbilledJobsTertiaryGeometry}"
                     Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
                     Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
@@ -66,8 +68,9 @@
                 <Button
                     x:Name="ImportExportToJson"
                     Margin="20"
-                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-export.png"
-                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-export-hover.png"
+                    behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource ExportPrimaryGeometry}"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource ExportSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource ExportTertiaryGeometry}"
                     Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
                     Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
@@ -83,8 +86,9 @@
                 <Button
                     x:Name="LocalAuthorities"
                     Margin="20"
-                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/localauthority-tab.png"
-                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/localauthority-tab.png"
+                    behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource LocalAuthoritiesPrimaryGeometry}"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource LocalAuthoritiesSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource LocalAuthoritiesTertiaryGeometry}"
                     Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
                     Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
@@ -102,8 +106,9 @@
                 <Button
                     x:Name="UnpaidInvoices"
                     Margin="20"
-                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unpaid-invoices.png"
-                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unpaid-invoices-hover.png"
+                    behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource UnpaidInvoicesPrimaryGeometry}"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource UnpaidInvoicesSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource UnpaidInvoicesTertiaryGeometry}"
                     Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
                     Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
@@ -114,13 +119,14 @@
                                 Header="Open In New Tab..." />
                         </ContextMenu>
                     </Button.ContextMenu>
-                    Local Authorities
+                    Unpaid Invoices
                 </Button>
                 <Button
                     x:Name="CurrentApplications"
                     Margin="20"
-                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/current-applications.png"
-                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/current-applications-hover.png"
+                    behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource CurrentApplicationsPrimaryGeometry}"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource CurrentApplicationsSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource CurrentApplicationsTertiaryGeometry}"
                     Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
                     Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
@@ -136,8 +142,8 @@
                 <Button
                     x:Name="DefineQuotations"
                     Margin="20"
-                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/quote.png"
-                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/quote-hover.png"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource DefineQuotationsSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource DefineQuotationsTertiaryGeometry}"
                     Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
                     Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
@@ -153,8 +159,9 @@
                 <Button
                     x:Name="TodoReport"
                     Margin="20"
-                    behaviors:ButtonHelper.ActiveImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/todo-report.png"
-                    behaviors:ButtonHelper.HoverImageSource="pack://application:,,,/Deadfile.Infrastructure;component/Resources/todo-report-hover.png"
+                    behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource ToDoPrimaryGeometry}"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource ToDoSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource ToDoTertiaryGeometry}"
                     Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
                     Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>

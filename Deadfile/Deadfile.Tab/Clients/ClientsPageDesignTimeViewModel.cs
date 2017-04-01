@@ -28,7 +28,7 @@ namespace Deadfile.Tab.Clients
 
         public bool CanEmailClient { get; } = true;
         public ClientModel SelectedItem { get; set; } = new ClientModel() {FirstName = "Oliver", LastName = "Samson"};
-        public bool Editable { get; } = true;
+        public bool Editable { get; } = false;
         public List<string> Errors { get; } = new List<string>();
         public override Experience Experience => Experience.Clients;
 

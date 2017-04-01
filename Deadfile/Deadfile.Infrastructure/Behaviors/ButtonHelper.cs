@@ -11,34 +11,49 @@ namespace Deadfile.Infrastructure.Behaviors
 {
     public static class ButtonHelper
     {
-        public static readonly DependencyProperty ActiveImageSourceProperty = DependencyProperty.RegisterAttached(
-            "ActiveImageSource",
-            typeof(ImageSource),
+        public static readonly DependencyProperty PrimaryGeometryPathProperty = DependencyProperty.RegisterAttached(
+            "PrimaryGeometryPath",
+            typeof(Geometry),
             typeof(ButtonHelper));
 
-        public static void SetActiveImageSource(UIElement element, ImageSource value)
+        public static void SetPrimaryGeometryPath(UIElement element, Geometry value)
         {
-            element.SetValue(ActiveImageSourceProperty, value);
+            element.SetValue(PrimaryGeometryPathProperty, value);
         }
 
-        public static ImageSource GetActiveImageSource(UIElement element)
+        public static Geometry GetPrimaryGeometryPath(UIElement element)
         {
-            return (ImageSource)element.GetValue(ActiveImageSourceProperty);
+            return (Geometry)element.GetValue(PrimaryGeometryPathProperty);
         }
 
-        public static readonly DependencyProperty HoverImageSourceProperty = DependencyProperty.RegisterAttached(
-            "HoverImageSource",
-            typeof(ImageSource),
+        public static readonly DependencyProperty SecondaryGeometryPathProperty = DependencyProperty.RegisterAttached(
+            "SecondaryGeometryPath",
+            typeof(Geometry),
             typeof(ButtonHelper));
 
-        public static void SetHoverImageSource(UIElement element, ImageSource value)
+        public static void SetSecondaryGeometryPath(UIElement element, Geometry value)
         {
-            element.SetValue(HoverImageSourceProperty, value);
+            element.SetValue(SecondaryGeometryPathProperty, value);
         }
 
-        public static ImageSource GetHoverImageSource(UIElement element)
+        public static Geometry GetSecondaryGeometryPath(UIElement element)
         {
-            return (ImageSource)element.GetValue(HoverImageSourceProperty);
+            return (Geometry)element.GetValue(SecondaryGeometryPathProperty);
+        }
+
+        public static readonly DependencyProperty TertiaryGeometryPathProperty = DependencyProperty.RegisterAttached(
+            "TertiaryGeometryPath",
+            typeof(Geometry),
+            typeof(ButtonHelper));
+
+        public static void SetTertiaryGeometryPath(UIElement element, Geometry value)
+        {
+            element.SetValue(TertiaryGeometryPathProperty, value);
+        }
+
+        public static Geometry GetTertiaryGeometryPath(UIElement element)
+        {
+            return (Geometry)element.GetValue(TertiaryGeometryPathProperty);
         }
     }
 }
