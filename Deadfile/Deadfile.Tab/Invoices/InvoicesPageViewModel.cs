@@ -290,10 +290,6 @@ namespace Deadfile.Tab.Invoices
         {
             var actuallySave = true;
 
-            SelectedItem.DisableUndoTracking = true;
-            SelectedItem.CreationState = InvoiceCreationState.DefineBillables;
-            SelectedItem.DisableUndoTracking = false;
-
             // Raise a dialog if being deleted.
             if (SelectedItem.IsBeingDeleted())
             {
@@ -305,7 +301,13 @@ namespace Deadfile.Tab.Invoices
                 actuallySave = result == MessageDialogResult.Affirmative;
             }
             if (actuallySave)
+            {
+                SelectedItem.DisableUndoTracking = true;
+                SelectedItem.IsNewInvoice = false;
+                SelectedItem.CreationState = InvoiceCreationState.DefineBillables;
+                SelectedItem.DisableUndoTracking = false;
                 _repository.SaveInvoice(SelectedItem, Jobs.Cast<BillableJob>());
+            }
             return actuallySave;
         }
 

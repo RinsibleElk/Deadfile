@@ -80,7 +80,7 @@
             <ContentControl
                 x:Name="ActionsPad"
                 Grid.Column="1"
-                Width="200"
+                Width="Auto"
                 Visibility="{Binding ActionsPadIsVisible, Converter={StaticResource BooleanToVisibility}}" />
         </Grid>
     </Grid>

@@ -35,32 +35,38 @@
                 <Button
                     x:Name="Home"
                     Margin="3"
-                    behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource GoHomeButtonGeometry}"
+                    behaviors:ButtonHelper.OriginalSize="512,512"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource HomeSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource HomeTertiaryGeometry}"
                     Template="{StaticResource NavigationBarButton}" />
                 <Button
                     x:Name="Back"
-                    Width="32"
-                    Height="32"
                     Margin="3"
-                    Style="{StaticResource BackButton}" />
+                    behaviors:ButtonHelper.OriginalSize="512,512"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource BackSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource BackTertiaryGeometry}"
+                    Template="{StaticResource NavigationBarButton}" />
                 <Button
                     x:Name="Forward"
-                    Width="32"
-                    Height="32"
                     Margin="3"
-                    Style="{StaticResource ForwardButton}" />
+                    behaviors:ButtonHelper.OriginalSize="512,512"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource ForwardSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource ForwardTertiaryGeometry}"
+                    Template="{StaticResource NavigationBarButton}" />
                 <Button
                     x:Name="Undo"
-                    Width="32"
-                    Height="32"
                     Margin="3"
-                    Style="{StaticResource UndoButton}" />
+                    behaviors:ButtonHelper.OriginalSize="20,20"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource UndoSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource UndoTertiaryGeometry}"
+                    Template="{StaticResource NavigationBarButton}" />
                 <Button
                     x:Name="Redo"
-                    Width="32"
-                    Height="32"
                     Margin="3"
-                    Style="{StaticResource RedoButton}" />
+                    behaviors:ButtonHelper.OriginalSize="20,20"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource RedoSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource RedoTertiaryGeometry}"
+                    Template="{StaticResource NavigationBarButton}" />
                 <Grid Margin="3">
                     <TextBox
                         x:Name="SearchTextBox"

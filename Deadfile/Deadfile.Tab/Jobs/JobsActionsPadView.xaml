@@ -2,6 +2,7 @@
     x:Class="Deadfile.Tab.Jobs.JobsActionsPadView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:Deadfile.Infrastructure.Behaviors;assembly=Deadfile.Infrastructure"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:designTime="clr-namespace:Deadfile.Infrastructure.DesignTime;assembly=Deadfile.Infrastructure"
     xmlns:local="clr-namespace:Deadfile.Tab.Jobs"
@@ -25,27 +26,43 @@
             <StackPanel Background="{DynamicResource GrayBrush8}" Orientation="Horizontal">
                 <Button
                     x:Name="EditItem"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource EditItemSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource EditItemTertiaryGeometry}"
                     IsDefault="{Binding CanEditItem}"
-                    Style="{StaticResource EditButton}"
+                    Template="{StaticResource ActionsPadButton}"
                     ToolTip="Edit this Job."
-                    Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                    Visibility="{Binding EditItemIsVisible, Converter={StaticResource BooleanToVisibility}}">
+                    Edit
+                </Button>
                 <Button
                     x:Name="SaveItem"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource SaveItemSecondaryGeometry}"
                     IsDefault="{Binding CanEditItem, Converter={StaticResource InverseBoolean}}"
-                    Style="{StaticResource SaveButton}"
+                    Template="{StaticResource ActionsPadButton}"
                     ToolTip="Save changes to this Job."
-                    Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                    Visibility="{Binding SaveItemIsVisible, Converter={StaticResource BooleanToVisibility}}">
+                    Save
+                </Button>
                 <Button
                     x:Name="DiscardItem"
+                    behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource DiscardItemPrimaryGeometry}"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource DiscardItemSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource DiscardItemTertiaryGeometry}"
                     IsCancel="True"
-                    Style="{StaticResource DiscardButton}"
+                    Template="{StaticResource ActionsPadButton}"
                     ToolTip="Discard changes to this Job."
-                    Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                    Visibility="{Binding DiscardItemIsVisible, Converter={StaticResource BooleanToVisibility}}">
+                    Discard
+                </Button>
                 <Button
                     x:Name="DeleteItem"
-                    Style="{StaticResource DeleteButton}"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource DeleteItemSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource DeleteItemTertiaryGeometry}"
+                    Template="{StaticResource ActionsPadButton}"
                     ToolTip="Delete this Job. This is not permanent."
-                    Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}" />
+                    Visibility="{Binding DeleteItemIsVisible, Converter={StaticResource BooleanToVisibility}}">
+                    Delete
+                </Button>
             </StackPanel>
         </Border>
     </Border>

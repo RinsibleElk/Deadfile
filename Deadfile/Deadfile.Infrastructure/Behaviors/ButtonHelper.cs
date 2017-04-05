@@ -55,5 +55,20 @@ namespace Deadfile.Infrastructure.Behaviors
         {
             return (Geometry)element.GetValue(TertiaryGeometryPathProperty);
         }
+
+        public static readonly DependencyProperty OriginalSizeProperty = DependencyProperty.RegisterAttached(
+            "OriginalSize",
+            typeof(Point),
+            typeof(ButtonHelper));
+
+        public static void SetOriginalSize(UIElement element, Point value)
+        {
+            element.SetValue(OriginalSizeProperty, value);
+        }
+
+        public static Point GetOriginalSize(UIElement element)
+        {
+            return (Point)element.GetValue(OriginalSizeProperty);
+        }
     }
 }
