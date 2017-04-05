@@ -8,7 +8,7 @@ using Deadfile.Tab.DesignTime;
 
 namespace Deadfile.Tab.Json
 {
-    class JsonPageDesignTimeViewModel : PageDesignTimeViewModel, IJsonPageViewModel
+    class ImportPageDesignTimeViewModel : PageDesignTimeViewModel, IImportPageViewModel
     {
         public void Import()
         {
@@ -18,9 +18,5 @@ namespace Deadfile.Tab.Json
         public bool CanImport { get; } = true;
         public string JsonFile { get; set; }
         public ICommand BrowseJson { get; } = null;
-        public void Export()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

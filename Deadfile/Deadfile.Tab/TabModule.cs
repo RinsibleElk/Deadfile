@@ -69,7 +69,8 @@ namespace Deadfile.Tab
             _container.RegisterSingleton(typeof(CurrentApplicationsPageViewModel), Experience.CurrentApplications + RegionNames.Page, typeof(CurrentApplicationsPageViewModel));
             _container.RegisterSingleton(typeof(UnpaidInvoicesPageViewModel), Experience.UnpaidInvoices + RegionNames.Page, typeof(UnpaidInvoicesPageViewModel));
             _container.RegisterSingleton(typeof(TodoReportPageViewModel), Experience.TodoReport + RegionNames.Page, typeof(TodoReportPageViewModel));
-            _container.RegisterSingleton(typeof(JsonPageViewModel), Experience.Json + RegionNames.Page, typeof(JsonPageViewModel));
+            _container.RegisterSingleton(typeof(ImportPageViewModel), Experience.Import + RegionNames.Page, typeof(ImportPageViewModel));
+            _container.RegisterSingleton(typeof(ExportPageViewModel), Experience.Export + RegionNames.Page, typeof(ExportPageViewModel));
             _container.RegisterSingleton(typeof(DefineQuotationsPageViewModel), Experience.DefineQuotations + RegionNames.Page, typeof(DefineQuotationsPageViewModel));
             _container.RegisterSingleton(typeof(InvoicesPageViewModel), Experience.Invoices + RegionNames.Page, typeof(InvoicesPageViewModel));
 

@@ -66,7 +66,7 @@
                     Unbilled Jobs
                 </Button>
                 <Button
-                    x:Name="ImportExportToJson"
+                    x:Name="Export"
                     Margin="20"
                     behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource ExportPrimaryGeometry}"
                     behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource ExportSecondaryGeometry}"
@@ -77,11 +77,29 @@
                         <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                             <MenuItem
                                 Command="{Binding OpenNewTabToExperienceCommand}"
-                                CommandParameter="{x:Static tab:Experience.Json}"
+                                CommandParameter="{x:Static tab:Experience.Export}"
                                 Header="Open In New Tab..." />
                         </ContextMenu>
                     </Button.ContextMenu>
-                    Import/Export
+                    Export
+                </Button>
+                <Button
+                    x:Name="Import"
+                    Margin="20"
+                    behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource ImportPrimaryGeometry}"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource ImportSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource ImportTertiaryGeometry}"
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
+                    Template="{StaticResource HomePageButton}">
+                    <Button.ContextMenu>
+                        <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                            <MenuItem
+                                Command="{Binding OpenNewTabToExperienceCommand}"
+                                CommandParameter="{x:Static tab:Experience.Import}"
+                                Header="Open In New Tab..." />
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                    Import
                 </Button>
                 <Button
                     x:Name="LocalAuthorities"
@@ -95,7 +113,7 @@
                         <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                             <MenuItem
                                 Command="{Binding OpenNewTabToExperienceCommand}"
-                                CommandParameter="{x:Static tab:Experience.Json}"
+                                CommandParameter="{x:Static tab:Experience.Import}"
                                 Header="Open In New Tab..." />
                         </ContextMenu>
                     </Button.ContextMenu>

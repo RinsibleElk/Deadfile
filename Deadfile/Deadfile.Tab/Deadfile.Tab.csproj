@@ -210,12 +210,18 @@
       <DependentUpon>JobsPageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Jobs\JobsPageViewModel.cs" />
-    <Compile Include="Json\IJsonPageViewModel.cs" />
-    <Compile Include="Json\JsonPageDesignTimeViewModel.cs" />
-    <Compile Include="Json\JsonPageView.xaml.cs">
-      <DependentUpon>JsonPageView.xaml</DependentUpon>
+    <Compile Include="Json\IExportPageViewModel.cs" />
+    <Compile Include="Json\IImportPageViewModel.cs" />
+    <Compile Include="Json\ExportPageDesignTimeViewModel.cs" />
+    <Compile Include="Json\ImportPageDesignTimeViewModel.cs" />
+    <Compile Include="Json\ExportPageView.xaml.cs">
+      <DependentUpon>ExportPageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Json\JsonPageViewModel.cs" />
+    <Compile Include="Json\ImportPageView.xaml.cs">
+      <DependentUpon>ImportPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Json\ExportPageViewModel.cs" />
+    <Compile Include="Json\ImportPageViewModel.cs" />
     <Compile Include="Management\DefineQuotations\IDefineQuotationsPageViewModel.cs" />
     <Compile Include="Management\DefineQuotations\DefineQuotationsPageDesignTimeViewModel.cs" />
     <Compile Include="Management\DefineQuotations\DefineQuotationsPageView.xaml.cs">
@@ -346,7 +352,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Json\JsonPageView.xaml">
+    <Page Include="Json\ExportPageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Json\ImportPageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

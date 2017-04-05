@@ -31,7 +31,7 @@
         <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/localauthority-tab.png" When="LocalAuthorities" />
         <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/definequotations-tab.png" When="DefineQuotations" />
         <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-tab.png" When="Import" />
-        <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-export-tab.png" When="Json" />
+        <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-export-tab.png" When="Export" />
         <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/todo-report-tab.png" When="TodoReport" />
         <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unbilled-jobs-tab.png" When="UnbilledJobs" />
         <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unpaid-invoices-tab.png" When="UnpaidInvoices" />

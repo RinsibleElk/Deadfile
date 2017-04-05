@@ -62,7 +62,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
         public readonly CurrentApplicationsPageViewModel CurrentApplicationsPageViewModel;
         public readonly UnpaidInvoicesPageViewModel UnpaidInvoicesPageViewModel;
         public readonly TodoReportPageViewModel TodoReportPageViewModel;
-        public readonly JsonPageViewModel JsonPageViewModel;
+        public readonly ImportPageViewModel ImportPageViewModel;
         public readonly DefineQuotationsPageViewModel DefineQuotationsPageViewModel;
         public readonly InvoicesPageViewModel InvoicesPageViewModel;
         public readonly JobTasksJobChildViewModel JobTasksJobChildViewModel;
@@ -92,7 +92,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
             CurrentApplicationsPageViewModel = new CurrentApplicationsPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object);
             UnpaidInvoicesPageViewModel = new UnpaidInvoicesPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object);
             TodoReportPageViewModel = new TodoReportPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object);
-            JsonPageViewModel = new JsonPageViewModel(factory, Repository, EventAggregator.Object, DeadfileDialogCoordinator);
+            ImportPageViewModel = new ImportPageViewModel(factory, Repository, EventAggregator.Object, DeadfileDialogCoordinator);
             DefineQuotationsPageViewModel = new DefineQuotationsPageViewModel(DeadfileDialogCoordinator, Repository, EventAggregator.Object);
             InvoicesPageViewModel = new InvoicesPageViewModel(TabIdentity, PrintService, Repository, EventAggregator.Object, InvoiceGenerator, DeadfileDialogCoordinator);
             JobTasksJobChildViewModel = new JobTasksJobChildViewModel(DispatcherTimerService, DeadfileDialogCoordinator, Repository, EventAggregator.Object);
@@ -113,7 +113,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
             ViewModels.Add("CurrentApplicationsPage", CurrentApplicationsPageViewModel);
             ViewModels.Add("UnpaidInvoicesPage", UnpaidInvoicesPageViewModel);
             ViewModels.Add("TodoReportPage", TodoReportPageViewModel);
-            ViewModels.Add("JsonPage", JsonPageViewModel);
+            ViewModels.Add("JsonPage", ImportPageViewModel);
             ViewModels.Add("DefineQuotationsPage", DefineQuotationsPageViewModel);
             ViewModels.Add("InvoicesPage", InvoicesPageViewModel);
             ViewModels.Add("JobTasksJobChild", JobTasksJobChildViewModel);

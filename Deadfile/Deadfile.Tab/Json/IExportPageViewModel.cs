@@ -8,12 +8,8 @@ using Deadfile.Tab.Common;
 
 namespace Deadfile.Tab.Json
 {
-    interface IJsonPageViewModel : IPageViewModel
+    interface IExportPageViewModel : IPageViewModel
     {
-        void Import();
-        bool CanImport { get; }
-        string JsonFile { get; set; }
-        ICommand BrowseJson { get; }
         void Export();
     }
 }

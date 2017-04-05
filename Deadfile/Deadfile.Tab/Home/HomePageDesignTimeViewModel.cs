@@ -35,7 +35,12 @@ namespace Deadfile.Tab.Home
             throw new NotImplementedException();
         }
 
-        public void ImportExportToJson()
+        public void Import()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Export()
         {
             throw new NotImplementedException();
         }

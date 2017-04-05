@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Deadfile.Tab.Json
 {
     /// <summary>
-    /// Interaction logic for JsonPageView.xaml
+    /// Interaction logic for ImportPageView.xaml
     /// </summary>
-    public partial class JsonPageView : UserControl
+    public partial class ImportPageView : UserControl
     {
-        public JsonPageView()
+        public ImportPageView()
         {
             InitializeComponent();
         }

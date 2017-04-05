@@ -54,10 +54,16 @@ namespace Deadfile.Tab.Home
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.TodoReport));
         }
 
-        public void ImportExportToJson()
+        public void Import()
         {
-            Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.Json);
-            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.Json));
+            Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.Import);
+            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.Import));
+        }
+
+        public void Export()
+        {
+            Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.Export);
+            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.Export));
         }
 
         public void UnpaidInvoices()
