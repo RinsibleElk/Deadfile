@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,8 @@ namespace Deadfile.Infrastructure.Services
         {
             var dgrid = dataGrid.DataGrid;
             var excel = new Application {Visible = true};
+            
+
             var workbook = excel.Workbooks.Add(System.Reflection.Missing.Value);
             var sheet1 = (Worksheet)workbook.Sheets[1];
 
@@ -28,11 +31,20 @@ namespace Deadfile.Infrastructure.Services
             }
             for (var i = 0; i < dgrid.Columns.Count; i++)
             {
+                var isDate = (dgrid.Columns[i].Header as string)?.Contains("Date") ?? false;
                 for (var j = 0; j < dgrid.Items.Count; j++)
                 {
                     var b = dgrid.Columns[i].GetCellContent(dgrid.Items[j]) as TextBlock;
                     var myRange = (Range)sheet1.Cells[j + 2, i + 1];
-                    myRange.Value2 = b?.Text ?? "";
+                    var text = b?.Text ?? "";
+                    if (isDate)
+                    {
+                        var dt = DateTime.Parse(text).ToOADate();
+                        myRange.NumberFormat = "DD/MM/YYYY";
+                        myRange.Value2 = dt;
+                    }
+                    else
+                        myRange.Value2 = text;
                 }
             }
         }
