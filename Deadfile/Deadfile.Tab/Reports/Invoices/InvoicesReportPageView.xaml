@@ -115,6 +115,10 @@
                     Header="Created Date"
                     IsReadOnly="True" />
                 <DataGridTextColumn
+                    Binding="{Binding Status}"
+                    Header="Status"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
                     Binding="{Binding Company, Converter={StaticResource CompanyToName}}"
                     Header="Company"
                     IsReadOnly="True" />
