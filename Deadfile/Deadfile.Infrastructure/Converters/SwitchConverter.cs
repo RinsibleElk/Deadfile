@@ -16,13 +16,13 @@ namespace Deadfile.Infrastructure.Converters
     public class SwitchConverter : IValueConverter
     {
         // Converter instances.
-        List<SwitchConverterCase> _cases;
 
         #region Public Properties.
         /// <summary>
         /// Gets or sets an array of <see cref="SwitchConverterCase"/>s that this converter can use to produde values from.
         /// </summary>
-        public List<SwitchConverterCase> Cases { get { return _cases; } set { _cases = value; } }
+        public List<SwitchConverterCase> Cases { get; set; }
+
         #endregion
         #region Construction.
         /// <summary>
@@ -31,7 +31,7 @@ namespace Deadfile.Infrastructure.Converters
         public SwitchConverter()
         {
             // Create the cases array.
-            _cases = new List<SwitchConverterCase>();
+            Cases = new List<SwitchConverterCase>();
         }
         #endregion
 
@@ -48,32 +48,15 @@ namespace Deadfile.Infrastructure.Converters
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             // This will be the results of the operation.
-            object results = null;
 
             // I'm only willing to convert SwitchConverterCases in this converter and no nulls!
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             // I need to find out if the case that matches this value actually exists in this converters cases collection.
-            if (_cases != null && _cases.Count > 0)
-                for (int i = 0; i < _cases.Count; i++)
-                {
-                    // Get a reference to this case.
-                    SwitchConverterCase targetCase = _cases[i];
-
-                    // Check to see if the value is the cases When parameter.
-                    if (value == targetCase || value.ToString().ToUpper() == targetCase.When.ToString().ToUpper())
-                    {
-                        // We've got what we want, the results can now be set to the Then property
-                        // of the case we're on.
-                        results = targetCase.Then;
-
-                        // All done, get out of the loop.
-                        break;
-                    }
-                }
+            if (Cases == null || Cases.Count <= 0) return null;
 
             // return the results.
-            return results;
+            return (from targetCase in Cases where value == targetCase || value.ToString().ToUpper() == targetCase.When.ToString().ToUpper() select targetCase.Then).FirstOrDefault();
         }
 
         /// <summary>
@@ -99,18 +82,18 @@ namespace Deadfile.Infrastructure.Converters
     public class SwitchConverterCase
     {
         // case instances.
-        string _when;
-        object _then;
 
         #region Public Properties.
         /// <summary>
         /// Gets or sets the condition of the case.
         /// </summary>
-        public string When { get { return _when; } set { _when = value; } }
+        public string When { get; set; }
+
         /// <summary>
         /// Gets or sets the results of this case when run through a <see cref="SwitchConverter"/>
         /// </summary>
-        public object Then { get { return _then; } set { _then = value; } }
+        public object Then { get; set; }
+
         #endregion
         #region Construction.
         /// <summary>
@@ -127,8 +110,8 @@ namespace Deadfile.Infrastructure.Converters
         public SwitchConverterCase(string when, object then)
         {
             // Hook up the instances.
-            this._then = then;
-            this._when = when;
+            this.Then = then;
+            this.When = when;
         }
         #endregion
 
@@ -140,7 +123,7 @@ namespace Deadfile.Infrastructure.Converters
         /// </returns>
         public override string ToString()
         {
-            return string.Format("When={0}; Then={1}", When.ToString(), Then.ToString());
+            return $"When={When}; Then={Then}";
         }
     }
 }
