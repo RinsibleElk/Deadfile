@@ -27,7 +27,7 @@ using Deadfile.Tab.Quotes;
 using Deadfile.Tab.Reports.CurrentApplications;
 using Deadfile.Tab.Reports.TodoReport;
 using Deadfile.Tab.Reports.UnbilledJobs;
-using Deadfile.Tab.Reports.UnpaidInvoices;
+using Deadfile.Tab.Reports.Invoices;
 using Deadfile.Tab.Tab;
 using MahApps.Metro.Controls.Dialogs;
 using Moq;
@@ -49,6 +49,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
         public readonly MockUrlNavigationService UrlNavigationService = new MockUrlNavigationService();
         public readonly MockDeadfileDialogCoordinator DeadfileDialogCoordinator = new MockDeadfileDialogCoordinator();
         public readonly MockPrintService PrintService = new MockPrintService();
+        public readonly MockExcelService ExcelService = new MockExcelService();
         public readonly MockNavigationContainer NavigationContainer;
         public readonly NavigationService NavigationService;
         public readonly Mock<IEventAggregator> EventAggregator = new Mock<IEventAggregator>();
@@ -60,7 +61,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
         public readonly LocalAuthoritiesPageViewModel LocalAuthoritiesPageViewModel;
         public readonly UnbilledJobsPageViewModel UnbilledJobsPageViewModel;
         public readonly CurrentApplicationsPageViewModel CurrentApplicationsPageViewModel;
-        public readonly UnpaidInvoicesPageViewModel UnpaidInvoicesPageViewModel;
+        public readonly InvoicesReportPageViewModel InvoicesReportPageViewModel;
         public readonly TodoReportPageViewModel TodoReportPageViewModel;
         public readonly ImportPageViewModel ImportPageViewModel;
         public readonly DefineQuotationsPageViewModel DefineQuotationsPageViewModel;
@@ -90,7 +91,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
             LocalAuthoritiesPageViewModel = new LocalAuthoritiesPageViewModel(UrlNavigationService, DeadfileDialogCoordinator, Repository, EventAggregator.Object);
             UnbilledJobsPageViewModel = new UnbilledJobsPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object);
             CurrentApplicationsPageViewModel = new CurrentApplicationsPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object);
-            UnpaidInvoicesPageViewModel = new UnpaidInvoicesPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object);
+            InvoicesReportPageViewModel = new InvoicesReportPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object, ExcelService);
             TodoReportPageViewModel = new TodoReportPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object);
             ImportPageViewModel = new ImportPageViewModel(factory, Repository, EventAggregator.Object, DeadfileDialogCoordinator);
             DefineQuotationsPageViewModel = new DefineQuotationsPageViewModel(DeadfileDialogCoordinator, Repository, EventAggregator.Object);
@@ -111,7 +112,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
             ViewModels.Add("LocalAuthoritiesPage", LocalAuthoritiesPageViewModel);
             ViewModels.Add("UnbilledJobsPage", UnbilledJobsPageViewModel);
             ViewModels.Add("CurrentApplicationsPage", CurrentApplicationsPageViewModel);
-            ViewModels.Add("UnpaidInvoicesPage", UnpaidInvoicesPageViewModel);
+            ViewModels.Add("InvoicesReportPage", InvoicesReportPageViewModel);
             ViewModels.Add("TodoReportPage", TodoReportPageViewModel);
             ViewModels.Add("JsonPage", ImportPageViewModel);
             ViewModels.Add("DefineQuotationsPage", DefineQuotationsPageViewModel);

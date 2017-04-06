@@ -18,7 +18,7 @@ namespace Deadfile.Tab.Home
         void TodoReport();
         void Import();
         void Export();
-        void UnpaidInvoices();
+        void InvoicesReport();
         void CurrentApplications();
     }
 }

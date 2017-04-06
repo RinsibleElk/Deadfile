@@ -122,22 +122,22 @@
             </StackPanel>
             <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <Button
-                    x:Name="UnpaidInvoices"
+                    x:Name="InvoicesReport"
                     Margin="20"
-                    behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource UnpaidInvoicesPrimaryGeometry}"
-                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource UnpaidInvoicesSecondaryGeometry}"
-                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource UnpaidInvoicesTertiaryGeometry}"
+                    behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource InvoicesReportPrimaryGeometry}"
+                    behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource InvoicesReportSecondaryGeometry}"
+                    behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource InvoicesReportTertiaryGeometry}"
                     Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}"
                     Template="{StaticResource HomePageButton}">
                     <Button.ContextMenu>
                         <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                             <MenuItem
                                 Command="{Binding OpenNewTabToExperienceCommand}"
-                                CommandParameter="{x:Static tab:Experience.UnpaidInvoices}"
+                                CommandParameter="{x:Static tab:Experience.InvoicesReport}"
                                 Header="Open In New Tab..." />
                         </ContextMenu>
                     </Button.ContextMenu>
-                    Unpaid Invoices
+                    Invoices Report
                 </Button>
                 <Button
                     x:Name="CurrentApplications"

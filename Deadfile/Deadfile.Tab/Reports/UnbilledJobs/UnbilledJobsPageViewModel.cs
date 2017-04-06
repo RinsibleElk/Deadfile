@@ -50,6 +50,8 @@ namespace Deadfile.Tab.Reports.UnbilledJobs
             _repository = repository;
             _navigateToClient = new DelegateCommand<UnbilledJobModel>(PerformNavigateToClient);
             _navigateToJob = new DelegateCommand<UnbilledJobModel>(PerformNavigateToJob);
+            StartDate = DateTime.Today;
+            EndDate = DateTime.Today.AddDays(7);
         }
 
         private void PerformNavigateToClient(UnbilledJobModel jobModel)

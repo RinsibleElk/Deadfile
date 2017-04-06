@@ -85,10 +85,12 @@
     <Compile Include="Behaviors\ButtonHelper.cs" />
     <Compile Include="Behaviors\PasswordHelper.cs" />
     <Compile Include="Behaviors\TreeViewSelectedItemBehavior.cs" />
+    <Compile Include="CompanyForFilter.cs" />
     <Compile Include="Converters\ApplicationTypeToStringConverter.cs" />
     <Compile Include="Converters\BillableModelStateToIsEnabledConverter.cs" />
     <Compile Include="Converters\BillableModelStateToNullableBoolConverter.cs" />
     <Compile Include="Converters\BrowserSortToStringConverter.cs" />
+    <Compile Include="Converters\CompanyForFilterToNameConverter.cs" />
     <Compile Include="Converters\JobTaskStateToNullableBooleanConverter.cs" />
     <Compile Include="Converters\CompanyToNameConverter.cs" />
     <Compile Include="Converters\ExpenseTypeToStringConverter.cs" />
@@ -97,10 +99,12 @@
     <Compile Include="Converters\ModelIdToEditCommandNameConverter.cs" />
     <Compile Include="Converters\SwitchConverter.cs" />
     <Compile Include="DesignTime\DesignTimeResourceDictionary.cs" />
+    <Compile Include="Interfaces\IDataGridPresenter.cs" />
     <Compile Include="Interfaces\IDeadfileDialogCoordinator.cs" />
     <Compile Include="Interfaces\IDeadfileDispatcherTimer.cs" />
     <Compile Include="Interfaces\IDeadfileDispatcherTimerService.cs" />
     <Compile Include="Interfaces\IDeadfileProgressController.cs" />
+    <Compile Include="Interfaces\IExcelService.cs" />
     <Compile Include="Interfaces\IJournaled.cs" />
     <Compile Include="Interfaces\INavigationAware.cs" />
     <Compile Include="Interfaces\INavigationContainer.cs" />
@@ -113,6 +117,7 @@
     <Compile Include="Services\DeadfileDeadfileDispatcherTimer.cs" />
     <Compile Include="Services\DeadfileDeadfileDispatcherTimerService.cs" />
     <Compile Include="Services\DeadfileDialogCoordinator.cs" />
+    <Compile Include="Services\ExcelService.cs" />
     <Compile Include="Services\NavigationContainer.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -390,6 +395,35 @@
     <Resource Include="Resources\current-applications-hover.png" />
     <Resource Include="Resources\current-applications-tab.png" />
     <Resource Include="Resources\current-applications.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>9</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

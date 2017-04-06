@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using Deadfile.Infrastructure;
 using Deadfile.Model;
 using Deadfile.Tab.Common;
 
@@ -15,6 +16,7 @@ namespace Deadfile.Tab.DesignTime
         public DateTime EndDate { get; set; } = DateTime.Today.AddDays(7);
         public bool IncludeInactive { get; set; } = false;
         public Visual Visual { get; } = null;
+        public CompanyForFilter CompanyFilter { get; set; } = CompanyForFilter.All;
         public void Print()
         {
             throw new NotImplementedException();

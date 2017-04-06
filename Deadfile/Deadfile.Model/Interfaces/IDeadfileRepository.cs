@@ -274,13 +274,6 @@ namespace Deadfile.Model.Interfaces
         void DeleteQuotation(QuotationModel quotationModel);
 
         /// <summary>
-        /// Get the unpaid invoices.
-        /// </summary>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        IEnumerable<InvoiceModel> GetUnpaidInvoices(string filter);
-
-        /// <summary>
         /// Get the current applications.
         /// </summary>
         /// <param name="filter"></param>
@@ -293,5 +286,16 @@ namespace Deadfile.Model.Interfaces
         /// <param name="jobTaskModel"></param>
         /// <returns>The id of the new billable hour.</returns>
         int MakeJobTaskBillable(JobTaskModel jobTaskModel);
+
+        /// <summary>
+        /// Get invoices for a given company, within a certain date range and with some filter.
+        /// </summary>
+        /// <param name="company"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="filter"></param>
+        /// <param name="includeInactive"></param>
+        /// <returns></returns>
+        IEnumerable<InvoiceModel> GetInvoices(Company? company, DateTime startDate, DateTime endDate, string filter, bool includeInactive);
     }
 }

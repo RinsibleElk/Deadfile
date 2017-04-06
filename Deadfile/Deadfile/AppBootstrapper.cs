@@ -86,6 +86,9 @@ namespace Deadfile
 
             // Print service
             ContainerInstance.RegisterSingleton(typeof(IPrintService), nameof(PrintService), typeof(PrintService));
+
+            // Excel service
+            ContainerInstance.RegisterSingleton(typeof(IExcelService), nameof(ExcelService), typeof(ExcelService));
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)

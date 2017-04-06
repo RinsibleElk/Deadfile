@@ -240,12 +240,12 @@
       <DependentUpon>CurrentApplicationsPageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Reports\CurrentApplications\CurrentApplicationsPageViewModel.cs" />
-    <Compile Include="Reports\UnpaidInvoices\IUnpaidInvoicesPageViewModel.cs" />
-    <Compile Include="Reports\UnpaidInvoices\UnpaidInvoicesPageDesignTimeViewModel.cs" />
-    <Compile Include="Reports\UnpaidInvoices\UnpaidInvoicesPageView.xaml.cs">
-      <DependentUpon>UnpaidInvoicesPageView.xaml</DependentUpon>
+    <Compile Include="Reports\Invoices\IInvoicesReportPageViewModel.cs" />
+    <Compile Include="Reports\Invoices\InvoicesReportPageDesignTimeViewModel.cs" />
+    <Compile Include="Reports\Invoices\InvoicesReportPageView.xaml.cs">
+      <DependentUpon>InvoicesReportPageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Reports\UnpaidInvoices\UnpaidInvoicesPageViewModel.cs" />
+    <Compile Include="Reports\Invoices\InvoicesReportPageViewModel.cs" />
     <Compile Include="Reports\UnbilledJobs\IUnbilledJobsPageViewModel.cs" />
     <Compile Include="Reports\UnbilledJobs\UnbilledJobsPageDesignTimeViewModel.cs" />
     <Compile Include="Reports\UnbilledJobs\UnbilledJobsPageView.xaml.cs">
@@ -372,7 +372,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Reports\UnpaidInvoices\UnpaidInvoicesPageView.xaml">
+    <Page Include="Reports\Invoices\InvoicesReportPageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

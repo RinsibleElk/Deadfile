@@ -320,9 +320,9 @@
             <Button
                 x:Name="InvoiceClient"
                 Margin="20,5,20,5"
-                behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource UnpaidInvoicesPrimaryGeometry}"
-                behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource UnpaidInvoicesSecondaryGeometry}"
-                behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource UnpaidInvoicesTertiaryGeometry}"
+                behaviors:ButtonHelper.PrimaryGeometryPath="{StaticResource InvoicesReportPrimaryGeometry}"
+                behaviors:ButtonHelper.SecondaryGeometryPath="{StaticResource InvoicesReportSecondaryGeometry}"
+                behaviors:ButtonHelper.TertiaryGeometryPath="{StaticResource InvoicesReportTertiaryGeometry}"
                 Content="Invoice Client..."
                 Template="{StaticResource ClientsPageButton}"
                 Visibility="{Binding Editable, Converter={StaticResource InverseBooleanToVisibility}}" />

@@ -45,7 +45,7 @@ namespace Deadfile.Tab.Home
             throw new NotImplementedException();
         }
 
-        public void UnpaidInvoices()
+        public void InvoicesReport()
         {
             throw new NotImplementedException();
         }

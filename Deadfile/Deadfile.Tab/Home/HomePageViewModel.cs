@@ -66,10 +66,10 @@ namespace Deadfile.Tab.Home
             _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.Export));
         }
 
-        public void UnpaidInvoices()
+        public void InvoicesReport()
         {
-            Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.UnpaidInvoices);
-            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.UnpaidInvoices));
+            Logger.Info("Event|NavigateEvent|Send|{0}|{1}", _tabIdentity.TabIndex, Experience.InvoicesReport);
+            _eventAggregator.GetEvent<NavigateEvent>().Publish(new NavigateMessage(Experience.InvoicesReport));
         }
 
         public void CurrentApplications()

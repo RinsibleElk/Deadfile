@@ -15,10 +15,7 @@ namespace Deadfile.Model.Utils
         /// <summary>
         /// All the known companies.
         /// </summary>
-        public static Company[] AllCompanies
-        {
-            get { return new Company[] { Company.Imagine3DLtd, Company.PaulSamsonCharteredSurveyorLtd }; }
-        }
+        public static Company[] AllCompanies => new Company[] { Company.Imagine3DLtd, Company.PaulSamsonCharteredSurveyorLtd };
 
         /// <summary>
         /// Get the short name of the company for display purposes.

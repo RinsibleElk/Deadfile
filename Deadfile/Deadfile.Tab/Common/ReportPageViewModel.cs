@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Deadfile.Entity;
+using Deadfile.Infrastructure;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using MahApps.Metro.Controls.Dialogs;
@@ -12,7 +14,7 @@ using Prism.Events;
 
 namespace Deadfile.Tab.Common
 {
-    abstract class ReportPageViewModel<T> : ManagementPageViewModel<T>, IReportPageViewModel<T> where T : ModelBase, new()
+    internal abstract class ReportPageViewModel<T> : ManagementPageViewModel<T>, IReportPageViewModel<T> where T : ModelBase, new()
     {
         private readonly IPrintService _printService;
         protected ReportPageViewModel(IPrintService printService,
@@ -33,7 +35,21 @@ namespace Deadfile.Tab.Common
             _visual = GetVisual(view);
         }
 
-        private DateTime _startDate = DateTime.Today;
+        private CompanyForFilter _companyFilter = CompanyForFilter.All;
+        public CompanyForFilter CompanyFilter
+        {
+            get { return _companyFilter; }
+            set
+            {
+                if (value.Equals(_companyFilter)) return;
+                _companyFilter = value;
+                NotifyOfPropertyChange(() => CompanyFilter);
+
+                RefreshModels();
+            }
+        }
+
+        private DateTime _startDate = DateTime.MinValue;
         public DateTime StartDate
         {
             get { return _startDate; }
@@ -47,7 +63,7 @@ namespace Deadfile.Tab.Common
             }
         }
 
-        private DateTime _endDate = DateTime.Today.AddDays(7.0);
+        private DateTime _endDate = DateTime.MaxValue;
         public DateTime EndDate
         {
             get { return _endDate; }

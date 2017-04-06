@@ -194,17 +194,17 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
-        public IEnumerable<InvoiceModel> GetUnpaidInvoices(string filter)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<CurrentApplicationModel> GetCurrentApplications(string filter)
         {
             throw new NotImplementedException();
         }
 
         public int MakeJobTaskBillable(JobTaskModel jobTaskModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<InvoiceModel> GetInvoices(Company? company, DateTime startDate, DateTime endDate, string filter, bool includeInactive)
         {
             throw new NotImplementedException();
         }

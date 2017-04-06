@@ -51,6 +51,8 @@ namespace Deadfile.Tab.Reports.TodoReport
             _repository = repository;
             _navigateToJob = new DelegateCommand<JobTaskModel>(PerformNavigateToJob);
             _navigateToClient = new DelegateCommand<JobTaskModel>(PerformNavigateToClient);
+            StartDate = DateTime.Today;
+            EndDate = DateTime.Today.AddDays(7);
         }
 
         private void PerformNavigateToJob(JobTaskModel jobTaskModel)

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Deadfile.Entity;
+using Deadfile.Infrastructure;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Model;
 using Deadfile.Model.Browser;
@@ -19,37 +21,44 @@ using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using IEventAggregator = Prism.Events.IEventAggregator;
 
-namespace Deadfile.Tab.Reports.UnpaidInvoices
+namespace Deadfile.Tab.Reports.Invoices
 {
     /// <summary>
-    /// View model for the Unpaid Invoices Experience. Generates a readonly report of Unpaid Invoices.
+    /// View model for the All Invoices Experience. Generates a readonly report of All Invoices.
     /// </summary>
-    class UnpaidInvoicesPageViewModel : ReportPageViewModel<InvoiceModel>, IUnpaidInvoicesPageViewModel
+    class InvoicesReportPageViewModel : ReportPageViewModel<InvoiceModel>, IInvoicesReportPageViewModel
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly TabIdentity _tabIdentity;
         private readonly IDeadfileRepository _repository;
+        private readonly IExcelService _excelService;
         private readonly DelegateCommand<InvoiceModel> _navigateToClient;
         private readonly DelegateCommand<InvoiceModel> _navigateToInvoice;
 
         /// <summary>
-        /// Create a new <see cref="UnpaidInvoicesPageViewModel"/>.
+        /// Create a new <see cref="InvoicesReportPageViewModel"/>.
         /// </summary>
         /// <param name="tabIdentity"></param>
         /// <param name="dialogCoordinator"></param>
         /// <param name="printService"></param>
         /// <param name="repository"></param>
         /// <param name="eventAggregator"></param>
-        public UnpaidInvoicesPageViewModel(TabIdentity tabIdentity,
+        /// <param name="excelService"></param>
+        public InvoicesReportPageViewModel(TabIdentity tabIdentity,
             IDeadfileDialogCoordinator dialogCoordinator,
             IPrintService printService,
             IDeadfileRepository repository,
-            IEventAggregator eventAggregator) : base(printService, dialogCoordinator, eventAggregator, false)
+            IEventAggregator eventAggregator,
+            IExcelService excelService) : base(printService, dialogCoordinator, eventAggregator, false)
         {
             _tabIdentity = tabIdentity;
             _repository = repository;
+            _excelService = excelService;
             _navigateToClient = new DelegateCommand<InvoiceModel>(PerformNavigateToClient);
             _navigateToInvoice = new DelegateCommand<InvoiceModel>(PerformNavigateToInvoice);
+            StartDate = DateTime.Today.AddYears(-1);
+            EndDate = DateTime.Today;
+            IncludeInactive = false;
         }
 
         private void PerformNavigateToClient(InvoiceModel invoiceModel)
@@ -74,19 +83,35 @@ namespace Deadfile.Tab.Reports.UnpaidInvoices
         /// <returns></returns>
         protected override IEnumerable<InvoiceModel> GetModels(string filter)
         {
-            return _repository.GetUnpaidInvoices(filter);
+            Company? company = null;
+            switch (CompanyFilter)
+            {
+                case CompanyForFilter.Imagine3DLtd:
+                    company = Company.Imagine3DLtd;
+                    break;
+                case CompanyForFilter.PaulSamsonCharteredSurveyorLtd:
+                    company = Company.PaulSamsonCharteredSurveyorLtd;
+                    break;
+            }
+            return _repository.GetInvoices(company, StartDate, EndDate, filter, IncludeInactive);
         }
 
         // Common for every journaled page (content).
-        public override Experience Experience { get; } = Experience.UnpaidInvoices;
+        public override Experience Experience { get; } = Experience.InvoicesReport;
 
         public ICommand NavigateToClient => _navigateToClient;
 
         public ICommand NavigateToInvoice => _navigateToInvoice;
+        public void ExportToExcel()
+        {
+            _excelService.Export(this);
+        }
 
         protected override DataGrid GetVisual(object view)
         {
-            return ((UnpaidInvoicesPageView) view).Report;
+            return ((InvoicesReportPageView) view).Report;
         }
+
+        public DataGrid DataGrid => (DataGrid) Visual;
     }
 }

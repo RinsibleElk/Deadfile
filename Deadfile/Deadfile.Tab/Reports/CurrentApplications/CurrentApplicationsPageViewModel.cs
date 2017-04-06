@@ -48,6 +48,8 @@ namespace Deadfile.Tab.Reports.CurrentApplications
             _tabIdentity = tabIdentity;
             _repository = repository;
             _navigateToJob = new DelegateCommand<CurrentApplicationModel>(PerformNavigateToJob);
+            StartDate = DateTime.Today;
+            EndDate = DateTime.Today.AddDays(7);
         }
 
         private void PerformNavigateToJob(CurrentApplicationModel applicationModel)

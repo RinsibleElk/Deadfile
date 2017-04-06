@@ -3,13 +3,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:Deadfile.Infrastructure.Converters"
     xmlns:entity="clr-namespace:Deadfile.Entity;assembly=Deadfile.Entity"
-    xmlns:infra="clr-namespace:Deadfile.Infrastructure.Styles">
+    xmlns:infra="clr-namespace:Deadfile.Infrastructure.Styles"
+    xmlns:infrastructure="clr-namespace:Deadfile.Infrastructure">
     <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
     <converters:ModelIdToEditCommandNameConverter x:Key="ModelIdToEditCommandName" />
     <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibility" />
     <converters:InverseBooleanConverter x:Key="InverseBoolean" />
     <converters:ApplicationTypeToStringConverter x:Key="ApplicationTypeToString" />
     <converters:CompanyToNameConverter x:Key="CompanyToName" />
+    <converters:CompanyForFilterToNameConverter x:Key="CompanyForFilterToName" />
     <converters:BillableModelStateToNullableBoolConverter x:Key="BillableModelStateToNullableBool" />
     <converters:BillableModelStateToIsEnabledConverter x:Key="BillableModelStateToIsEnabled" />
     <converters:JobTaskStateToNullableBooleanConverter x:Key="JobTaskStateToBoolean" />
@@ -34,9 +36,17 @@
         <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/import-export-tab.png" When="Export" />
         <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/todo-report-tab.png" When="TodoReport" />
         <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unbilled-jobs-tab.png" When="UnbilledJobs" />
-        <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unpaid-invoices-tab.png" When="UnpaidInvoices" />
+        <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/unpaid-invoices-tab.png" When="InvoicesReport" />
         <converters:SwitchConverterCase Then="pack://application:,,,/Deadfile.Infrastructure;component/Resources/current-applications-tab.png" When="CurrentApplications" />
     </converters:SwitchConverter>
+    <ObjectDataProvider
+        x:Key="CompanyForFilterValues"
+        MethodName="GetValues"
+        ObjectType="{x:Type infrastructure:CompanyForFilter}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="infrastructure:CompanyForFilter" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
     <ObjectDataProvider
         x:Key="ThemeValues"
         MethodName="GetValues"

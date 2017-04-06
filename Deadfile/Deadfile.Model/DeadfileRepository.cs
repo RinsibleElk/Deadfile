@@ -919,21 +919,6 @@ namespace Deadfile.Model
             }
         }
 
-        public IEnumerable<InvoiceModel> GetUnpaidInvoices(string filter)
-        {
-            var li = new List<InvoiceModel>();
-            if (!DeadfileContextAbstraction.HasConnectionString())
-                return new InvoiceModel[0];
-            using (var dbContext = _deadfileContextAbstractionFactory.GetAbstraction())
-            {
-                foreach (var invoice in dbContext.GetOrderedInvoices(new BrowserSettings {FilterText = filter,IncludeInactiveEnabled=false}))
-                {
-                    li.Add(_modelEntityMapper.Mapper.Map<Invoice, InvoiceModel>(invoice));
-                }
-            }
-            return li;
-        }
-
         public IEnumerable<CurrentApplicationModel> GetCurrentApplications(string filter)
         {
             var li = new List<CurrentApplicationModel>();
@@ -969,6 +954,18 @@ namespace Deadfile.Model
             DeleteJobTask(jobTaskModel);
             SaveBillableHour(billableHourModel);
             return billableHourModel.BillableHourId;
+        }
+
+        public IEnumerable<InvoiceModel> GetInvoices(Company? company, DateTime startDate, DateTime endDate, string filter, bool includeInactive)
+        {
+            var li = new List<InvoiceModel>();
+            if (!DeadfileContextAbstraction.HasConnectionString())
+                return new InvoiceModel[0];
+            using (var dbContext = _deadfileContextAbstractionFactory.GetAbstraction())
+            {
+                li.AddRange(from invoice in dbContext.GetOrderedInvoices(new BrowserSettings { FilterText = filter, IncludeInactiveEnabled = includeInactive }) where company == null || company.Value.Equals(invoice.Company) where startDate <= invoice.CreatedDate where endDate >= invoice.CreatedDate select _modelEntityMapper.Mapper.Map<Invoice, InvoiceModel>(invoice));
+            }
+            return li;
         }
 
         public void SaveLocalAuthority(LocalAuthorityModel localAuthorityModel)

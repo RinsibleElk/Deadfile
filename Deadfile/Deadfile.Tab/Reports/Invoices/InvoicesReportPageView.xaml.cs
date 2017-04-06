@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Deadfile.Tab.Reports.UnpaidInvoices
+namespace Deadfile.Tab.Reports.Invoices
 {
     /// <summary>
-    /// Interaction logic for UnpaidInvoicesPageView.xaml
+    /// Interaction logic for InvoicesReportPageView.xaml
     /// </summary>
-    public partial class UnpaidInvoicesPageView : UserControl
+    public partial class InvoicesReportPageView : UserControl
     {
-        public UnpaidInvoicesPageView()
+        public InvoicesReportPageView()
         {
             InitializeComponent();
         }
