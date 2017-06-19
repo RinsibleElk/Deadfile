@@ -211,6 +211,22 @@ namespace Deadfile.Tab.Invoices
                     SelectedItem.DisableUndoTracking = false;
                 }
             }
+            else if (SelectedItem.IsNewInvoice && eventArgs.PropertyName == nameof(InvoiceModel.Company))
+            {
+                // Disable undo tracking while we handle automated changes.
+                SelectedItem.DisableUndoTracking = true;
+
+                // Offer the user some help in deciding a new invoice reference.
+                var suggestedInvoiceReferences =
+                    _repository.GetSuggestedInvoiceReferenceIdsForCompany(SelectedItem.Company)
+                        .Select((s) => s.ToString())
+                        .ToArray();
+                SuggestedInvoiceReferences = new ObservableCollection<string>(suggestedInvoiceReferences);
+                SelectedItem.InvoiceReferenceString = suggestedInvoiceReferences[suggestedInvoiceReferences.Length - 1];
+
+                // Re-enable undo tracking.
+                SelectedItem.DisableUndoTracking = false;
+            }
         }
 
         public override void OnNavigatedFrom()
