@@ -119,7 +119,7 @@
                             Width="16"
                             Height="16"
                             Source="pack://application:,,,/Deadfile.Infrastructure;component/Resources/job-tab.png" />
-                        <TextBlock Padding="4,0,0,0" Text="{Binding FullAddress}" />
+                        <TextBlock Padding="4,0,0,0" Text="{Binding DisplayName}" />
                     </StackPanel>
                     <HierarchicalDataTemplate.Triggers>
                         <DataTrigger Binding="{Binding Status}" Value="{x:Static entity:JobStatus.Active}">

@@ -105,7 +105,7 @@ namespace Deadfile.Model
             return (from job in _deadfileContext.Jobs
                 where (clientId == ModelBase.NewModelId || job.ClientId == clientId)
                 where ((settings.FilterText == null || settings.FilterText == "") ||
-                     job.AddressFirstLine.Contains(settings.FilterText))
+                     job.AddressFirstLine.Contains(settings.FilterText) || job.JobNumber.ToString().Contains(settings.FilterText))
                 where
                 ((settings.IncludeInactiveEnabled) || job.Status == JobStatus.Active)
                 orderby job.AddressFirstLine

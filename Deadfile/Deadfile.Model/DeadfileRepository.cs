@@ -167,12 +167,13 @@ namespace Deadfile.Model
                     {
                         foreach (var job in (from job in dbContext.GetOrderedJobs(ModelBase.NewModelId, settings)
                             select
-                            new BrowserJob()
+                            new BrowserJob
                             {
                                 Id = job.JobId,
                                 ParentId = job.ClientId,
                                 FullAddress = job.AddressFirstLine,
-                                Status = job.Status
+                                Status = job.Status,
+                                JobNumber = job.JobNumber
                             }))
                         {
                             job.SetRepository(settings.Mode, settings.IncludeInactiveEnabled, false, this);
@@ -311,7 +312,7 @@ namespace Deadfile.Model
             {
                 foreach (var job in (from job in dbContext.GetOrderedJobs(clientId, new BrowserSettings { FilterText=null, IncludeInactiveEnabled=includeInactiveEnabled,Mode=mode, Sort=BrowserSort.ClientFirstName})
                     select
-                    new BrowserJob()
+                    new BrowserJob
                     {
                         Id = job.JobId,
                         ParentId = clientId,
@@ -326,7 +327,8 @@ namespace Deadfile.Model
                             ((job.AddressPostCode == null || job.AddressPostCode == "")
                                 ? ""
                                 : ", " + job.AddressPostCode),
-                        Status = job.Status
+                        Status = job.Status,
+                        JobNumber = job.JobNumber
                     }))
                 {
                     job.SetRepository(mode, includeInactiveEnabled, false, this);
@@ -1096,7 +1098,7 @@ namespace Deadfile.Model
                 {
                     var jobEntity = dbContext.GetJobById(jobId);
                     var job =
-                        new BrowserJob()
+                        new BrowserJob
                         {
                             Id = jobEntity.JobId,
                             ParentId = jobEntity.ClientId,
@@ -1110,7 +1112,9 @@ namespace Deadfile.Model
                                     : ", " + jobEntity.AddressThirdLine) +
                                 ((jobEntity.AddressPostCode == null || jobEntity.AddressPostCode == "")
                                     ? ""
-                                    : ", " + jobEntity.AddressPostCode)
+                                    : ", " + jobEntity.AddressPostCode),
+                            Status = jobEntity.Status,
+                            JobNumber = jobEntity.JobNumber
                         };
                     job.SetRepository(mode, includeInactiveEnabled, true, this);
                     li.Add(job);

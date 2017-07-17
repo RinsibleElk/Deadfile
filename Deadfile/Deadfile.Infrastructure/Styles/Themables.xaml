@@ -270,7 +270,7 @@
             <TextBlock
                 x:Name="Tb"
                 Padding="4,0,0,0"
-                Text="{Binding FullAddress}" />
+                Text="{Binding DisplayName}" />
         </StackPanel>
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">

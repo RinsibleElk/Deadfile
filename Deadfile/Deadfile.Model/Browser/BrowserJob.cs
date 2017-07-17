@@ -15,8 +15,26 @@ namespace Deadfile.Model.Browser
         public string FullAddress
         {
             get { return _fullAddress; }
-            set { SetProperty(ref _fullAddress, value); }
+            set
+            {
+                if (SetProperty(ref _fullAddress, value))
+                    OnPropertyChanged(nameof(DisplayName));
+            }
         }
+
+        private int _jobNumber;
+
+        public int JobNumber
+        {
+            get { return _jobNumber; }
+            set
+            {
+                if (SetProperty(ref _jobNumber, value))
+                    OnPropertyChanged(nameof(DisplayName));
+            }
+        }
+
+        public string DisplayName => $"{FullAddress} ({JobNumber})";
 
         protected override void LoadChildren()
         {
