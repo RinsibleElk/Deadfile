@@ -104,9 +104,9 @@ namespace Deadfile.Tab.Test.FunctionalTests
             return (from job in _factory.Jobs
                     where (clientId == ModelBase.NewModelId || job.ClientId == clientId)
                     where ((settings.FilterText == null || settings.FilterText == "") ||
-                         job.AddressFirstLine.Contains(settings.FilterText))
-                    where
-                    ((settings.IncludeInactiveEnabled) || job.Status == JobStatus.Active)
+                         job.AddressFirstLine.Contains(settings.FilterText) ||
+                         job.JobNumber.ToString().Contains(settings.FilterText))
+                    where ((settings.IncludeInactiveEnabled) || job.Status == JobStatus.Active)
                     orderby job.AddressFirstLine
                     select job);
         }

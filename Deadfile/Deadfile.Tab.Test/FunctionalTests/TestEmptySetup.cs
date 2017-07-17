@@ -405,5 +405,27 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 Assert.True(setup.InvoicesActionsPadViewModel.CanEditItem);
             }
         }
+
+        [Theory]
+        [InlineData("Webfoot")]
+        [InlineData("1313 Webfoot Walk")]
+        [InlineData("1313")]
+        [InlineData("2502")]
+        [InlineData("Walk")]
+        public void TestSearchForJob(string searchText)
+        {
+            using (var setup = new MockSetup())
+            {
+                PopulateEntireDatabaseFromGui(setup);
+                setup.NavigationBarViewModel.SearchText = searchText;
+                Assert.True(setup.NavigationBarViewModel.IsSearchShown);
+                Assert.Equal(1, setup.NavigationBarViewModel.SearchResults.Count);
+                Assert.True(setup.NavigationBarViewModel.SearchResults[0] is BrowserJob);
+                var browserJob = setup.NavigationBarViewModel.SearchResults[0] as BrowserJob;
+                Assert.NotNull(browserJob);
+                Assert.Equal("1313 Webfoot Walk", browserJob.FullAddress);
+                Assert.Equal(2502, browserJob.JobNumber);
+            }
+        }
     }
 }

@@ -236,19 +236,20 @@ namespace Deadfile.Tab.Test.FunctionalTests
         public static void SetUpJobs(MockSetup setup)
         {
             Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.HomePageViewModel));
-            SetUpJobForExistingClient(setup, "Rinsible Elk", "Cemetery Ridge", "U.S.A.", null, null, "Some works for the Addams Family");
-            SetUpJobForExistingClient(setup, "Rinsible Elk", "Wayne Manor", "Gotham City", "U.S.A.", null, "Building some sort of cave");
-            SetUpJobForExistingClient(setup, "Libby Dean", "1313 Webfoot Walk", "Duckburg", "Calisota", null, "Some work for Donald");
-            SetUpJobForExistingClient(setup, "Libby Dean", "4 Privet Drive", "Berkshire", null, null, "Repairs to cupboard under stairs");
-            SetUpJobForExistingClient(setup, "Nicole Bryant", "221B Baker Street", "London", null, null, "Fill bullet holes in walls");
-            SetUpJobForExistingClient(setup, "Nicole Bryant", "32 Windsor Gardens", "London", null, null, "Bear Proofing");
+            SetUpJobForExistingClient(setup, "Rinsible Elk", "Cemetery Ridge", "U.S.A.", null, null, "Some works for the Addams Family", 2500);
+            SetUpJobForExistingClient(setup, "Rinsible Elk", "Wayne Manor", "Gotham City", "U.S.A.", null, "Building some sort of cave", 2501);
+            SetUpJobForExistingClient(setup, "Libby Dean", "1313 Webfoot Walk", "Duckburg", "Calisota", null, "Some work for Donald", 2502);
+            SetUpJobForExistingClient(setup, "Libby Dean", "4 Privet Drive", "Berkshire", null, null, "Repairs to cupboard under stairs", 2503);
+            SetUpJobForExistingClient(setup, "Nicole Bryant", "221B Baker Street", "London", null, null, "Fill bullet holes in walls", 2504);
+            SetUpJobForExistingClient(setup, "Nicole Bryant", "32 Windsor Gardens", "London", null, null, "Bear Proofing", 2505);
             Assert.True(setup.NavigationBarViewModel.CanHome);
             setup.NavigationBarViewModel.Home();
             Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.HomePageViewModel));
         }
 
         private static void SetUpJobForExistingClient(MockSetup setup, string clientNameMatch,
-            string addressFirstLine, string addressSecondLine, string addressThirdLine, string addressPostCode, string description)
+            string addressFirstLine, string addressSecondLine, string addressThirdLine, string addressPostCode, string description,
+            int jobNumber)
         {
             BrowseToClient(setup, clientNameMatch);
             Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.ClientsPageViewModel));
@@ -266,6 +267,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
             j.Description = description;
             // Check it has a decent suggested job number.
             Assert.True(j.JobNumber >= 1);
+            j.JobNumber = jobNumber;
             Assert.True(setup.JobsPageViewModel.CanSave);
             Assert.True(setup.JobsActionsPadViewModel.CanSaveItem);
             Assert.True(setup.JobsActionsPadViewModel.SaveItemIsVisible);
