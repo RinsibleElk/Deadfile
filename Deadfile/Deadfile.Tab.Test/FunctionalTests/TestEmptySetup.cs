@@ -302,7 +302,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
             Assert.Equal(4, setup.Repository.GetQuotations(null).Count());
             setup.TimerService.FireCallback();
             Assert.Equal("Homer Simpson", setup.QuotesBarViewModel.Quotation.Author);
-            Assert.Equal("You tried your best and you failed miserably. The lesson is, never try.", setup.QuotesBarViewModel.Quotation.Phrase);
+            Assert.Equal("You tried your best and you failed miserably. The lesson is, never try.",
+                setup.QuotesBarViewModel.Quotation.Phrase);
             MockData.SetUpLocalAuthorities(setup);
             MockData.SetUpClients(setup);
             MockData.SetUpJobs(setup);
@@ -328,7 +329,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 // Navigate to the invoice via the browser.
                 setup.BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Client;
                 Assert.Equal(6, setup.BrowserPaneViewModel.Items.Count);
-                var rinsibleElk = setup.BrowserPaneViewModel.Items.First((b) => ((BrowserClient)b).FullName.Contains("Rinsible Elk"));
+                var rinsibleElk = setup.BrowserPaneViewModel.Items.First((b) => ((BrowserClient) b).FullName.Contains("Rinsible Elk"));
                 rinsibleElk.IsExpanded = true;
                 Assert.Equal(2, rinsibleElk.Children.Count);
                 var secondJob = rinsibleElk.Children[1];
@@ -340,7 +341,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 Assert.True(setup.InvoicesActionsPadViewModel.CanPaidItem);
                 setup.InvoicesActionsPadViewModel.PaidItem();
                 Assert.Equal(InvoiceStatus.Paid, setup.InvoicesPageViewModel.SelectedItem.Status);
-                Assert.Equal(InvoiceStatus.Paid, setup.Repository.GetInvoiceById(setup.InvoicesPageViewModel.SelectedItem.InvoiceId).Status);
+                Assert.Equal(InvoiceStatus.Paid,
+                    setup.Repository.GetInvoiceById(setup.InvoicesPageViewModel.SelectedItem.InvoiceId).Status);
             }
         }
 
@@ -353,7 +355,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 // Navigate to the invoice via the browser.
                 setup.BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Client;
                 Assert.Equal(6, setup.BrowserPaneViewModel.Items.Count);
-                var rinsibleElk = setup.BrowserPaneViewModel.Items.First((b) => ((BrowserClient)b).FullName.Contains("Rinsible Elk"));
+                var rinsibleElk =
+                    setup.BrowserPaneViewModel.Items.First((b) => ((BrowserClient) b).FullName.Contains("Rinsible Elk"));
                 rinsibleElk.IsExpanded = true;
                 Assert.Equal(2, rinsibleElk.Children.Count);
                 var secondJob = rinsibleElk.Children[1];
@@ -366,7 +369,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 Assert.True(setup.InvoicesActionsPadViewModel.DeleteItemIsVisible);
                 setup.InvoicesActionsPadViewModel.DeleteItem();
                 Assert.Equal(InvoiceStatus.Cancelled, setup.InvoicesPageViewModel.SelectedItem.Status);
-                Assert.Equal(InvoiceStatus.Cancelled, setup.Repository.GetInvoiceById(setup.InvoicesPageViewModel.SelectedItem.InvoiceId).Status);
+                Assert.Equal(InvoiceStatus.Cancelled,
+                    setup.Repository.GetInvoiceById(setup.InvoicesPageViewModel.SelectedItem.InvoiceId).Status);
             }
         }
 
@@ -425,6 +429,42 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 Assert.NotNull(browserJob);
                 Assert.Equal("1313 Webfoot Walk", browserJob.FullAddress);
                 Assert.Equal(2502, browserJob.JobNumber);
+            }
+        }
+
+        [Fact]
+        public void TestCannotAddJobChildWhenCreatingNewJob()
+        {
+            using (var setup = new MockSetup())
+            {
+                PopulateEntireDatabaseFromGui(setup);
+
+                // Navigate to Rinsible Elk via the browser.
+                setup.BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Client;
+                Assert.Equal(6, setup.BrowserPaneViewModel.Items.Count);
+                var rinsibleElk = setup.BrowserPaneViewModel.Items.First((b) => ((BrowserClient)b).FullName.Contains("Rinsible Elk"));
+                setup.BrowserPaneViewModel.SelectedItem = rinsibleElk;
+                Assert.Equal(setup.ClientsPageViewModel, setup.TabViewModel.ContentArea);
+                Assert.True(setup.ClientsPageViewModel.CanAddNewJob);
+
+                // Add a new job.
+                setup.ClientsPageViewModel.AddNewJob();
+                Assert.Equal(setup.JobsPageViewModel, setup.TabViewModel.ContentArea);
+
+                // While editing a job, it is not allowed to edit any of the job children.
+                Assert.Equal(setup.JobTasksJobChildViewModel, setup.JobsPageViewModel.JobChildViewModel);
+                Assert.False(setup.JobTasksJobChildViewModel.EditCommand.CanExecute(null));
+
+                // Now fix up and save the job.
+                Assert.Equal(setup.JobsActionsPadViewModel, setup.TabViewModel.ActionsPad);
+                setup.JobsPageViewModel.SelectedItem.Description = "Some description";
+                setup.JobsPageViewModel.SelectedItem.AddressFirstLine = "123 The Death Star";
+                Assert.True(setup.JobsActionsPadViewModel.CanSaveItem);
+                Assert.True(setup.JobsActionsPadViewModel.SaveItemIsVisible);
+                setup.JobsActionsPadViewModel.SaveItem();
+
+                // Now it is allowed to edit the job children.
+                Assert.True(setup.JobTasksJobChildViewModel.EditCommand.CanExecute(null));
             }
         }
     }

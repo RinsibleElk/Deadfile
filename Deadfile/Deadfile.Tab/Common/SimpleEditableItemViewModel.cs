@@ -40,7 +40,7 @@ namespace Deadfile.Tab.Common
             _maintainSelectionTimer = timerService.CreateTimer(TimeSpan.FromMilliseconds(10), SetSelectedIndex);
             DialogCoordinator = dialogCoordinator;
             EventAggregator = eventAggregator;
-            _editCommand = new DelegateCommand(StartEditing);
+            _editCommand = new DelegateCommand(StartEditing, () => !ParentEditable);
             _discardCommand = new DelegateCommand(DiscardEdits);
             _deleteCommand = new DelegateCommand(DeleteItem, () => CanDeleteItem);
             _saveCommand = new DelegateCommand(PerformSaveAction);
@@ -330,6 +330,9 @@ namespace Deadfile.Tab.Common
                 // Maintain the selection.
                 if (value) _editingSelectedIndex = _selectedIndex;
                 else _editingSelectedIndex = null;
+
+                // This may affect whether the child can be edited.
+                _editCommand.RaiseCanExecuteChanged();
             }
         }
 
