@@ -10,12 +10,17 @@ namespace Deadfile.Tab.Test.FunctionalTests
 {
     class MockDeadfileDialogCoordinator : IDeadfileDialogCoordinator
     {
-        public Queue<MessageDialogResult> DialogResults = new Queue<MessageDialogResult>();
+        private readonly Queue<MessageDialogResult> _dialogResults = new Queue<MessageDialogResult>();
+
+        public void EnqueueDialogResult(MessageDialogResult result)
+        {
+            _dialogResults.Enqueue(result);
+        }
 
         public Task<MessageDialogResult> ConfirmDeleteAsync(object viewModel, string title, string message)
         {
-            if (DialogResults.Count > 0)
-                return Task.FromResult(DialogResults.Dequeue());
+            if (_dialogResults.Count > 0)
+                return Task.FromResult(_dialogResults.Dequeue());
             return Task.FromResult(MessageDialogResult.Affirmative);
         }
 

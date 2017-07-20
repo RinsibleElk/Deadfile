@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Entity;
 using Deadfile.Infrastructure.Interfaces;
 using Deadfile.Infrastructure.Services;
 using Deadfile.Model;
+using Deadfile.Model.Browser;
 using Deadfile.Model.Interfaces;
 using Deadfile.Pdf;
 using Deadfile.Tab.Browser;
@@ -32,6 +34,7 @@ using Deadfile.Tab.Tab;
 using MahApps.Metro.Controls.Dialogs;
 using Moq;
 using Prism.Events;
+using Xunit;
 
 namespace Deadfile.Tab.Test.FunctionalTests
 {
@@ -76,7 +79,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
         public readonly BrowserPaneViewModel BrowserPaneViewModel;
         public readonly QuotesBarViewModel QuotesBarViewModel;
 
-        public MockSetup(MockDeadfileContextAbstractionFactory factory)
+        public MockSetup(MockDeadfileContextAbstractionFactory factory, bool populate)
         {
             DeadfileContextAbstraction.TestOnlyFakeConnectionString();
             DbContext = factory;
@@ -148,15 +151,69 @@ namespace Deadfile.Tab.Test.FunctionalTests
             EventAggregator.Setup((ea) => ea.GetEvent<SelectedItemEvent>()).Returns(new SelectedItemEvent());
             EventAggregator.Setup((ea) => ea.GetEvent<UndoEvent>()).Returns(new UndoEvent());
             TabViewModel.TestOnlyOnActivate();
+
+            if (populate) PopulateEntireDatabaseFromGui();
         }
 
-        public MockSetup() : this(new MockDeadfileContextAbstractionFactory())
+        private void PopulateEntireDatabaseFromGui()
         {
+            Assert.Equal("Oliver Samson", QuotesBarViewModel.Quotation.Author);
+            Assert.Equal("No Quotations defined. Soz.", QuotesBarViewModel.Quotation.Phrase);
+            MockData.SetUpQuotations(this);
+            Assert.Equal(4, Repository.GetQuotations(null).Count());
+            TimerService.FireCallback();
+            Assert.Equal("Homer Simpson", QuotesBarViewModel.Quotation.Author);
+            Assert.Equal("You tried your best and you failed miserably. The lesson is, never try.", QuotesBarViewModel.Quotation.Phrase);
+            MockData.SetUpLocalAuthorities(this);
+            MockData.SetUpClients(this);
+            MockData.SetUpJobs(this);
+            MockData.SetupJobChildren(this);
+            MockData.SetUpInvoices(this);
+        }
+
+        public MockSetup(bool populate) : this(new MockDeadfileContextAbstractionFactory(), populate)
+        {
+        }
+
+        public MockSetup() : this(false)
+        {
+        }
+
+        public void BrowseToPrivetDrive()
+        {
+            BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Job;
+            Assert.Equal(6, BrowserPaneViewModel.Items.Count);
+            var privetDrive = BrowserPaneViewModel.Items.First((b) => ((BrowserJob)b).FullAddress.Contains("Privet Drive"));
+            BrowserPaneViewModel.SelectedItem = privetDrive;
+            Assert.Equal(JobsPageViewModel, TabViewModel.ContentArea);
+            Assert.Equal(2503, JobsPageViewModel.SelectedItem.JobNumber);
         }
 
         public void Dispose()
         {
             TabViewModel.TestOnlyOnDeactivate(true);
+        }
+
+        public void AddJobTask(string description, string notes, JobTaskPriority? priority)
+        {
+            Assert.Equal(JobsPageViewModel, TabViewModel.ContentArea);
+            Assert.Equal(JobChildExperience.JobTasks, JobsPageViewModel.SelectedJobChild);
+            JobTasksJobChildViewModel.SelectedItem = JobTasksJobChildViewModel.Items[JobTasksJobChildViewModel.Items.Count - 1];
+            Assert.True(JobTasksJobChildViewModel.EditCommand.CanExecute(null));
+            JobTasksJobChildViewModel.EditCommand.Execute(null);
+            Assert.True(JobTasksJobChildViewModel.Editable);
+            JobTasksJobChildViewModel.SelectedItem.Description = description;
+            if (!string.IsNullOrEmpty(notes)) JobTasksJobChildViewModel.SelectedItem.Notes = notes;
+            if (priority != null)
+            {
+                while (JobTasksJobChildViewModel.SelectedItem.Priority != priority.Value)
+                {
+                    Assert.True(JobTasksJobChildViewModel.TogglePriorityCommand.CanExecute(null));
+                    JobTasksJobChildViewModel.TogglePriorityCommand.Execute(null);
+                }
+            }
+            Assert.True(JobTasksJobChildViewModel.SaveCommand.CanExecute(true));
+            JobTasksJobChildViewModel.SaveCommand.Execute(true);
         }
     }
 }

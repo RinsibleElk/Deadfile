@@ -294,38 +294,19 @@ namespace Deadfile.Tab.Test.FunctionalTests
             }
         }
 
-        private void PopulateEntireDatabaseFromGui(MockSetup setup)
-        {
-            Assert.Equal("Oliver Samson", setup.QuotesBarViewModel.Quotation.Author);
-            Assert.Equal("No Quotations defined. Soz.", setup.QuotesBarViewModel.Quotation.Phrase);
-            MockData.SetUpQuotations(setup);
-            Assert.Equal(4, setup.Repository.GetQuotations(null).Count());
-            setup.TimerService.FireCallback();
-            Assert.Equal("Homer Simpson", setup.QuotesBarViewModel.Quotation.Author);
-            Assert.Equal("You tried your best and you failed miserably. The lesson is, never try.",
-                setup.QuotesBarViewModel.Quotation.Phrase);
-            MockData.SetUpLocalAuthorities(setup);
-            MockData.SetUpClients(setup);
-            MockData.SetUpJobs(setup);
-            MockData.SetupJobChildren(setup);
-            MockData.SetUpInvoices(setup);
-        }
-
         [Fact]
         public void TestPopulateEntireDatabaseFromGui()
         {
-            using (var setup = new MockSetup())
+            using (var setup = new MockSetup(true))
             {
-                PopulateEntireDatabaseFromGui(setup);
             }
         }
 
         [Fact]
         public void TestPayInvoice()
         {
-            using (var setup = new MockSetup())
+            using (var setup = new MockSetup(true))
             {
-                PopulateEntireDatabaseFromGui(setup);
                 // Navigate to the invoice via the browser.
                 setup.BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Client;
                 Assert.Equal(6, setup.BrowserPaneViewModel.Items.Count);
@@ -349,9 +330,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
         [Fact]
         public void TestCancelInvoice()
         {
-            using (var setup = new MockSetup())
+            using (var setup = new MockSetup(true))
             {
-                PopulateEntireDatabaseFromGui(setup);
                 // Navigate to the invoice via the browser.
                 setup.BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Client;
                 Assert.Equal(6, setup.BrowserPaneViewModel.Items.Count);
@@ -377,9 +357,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
         [Fact]
         public void TestAddNewInvoice_Save_StaysOnPageButCanEdit()
         {
-            using (var setup = new MockSetup())
+            using (var setup = new MockSetup(true))
             {
-                PopulateEntireDatabaseFromGui(setup);
                 setup.BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Client;
                 MockData.BrowseToClient(setup, "Nicole Bryant");
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.ContentArea, setup.ClientsPageViewModel));
@@ -418,9 +397,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
         [InlineData("Walk")]
         public void TestSearchForJob(string searchText)
         {
-            using (var setup = new MockSetup())
+            using (var setup = new MockSetup(true))
             {
-                PopulateEntireDatabaseFromGui(setup);
                 setup.NavigationBarViewModel.SearchText = searchText;
                 Assert.True(setup.NavigationBarViewModel.IsSearchShown);
                 Assert.Equal(1, setup.NavigationBarViewModel.SearchResults.Count);
@@ -435,10 +413,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
         [Fact]
         public void TestCannotAddJobChildWhenCreatingNewJob()
         {
-            using (var setup = new MockSetup())
+            using (var setup = new MockSetup(true))
             {
-                PopulateEntireDatabaseFromGui(setup);
-
                 // Navigate to Rinsible Elk via the browser.
                 setup.BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Client;
                 Assert.Equal(6, setup.BrowserPaneViewModel.Items.Count);

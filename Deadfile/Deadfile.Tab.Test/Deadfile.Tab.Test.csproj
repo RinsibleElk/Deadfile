@@ -115,6 +115,7 @@
     <Compile Include="FunctionalTests\MockSetup.cs" />
     <Compile Include="FunctionalTests\MockUrlNavigationService.cs" />
     <Compile Include="FunctionalTests\TestEmptySetup.cs" />
+    <Compile Include="FunctionalTests\TestJobTasksJobChildViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBrowserPaneViewModel.cs" />
     <Compile Include="TestJobsActionsPadViewModel.cs" />
