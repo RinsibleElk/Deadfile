@@ -125,6 +125,7 @@
     <Compile Include="TestInvoicesPageViewModel.cs" />
     <Compile Include="TestNavigationBarViewModel.cs" />
     <Compile Include="TestTabViewModel.cs" />
+    <Compile Include="FunctionalTests\TestUnbilledJobsPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Deadfile.Core\Deadfile.Core.csproj">
