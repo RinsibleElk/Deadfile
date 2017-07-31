@@ -25,6 +25,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
                 Assert.True(Object.ReferenceEquals(setup.TabViewModel.BrowserPane, setup.BrowserPaneViewModel));
                 Assert.False(setup.TabViewModel.ActionsPadIsVisible);
                 Assert.True(setup.TabViewModel.BrowserPaneIsVisible);
+                Assert.Equal(Experience.Home, setup.TabViewModel.ContentArea.Experience);
                 Assert.Equal("Home", setup.TabViewModel.DisplayName);
             }
         }

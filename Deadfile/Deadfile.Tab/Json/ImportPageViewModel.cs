@@ -26,9 +26,10 @@ namespace Deadfile.Tab.Json
         public ImportPageViewModel(IDeadfileContextAbstractionFactory contextAbstractionFactory,
             IDeadfileRepository repository,
             IEventAggregator eventAggregator,
-            IDeadfileDialogCoordinator dialogCoordinator)
+            IDeadfileDialogCoordinator dialogCoordinator,
+            IDeadfileFileStreamService fileStreamService)
         {
-            _jsonImporter = new JsonImporter(contextAbstractionFactory, repository);
+            _jsonImporter = new JsonImporter(contextAbstractionFactory, repository, fileStreamService);
             _eventAggregator = eventAggregator;
             _dialogCoordinator = dialogCoordinator;
             BrowseJson = new DelegateCommand(BrowseJsonAction);

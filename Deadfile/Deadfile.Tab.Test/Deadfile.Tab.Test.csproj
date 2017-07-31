@@ -106,6 +106,7 @@
     <Compile Include="FunctionalTests\MockDeadfileContextAbstractionFactory.cs" />
     <Compile Include="FunctionalTests\MockDeadfileDialogCoordinator.cs" />
     <Compile Include="FunctionalTests\MockDeadfileDispatcherTimerService.cs" />
+    <Compile Include="FunctionalTests\MockDeadfileFileStreamService.cs" />
     <Compile Include="FunctionalTests\MockExcelService.cs" />
     <Compile Include="FunctionalTests\MockInvoiceGenerator.cs" />
     <Compile Include="FunctionalTests\MockNavigationContainer.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="FunctionalTests\MockUrlNavigationService.cs" />
     <Compile Include="FunctionalTests\TestEmptySetup.cs" />
     <Compile Include="FunctionalTests\TestExpensesJobChildViewModel.cs" />
+    <Compile Include="FunctionalTests\TestJobsPageViewModel.cs" />
     <Compile Include="FunctionalTests\TestJobTasksJobChildViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBrowserPaneViewModel.cs" />

@@ -96,6 +96,11 @@
       <Project>{c43da0ca-bd37-4109-a581-695b9080b74c}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Deadfile.Infrastructure\Deadfile.Infrastructure.csproj">
+      <Name>Deadfile.Infrastructure</Name>
+      <Project>{cd07d8ad-c1d6-4c0c-acb5-aefd73173387}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Deadfile.Model\Deadfile.Model.csproj">
       <Name>Deadfile.Model</Name>
       <Project>{790f6f95-333f-4cd3-bb57-3e745a1c3224}</Project>

@@ -103,6 +103,7 @@
     <Compile Include="Interfaces\IDeadfileDialogCoordinator.cs" />
     <Compile Include="Interfaces\IDeadfileDispatcherTimer.cs" />
     <Compile Include="Interfaces\IDeadfileDispatcherTimerService.cs" />
+    <Compile Include="Interfaces\IDeadfileFileStreamService.cs" />
     <Compile Include="Interfaces\IDeadfileProgressController.cs" />
     <Compile Include="Interfaces\IExcelService.cs" />
     <Compile Include="Interfaces\IJournaled.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Services\DeadfileDeadfileDispatcherTimer.cs" />
     <Compile Include="Services\DeadfileDeadfileDispatcherTimerService.cs" />
     <Compile Include="Services\DeadfileDialogCoordinator.cs" />
+    <Compile Include="Services\DeadfileFileStreamService.cs" />
     <Compile Include="Services\ExcelService.cs" />
     <Compile Include="Services\NavigationContainer.cs" />
     <Compile Include="Services\NavigationService.cs" />

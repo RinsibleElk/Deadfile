@@ -50,6 +50,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
         public readonly MockQuotationsTimerService TimerService = new MockQuotationsTimerService();
         public readonly MockDeadfileDispatcherTimerService DispatcherTimerService = new MockDeadfileDispatcherTimerService();
         public readonly MockUrlNavigationService UrlNavigationService = new MockUrlNavigationService();
+        public readonly MockDeadfileFileStreamService FileStreamService = new MockDeadfileFileStreamService();
         public readonly MockDeadfileDialogCoordinator DeadfileDialogCoordinator = new MockDeadfileDialogCoordinator();
         public readonly MockPrintService PrintService = new MockPrintService();
         public readonly MockExcelService ExcelService = new MockExcelService();
@@ -67,6 +68,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
         public readonly InvoicesReportPageViewModel InvoicesReportPageViewModel;
         public readonly TodoReportPageViewModel TodoReportPageViewModel;
         public readonly ImportPageViewModel ImportPageViewModel;
+        public readonly ExportPageViewModel ExportPageViewModel;
         public readonly DefineQuotationsPageViewModel DefineQuotationsPageViewModel;
         public readonly InvoicesPageViewModel InvoicesPageViewModel;
         public readonly JobTasksJobChildViewModel JobTasksJobChildViewModel;
@@ -96,7 +98,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
             CurrentApplicationsPageViewModel = new CurrentApplicationsPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object);
             InvoicesReportPageViewModel = new InvoicesReportPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object, ExcelService);
             TodoReportPageViewModel = new TodoReportPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object);
-            ImportPageViewModel = new ImportPageViewModel(factory, Repository, EventAggregator.Object, DeadfileDialogCoordinator);
+            ImportPageViewModel = new ImportPageViewModel(factory, Repository, EventAggregator.Object, DeadfileDialogCoordinator, FileStreamService);
+            ExportPageViewModel = new ExportPageViewModel(factory, Repository, EventAggregator.Object, DeadfileDialogCoordinator, FileStreamService);
             DefineQuotationsPageViewModel = new DefineQuotationsPageViewModel(DeadfileDialogCoordinator, Repository, EventAggregator.Object);
             InvoicesPageViewModel = new InvoicesPageViewModel(TabIdentity, PrintService, Repository, EventAggregator.Object, InvoiceGenerator, DeadfileDialogCoordinator);
             JobTasksJobChildViewModel = new JobTasksJobChildViewModel(DispatcherTimerService, DeadfileDialogCoordinator, Repository, EventAggregator.Object);
@@ -117,7 +120,8 @@ namespace Deadfile.Tab.Test.FunctionalTests
             ViewModels.Add("CurrentApplicationsPage", CurrentApplicationsPageViewModel);
             ViewModels.Add("InvoicesReportPage", InvoicesReportPageViewModel);
             ViewModels.Add("TodoReportPage", TodoReportPageViewModel);
-            ViewModels.Add("JsonPage", ImportPageViewModel);
+            ViewModels.Add("ImportPage", ImportPageViewModel);
+            ViewModels.Add("ExportPage", ExportPageViewModel);
             ViewModels.Add("DefineQuotationsPage", DefineQuotationsPageViewModel);
             ViewModels.Add("InvoicesPage", InvoicesPageViewModel);
             ViewModels.Add("JobTasksJobChild", JobTasksJobChildViewModel);
@@ -193,10 +197,20 @@ namespace Deadfile.Tab.Test.FunctionalTests
         {
             BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Job;
             Assert.Equal(6, BrowserPaneViewModel.Items.Count);
-            var privetDrive = BrowserPaneViewModel.Items.First((b) => ((BrowserJob)b).FullAddress.Contains("Windsor Gardens"));
-            BrowserPaneViewModel.SelectedItem = privetDrive;
+            var windsorGardens = BrowserPaneViewModel.Items.First((b) => ((BrowserJob)b).FullAddress.Contains("Windsor Gardens"));
+            BrowserPaneViewModel.SelectedItem = windsorGardens;
             Assert.Equal(JobsPageViewModel, TabViewModel.ContentArea);
             Assert.Equal(2505, JobsPageViewModel.SelectedItem.JobNumber);
+        }
+
+        public void BrowseToCemeteryRidge()
+        {
+            BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Job;
+            Assert.Equal(6, BrowserPaneViewModel.Items.Count);
+            var cemeteryRidge = BrowserPaneViewModel.Items.First((b) => ((BrowserJob)b).FullAddress.Contains("Cemetery Ridge"));
+            BrowserPaneViewModel.SelectedItem = cemeteryRidge;
+            Assert.Equal(JobsPageViewModel, TabViewModel.ContentArea);
+            Assert.Equal(2500, JobsPageViewModel.SelectedItem.JobNumber);
         }
 
         public void Dispose()

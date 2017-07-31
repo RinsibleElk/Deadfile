@@ -10,6 +10,7 @@ open Deadfile.Model.Interfaces
 open FSharp.Reflection
 open Newtonsoft.Json
 open System.Collections.Generic
+open Deadfile.Infrastructure.Interfaces
 
 type ClientJson =
     {
@@ -244,7 +245,7 @@ type EntireDb() =
     static member Make data = EntireDb(Version1Data = Some data)
 
 [<Sealed>]
-type JsonImporter(abstractionDactory:IDeadfileContextAbstractionFactory, repository:IDeadfileRepository) =
+type JsonImporter(abstractionDactory:IDeadfileContextAbstractionFactory, repository:IDeadfileRepository, fileStreamService:IDeadfileFileStreamService) =
     let cache = IdCache()
     let tryDo (f:IDeadfileContextAbstraction -> unit) =
         if (DeadfileContextAbstraction.HasConnectionString()) then
@@ -400,14 +401,14 @@ type JsonImporter(abstractionDactory:IDeadfileContextAbstractionFactory, reposit
             |> EntireDb.Make
         let serializer = JsonSerializer()
         serializer.Formatting <- Formatting.Indented
-        use stream = new FileStream(jsonFile.FullName, FileMode.Create, FileAccess.Write)
-        use writer = new StreamWriter(stream)
+        use stream = fileStreamService.MakeWriteStream(jsonFile)
+        use writer = fileStreamService.MakeWriter(stream);
         serializer.Serialize(writer, entireDb)
     member __.ImportFromJsonFile(jsonFile:FileInfo) =
         let serializer = JsonSerializer()
         serializer.Formatting <- Formatting.Indented
-        use stream = new FileStream(jsonFile.FullName, FileMode.Open, FileAccess.Read)
-        use reader = new StreamReader(stream)
+        use stream = fileStreamService.MakeReadStream(jsonFile)
+        use reader = fileStreamService.MakeReader(stream)
         let entireDb = serializer.Deserialize(reader, typeof<EntireDb>) |> unbox<EntireDb>
         let data = entireDb.Version1Data.Value
         data.Clients |> Seq.iter saveClient

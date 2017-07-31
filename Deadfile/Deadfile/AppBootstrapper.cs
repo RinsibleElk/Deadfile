@@ -89,6 +89,9 @@ namespace Deadfile
 
             // Excel service
             ContainerInstance.RegisterSingleton(typeof(IExcelService), nameof(ExcelService), typeof(ExcelService));
+
+            // File handling service
+            ContainerInstance.RegisterSingleton(typeof(IDeadfileFileStreamService), nameof(DeadfileFileStreamService), typeof(DeadfileFileStreamService));
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)
