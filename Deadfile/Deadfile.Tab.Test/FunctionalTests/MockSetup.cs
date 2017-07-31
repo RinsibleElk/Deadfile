@@ -189,6 +189,16 @@ namespace Deadfile.Tab.Test.FunctionalTests
             Assert.Equal(2503, JobsPageViewModel.SelectedItem.JobNumber);
         }
 
+        public void BrowseToWindsorGardens()
+        {
+            BrowserPaneViewModel.BrowserSettings.Mode = BrowserMode.Job;
+            Assert.Equal(6, BrowserPaneViewModel.Items.Count);
+            var privetDrive = BrowserPaneViewModel.Items.First((b) => ((BrowserJob)b).FullAddress.Contains("Windsor Gardens"));
+            BrowserPaneViewModel.SelectedItem = privetDrive;
+            Assert.Equal(JobsPageViewModel, TabViewModel.ContentArea);
+            Assert.Equal(2505, JobsPageViewModel.SelectedItem.JobNumber);
+        }
+
         public void Dispose()
         {
             TabViewModel.TestOnlyOnDeactivate(true);
