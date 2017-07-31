@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Deadfile.Infrastructure.Interfaces;
 using MahApps.Metro.Controls.Dialogs;
+using Xunit;
 
 namespace Deadfile.Tab.Test.FunctionalTests
 {
@@ -15,6 +16,11 @@ namespace Deadfile.Tab.Test.FunctionalTests
         public void EnqueueDialogResult(MessageDialogResult result)
         {
             _dialogResults.Enqueue(result);
+        }
+
+        public void CheckNoMoreQueuedDialogResults()
+        {
+            Assert.Empty(_dialogResults);
         }
 
         public Task<MessageDialogResult> ConfirmDeleteAsync(object viewModel, string title, string message)

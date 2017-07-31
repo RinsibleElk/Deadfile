@@ -74,7 +74,7 @@ namespace Deadfile.Tab.JobChildren.JobTasks
         }
 
         public ICommand TogglePriorityCommand => _togglePriorityCommand;
-        public ICommand MakeJobTaskBillableCommand { get { return _makeJobTaskBillableCommand; } }
+        public ICommand MakeJobTaskBillableCommand => _makeJobTaskBillableCommand;
 
         private void TogglePriority()
         {

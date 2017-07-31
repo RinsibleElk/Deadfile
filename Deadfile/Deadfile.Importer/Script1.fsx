@@ -16,6 +16,26 @@ open Deadfile.Importer
 open Deadfile.Entity
 open Newtonsoft.Json
 
+[<RequireQualifiedAccess>]
+module Json =
+    let read<'t> (fi:FileInfo) =
+        let s = JsonSerializer()
+        s.Formatting <- Formatting.Indented
+        use stream = new FileStream(fi.FullName, FileMode.Open, FileAccess.Read)
+        use reader = new StreamReader(stream)
+        s.Deserialize(reader, typeof<'t>) |> unbox<'t>
+    let write<'t> (fi:FileInfo) (t:'t) =
+        let s = JsonSerializer()
+        s.Formatting <- Formatting.Indented
+        use stream = new FileStream(fi.FullName, FileMode.Create, FileAccess.Write)
+        use writer = new StreamWriter(stream)
+        s.Serialize(writer, (box t), typeof<'t>)
+let getFi i = FileInfo(sprintf @"D:\Documents\FootballTubeMap\AfterKingsCross\%d.json" i)
+let allPossibilitiesToTest = getFi >> Json.read<((uint64 * uint64) list list * uint64 list) list>
+let x = 23 |> allPossibilitiesToTest
+let y = x |> List.collect fst
+
+
 let clients =
     @"D:\Documents\Deadfile\Mass Import\clients.csv"
     |> File.ReadAllLines
