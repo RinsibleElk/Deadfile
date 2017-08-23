@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Deadfile.Model;
 using Deadfile.Model.Browser;
@@ -26,9 +27,12 @@ namespace Deadfile.Tab.Reports.UnbilledJobs
 
         // Stuff that every page has.
         public override Experience Experience { get; } = Experience.UnbilledJobs;
-
         public ICommand NavigateToClient { get; } = null;
-
         public ICommand NavigateToJob { get; } = null;
+        public void ExportToExcel()
+        {
+            throw new NotImplementedException();
+        }
+        public DataGrid DataGrid { get; } = null;
     }
 }

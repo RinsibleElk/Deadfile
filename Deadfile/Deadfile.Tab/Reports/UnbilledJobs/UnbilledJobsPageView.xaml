@@ -27,8 +27,17 @@
     </UserControl.Resources>
     <DockPanel LastChildFill="False">
         <DockPanel DockPanel.Dock="Top" LastChildFill="True">
-            <Button x:Name="Print" DockPanel.Dock="Right">
+            <Button
+                x:Name="Print"
+                Margin="5,0,5,0"
+                DockPanel.Dock="Right">
                 Print
+            </Button>
+            <Button
+                x:Name="ExportToExcel"
+                Margin="5,0,5,0"
+                DockPanel.Dock="Right">
+                Export To Excel
             </Button>
             <TextBox controls:TextBoxHelper.Watermark="Filter" Text="{Binding Filter, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
         </DockPanel>
@@ -60,36 +69,42 @@
             CanUserSortColumns="True"
             ItemsSource="{Binding Items}">
             <DataGrid.Columns>
-                <DataGridTemplateColumn
+                <DataGridTextColumn
+                    Binding="{Binding FullName}"
                     Header="Client"
-                    IsReadOnly="True"
-                    SortMemberPath="FullName">
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding AddressFirstLine}"
+                    Header="Job"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding UnbilledAmount}"
+                    Header="Amount Due"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding UnbilledHours}"
+                    Header="Unbilled Hours"
+                    IsReadOnly="True" />
+                <DataGridTemplateColumn IsReadOnly="True" SortMemberPath="FullName">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="model:UnbilledJobModel">
                             <Button
                                 Command="{Binding Path=DataContext.NavigateToClient, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                 CommandParameter="{Binding}"
-                                Content="{Binding FullName}" />
+                                Content="Go To Client" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn
-                    Header="Job"
-                    IsReadOnly="True"
-                    SortMemberPath="AddressFirstLine">
+                <DataGridTemplateColumn IsReadOnly="True" SortMemberPath="AddressFirstLine">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="model:UnbilledJobModel">
                             <Button
                                 Command="{Binding Path=DataContext.NavigateToJob, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                 CommandParameter="{Binding}"
-                                Content="{Binding AddressFirstLine}" />
+                                Content="Go To Job" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn
-                    Binding="{Binding UnbilledAmount}"
-                    Header="Amount Due"
-                    IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

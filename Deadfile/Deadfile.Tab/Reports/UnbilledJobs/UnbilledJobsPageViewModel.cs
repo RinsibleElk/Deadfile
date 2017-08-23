@@ -29,6 +29,7 @@ namespace Deadfile.Tab.Reports.UnbilledJobs
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly TabIdentity _tabIdentity;
         private readonly IDeadfileRepository _repository;
+        private readonly IExcelService _excelService;
         private readonly DelegateCommand<UnbilledJobModel> _navigateToClient;
         private readonly DelegateCommand<UnbilledJobModel> _navigateToJob;
 
@@ -39,15 +40,18 @@ namespace Deadfile.Tab.Reports.UnbilledJobs
         /// <param name="dialogCoordinator"></param>
         /// <param name="printService"></param>
         /// <param name="repository"></param>
+        /// <param name="excelService"></param>
         /// <param name="eventAggregator"></param>
         public UnbilledJobsPageViewModel(TabIdentity tabIdentity,
             IDeadfileDialogCoordinator dialogCoordinator,
             IPrintService printService,
             IDeadfileRepository repository,
+            IExcelService excelService,
             IEventAggregator eventAggregator) : base(printService, dialogCoordinator, eventAggregator, false)
         {
             _tabIdentity = tabIdentity;
             _repository = repository;
+            _excelService = excelService;
             _navigateToClient = new DelegateCommand<UnbilledJobModel>(PerformNavigateToClient);
             _navigateToJob = new DelegateCommand<UnbilledJobModel>(PerformNavigateToJob);
             StartDate = DateTime.Today;
@@ -84,9 +88,15 @@ namespace Deadfile.Tab.Reports.UnbilledJobs
 
         public ICommand NavigateToJob => _navigateToJob;
 
+        public void ExportToExcel()
+        {
+            _excelService.Export(this);
+        }
+
         protected override DataGrid GetVisual(object view)
         {
             return ((UnbilledJobsPageView) view).Report;
         }
+        public DataGrid DataGrid => (DataGrid)Visual;
     }
 }
