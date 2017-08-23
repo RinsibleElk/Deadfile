@@ -25,7 +25,7 @@
             </ResourceDictionary.MergedDictionaries>
         </designTime:DesignTimeResourceDictionary>
     </UserControl.Resources>
-    <DockPanel LastChildFill="False">
+    <DockPanel LastChildFill="True">
         <DockPanel DockPanel.Dock="Top" LastChildFill="True">
             <Button
                 x:Name="Print"
@@ -76,6 +76,10 @@
                 <DataGridTextColumn
                     Binding="{Binding AddressFirstLine}"
                     Header="Job"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding JobNumber}"
+                    Header="Job Number"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding UnbilledAmount}"

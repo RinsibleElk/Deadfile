@@ -789,6 +789,7 @@ namespace Deadfile.Model
                                 JobId = model.JobId,
                                 FullName = model.FullName,
                                 AddressFirstLine = model.AddressFirstLine,
+                                JobNumber = model.JobNumber,
                                 UnbilledHours = model.UnbilledHours,
                                 UnbilledAmount = model.UnbilledAmount + billable.NetAmount
                             };
@@ -806,6 +807,7 @@ namespace Deadfile.Model
                                 JobId = job.JobId,
                                 FullName = fullName,
                                 AddressFirstLine = job.AddressFirstLine,
+                                JobNumber = job.JobNumber,
                                 UnbilledHours = 0,
                                 UnbilledAmount = billable.NetAmount
                             });
@@ -828,6 +830,7 @@ namespace Deadfile.Model
                                 JobId = model.JobId,
                                 FullName = model.FullName,
                                 AddressFirstLine = model.AddressFirstLine,
+                                JobNumber = model.JobNumber,
                                 UnbilledHours = model.UnbilledHours + billable.HoursWorked,
                                 UnbilledAmount = model.UnbilledAmount
                             };
@@ -845,6 +848,7 @@ namespace Deadfile.Model
                                 JobId = job.JobId,
                                 FullName = fullName,
                                 AddressFirstLine = job.AddressFirstLine,
+                                JobNumber = job.JobNumber,
                                 UnbilledHours = billable.HoursWorked,
                                 UnbilledAmount = 0
                             });

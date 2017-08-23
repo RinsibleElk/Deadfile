@@ -45,6 +45,13 @@ namespace Deadfile.Model.Reporting
             set { SetProperty(ref _addressFirstLine, value); }
         }
 
+        private int _jobNumber;
+        public int JobNumber
+        {
+            get { return _jobNumber; }
+            set { SetProperty(ref _jobNumber, value); }
+        }
+
         private string _fullName;
         /// <summary>
         /// The full name of this client.
@@ -65,10 +72,10 @@ namespace Deadfile.Model.Reporting
             set { SetProperty(ref _unbilledAmount, value); }
         }
 
-        private double _unbilledHours;
         /// <summary>
         /// Hours uninvoiced for this client.
         /// </summary>
+        private double _unbilledHours;
         public double UnbilledHours
         {
             get { return _unbilledHours; }
