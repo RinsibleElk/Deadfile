@@ -165,7 +165,8 @@ namespace Deadfile.Tab.Invoices
                 if (SelectedItem.IsNewInvoice && SelectedItem.CreationState == InvoiceCreationState.DefineInvoice)
                 {
                     // Disable undo tracking while we handle automated changes.
-                    SelectedItem.DisableUndoTracking = true;
+                    var alreadyDisabled = SelectedItem.DisableUndoTracking;
+                    if (!alreadyDisabled) SelectedItem.DisableUndoTracking = true;
 
                     // VAT rate is handled by the invoice model already.
 
@@ -194,7 +195,7 @@ namespace Deadfile.Tab.Invoices
                     SelectedItem.ChildrenList[0].Description = null;
 
                     // Re-enable undo tracking.
-                    SelectedItem.DisableUndoTracking = false;
+                    if (!alreadyDisabled) SelectedItem.DisableUndoTracking = false;
                 }
             }
             else if (SelectedItem.IsNewInvoice && eventArgs.PropertyName == nameof(InvoiceModel.Company))
@@ -202,7 +203,8 @@ namespace Deadfile.Tab.Invoices
                 NotifyOfPropertyChange(nameof(VatRateEditable));
 
                 // Disable undo tracking while we handle automated changes.
-                SelectedItem.DisableUndoTracking = true;
+                var alreadyDisabled = SelectedItem.DisableUndoTracking;
+                if (!alreadyDisabled) SelectedItem.DisableUndoTracking = true;
 
                 // Offer the user some help in deciding a new invoice reference.
                 var suggestedInvoiceReferences =
@@ -213,21 +215,25 @@ namespace Deadfile.Tab.Invoices
                 SelectedItem.InvoiceReferenceString = suggestedInvoiceReferences[suggestedInvoiceReferences.Length - 1];
 
                 // Re-enable undo tracking.
-                SelectedItem.DisableUndoTracking = false;
+                if (!alreadyDisabled) SelectedItem.DisableUndoTracking = false;
             }
             else if (eventArgs.PropertyName == nameof(InvoiceModel.VatRate))
             {
                 // Disable undo tracking while we handle automated changes.
-                SelectedItem.DisableUndoTracking = true;
+                var alreadyDisabled = SelectedItem.DisableUndoTracking;
+                if (!alreadyDisabled) SelectedItem.DisableUndoTracking = true;
 
                 // Offer the user some help in deciding a new invoice reference.
                 foreach (var invoiceItemModel in SelectedItem.ChildrenList)
                 {
+                    var childAlreadyDisabled = invoiceItemModel.DisableUndoTracking;
+                    if (!childAlreadyDisabled) invoiceItemModel.DisableUndoTracking = true;
                     invoiceItemModel.VatRate = SelectedItem.VatRate;
+                    if (!childAlreadyDisabled) invoiceItemModel.DisableUndoTracking = false;
                 }
 
                 // Re-enable undo tracking.
-                SelectedItem.DisableUndoTracking = false;
+                if (!alreadyDisabled) SelectedItem.DisableUndoTracking = false;
             }
         }
 

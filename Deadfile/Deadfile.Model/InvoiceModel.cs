@@ -140,9 +140,10 @@ namespace Deadfile.Model
                 if (SetProperty(ref _company, value))
                 {
                     ValidateProperty(nameof(InvoiceReference), _invoiceReference);
-                    DisableUndoTracking = true;
+                    var alreadyDisabled = DisableUndoTracking;
+                    if (!alreadyDisabled) DisableUndoTracking = true;
                     VatRate = (_company == Company.PaulSamsonCharteredSurveyorLtd) ? 20 : 0;
-                    DisableUndoTracking = false;
+                    if (!alreadyDisabled) DisableUndoTracking = false;
                 }
             }
         }

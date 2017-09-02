@@ -63,9 +63,19 @@ namespace Deadfile.Tab.Test
                 _pageStateEvent.Subscribe((s) => _pageState = s);
                 _displayNameEvent.Subscribe((n) => _receivedDisplayNameMessages.Add(n));
                 _lockedForEditingEvent.Subscribe((m) => _receivedLockedForEditingMessages.Add(m));
-                _canUndoEvent.Subscribe((m) => _receivedCanUndoMessages.Add(m));
+                _canUndoEvent.Subscribe((m) =>
+                {
+                    _receivedCanUndoMessages.Add(m);
+                    if (m.HasFlag(CanUndoMessage.CanUndo)) CanUndo = true;
+                    if (m.HasFlag(CanUndoMessage.CannotUndo)) CanUndo = false;
+                    if (m.HasFlag(CanUndoMessage.CanRedo)) CanRedo = true;
+                    if (m.HasFlag(CanUndoMessage.CannotRedo)) CanRedo = false;
+                });
                 _navigateFallBackEvent.Subscribe((m) => _receivedNavigateFallBackMessages.Add(m));
             }
+
+            public bool CanUndo { get; private set; }
+            public bool CanRedo { get; private set; }
 
             public void NavigateToNew(ClientModel clientModel)
             {
@@ -503,6 +513,7 @@ namespace Deadfile.Tab.Test
                 host.Edit();
                 host.SetBillableItems(true);
                 host.ViewModel.SelectedItem.Company = Company.PaulSamsonCharteredSurveyorLtd;
+                Assert.True(host.CanUndo);
                 host.Undo(new CanUndoMessage[1] {CanUndoMessage.CanRedo});
                 Assert.Equal(Company.Imagine3DLtd, host.ViewModel.SelectedItem.Company);
                 Assert.Equal(InvoiceCreationState.DefineInvoice, host.ViewModel.SelectedItem.CreationState);
