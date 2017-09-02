@@ -543,27 +543,72 @@
                                         ItemsSource="{Binding SelectedItem.Children}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate DataType="model:InvoiceItemModel">
-                                                <StackPanel>
-                                                    <DockPanel LastChildFill="True">
-                                                        <Button
-                                                            Command="{Binding DeleteCommand}"
-                                                            DockPanel.Dock="Right"
-                                                            Style="{StaticResource DeleteMiniButton}" />
-                                                        <controls:NumericUpDown
-                                                            Width="200"
-                                                            Height="20"
-                                                            Background="White"
-                                                            DockPanel.Dock="Right"
-                                                            Foreground="Black"
-                                                            Value="{Binding NetAmount, StringFormat=C, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
-                                                        <TextBox
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="100" />
+                                                        <ColumnDefinition Width="30" />
+                                                        <ColumnDefinition Width="30" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBox
+                                                        Grid.Row="0"
+                                                        Grid.Column="0"
+                                                        Grid.ColumnSpan="2"
+                                                        Margin="0"
+                                                        HorizontalAlignment="Stretch"
+                                                        controls:TextBoxHelper.Watermark="Item Description"
+                                                        Style="{StaticResource PksTextBoxFullWidth}"
+                                                        Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=Description}" />
+                                                    <StackPanel
+                                                        Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        HorizontalAlignment="Right"
+                                                        Orientation="Horizontal">
+                                                        <TextBlock
                                                             Margin="0"
-                                                            HorizontalAlignment="Stretch"
-                                                            controls:TextBoxHelper.Watermark="Item Description"
-                                                            Style="{StaticResource PksTextBoxFullWidth}"
-                                                            Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=Description}" />
-                                                    </DockPanel>
-                                                </StackPanel>
+                                                            Style="{StaticResource PksTextBlock}"
+                                                            Text="VAT at " />
+                                                        <TextBlock
+                                                            Margin="0"
+                                                            Style="{StaticResource PksTextBlock}"
+                                                            Text="{Binding VatRate}" />
+                                                        <TextBlock
+                                                            Margin="0"
+                                                            Style="{StaticResource PksTextBlock}"
+                                                            Text="%:" />
+                                                    </StackPanel>
+                                                    <controls:NumericUpDown
+                                                        Grid.Row="0"
+                                                        Grid.Column="2"
+                                                        Width="200"
+                                                        Height="20"
+                                                        Background="White"
+                                                        Foreground="Black"
+                                                        Value="{Binding NetAmount, StringFormat=C, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                                    <TextBlock
+                                                        Grid.Row="1"
+                                                        Grid.Column="2"
+                                                        Margin="0"
+                                                        HorizontalAlignment="Right"
+                                                        Style="{StaticResource PksTextBlock}"
+                                                        Text="{Binding VatValue, StringFormat=C}" />
+                                                    <CheckBox
+                                                        Grid.Row="1"
+                                                        Grid.Column="3"
+                                                        IsChecked="{Binding IncludeVat, Mode=TwoWay}"
+                                                        ToolTip="Whether to include VAT for this item" />
+                                                    <Button
+                                                        Grid.Row="0"
+                                                        Grid.RowSpan="2"
+                                                        Grid.Column="4"
+                                                        Command="{Binding DeleteCommand}"
+                                                        Style="{StaticResource DeleteMiniButton}" />
+                                                </Grid>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
