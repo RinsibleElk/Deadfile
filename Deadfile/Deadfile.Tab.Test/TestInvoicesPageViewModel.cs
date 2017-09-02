@@ -308,6 +308,9 @@ namespace Deadfile.Tab.Test
                     Description = "Some work what we done",
                     InvoiceItemId = 165,
                     NetAmount = 700,
+                    VatRate = 0,
+                    VatValue = 0,
+                    IncludeVat = false,
                     ParentId = 115
                 };
             }

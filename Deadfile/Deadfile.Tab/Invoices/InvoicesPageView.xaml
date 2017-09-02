@@ -543,25 +543,27 @@
                                         ItemsSource="{Binding SelectedItem.Children}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate DataType="model:InvoiceItemModel">
-                                                <DockPanel LastChildFill="True">
-                                                    <Button
-                                                        Command="{Binding DeleteCommand}"
-                                                        DockPanel.Dock="Right"
-                                                        Style="{StaticResource DeleteMiniButton}" />
-                                                    <controls:NumericUpDown
-                                                        Width="200"
-                                                        Height="20"
-                                                        Background="White"
-                                                        DockPanel.Dock="Right"
-                                                        Foreground="Black"
-                                                        Value="{Binding NetAmount, StringFormat=C, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
-                                                    <TextBox
-                                                        Margin="0"
-                                                        HorizontalAlignment="Stretch"
-                                                        controls:TextBoxHelper.Watermark="Item Description"
-                                                        Style="{StaticResource PksTextBoxFullWidth}"
-                                                        Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=Description}" />
-                                                </DockPanel>
+                                                <StackPanel>
+                                                    <DockPanel LastChildFill="True">
+                                                        <Button
+                                                            Command="{Binding DeleteCommand}"
+                                                            DockPanel.Dock="Right"
+                                                            Style="{StaticResource DeleteMiniButton}" />
+                                                        <controls:NumericUpDown
+                                                            Width="200"
+                                                            Height="20"
+                                                            Background="White"
+                                                            DockPanel.Dock="Right"
+                                                            Foreground="Black"
+                                                            Value="{Binding NetAmount, StringFormat=C, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                                        <TextBox
+                                                            Margin="0"
+                                                            HorizontalAlignment="Stretch"
+                                                            controls:TextBoxHelper.Watermark="Item Description"
+                                                            Style="{StaticResource PksTextBoxFullWidth}"
+                                                            Text="{Binding Delay=500, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, UpdateSourceTrigger=PropertyChanged, Path=Description}" />
+                                                    </DockPanel>
+                                                </StackPanel>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
@@ -602,13 +604,7 @@
                                         Grid.Column="1"
                                         Orientation="Horizontal">
                                         <TextBlock Style="{StaticResource PksTextBlock}" Text="VAT @ " />
-                                        <controls:NumericUpDown
-                                            Width="120"
-                                            Height="20"
-                                            Background="White"
-                                            Foreground="Black"
-                                            IsEnabled="{Binding InvoiceEditable}"
-                                            Value="{Binding SelectedItem.VatRate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                        <TextBlock Style="{StaticResource PksTextBlock}" Text="{Binding SelectedItem.VatRate}" />
                                         <TextBlock Style="{StaticResource PksTextBlock}" Text="%:" />
                                     </StackPanel>
                                     <TextBlock
@@ -646,7 +642,7 @@
                         </ScrollViewer>
                     </DataTemplate>
                     <Style x:Key="InvoiceDisplay" TargetType="{x:Type ContentControl}">
-                        <Setter Property="ContentTemplate" Value="{StaticResource I3DTemplate}" />
+                        <Setter Property="ContentTemplate" Value="{StaticResource PksTemplate}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding SelectedItem.Company}" Value="{x:Static entity:Company.PaulSamsonCharteredSurveyorLtd}">
                                 <Setter Property="ContentTemplate" Value="{StaticResource PksTemplate}" />
@@ -673,6 +669,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -718,14 +715,31 @@
                 IsEnabled="{Binding InvoiceEditable}"
                 ItemsSource="{x:Static utils:CompanyUtils.AllCompanies}"
                 SelectedItem="{Binding SelectedItem.Company, Mode=TwoWay}" />
-            <ComboBox
+            <DockPanel
                 Grid.Row="4"
+                Margin="5"
+                LastChildFill="True">
+                <TextBlock
+                    Margin="0,0,0,5"
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Left"
+                    Text="VAT Rate:" />
+                <controls:NumericUpDown
+                    Interval="0.01"
+                    IsEnabled="{Binding VatRateEditable}"
+                    Maximum="100"
+                    Minimum="0"
+                    ToolTip="VAT Rate"
+                    Value="{Binding SelectedItem.VatRate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+            </DockPanel>
+            <ComboBox
+                Grid.Row="5"
                 Margin="5"
                 IsEditable="False"
                 IsEnabled="{Binding InvoiceEditable}"
                 ItemsSource="{Binding Source={StaticResource InvoiceStatusValues}}"
                 SelectedItem="{Binding Mode=TwoWay, Path=SelectedItem.Status}" />
-            <Grid Grid.Row="5" Margin="5">
+            <Grid Grid.Row="6" Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />

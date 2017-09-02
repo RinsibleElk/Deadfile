@@ -1,9 +1,10 @@
 ﻿1. Make the model change.
-2. Open the Package Manager Console.
-3. Add-Migration <MigrationName>
-4. Update-Database -Script -SourceMigration "<PreviousMigrationName>" -TargetMigration "<MigrationName>"
-5. Save this output as a script in the Migrations/SQL directory.
-6. This will not actually update the database - we want to do that manually. So do that in SQL Server Management Studio, and make any other migrations needed.
-7. Tell client to export or back up their data before migration, for safety.
+2. Set the Startup Project to Deadfile.Entity.
+3. Open the Package Manager Console.
+4. Add-Migration <MigrationName>
+5. Update-Database -Script -SourceMigration "<PreviousMigrationName>" -TargetMigration "<MigrationName>"
+6. Save this output as a script in the Migrations/SQL directory.
+7. This will not actually update the database - we want to do that manually. So do that in SQL Server Management Studio, and make any other migrations needed.
+8. Tell client to export or back up their data before migration, for safety.
 
 

@@ -19,14 +19,24 @@ namespace Deadfile.Tab.Invoices
         {
             // Interesting fake data to look at.
             SelectedItem = new InvoiceModel();
-            SelectedItem.Company = Company.Imagine3DLtd;
+            SelectedItem.Company = Company.PaulSamsonCharteredSurveyorLtd;
             SelectedItem.CreatedDate = new DateTime(2016, 11, 15);
             SelectedItem.GrossAmount = 100;
             SelectedItem.NetAmount = 100;
             SelectedItem.InvoiceId = 1357;
             SelectedItem.Id = 1357;
+            SelectedItem.VatRate = 20;
             SelectedItem.InvoiceReference = 53;
             SelectedItem.Status = InvoiceStatus.Created;
+
+            var item = new InvoiceItemModel();
+            item.InvoiceId = 1357;
+            item.NetAmount = 500;
+            item.VatRate = 20;
+            item.VatValue = 100;
+            item.Description = "Some item description here";
+            SelectedItem.ChildrenList.Add(item);
+            SelectedItem.Children.Add(item);
 
             Jobs = new ObservableCollection<BillableModel>();
             var opr = new BillableJob()
@@ -63,12 +73,14 @@ namespace Deadfile.Tab.Invoices
         }
 
         public bool CanSetBillableItems { get; } = false;
-        public bool InvoiceEditable { get; } = false;
+        public bool InvoiceEditable { get; } = true;
         public double NetAmount { get; set; } = 365.0;
         public double Hours { get; set; } = 7.0;
         public ICommand AddItemCommand { get; } = null;
 
         public ObservableCollection<string> SuggestedInvoiceReferences { get; set; } =
             new ObservableCollection<string>(new string[] {"57", "65"});
+
+        public bool VatRateEditable { get; } = true;
     }
 }

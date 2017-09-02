@@ -96,6 +96,10 @@
     <Compile Include="Migrations\201709021305195_PerItemVat.Designer.cs">
       <DependentUpon>201709021305195_PerItemVat.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709021611134_ItemVatRate.cs" />
+    <Compile Include="Migrations\201709021611134_ItemVatRate.Designer.cs">
+      <DependentUpon>201709021611134_ItemVatRate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -118,12 +122,16 @@
     <EmbeddedResource Include="Migrations\201709021305195_PerItemVat.resx">
       <DependentUpon>201709021305195_PerItemVat.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709021611134_ItemVatRate.resx">
+      <DependentUpon>201709021611134_ItemVatRate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Migrations\SQL\InitialCreate_To_AddSomeRandomField.sql" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Migrations\SQL\AddSomeRandomField_To_UnbilledJobs.sql" />
+    <Content Include="Migrations\SQL\PerItemVat_To_ItemVatRate.sql" />
     <Content Include="Migrations\SQL\UnbilledJobs_To_PerItemVat.sql" />
     <Content Include="ModelUpgrades.txt" />
   </ItemGroup>

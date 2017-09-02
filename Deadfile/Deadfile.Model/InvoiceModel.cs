@@ -283,6 +283,14 @@ namespace Deadfile.Model
             RefreshAllErrors();
         }
 
+        public override InvoiceItemModel MakeChild()
+        {
+            return new InvoiceItemModel
+            {
+                VatRate = this.VatRate
+            };
+        }
+
         private void RecalculateNetAmount()
         {
             var netAmount = 0.0;

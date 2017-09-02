@@ -31,7 +31,9 @@ namespace Deadfile.Tab.Reports.Invoices
                 Description = "An item of work for this invoice",
                 InvoiceId = 25,
                 InvoiceItemId = 256,
-                NetAmount = 170
+                NetAmount = 170,
+                VatRate = 20,
+                VatValue = 0.2 * 170
             });
             items.Add(new InvoiceModel
             {

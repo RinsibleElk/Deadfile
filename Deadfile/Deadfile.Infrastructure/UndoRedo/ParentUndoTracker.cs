@@ -10,7 +10,7 @@ namespace Deadfile.Infrastructure.UndoRedo
 {
     public sealed class ParentUndoTracker<T, K> : UndoTracker<T>
         where T : ParentModelBase<K>
-        where K : ChildModelBase, new()
+        where K : ChildModelBase
     {
         private readonly List<ChildUndoTracker<K>> _childTrackers = new List<ChildUndoTracker<K>>();
 
@@ -55,7 +55,9 @@ namespace Deadfile.Infrastructure.UndoRedo
                     Type = UndoType.Add
                 });
             }
-            var newK = new K() {Context = Model.Children.Count, ParentId = Model.Id};
+            var newK = Model.MakeChild();
+            newK.Context = Model.Children.Count;
+            newK.ParentId = Model.Id;
             Model.ChildrenList.Add(newK);
             Model.ChildrenUpdated();
             var newChildTracker = new ChildUndoTracker<K>(this);
@@ -108,7 +110,9 @@ namespace Deadfile.Infrastructure.UndoRedo
         {
             if (undoValue.Type == UndoType.Add)
             {
-                var newK = new K() { Context = Model.ChildrenList.Count, ParentId = Model.Id };
+                var newK = Model.MakeChild();
+                newK.Context = Model.ChildrenList.Count;
+                newK.ParentId = Model.Id;
                 Model.ChildrenList.Add(newK);
                 Model.ChildrenUpdated();
                 var newChildTracker = new ChildUndoTracker<K>(this);

@@ -61,6 +61,24 @@ namespace Deadfile.Model
             set { SetProperty(ref _vatValue, value); }
         }
 
+        [Required(ErrorMessage = "An Invoice Item must have a VAT rate associated")]
+        public double VatRate
+        {
+            get { return _vatRate; }
+            set { SetProperty(ref _vatRate, value); }
+        }
+
+        [Required(ErrorMessage = "An Invoice Item requires Include VAT to be defined")]
+        public bool IncludeVat
+        {
+            get { return _includeVat; }
+            set
+            {
+                if (SetProperty(ref _includeVat, value))
+                    VatValue = (_includeVat ? (VatRate * NetAmount / 100) : 0);
+            }
+        }
+
         private int _invoiceId = ModelBase.NewModelId;
         public int InvoiceId
         {
@@ -69,6 +87,9 @@ namespace Deadfile.Model
         }
 
         private bool _deletePending;
+        private double _vatRate;
+        private bool _includeVat;
+
         public override bool DeletePending
         {
             get { return _deletePending; }

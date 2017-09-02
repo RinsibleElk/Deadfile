@@ -23,5 +23,6 @@ namespace Deadfile.Tab.Invoices
         double Hours { get; set; }
         ICommand AddItemCommand { get; }
         ObservableCollection<string> SuggestedInvoiceReferences { get; set; }
+        bool VatRateEditable { get; }
     }
 }

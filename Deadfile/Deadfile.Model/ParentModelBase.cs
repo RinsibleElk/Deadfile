@@ -27,5 +27,7 @@ namespace Deadfile.Model
         {
             Children = new ObservableCollection<ChildModelBase>(ChildrenList.Where((child) => !child.DeletePending));
         }
+
+        public abstract T MakeChild();
     }
 }

@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Printing;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using Deadfile.Entity;
 using Deadfile.Infrastructure.Interfaces;
@@ -25,7 +15,6 @@ using Deadfile.Pdf;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
 using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Events;
 
@@ -112,7 +101,7 @@ namespace Deadfile.Tab.Invoices
             _printEventSubscriptionToken = EventAggregator.GetEvent<PrintEvent>().Subscribe(PerformPrint);
             _paidEventSubscriptionToken = EventAggregator.GetEvent<PaidEvent>().Subscribe(PerformPaid);
 
-            SuggestedInvoiceReferences = new ObservableCollection<string>(new string[] {SelectedItem.InvoiceReferenceString});
+            SuggestedInvoiceReferences = new ObservableCollection<string>(new[] {SelectedItem.InvoiceReferenceString});
 
             // Find all the billable items for this client, attributing them by whether they are included in this invoice
             // or any other invoice.
@@ -159,6 +148,9 @@ namespace Deadfile.Tab.Invoices
             }
         }
 
+        public bool VatRateEditable => InvoiceEditable && SelectedItem != null &&
+                                       SelectedItem.Company == Company.PaulSamsonCharteredSurveyorLtd;
+
         private const string VariousPropertyName = "Various";
 
         private void SelectedItemOnPropertyChanged(object sender, PropertyChangedEventArgs eventArgs)
@@ -167,6 +159,7 @@ namespace Deadfile.Tab.Invoices
             {
                 NotifyOfPropertyChange(nameof(CanSetBillableItems));
                 NotifyOfPropertyChange(nameof(InvoiceEditable));
+                NotifyOfPropertyChange(nameof(VatRateEditable));
 
                 // Set up some of the defaults from what's been selected.
                 if (SelectedItem.IsNewInvoice && SelectedItem.CreationState == InvoiceCreationState.DefineInvoice)
@@ -189,14 +182,7 @@ namespace Deadfile.Tab.Invoices
                         Jobs.Where((m) => m.State != BillableModelState.Claimed && m.State != BillableModelState.Excluded)
                             .Cast<BillableJob>()
                             .ToArray();
-                    if (selectedJobs.Length == 1)
-                    {
-                        SelectedItem.Project = selectedJobs[0].FullAddress;
-                    }
-                    else
-                    {
-                        SelectedItem.Project = VariousPropertyName;
-                    }
+                    SelectedItem.Project = selectedJobs.Length == 1 ? selectedJobs[0].FullAddress : VariousPropertyName;
 
                     // Set the description. This is not displayed for Imagine3D invoices.
                     SelectedItem.Description = null;
@@ -213,6 +199,8 @@ namespace Deadfile.Tab.Invoices
             }
             else if (SelectedItem.IsNewInvoice && eventArgs.PropertyName == nameof(InvoiceModel.Company))
             {
+                NotifyOfPropertyChange(nameof(VatRateEditable));
+
                 // Disable undo tracking while we handle automated changes.
                 SelectedItem.DisableUndoTracking = true;
 
@@ -223,6 +211,20 @@ namespace Deadfile.Tab.Invoices
                         .ToArray();
                 SuggestedInvoiceReferences = new ObservableCollection<string>(suggestedInvoiceReferences);
                 SelectedItem.InvoiceReferenceString = suggestedInvoiceReferences[suggestedInvoiceReferences.Length - 1];
+
+                // Re-enable undo tracking.
+                SelectedItem.DisableUndoTracking = false;
+            }
+            else if (eventArgs.PropertyName == nameof(InvoiceModel.VatRate))
+            {
+                // Disable undo tracking while we handle automated changes.
+                SelectedItem.DisableUndoTracking = true;
+
+                // Offer the user some help in deciding a new invoice reference.
+                foreach (var invoiceItemModel in SelectedItem.ChildrenList)
+                {
+                    invoiceItemModel.VatRate = SelectedItem.VatRate;
+                }
 
                 // Re-enable undo tracking.
                 SelectedItem.DisableUndoTracking = false;
@@ -295,6 +297,7 @@ namespace Deadfile.Tab.Invoices
         {
             NotifyOfPropertyChange(nameof(CanSetBillableItems));
             NotifyOfPropertyChange(nameof(InvoiceEditable));
+            NotifyOfPropertyChange(nameof(VatRateEditable));
             State = editable ? State | InvoicesPageState.CanDiscard : State & ~InvoicesPageState.CanDiscard;
         }
 
@@ -316,15 +319,13 @@ namespace Deadfile.Tab.Invoices
                             $"Do you want to delete ({CompanyUtils.GetShortName(SelectedItem.Company)}) invoice {SelectedItem.InvoiceReference}?");
                 actuallySave = result == MessageDialogResult.Affirmative;
             }
-            if (actuallySave)
-            {
-                SelectedItem.DisableUndoTracking = true;
-                SelectedItem.IsNewInvoice = false;
-                SelectedItem.CreationState = InvoiceCreationState.DefineBillables;
-                SelectedItem.DisableUndoTracking = false;
-                _repository.SaveInvoice(SelectedItem, Jobs.Cast<BillableJob>());
-            }
-            return actuallySave;
+            if (!actuallySave) return false;
+            SelectedItem.DisableUndoTracking = true;
+            SelectedItem.IsNewInvoice = false;
+            SelectedItem.CreationState = InvoiceCreationState.DefineBillables;
+            SelectedItem.DisableUndoTracking = false;
+            _repository.SaveInvoice(SelectedItem, Jobs.Cast<BillableJob>());
+            return true;
         }
 
         protected override async Task PerformSave(bool andPrint)
@@ -402,8 +403,8 @@ namespace Deadfile.Tab.Invoices
             NotifyOfPropertyChange(nameof(InvoiceEditable));
         }
 
-        private SubscriptionToken _printEventSubscriptionToken = null;
-        private SubscriptionToken _paidEventSubscriptionToken = null;
+        private SubscriptionToken _printEventSubscriptionToken;
+        private SubscriptionToken _paidEventSubscriptionToken;
 
         private double _netAmount;
         public double NetAmount
@@ -431,7 +432,7 @@ namespace Deadfile.Tab.Invoices
 
         public ICommand AddItemCommand { get; }
 
-        public bool AutomaticEditingInProgress { get; set; } = false;
+        public bool AutomaticEditingInProgress { get; set; }
         public void StateChanged(int index)
         {
             // Received notification that the job at this index has had its state changed.
