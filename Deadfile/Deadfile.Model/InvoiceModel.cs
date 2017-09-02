@@ -61,8 +61,6 @@ namespace Deadfile.Model
                 if (object.Equals((object)_netAmount, (object)value)) return;
                 _netAmount = value;
                 OnPropertyChanged(nameof(NetAmount));
-                VatValue = VatRate * NetAmount / 100;
-                GrossAmount = NetAmount + VatValue;
             }
         }
 
@@ -233,14 +231,7 @@ namespace Deadfile.Model
         public double VatRate
         {
             get { return _vatRate; }
-            set
-            {
-                if (SetProperty(ref _vatRate, value))
-                {
-                    VatValue = VatRate*NetAmount/100;
-                    GrossAmount = NetAmount + VatValue;
-                }
-            }
+            set { SetProperty(ref _vatRate, value); }
         }
 
         private double _vatValue;
@@ -295,19 +286,23 @@ namespace Deadfile.Model
         private void RecalculateNetAmount()
         {
             var netAmount = 0.0;
+            var vatValue = 0.0;
             foreach (var invoiceItemModel in ChildrenList)
             {
                 if (!invoiceItemModel.DeletePending)
                 {
                     netAmount += invoiceItemModel.NetAmount;
+                    vatValue += invoiceItemModel.VatValue;
                 }
             }
             NetAmount = netAmount;
+            VatValue = vatValue;
+            GrossAmount = netAmount + vatValue;
         }
 
         private void ChildPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(InvoiceItemModel.NetAmount))
+            if (e.PropertyName == nameof(InvoiceItemModel.NetAmount) || e.PropertyName == nameof(InvoiceItemModel.VatValue))
             {
                 RecalculateNetAmount();
             }
