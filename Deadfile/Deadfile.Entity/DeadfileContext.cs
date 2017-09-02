@@ -14,6 +14,10 @@ namespace Deadfile.Entity
         {
         }
 
+        public DeadfileContext() : this(@"Server =.\SQLEXPRESS; Database=Deadfile;Integrated Security = True")
+        {
+        }
+
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Job> Jobs { get; set; }
         public virtual DbSet<Invoice> Invoices { get; set; }

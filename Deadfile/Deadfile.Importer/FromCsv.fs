@@ -101,13 +101,14 @@ module FromCsv =
             CreationState = InvoiceCreationState.DefineInvoice
         }
 
-    let invoiceItemLength = 4
+    let invoiceItemLength = 5
     let makeInvoiceItem a =
         {
             InvoiceItemId = a |> tonum 0
             Description = a |> conv 1
             NetAmount = a |> tofloat 2
-            InvoiceId = a |> tonum 3
+            VatValue = a |> tofloat 3
+            InvoiceId = a |> tonum 4
         }
 
     let localAuthorityLength = 3

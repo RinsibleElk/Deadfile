@@ -19,6 +19,9 @@ namespace Deadfile.Entity
         [Required(ErrorMessage = "An Invoice Item must have a value associated")]
         public double NetAmount { get; set; }
 
+        [Required(ErrorMessage = "An Invoice Item must have a VAT value associated")]
+        public double VatValue { get; set; }
+
         public int InvoiceId { get; set; }
     }
 }

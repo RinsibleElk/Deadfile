@@ -53,6 +53,14 @@ namespace Deadfile.Model
             set { SetProperty(ref _netAmount, value); }
         }
 
+        private double _vatValue = 0;
+        [Required(ErrorMessage = "An Invoice Item must have a VAT value associated")]
+        public double VatValue
+        {
+            get { return _vatValue; }
+            set { SetProperty(ref _vatValue, value); }
+        }
+
         private int _invoiceId = ModelBase.NewModelId;
         public int InvoiceId
         {

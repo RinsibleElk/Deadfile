@@ -14,12 +14,17 @@ namespace Deadfile.Entity
         [Required(ErrorMessage = "An Invoice must have a creation date.")]
         public DateTime CreatedDate { get; set; }
 
+        [Required(ErrorMessage = "An Invoice must have a gross amount associated")]
         public double GrossAmount { get; set; }
 
+        [Required(ErrorMessage = "An Invoice must have a net amount associated")]
         public double NetAmount { get; set; }
 
+        [Required(ErrorMessage = "An Invoice must have a VAT rate associated"),
+         Range(0, 100)]
         public double VatRate { get; set; }
 
+        [Required(ErrorMessage = "An Invoice must have a VAT value associated")]
         public double VatValue { get; set; }
 
         [Required(ErrorMessage = "The Invoice requires a Status.")]

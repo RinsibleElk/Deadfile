@@ -78,13 +78,6 @@ namespace Deadfile.Model
             set { SetProperty(ref _state, value); }
         }
 
-        private int _someRandomField = 0;
-        public int SomeRandomField
-        {
-            get { return _someRandomField; }
-            set { SetProperty(ref _someRandomField, value); }
-        }
-
         private JobTaskPriority _priority = JobTaskPriority.Medium;
         [Required(ErrorMessage = "A Job Task requires a priority.")]
         public JobTaskPriority Priority
