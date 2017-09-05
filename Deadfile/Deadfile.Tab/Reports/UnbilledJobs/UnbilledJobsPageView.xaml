@@ -123,6 +123,10 @@
                         ItemsSource="{Binding Items}">
                         <DataGrid.Columns>
                             <DataGridTextColumn
+                                Binding="{Binding Description}"
+                                Header="Description"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
                                 Binding="{Binding HoursWorked}"
                                 Header="Hours"
                                 IsReadOnly="True" />

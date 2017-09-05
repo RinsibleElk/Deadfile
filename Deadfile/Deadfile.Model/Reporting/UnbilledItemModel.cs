@@ -23,6 +23,13 @@ namespace Deadfile.Model.Reporting
 
         public int BillableHourId { get { return Id; } set { Id = value; } }
 
+        private string _description;
+        public string Description
+        {
+            get { return _description; }
+            set { SetProperty(ref _description, value); }
+        }
+
         private int _hoursWorked = 0;
         public int HoursWorked
         {
