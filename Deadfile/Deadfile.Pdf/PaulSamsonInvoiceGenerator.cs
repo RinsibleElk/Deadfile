@@ -208,22 +208,59 @@ namespace Deadfile.Pdf
             {
                 Width = itemizedTitleWidth
             });
+            var itemListWidth = pageWidth - sideMarginForItemised - sideMarginForItemised - sideMargin - sideMargin - itemizedTitleWidth;
             var itemizedObjectsStackPanel = new StackPanel
             {
-                Width = pageWidth - sideMarginForItemised - sideMarginForItemised - sideMargin - sideMargin - itemizedTitleWidth
+                Width = itemListWidth
             };
-            foreach (var invoiceItemModel in invoiceModel.ChildrenList)
-            {
-                itemizedObjectsStackPanel.Children.Add(new PaulSamsonFieldValueTextBlock(invoiceItemModel.Description)
-                {
-                    Margin = new Thickness(0, 0, 0, 20)
-                });
-            }
-            itemizedPropertiesStackPanel.Children.Add(itemizedObjectsStackPanel);
-
             var gapToLeftOfPrices = 400.0;
             var pricesTitlesWidth = 150.0;
             var pricesValuesWidth = pageWidth - sideMargin - sideMargin - gapToLeftOfPrices - pricesTitlesWidth;
+            var itemListTitlesWidth = itemListWidth - itemizedTitleWidth - pricesValuesWidth;
+            foreach (var invoiceItemModel in invoiceModel.ChildrenList)
+            {
+                var itemListItemStackPanel = new StackPanel
+                {
+                    Width = itemListWidth,
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 0, 0, 10)
+                };
+                itemListItemStackPanel.Children.Add(new PaulSamsonFieldValueTextBlock(invoiceItemModel.Description)
+                {
+                    TextWrapping = TextWrapping.Wrap,
+                    Margin = new Thickness(0, 0, 0, 0),
+                    Width = itemListTitlesWidth
+                });
+                itemListItemStackPanel.Children.Add(new PaulSamsonFieldValueTextBlock(invoiceItemModel.NetAmount.ToString("C", CultureInfo.CurrentCulture))
+                {
+                    FontWeight = FontWeights.Bold,
+                    VerticalAlignment = VerticalAlignment.Bottom
+                });
+                itemizedObjectsStackPanel.Children.Add(itemListItemStackPanel);
+                var itemListVatStackPanel = new StackPanel
+                {
+                    Width = itemListWidth,
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(40, 0, 0, 20)
+                };
+                itemListVatStackPanel.Children.Add(new PaulSamsonFieldValueTextBlock($"VAT @ {(invoiceItemModel.IncludeVat ? invoiceItemModel.VatRate : 0)}%")
+                {
+                    FontSize = 12,
+                    TextWrapping = TextWrapping.Wrap,
+                    Margin = new Thickness(0, 0, 0, 0),
+                    Width = itemListTitlesWidth - 40
+                });
+                var vatValue = invoiceItemModel.IncludeVat ? invoiceItemModel.VatValue : 0;
+                itemListVatStackPanel.Children.Add(new PaulSamsonFieldValueTextBlock(vatValue.ToString("C", CultureInfo.CurrentCulture))
+                {
+                    FontSize = 12,
+                    FontWeight = FontWeights.Bold,
+                    VerticalAlignment = VerticalAlignment.Bottom
+                });
+                itemizedObjectsStackPanel.Children.Add(itemListVatStackPanel);
+            }
+            itemizedPropertiesStackPanel.Children.Add(itemizedObjectsStackPanel);
+
             var pricesRowStackPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
@@ -257,7 +294,7 @@ namespace Deadfile.Pdf
                 Orientation = Orientation.Horizontal,
                 Margin = new Thickness(0, 0, 0, 20)
             };
-            vatValueStackPanel.Children.Add(new PaulSamsonFieldTitleTextBlock($"VAT @ {invoiceModel.VatRate}%")
+            vatValueStackPanel.Children.Add(new PaulSamsonFieldTitleTextBlock($"Total VAT:")
             {
                 Width = pricesTitlesWidth
             });

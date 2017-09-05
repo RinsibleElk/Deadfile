@@ -551,7 +551,7 @@
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto" />
                                                         <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="100" />
+                                                        <ColumnDefinition Width="200" />
                                                         <ColumnDefinition Width="30" />
                                                         <ColumnDefinition Width="30" />
                                                     </Grid.ColumnDefinitions>

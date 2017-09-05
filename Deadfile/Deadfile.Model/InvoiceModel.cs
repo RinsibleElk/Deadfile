@@ -47,7 +47,7 @@ namespace Deadfile.Model
                 // Undo and validation not supported
                 if (object.Equals((object)_grossAmount, (object)value)) return;
                 _grossAmount = value;
-                OnPropertyChanged(nameof(GrossAmount));
+                OnPropertyChanged();
             }
         }
 
@@ -60,7 +60,7 @@ namespace Deadfile.Model
                 // Undo and validation not supported
                 if (object.Equals((object)_netAmount, (object)value)) return;
                 _netAmount = value;
-                OnPropertyChanged(nameof(NetAmount));
+                OnPropertyChanged();
             }
         }
 

@@ -50,7 +50,13 @@ namespace Deadfile.Model
         public double NetAmount
         {
             get { return _netAmount; }
-            set { SetProperty(ref _netAmount, value); }
+            set
+            {
+                if (SetProperty(ref _netAmount, value))
+                {
+                    VatValue = (_includeVat ? (_vatRate * _netAmount / 100) : 0);
+                }
+            }
         }
 
         private double _vatValue = 0;
@@ -58,14 +64,26 @@ namespace Deadfile.Model
         public double VatValue
         {
             get { return _vatValue; }
-            set { SetProperty(ref _vatValue, value); }
+            set
+            {
+                // Undo and validation not supported
+                if (object.Equals((object)_vatValue, (object)value)) return;
+                _vatValue = value;
+                OnPropertyChanged();
+            }
         }
 
         [Required(ErrorMessage = "An Invoice Item must have a VAT rate associated")]
         public double VatRate
         {
             get { return _vatRate; }
-            set { SetProperty(ref _vatRate, value); }
+            set
+            {
+                if (SetProperty(ref _vatRate, value))
+                {
+                    VatValue = (_includeVat ? (_vatRate * _netAmount / 100) : 0);
+                }
+            }
         }
 
         [Required(ErrorMessage = "An Invoice Item requires Include VAT to be defined")]
@@ -75,7 +93,9 @@ namespace Deadfile.Model
             set
             {
                 if (SetProperty(ref _includeVat, value))
-                    VatValue = (_includeVat ? (VatRate * NetAmount / 100) : 0);
+                {
+                    VatValue = (_includeVat ? (_vatRate * _netAmount / 100) : 0);
+                }
             }
         }
 
