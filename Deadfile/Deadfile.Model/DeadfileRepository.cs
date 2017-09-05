@@ -783,16 +783,8 @@ namespace Deadfile.Model
                         if (d.ContainsKey(job.JobId))
                         {
                             var model = d[job.JobId];
-                            d[job.JobId] = new UnbilledJobModel
-                            {
-                                ClientId = model.ClientId,
-                                JobId = model.JobId,
-                                FullName = model.FullName,
-                                AddressFirstLine = model.AddressFirstLine,
-                                JobNumber = model.JobNumber,
-                                UnbilledHours = model.UnbilledHours,
-                                UnbilledAmount = model.UnbilledAmount + billable.NetAmount
-                            };
+                            model.UnbilledAmount += billable.NetAmount;
+                            model.Items.Add(_modelEntityMapper.Mapper.Map<UnbilledItemModel>(billable));
                         }
                         else
                         {
@@ -801,16 +793,19 @@ namespace Deadfile.Model
                                     ? client.LastName
                                     : $"{client.Title} {client.LastName}")
                                 : $"{client.FirstName} {client.LastName}";
-                            d.Add(job.JobId, new UnbilledJobModel
-                            {
-                                ClientId = job.Client.ClientId,
-                                JobId = job.JobId,
-                                FullName = fullName,
-                                AddressFirstLine = job.AddressFirstLine,
-                                JobNumber = job.JobNumber,
-                                UnbilledHours = 0,
-                                UnbilledAmount = billable.NetAmount
-                            });
+                            var model =
+                                new UnbilledJobModel
+                                {
+                                    ClientId = job.Client.ClientId,
+                                    JobId = job.JobId,
+                                    FullName = fullName,
+                                    AddressFirstLine = job.AddressFirstLine,
+                                    JobNumber = job.JobNumber,
+                                    UnbilledHours = 0,
+                                    UnbilledAmount = billable.NetAmount
+                                };
+                            model.Items.Add(_modelEntityMapper.Mapper.Map<UnbilledItemModel>(billable));
+                            d.Add(job.JobId, model);
                         }
                     }
                 }
@@ -824,16 +819,8 @@ namespace Deadfile.Model
                         if (d.ContainsKey(job.JobId))
                         {
                             var model = d[job.JobId];
-                            d[job.JobId] = new UnbilledJobModel
-                            {
-                                ClientId = model.ClientId,
-                                JobId = model.JobId,
-                                FullName = model.FullName,
-                                AddressFirstLine = model.AddressFirstLine,
-                                JobNumber = model.JobNumber,
-                                UnbilledHours = model.UnbilledHours + billable.HoursWorked,
-                                UnbilledAmount = model.UnbilledAmount
-                            };
+                            model.UnbilledHours += billable.HoursWorked;
+                            model.Items.Add(_modelEntityMapper.Mapper.Map<UnbilledItemModel>(billable));
                         }
                         else
                         {
@@ -842,7 +829,7 @@ namespace Deadfile.Model
                                     ? client.LastName
                                     : $"{client.Title} {client.LastName}")
                                 : $"{client.FirstName} {client.LastName}";
-                            d.Add(job.JobId, new UnbilledJobModel
+                            var model = new UnbilledJobModel
                             {
                                 ClientId = job.Client.ClientId,
                                 JobId = job.JobId,
@@ -851,7 +838,9 @@ namespace Deadfile.Model
                                 JobNumber = job.JobNumber,
                                 UnbilledHours = billable.HoursWorked,
                                 UnbilledAmount = 0
-                            });
+                            };
+                            d.Add(job.JobId, model);
+                            model.Items.Add(_modelEntityMapper.Mapper.Map<UnbilledItemModel>(billable));
                         }
                     }
                 }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deadfile.Model.Billable;
 
 namespace Deadfile.Model.Reporting
 {
@@ -39,6 +41,9 @@ namespace Deadfile.Model.Reporting
         }
 
         private string _addressFirstLine;
+        /// <summary>
+        /// The address of this unbilled job.
+        /// </summary>
         public string AddressFirstLine
         {
             get { return _addressFirstLine; }
@@ -46,6 +51,9 @@ namespace Deadfile.Model.Reporting
         }
 
         private int _jobNumber;
+        /// <summary>
+        /// The job number for this unbilled job.
+        /// </summary>
         public int JobNumber
         {
             get { return _jobNumber; }
@@ -54,7 +62,7 @@ namespace Deadfile.Model.Reporting
 
         private string _fullName;
         /// <summary>
-        /// The full name of this client.
+        /// The full name of the client for this unbilled job.
         /// </summary>
         public string FullName
         {
@@ -64,7 +72,7 @@ namespace Deadfile.Model.Reporting
 
         private double _unbilledAmount;
         /// <summary>
-        /// Net amount uninvoiced for this client.
+        /// Net amount uninvoiced for this unbilled job.
         /// </summary>
         public double UnbilledAmount
         {
@@ -73,7 +81,7 @@ namespace Deadfile.Model.Reporting
         }
 
         /// <summary>
-        /// Hours uninvoiced for this client.
+        /// Hours uninvoiced for this unbilled job.
         /// </summary>
         private double _unbilledHours;
         public double UnbilledHours
@@ -82,6 +90,14 @@ namespace Deadfile.Model.Reporting
             set { SetProperty(ref _unbilledHours, value); }
         }
 
+        /// <summary>
+        /// Items for this unbilled job.
+        /// </summary>
+        public ObservableCollection<UnbilledItemModel> Items { get; } = new ObservableCollection<UnbilledItemModel>();
+
+        /// <summary>
+        /// Header string to display to the user.
+        /// </summary>
         public string HeaderString => $"{FullName} ({UnbilledAmount.ToString("C", CultureInfo.CurrentCulture)}, {UnbilledHours} hours)";
     }
 }

@@ -131,6 +131,7 @@
     <Compile Include="RandomNumberGenerator.cs" />
     <Compile Include="JobTaskModel.cs" />
     <Compile Include="Reporting\CurrentApplicationModel.cs" />
+    <Compile Include="Reporting\UnbilledItemModel.cs" />
     <Compile Include="Reporting\UnbilledJobModel.cs" />
     <Compile Include="StateManagedModelBase.cs" />
     <Compile Include="Utils\ApplicationTypeUtils.cs" />

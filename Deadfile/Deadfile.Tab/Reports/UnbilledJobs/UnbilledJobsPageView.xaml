@@ -12,7 +12,7 @@
     d:DataContext="{d:DesignInstance Type=local:UnbilledJobsPageDesignTimeViewModel,
                                      IsDesignTimeCreatable=True}"
     d:DesignHeight="300"
-    d:DesignWidth="300"
+    d:DesignWidth="700"
     mc:Ignorable="d">
     <UserControl.Resources>
         <designTime:DesignTimeResourceDictionary>
@@ -110,6 +110,34 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate DataType="{x:Type model:UnbilledJobModel}">
+                    <DataGrid
+                        Margin="5"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        CanUserResizeColumns="True"
+                        CanUserResizeRows="False"
+                        CanUserSortColumns="True"
+                        ItemsSource="{Binding Items}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Binding="{Binding HoursWorked}"
+                                Header="Hours"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding NetAmount}"
+                                Header="Amount"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Notes}"
+                                Header="Notes"
+                                IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
         </DataGrid>
     </DockPanel>
 </UserControl>

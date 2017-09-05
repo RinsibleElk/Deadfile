@@ -38,6 +38,8 @@ namespace Deadfile.Model
                 cfg.CreateMap<JobTaskModel, JobTask>();
                 cfg.CreateMap<LocalAuthority, LocalAuthorityModel>();
                 cfg.CreateMap<LocalAuthorityModel, LocalAuthority>();
+                cfg.CreateMap<Expense, UnbilledItemModel>();
+                cfg.CreateMap<BillableHour, UnbilledItemModel>();
             });
             Mapper = config.CreateMapper();
         }
