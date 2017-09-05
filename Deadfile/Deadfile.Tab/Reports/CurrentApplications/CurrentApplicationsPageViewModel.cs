@@ -15,6 +15,7 @@ using Deadfile.Model.Reporting;
 using Deadfile.Tab.Common;
 using Deadfile.Tab.Events;
 using Deadfile.Tab.Home;
+using Deadfile.Tab.JobChildren;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using IEventAggregator = Prism.Events.IEventAggregator;
@@ -56,8 +57,10 @@ namespace Deadfile.Tab.Reports.CurrentApplications
         {
             var packet = new SelectedItemPacket(BrowserModelType.Job, applicationModel.ClientId, applicationModel.JobId);
             Logger.Info("Event|SelectedItemEvent|Send|{0}|{1}", _tabIdentity, packet);
-            EventAggregator.GetEvent<SelectedItemEvent>()
-                .Publish(packet);
+            EventAggregator.GetEvent<SelectedItemEvent>().Publish(packet);
+            var jobChildNavigateMessage = new JobChildNavigateMessage(JobChildExperience.Applications, applicationModel.ApplicationId);
+            Logger.Info("Event|JobChildNavigateEvent|Send|{0}|{1}", _tabIdentity, jobChildNavigateMessage);
+            EventAggregator.GetEvent<JobChildNavigateEvent>().Publish(jobChildNavigateMessage);
         }
 
         /// <summary>

@@ -60,19 +60,10 @@
             CanUserSortColumns="True"
             ItemsSource="{Binding Items}">
             <DataGrid.Columns>
-                <DataGridTemplateColumn
+                <DataGridTextColumn
+                    Binding="{Binding JobAddressFirstLine}"
                     Header="Job"
-                    IsReadOnly="True"
-                    SortMemberPath="JobAddressFirstLine">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="model:CurrentApplicationModel">
-                            <Button
-                                Command="{Binding Path=DataContext.NavigateToJob, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                CommandParameter="{Binding}"
-                                Content="{Binding JobAddressFirstLine}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                    IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Type, Converter={StaticResource ApplicationTypeToString}}"
                     Header="Type"
@@ -93,6 +84,16 @@
                     Binding="{Binding EstimatedDecisionDate, StringFormat=dd/MM/yyyy}"
                     Header="Estimated Decision Date"
                     IsReadOnly="True" />
+                <DataGridTemplateColumn IsReadOnly="True" SortMemberPath="JobId">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button
+                                Command="{Binding Path=DataContext.NavigateToJob, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                CommandParameter="{Binding}"
+                                Content="Go To" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
