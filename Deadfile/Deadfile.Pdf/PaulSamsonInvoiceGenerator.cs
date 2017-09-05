@@ -193,22 +193,22 @@ namespace Deadfile.Pdf
                 };
 
             // Itemised bit.
-            var sideMarginForItemised = 20;
             var itemisedHeight = 210;
             var marginAboveAndBelowItemised = 60;
             var itemizedPropertiesStackPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
-                Width = pageWidth - sideMarginForItemised - sideMarginForItemised - sideMargin - sideMargin,
+                Width = pageWidth - sideMargin - sideMargin,
                 Height = itemisedHeight,
-                Margin = new Thickness(sideMarginForItemised, marginAboveAndBelowItemised, sideMarginForItemised, marginAboveAndBelowItemised)
+                Margin = new Thickness(0, marginAboveAndBelowItemised, 0, marginAboveAndBelowItemised)
             };
-            var itemizedTitleWidth = 30;
+            var itemizedTitleWidth = 50;
             itemizedPropertiesStackPanel.Children.Add(new PaulSamsonFieldTitleTextBlock("For:")
             {
-                Width = itemizedTitleWidth
+                Margin = new Thickness(20, 0, 0, 0),
+                Width = itemizedTitleWidth - 20
             });
-            var itemListWidth = pageWidth - sideMarginForItemised - sideMarginForItemised - sideMargin - sideMargin - itemizedTitleWidth;
+            var itemListWidth = pageWidth - sideMargin - sideMargin - itemizedTitleWidth;
             var itemizedObjectsStackPanel = new StackPanel
             {
                 Width = itemListWidth
@@ -216,14 +216,16 @@ namespace Deadfile.Pdf
             var gapToLeftOfPrices = 400.0;
             var pricesTitlesWidth = 150.0;
             var pricesValuesWidth = pageWidth - sideMargin - sideMargin - gapToLeftOfPrices - pricesTitlesWidth;
-            var itemListTitlesWidth = itemListWidth - itemizedTitleWidth - pricesValuesWidth;
-            foreach (var invoiceItemModel in invoiceModel.ChildrenList)
+            var itemListTitlesWidth = pageWidth - sideMargin - sideMargin - pricesValuesWidth - itemizedTitleWidth;
+            var hasVatItems = false;
+            foreach (var invoiceItemModel in invoiceModel.ChildrenList.Where((item) => item.IncludeVat))
             {
+                hasVatItems = true;
                 var itemListItemStackPanel = new StackPanel
                 {
                     Width = itemListWidth,
                     Orientation = Orientation.Horizontal,
-                    Margin = new Thickness(0, 0, 0, 10)
+                    Margin = new Thickness(0, 0, 0, 20)
                 };
                 itemListItemStackPanel.Children.Add(new PaulSamsonFieldValueTextBlock(invoiceItemModel.Description)
                 {
@@ -237,27 +239,77 @@ namespace Deadfile.Pdf
                     VerticalAlignment = VerticalAlignment.Bottom
                 });
                 itemizedObjectsStackPanel.Children.Add(itemListItemStackPanel);
+            }
+            if (hasVatItems)
+            {
                 var itemListVatStackPanel = new StackPanel
                 {
                     Width = itemListWidth,
                     Orientation = Orientation.Horizontal,
                     Margin = new Thickness(40, 0, 0, 20)
                 };
-                itemListVatStackPanel.Children.Add(new PaulSamsonFieldValueTextBlock($"VAT @ {(invoiceItemModel.IncludeVat ? invoiceItemModel.VatRate : 0)}%")
+                itemListVatStackPanel.Children.Add(new PaulSamsonFieldValueTextBlock($"VAT @ {invoiceModel.VatRate}%")
                 {
                     FontSize = 12,
                     TextWrapping = TextWrapping.Wrap,
                     Margin = new Thickness(0, 0, 0, 0),
                     Width = itemListTitlesWidth - 40
                 });
-                var vatValue = invoiceItemModel.IncludeVat ? invoiceItemModel.VatValue : 0;
-                itemListVatStackPanel.Children.Add(new PaulSamsonFieldValueTextBlock(vatValue.ToString("C", CultureInfo.CurrentCulture))
+                itemListVatStackPanel.Children.Add(
+                    new PaulSamsonFieldValueTextBlock(invoiceModel.VatValue.ToString("C", CultureInfo.CurrentCulture))
+                    {
+                        FontSize = 12,
+                        FontWeight = FontWeights.Bold,
+                        VerticalAlignment = VerticalAlignment.Bottom
+                    });
+                itemizedObjectsStackPanel.Children.Add(itemListVatStackPanel);
+            }
+            var hasNoVatItems = false;
+            foreach (var invoiceItemModel in invoiceModel.ChildrenList.Where((item) => !item.IncludeVat))
+            {
+                hasNoVatItems = true;
+                var itemListItemStackPanel = new StackPanel
                 {
-                    FontSize = 12,
+                    Width = itemListWidth,
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 0, 0, 20)
+                };
+                itemListItemStackPanel.Children.Add(new PaulSamsonFieldValueTextBlock(invoiceItemModel.Description)
+                {
+                    TextWrapping = TextWrapping.Wrap,
+                    Margin = new Thickness(0, 0, 0, 0),
+                    Width = itemListTitlesWidth
+                });
+                itemListItemStackPanel.Children.Add(new PaulSamsonFieldValueTextBlock(invoiceItemModel.NetAmount.ToString("C", CultureInfo.CurrentCulture))
+                {
                     FontWeight = FontWeights.Bold,
                     VerticalAlignment = VerticalAlignment.Bottom
                 });
-                itemizedObjectsStackPanel.Children.Add(itemListVatStackPanel);
+                itemizedObjectsStackPanel.Children.Add(itemListItemStackPanel);
+            }
+            if (hasNoVatItems)
+            {
+                var itemListNoVatStackPanel = new StackPanel
+                {
+                    Width = itemListWidth,
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(40, 0, 0, 20)
+                };
+                itemListNoVatStackPanel.Children.Add(new PaulSamsonFieldValueTextBlock($"VAT @ 0%")
+                {
+                    FontSize = 12,
+                    TextWrapping = TextWrapping.Wrap,
+                    Margin = new Thickness(0, 0, 0, 0),
+                    Width = itemListTitlesWidth - 40
+                });
+                itemListNoVatStackPanel.Children.Add(
+                    new PaulSamsonFieldValueTextBlock(0.ToString("C", CultureInfo.CurrentCulture))
+                    {
+                        FontSize = 12,
+                        FontWeight = FontWeights.Bold,
+                        VerticalAlignment = VerticalAlignment.Bottom
+                    });
+                itemizedObjectsStackPanel.Children.Add(itemListNoVatStackPanel);
             }
             itemizedPropertiesStackPanel.Children.Add(itemizedObjectsStackPanel);
 
