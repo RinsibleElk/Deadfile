@@ -68,6 +68,12 @@
             CanUserResizeRows="False"
             CanUserSortColumns="True"
             ItemsSource="{Binding Items}">
+            <DataGrid.InputBindings>
+                <MouseBinding
+                    Command="{Binding NavigateToJobAndEdit}"
+                    CommandParameter="{Binding SelectedItem}"
+                    MouseAction="LeftDoubleClick" />
+            </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Binding="{Binding JobAddressFirstLine}"
