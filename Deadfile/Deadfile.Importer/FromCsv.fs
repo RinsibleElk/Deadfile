@@ -19,6 +19,8 @@ module FromCsv =
         convertString a.[i]
     let tonum i (a:string[]) =
         Int32.Parse(a.[i])
+    let tobool i (a:string[]) =
+        Boolean.Parse(a.[i])
     let tonumo i (a:string[]) =
         let b = a.[i]
         if b = "NULL" then None
@@ -101,14 +103,16 @@ module FromCsv =
             CreationState = InvoiceCreationState.DefineInvoice
         }
 
-    let invoiceItemLength = 5
+    let invoiceItemLength = 7
     let makeInvoiceItem a =
         {
             InvoiceItemId = a |> tonum 0
             Description = a |> conv 1
             NetAmount = a |> tofloat 2
             VatValue = a |> tofloat 3
-            InvoiceId = a |> tonum 4
+            VatRate = a |> tofloat 4
+            IncludeVat = a |> tobool 5
+            InvoiceId = a |> tonum 6
         }
 
     let localAuthorityLength = 3

@@ -137,6 +137,8 @@ type InvoiceItemJson =
         Description : string
         NetAmount : double
         VatValue : double
+        VatRate : double
+        IncludeVat : bool
         InvoiceId : int
     }
 
