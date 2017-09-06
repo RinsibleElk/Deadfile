@@ -49,7 +49,7 @@ namespace Deadfile.Tab.JobChildren.JobTasks
                 Populate();
 
                 // Navigate to the new billable hour.
-                EventAggregator.GetEvent<JobChildNavigateEvent>().Publish(new JobChildNavigateMessage(JobChildExperience.BillableHours, billableHourId));
+                EventAggregator.GetEvent<JobChildNavigateEvent>().Publish(new JobChildNavigateMessage(JobChildExperience.BillableHours, billableHourId, false));
             }
         }
 

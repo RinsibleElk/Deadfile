@@ -340,7 +340,7 @@ namespace Deadfile.Tab.Common
 
         public int SelectedIndex { get; set; }
         public bool ParentEditable { get; set; }
-        public void NavigateToModel(int modelId)
+        public void NavigateToModel(int modelId, bool edit)
         {
             throw new NotImplementedException();
         }

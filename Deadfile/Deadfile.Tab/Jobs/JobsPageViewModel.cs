@@ -365,7 +365,7 @@ namespace Deadfile.Tab.Jobs
         private void NavigateToJobChild(JobChildNavigateMessage navigateMessage)
         {
             SelectedJobChild = navigateMessage.Experience;
-            JobChildViewModel.NavigateToModel(navigateMessage.ModelId);
+            JobChildViewModel.NavigateToModel(navigateMessage.ModelId, navigateMessage.Edit);
         }
 
         public override void OnNavigatedFrom()

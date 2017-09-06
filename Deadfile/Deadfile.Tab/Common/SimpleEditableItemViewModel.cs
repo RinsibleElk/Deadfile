@@ -336,11 +336,13 @@ namespace Deadfile.Tab.Common
             }
         }
 
-        public void NavigateToModel(int modelId)
+        public void NavigateToModel(int modelId, bool edit)
         {
             var matchingItem = Items.FirstOrDefault((model) => model.Id == modelId);
-            if (matchingItem != null)
-                SelectedItem = matchingItem;
+            if (matchingItem == null) return;
+            SelectedItem = matchingItem;
+            if (edit)
+                StartEditing();
         }
 
         private void SetSelectedIndex()

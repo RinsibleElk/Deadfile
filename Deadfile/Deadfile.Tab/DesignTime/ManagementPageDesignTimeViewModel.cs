@@ -31,14 +31,11 @@ namespace Deadfile.Tab.DesignTime
 
         public int SelectedIndex { get; set; }
         public bool ParentEditable { get; set; }
-        public void NavigateToModel(int modelId)
+        public void NavigateToModel(int modelId, bool edit)
         {
             throw new NotImplementedException();
         }
 
-        IUndoTracker ISimpleEditableItemViewModel.UndoTracker
-        {
-            get { return UndoTracker; }
-        }
+        IUndoTracker ISimpleEditableItemViewModel.UndoTracker => UndoTracker;
     }
 }

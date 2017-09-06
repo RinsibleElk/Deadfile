@@ -95,7 +95,7 @@ namespace Deadfile.Tab.Test.FunctionalTests
             JobsPageViewModel = new JobsPageViewModel(TabIdentity, NavigationService, Repository, EventAggregator.Object, DeadfileDialogCoordinator);
             LocalAuthoritiesPageViewModel = new LocalAuthoritiesPageViewModel(UrlNavigationService, DeadfileDialogCoordinator, Repository, EventAggregator.Object);
             UnbilledJobsPageViewModel = new UnbilledJobsPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, ExcelService, EventAggregator.Object);
-            CurrentApplicationsPageViewModel = new CurrentApplicationsPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object);
+            CurrentApplicationsPageViewModel = new CurrentApplicationsPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, ExcelService, EventAggregator.Object);
             InvoicesReportPageViewModel = new InvoicesReportPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object, ExcelService);
             TodoReportPageViewModel = new TodoReportPageViewModel(TabIdentity, DeadfileDialogCoordinator, PrintService, Repository, EventAggregator.Object);
             ImportPageViewModel = new ImportPageViewModel(factory, Repository, EventAggregator.Object, DeadfileDialogCoordinator, FileStreamService);

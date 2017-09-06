@@ -10,13 +10,15 @@ namespace Deadfile.Tab.Events
 {
     internal struct JobChildNavigateMessage
     {
-        public JobChildNavigateMessage(JobChildExperience experience, int modelId)
+        public JobChildNavigateMessage(JobChildExperience experience, int modelId, bool edit)
         {
             Experience = experience;
             ModelId = modelId;
+            Edit = edit;
         }
         public JobChildExperience Experience { get; }
         public int ModelId { get; }
+        public bool Edit { get; }
 
         public override string ToString()
         {

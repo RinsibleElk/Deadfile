@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Deadfile.Entity;
 using Deadfile.Model;
@@ -78,5 +79,7 @@ namespace Deadfile.Tab.Reports.CurrentApplications
         public override Experience Experience { get; } = Experience.CurrentApplications;
 
         public ICommand NavigateToJob { get; } = null;
+        public ICommand NavigateToJobAndEdit { get; } = null;
+        public DataGrid DataGrid { get; } = null;
     }
 }

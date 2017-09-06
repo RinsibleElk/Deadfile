@@ -103,6 +103,7 @@ namespace Deadfile.Tab.Common
         /// Can be called by the parent to navigate to a specific model by id.
         /// </summary>
         /// <param name="modelId"></param>
-        void NavigateToModel(int modelId);
+        /// <param name="edit"></param>
+        void NavigateToModel(int modelId, bool edit);
     }
 }
