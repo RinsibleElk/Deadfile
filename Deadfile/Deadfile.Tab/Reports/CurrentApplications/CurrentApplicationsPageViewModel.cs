@@ -87,7 +87,7 @@ namespace Deadfile.Tab.Reports.CurrentApplications
         /// <returns></returns>
         protected override IEnumerable<CurrentApplicationModel> GetModels(string filter)
         {
-            return _repository.GetCurrentApplications(filter);
+            return _repository.GetCurrentApplications(filter, IncludeInactive);
         }
 
         // Common for every journaled page (content).

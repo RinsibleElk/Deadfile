@@ -277,8 +277,9 @@ namespace Deadfile.Model.Interfaces
         /// Get the current applications.
         /// </summary>
         /// <param name="filter"></param>
+        /// <param name="includeInactive"></param>
         /// <returns></returns>
-        IEnumerable<CurrentApplicationModel> GetCurrentApplications(string filter);
+        IEnumerable<CurrentApplicationModel> GetCurrentApplications(string filter, bool includeInactive);
 
         /// <summary>
         /// Delete the job task model and add a new BillableHour to take its place.

@@ -57,7 +57,7 @@ namespace Deadfile.Model.Interfaces
         LocalAuthority GetLocalAuthorityById(int localAuthorityId);
         void RemoveLocalAuthority(LocalAuthority localAuthority);
         void RemoveQuotation(Quotation quotation);
-        IEnumerable<ApplicationWithJob> GetApplicationsWithJobs(string filter);
+        IEnumerable<ApplicationWithJob> GetApplicationsWithJobs(string filter, bool includeInactive);
         void AddLocalAuthority(LocalAuthority localAuthority);
         void AddApplication(Application application);
         Application GetApplicationById(int applicationId);

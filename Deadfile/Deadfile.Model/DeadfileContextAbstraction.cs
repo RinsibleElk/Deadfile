@@ -329,10 +329,10 @@ namespace Deadfile.Model
             _deadfileContext.Quotations.Remove(quotation);
         }
 
-        public IEnumerable<ApplicationWithJob> GetApplicationsWithJobs(string filter)
+        public IEnumerable<ApplicationWithJob> GetApplicationsWithJobs(string filter, bool includeInactive)
         {
             return (from application in _deadfileContext.Applications
-                where application.State == ApplicationState.Current
+                where (includeInactive || application.State == ApplicationState.Current)
                 where (filter == null || filter == "" || application.LocalAuthorityReference.Contains(filter))
                 orderby application.EstimatedDecisionDate descending
                 join job in _deadfileContext.Jobs on application.JobId equals job.JobId

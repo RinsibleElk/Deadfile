@@ -194,7 +194,7 @@ namespace Deadfile.Model.DesignTime
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CurrentApplicationModel> GetCurrentApplications(string filter)
+        public IEnumerable<CurrentApplicationModel> GetCurrentApplications(string filter, bool includeInactive)
         {
             throw new NotImplementedException();
         }

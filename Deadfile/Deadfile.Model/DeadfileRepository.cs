@@ -914,14 +914,14 @@ namespace Deadfile.Model
             }
         }
 
-        public IEnumerable<CurrentApplicationModel> GetCurrentApplications(string filter)
+        public IEnumerable<CurrentApplicationModel> GetCurrentApplications(string filter, bool includeInactive)
         {
             var li = new List<CurrentApplicationModel>();
             if (!DeadfileContextAbstraction.HasConnectionString())
                 return new CurrentApplicationModel[0];
             using (var dbContext = _deadfileContextAbstractionFactory.GetAbstraction())
             {
-                foreach (var application in dbContext.GetApplicationsWithJobs(filter))
+                foreach (var application in dbContext.GetApplicationsWithJobs(filter, includeInactive))
                 {
                     var currentApplicationModel = new CurrentApplicationModel();
                     _modelEntityMapper.Mapper.Map(application.Application, currentApplicationModel);
