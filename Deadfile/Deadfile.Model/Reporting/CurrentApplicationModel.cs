@@ -100,5 +100,13 @@ namespace Deadfile.Model.Reporting
             get { return _estimatedDecisionDate; }
             set { SetProperty(ref _estimatedDecisionDate, value); }
         }
+
+        private ApplicationState _state;
+        [Required(ErrorMessage = "An Application must have a state.")]
+        public ApplicationState State
+        {
+            get { return _state; }
+            set { SetProperty(ref _state, value); }
+        }
     }
 }

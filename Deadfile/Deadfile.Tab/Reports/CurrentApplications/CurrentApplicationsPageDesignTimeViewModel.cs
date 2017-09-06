@@ -34,7 +34,8 @@ namespace Deadfile.Tab.Reports.CurrentApplications
                 EstimatedDecisionDate = DateTime.Today,
                 JobAddressFirstLine = "1 My Road",
                 LocalAuthority = "Enfield",
-                LocalAuthorityReference = "ENF0001"
+                LocalAuthorityReference = "ENF0001",
+                State = ApplicationState.Current
             });
             items.Add(new CurrentApplicationModel
             {
@@ -46,7 +47,8 @@ namespace Deadfile.Tab.Reports.CurrentApplications
                 EstimatedDecisionDate = DateTime.Today.AddDays(10),
                 JobAddressFirstLine = "2 My Road",
                 LocalAuthority = "Enfield",
-                LocalAuthorityReference = "ENF0002"
+                LocalAuthorityReference = "ENF0002",
+                State = ApplicationState.Current
             });
             items.Add(new CurrentApplicationModel
             {
@@ -58,7 +60,8 @@ namespace Deadfile.Tab.Reports.CurrentApplications
                 EstimatedDecisionDate = DateTime.Today.AddDays(15),
                 JobAddressFirstLine = "3 Your Street",
                 LocalAuthority = "Barnet",
-                LocalAuthorityReference = "BAR0003"
+                LocalAuthorityReference = "BAR0003",
+                State = ApplicationState.Withdrawn
             });
             items.Add(new CurrentApplicationModel
             {
@@ -70,7 +73,8 @@ namespace Deadfile.Tab.Reports.CurrentApplications
                 EstimatedDecisionDate = DateTime.Today.AddDays(21),
                 JobAddressFirstLine = "4 His Mews",
                 LocalAuthority = "Brent",
-                LocalAuthorityReference = "BRE0004"
+                LocalAuthorityReference = "BRE0004",
+                State = ApplicationState.Withdrawn
             });
             Items = new ObservableCollection<CurrentApplicationModel>(items);
         }

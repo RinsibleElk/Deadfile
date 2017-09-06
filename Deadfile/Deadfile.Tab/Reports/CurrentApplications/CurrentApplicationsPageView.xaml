@@ -93,6 +93,10 @@
                     Binding="{Binding EstimatedDecisionDate, StringFormat=dd/MM/yyyy}"
                     Header="Estimated Decision Date"
                     IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding State}"
+                    Header="State"
+                    IsReadOnly="True" />
                 <DataGridTemplateColumn IsReadOnly="True" SortMemberPath="JobId">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
