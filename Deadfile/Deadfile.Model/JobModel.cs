@@ -94,7 +94,7 @@ namespace Deadfile.Model
             {
                 if (_initialStatus == null) _initialStatus = value;
                 if (SetProperty(ref _status, value))
-                    OnPropertyChanged(nameof(StateIsActive));
+                    RaisePropertyChanged(nameof(StateIsActive));
             }
         }
 

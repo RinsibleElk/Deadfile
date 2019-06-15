@@ -127,7 +127,7 @@ namespace Deadfile.Tab.Invoices
             Jobs = jobs;
 
             // Hook up to changes in editing state.
-            SelectedItem.PropertyChanged += SelectedItemOnPropertyChanged;
+            SelectedItem.PropertyChanged += SelectedItemRaisePropertyChanged;
         }
 
         private void PerformPaid(PaidMessage message)
@@ -153,7 +153,7 @@ namespace Deadfile.Tab.Invoices
 
         private const string VariousPropertyName = "Various";
 
-        private void SelectedItemOnPropertyChanged(object sender, PropertyChangedEventArgs eventArgs)
+        private void SelectedItemRaisePropertyChanged(object sender, PropertyChangedEventArgs eventArgs)
         {
             if (eventArgs.PropertyName == nameof(InvoiceModel.CreationState))
             {
@@ -247,7 +247,7 @@ namespace Deadfile.Tab.Invoices
             _paidEventSubscriptionToken = null;
             SuggestedInvoiceReferences = new ObservableCollection<string>();
             Jobs = new ObservableCollection<BillableModel>();
-            SelectedItem.PropertyChanged -= SelectedItemOnPropertyChanged;
+            SelectedItem.PropertyChanged -= SelectedItemRaisePropertyChanged;
         }
 
         private InvoiceModel MakeNewModel(int clientId)

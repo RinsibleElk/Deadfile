@@ -30,6 +30,7 @@ using Deadfile.Tab.Reports.CurrentApplications;
 using Deadfile.Tab.Tab;
 using MahApps.Metro.Controls.Dialogs;
 using NLog;
+using INavigationService = Deadfile.Infrastructure.Interfaces.INavigationService;
 
 namespace Deadfile.Tab
 {

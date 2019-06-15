@@ -86,7 +86,7 @@ namespace Deadfile.Infrastructure.Test
             Assert.Same(target, host.Target);
             Assert.False(navigationService.CanGoBack);
             Assert.False(navigationService.CanGoForward);
-            Assert.Equal(0, propertiesChanged.Count);
+            Assert.Empty(propertiesChanged);
         }
 
         [Fact]
@@ -115,7 +115,7 @@ namespace Deadfile.Infrastructure.Test
             Assert.Same(target2, host.Target);
             Assert.True(navigationService.CanGoBack);
             Assert.False(navigationService.CanGoForward);
-            Assert.Equal(1, propertiesChanged.Count);
+            Assert.Single(propertiesChanged);
             Assert.Equal(nameof(navigationService.CanGoBack), propertiesChanged[0]);
         }
 
@@ -172,7 +172,7 @@ namespace Deadfile.Infrastructure.Test
             Assert.Same(target, host.Target);
             Assert.False(navigationService.CanGoBack);
             Assert.False(navigationService.CanGoForward);
-            Assert.Equal(0, propertiesChanged.Count);
+            Assert.Empty(propertiesChanged);
         }
     }
 }

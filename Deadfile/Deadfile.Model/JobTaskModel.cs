@@ -46,7 +46,7 @@ namespace Deadfile.Model
             set
             {
                 if (SetProperty(ref _description, value))
-                    OnPropertyChanged(nameof(HeaderText));
+                    RaisePropertyChanged(nameof(HeaderText));
             }
         }
 
@@ -66,7 +66,7 @@ namespace Deadfile.Model
             set
             {
                 if (SetProperty(ref _dueDate, value))
-                    OnPropertyChanged(nameof(HeaderText));
+                    RaisePropertyChanged(nameof(HeaderText));
             }
         }
 

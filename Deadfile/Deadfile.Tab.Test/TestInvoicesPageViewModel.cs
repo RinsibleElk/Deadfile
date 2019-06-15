@@ -131,10 +131,10 @@ namespace Deadfile.Tab.Test
                 ViewModel.CompleteNavigation();
                 Assert.Equal(InvoicesPageState.CanDiscard | InvoicesPageState.UnderEdit, _pageState);
                 Assert.Equal(InvoicesPageState.CanDiscard | InvoicesPageState.UnderEdit, ViewModel.State);
-                Assert.Equal(1, _receivedDisplayNameMessages.Count);
+                Assert.Single(_receivedDisplayNameMessages);
                 Assert.Equal("New Invoice", _receivedDisplayNameMessages[0]);
                 _receivedDisplayNameMessages.Clear();
-                Assert.Equal(1, _receivedLockedForEditingMessages.Count);
+                Assert.Single(_receivedLockedForEditingMessages);
                 Assert.True(_receivedLockedForEditingMessages[0].IsLocked);
                 _receivedLockedForEditingMessages.Clear();
                 Assert.Equal(Experience.Invoices, ViewModel.Experience);
@@ -185,7 +185,7 @@ namespace Deadfile.Tab.Test
                 ViewModel.CompleteNavigation();
                 Assert.Equal(InvoicesPageState.CanDelete | InvoicesPageState.CanEdit, _pageState);
                 Assert.Equal(InvoicesPageState.CanDelete | InvoicesPageState.CanEdit, ViewModel.State);
-                Assert.Equal(1, _receivedDisplayNameMessages.Count);
+                Assert.Single(_receivedDisplayNameMessages);
                 Assert.Equal(CompanyUtils.GetShortName(model.Company) + " " + model.InvoiceReference, _receivedDisplayNameMessages[0]);
                 Assert.Equal(Experience.Invoices, ViewModel.Experience);
                 Assert.False(ViewModel.UnderEdit);
@@ -371,7 +371,7 @@ namespace Deadfile.Tab.Test
                 Assert.False(ViewModel.CanEdit);
                 Assert.True(ViewModel.State.HasFlag(InvoicesPageState.CanDiscard));
                 Assert.True(ViewModel.UnderEdit);
-                Assert.Equal(1, _receivedLockedForEditingMessages.Count);
+                Assert.Single(_receivedLockedForEditingMessages);
                 Assert.True(_receivedLockedForEditingMessages[0].IsLocked);
                 Assert.False(ViewModel.InvoiceEditable);
                 Assert.True(ViewModel.Editable);

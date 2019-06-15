@@ -13,6 +13,7 @@ using Deadfile.Model.Interfaces;
 using Deadfile.Tab.Events;
 using Prism.Commands;
 using Prism.Events;
+using INavigationService = Deadfile.Infrastructure.Interfaces.INavigationService;
 
 namespace Deadfile.Tab.Navigation
 {
@@ -47,7 +48,7 @@ namespace Deadfile.Tab.Navigation
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
             _repository = repository;
-            _navigationService.PropertyChanged += NavigationPropertyChanged;
+            _navigationService.PropertyChanged += NavigatiRaisePropertyChanged;
             LostFocusCommand = new DelegateCommand(SearchTextLostFocus);
             GotFocusCommand = new DelegateCommand(SearchTextGotFocus);
         }
@@ -62,7 +63,7 @@ namespace Deadfile.Tab.Navigation
             IsSearchShown = false;
         }
 
-        private void NavigationPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void NavigatiRaisePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             CanHome = _navigationService.CanGoBack;
             CanBack = _navigationService.CanGoBack;
