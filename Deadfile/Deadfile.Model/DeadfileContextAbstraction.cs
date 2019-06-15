@@ -25,10 +25,12 @@ namespace Deadfile.Model
             {
                 DataSource = ServerName,
                 InitialCatalog = DatabaseName,
-                IntegratedSecurity = false,
-                Authentication = SqlAuthenticationMethod.SqlPassword,
-                UserID = UserId,
-                Password = Password,
+                IntegratedSecurity = true,
+                // Old way of doing this.
+                //IntegratedSecurity = false,
+                //Authentication = SqlAuthenticationMethod.SqlPassword,
+                //UserID = UserId,
+                //Password = Password,
                 TrustServerCertificate = true,
                 MultipleActiveResultSets = true
             };
