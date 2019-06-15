@@ -47,7 +47,7 @@ namespace Deadfile.Model
                 // Undo and validation not supported
                 if (object.Equals((object)_grossAmount, (object)value)) return;
                 _grossAmount = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -60,7 +60,7 @@ namespace Deadfile.Model
                 // Undo and validation not supported
                 if (object.Equals((object)_netAmount, (object)value)) return;
                 _netAmount = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -77,7 +77,7 @@ namespace Deadfile.Model
                 if (SetProperty(ref _status, value))
                 {
                     ValidateProperty(nameof(InvoiceReference), _invoiceReference);
-                    OnPropertyChanged(nameof(StateIsActive));
+                    RaisePropertyChanged(nameof(StateIsActive));
                 }
             }
         }
@@ -243,7 +243,7 @@ namespace Deadfile.Model
                 // Undo and validation not supported
                 if (object.Equals((object)_vatValue, (object)value)) return;
                 _vatValue = value;
-                OnPropertyChanged(nameof(VatValue));
+                RaisePropertyChanged(nameof(VatValue));
                 SetProperty(ref _vatValue, value);
             }
         }

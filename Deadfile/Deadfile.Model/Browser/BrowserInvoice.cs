@@ -45,7 +45,7 @@ namespace Deadfile.Model.Browser
             set
             {
                 if (SetProperty(ref _invoiceReference, value))
-                    OnPropertyChanged(nameof(DisplayName));
+                    RaisePropertyChanged(nameof(DisplayName));
             }
         }
 
@@ -56,7 +56,7 @@ namespace Deadfile.Model.Browser
             set
             {
                 if (SetProperty(ref _clientName, value))
-                    OnPropertyChanged(nameof(DisplayName));
+                    RaisePropertyChanged(nameof(DisplayName));
             }
         }
 
@@ -67,7 +67,7 @@ namespace Deadfile.Model.Browser
             set
             {
                 if (SetProperty(ref _project, value))
-                    OnPropertyChanged(nameof(DisplayName));
+                    RaisePropertyChanged(nameof(DisplayName));
             }
         }
 

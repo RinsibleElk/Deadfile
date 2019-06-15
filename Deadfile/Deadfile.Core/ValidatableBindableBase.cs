@@ -45,7 +45,7 @@ namespace Deadfile.Core
             PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
             base.SetProperty<T>(ref storage, value, propertyName);
             ValidateProperty(propertyName, value);
-            OnPropertyChanged(nameof(HasErrors));
+            RaisePropertyChanged(nameof(HasErrors));
             return true;
         }
 
@@ -56,13 +56,13 @@ namespace Deadfile.Core
             {
                 method.MakeGenericMethod(property.PropertyType).Invoke(this, new object[] { property.Name, property.GetMethod.Invoke(this, new object[0]) });
             }
-            OnPropertyChanged(nameof(HasErrors));
+            RaisePropertyChanged(nameof(HasErrors));
         }
 
         public void ClearAllErrors()
         {
             Errors.Clear();
-            OnPropertyChanged(nameof(HasErrors));
+            RaisePropertyChanged(nameof(HasErrors));
         }
 
         /// <summary>

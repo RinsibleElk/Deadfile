@@ -49,7 +49,7 @@ namespace Deadfile.Infrastructure.UndoRedo
                                                     " (new value " + model + ") when it is already running for " +
                                                     Model);
             Model = model;
-            Model.PropertyChanged += OnPropertyChanged;
+            Model.PropertyChanged += RaisePropertyChanged;
             Model.PropertyChanging += OnPropertyChanging;
             CanUndo = false;
             CanRedo = false;
@@ -81,7 +81,7 @@ namespace Deadfile.Infrastructure.UndoRedo
             CanRedo = false;
         }
 
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void RaisePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (TrackingDisabled) return;
             if (Model.DisableUndoTracking) return;
@@ -99,7 +99,7 @@ namespace Deadfile.Infrastructure.UndoRedo
             if (Model == null)
                 throw new InvalidOperationException("Attempt to Deactivate an UndoTracker for type " + typeof(T) +
                                                     " when there is nothing to deactivate");
-            Model.PropertyChanged -= OnPropertyChanged;
+            Model.PropertyChanged -= RaisePropertyChanged;
             Model.PropertyChanging -= OnPropertyChanging;
             Model = null;
             CanUndo = false;

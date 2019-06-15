@@ -29,7 +29,7 @@ namespace Deadfile.Model.Billable
             set
             {
                 if (SetProperty(ref _description, value))
-                    OnPropertyChanged(nameof(Text));
+                    RaisePropertyChanged(nameof(Text));
             }
         }
 

@@ -18,7 +18,7 @@ namespace Deadfile.Model.Browser
             set
             {
                 if (SetProperty(ref _fullAddress, value))
-                    OnPropertyChanged(nameof(DisplayName));
+                    RaisePropertyChanged(nameof(DisplayName));
             }
         }
 
@@ -30,7 +30,7 @@ namespace Deadfile.Model.Browser
             set
             {
                 if (SetProperty(ref _jobNumber, value))
-                    OnPropertyChanged(nameof(DisplayName));
+                    RaisePropertyChanged(nameof(DisplayName));
             }
         }
 

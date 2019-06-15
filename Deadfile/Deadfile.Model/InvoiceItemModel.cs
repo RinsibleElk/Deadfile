@@ -69,7 +69,7 @@ namespace Deadfile.Model
                 // Undo and validation not supported
                 if (object.Equals((object)_vatValue, (object)value)) return;
                 _vatValue = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 

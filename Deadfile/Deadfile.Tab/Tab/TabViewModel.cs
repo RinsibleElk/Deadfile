@@ -14,6 +14,7 @@ using Prism.Commands;
 using Prism.Events;
 using Action = System.Action;
 using LogManager = NLog.LogManager;
+using INavigationService = Deadfile.Infrastructure.Interfaces.INavigationService;
 
 namespace Deadfile.Tab.Tab
 {

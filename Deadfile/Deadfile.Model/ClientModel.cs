@@ -44,8 +44,8 @@ namespace Deadfile.Model
                 OnPropertyChanging(nameof(FullName));
                 OnPropertyChanging(nameof(FullNameWithTitle));
                 SetProperty(ref _title, value);
-                OnPropertyChanged(nameof(FullName));
-                OnPropertyChanged(nameof(FullNameWithTitle));
+                RaisePropertyChanged(nameof(FullName));
+                RaisePropertyChanged(nameof(FullNameWithTitle));
             }
         }
 
@@ -62,8 +62,8 @@ namespace Deadfile.Model
                 OnPropertyChanging(nameof(FullName));
                 OnPropertyChanging(nameof(FullNameWithTitle));
                 SetProperty(ref _firstName, value);
-                OnPropertyChanged(nameof(FullName));
-                OnPropertyChanged(nameof(FullNameWithTitle));
+                RaisePropertyChanged(nameof(FullName));
+                RaisePropertyChanged(nameof(FullNameWithTitle));
             }
         }
 
@@ -79,7 +79,7 @@ namespace Deadfile.Model
             {
                 OnPropertyChanging(nameof(FullNameWithTitle));
                 SetProperty(ref _middleNames, value);
-                OnPropertyChanged(nameof(FullNameWithTitle));
+                RaisePropertyChanged(nameof(FullNameWithTitle));
             }
         }
 
@@ -97,8 +97,8 @@ namespace Deadfile.Model
                 OnPropertyChanging(nameof(FullName));
                 OnPropertyChanging(nameof(FullNameWithTitle));
                 SetProperty(ref _lastName, value);
-                OnPropertyChanged(nameof(FullName));
-                OnPropertyChanged(nameof(FullNameWithTitle));
+                RaisePropertyChanged(nameof(FullName));
+                RaisePropertyChanged(nameof(FullNameWithTitle));
             }
         }
 
@@ -156,7 +156,7 @@ namespace Deadfile.Model
             {
                 OnPropertyChanging(nameof(FullAddress));
                 SetProperty(ref _addressFirstLine, value);
-                OnPropertyChanged(nameof(FullAddress));
+                RaisePropertyChanged(nameof(FullAddress));
             }
         }
 
@@ -172,7 +172,7 @@ namespace Deadfile.Model
             {
                 OnPropertyChanging(nameof(FullAddress));
                 SetProperty(ref _addressSecondLine, value);
-                OnPropertyChanged(nameof(FullAddress));
+                RaisePropertyChanged(nameof(FullAddress));
             }
         }
 
@@ -188,7 +188,7 @@ namespace Deadfile.Model
             {
                 OnPropertyChanging(nameof(FullAddress));
                 SetProperty(ref _addressThirdLine, value);
-                OnPropertyChanged(nameof(FullAddress));
+                RaisePropertyChanged(nameof(FullAddress));
             }
         }
 
@@ -204,7 +204,7 @@ namespace Deadfile.Model
             {
                 OnPropertyChanging(nameof(FullAddress));
                 SetProperty(ref _addressPostCode, value);
-                OnPropertyChanged(nameof(FullAddress));
+                RaisePropertyChanged(nameof(FullAddress));
             }
         }
 
@@ -227,7 +227,7 @@ namespace Deadfile.Model
             {
                 OnPropertyChanging(nameof(PhoneNumbers));
                 SetProperty(ref _phoneNumber1, String.IsNullOrEmpty(value) ? null : value);
-                OnPropertyChanged(nameof(PhoneNumbers));
+                RaisePropertyChanged(nameof(PhoneNumbers));
             }
         }
 
@@ -240,7 +240,7 @@ namespace Deadfile.Model
             {
                 OnPropertyChanging(nameof(PhoneNumbers));
                 SetProperty(ref _phoneNumber2, String.IsNullOrEmpty(value) ? null : value);
-                OnPropertyChanged(nameof(PhoneNumbers));
+                RaisePropertyChanged(nameof(PhoneNumbers));
             }
         }
 
@@ -253,7 +253,7 @@ namespace Deadfile.Model
             {
                 OnPropertyChanging(nameof(PhoneNumbers));
                 SetProperty(ref _phoneNumber3, String.IsNullOrEmpty(value) ? null : value);
-                OnPropertyChanged(nameof(PhoneNumbers));
+                RaisePropertyChanged(nameof(PhoneNumbers));
             }
         }
 
@@ -280,7 +280,7 @@ namespace Deadfile.Model
             {
                 if (_initialStatus == null) _initialStatus = value;
                 if (SetProperty(ref _status, value))
-                    OnPropertyChanged(nameof(StateIsActive));
+                    RaisePropertyChanged(nameof(StateIsActive));
             }
         }
 

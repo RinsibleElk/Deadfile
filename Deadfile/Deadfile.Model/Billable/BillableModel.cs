@@ -56,7 +56,7 @@ namespace Deadfile.Model.Billable
             set
             {
                 if (SetProperty(ref _netAmount, value))
-                    OnPropertyChanged(nameof(Text));
+                    RaisePropertyChanged(nameof(Text));
             }
         }
 
@@ -67,7 +67,7 @@ namespace Deadfile.Model.Billable
             set
             {
                 if (SetProperty(ref _hours, value))
-                    OnPropertyChanged(nameof(Text));
+                    RaisePropertyChanged(nameof(Text));
             }
         }
 

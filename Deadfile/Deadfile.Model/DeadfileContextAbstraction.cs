@@ -43,7 +43,7 @@ namespace Deadfile.Model
                     _connectionString = providerString;
                 }
             }
-            catch (Exception e)
+            catch (Exception _)
             {
                 _connectionString = null;
             }
